@@ -5,33 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TaxMeApp"
         mc:Ignorable="d"
-        Title="TaxMe" Height="450" Width="800">
-    <DockPanel>
-        <StackPanel Background="LightGray"
-                    DockPanel.Dock="Left" 
-                    Orientation="Vertical" 
-                    Width="200">
-            <TextBlock HorizontalAlignment="Center"
-                       Text="Control Panel"/>
-            <TextBox Width="180" 
-                     Text="Search"/>
-            <TextBlock HorizontalAlignment="Center"
-                       Text="Adjustable Variables"/>
-            <TextBlock Text="Policy Rate(%)"/>
-            <Slider ValueChanged="Slider_ValueChanged"
-                    Width="180"/>
-            <TextBlock Text="Minimum Income ($)"/>
-            <TextBox x:Name ="MinIncomeInput" 
-                     Text="Enter Dollar amount" 
-                     Width="180"/>
-        </StackPanel>
-        <Canvas DockPanel.Dock="Top" 
-                Height="300" 
-                Background="LightBlue">
-        </Canvas>
-        <StackPanel  Background="LightYellow" 
-                     DockPanel.Dock="Bottom" 
-                     Orientation="Vertical">
-        </StackPanel>
-    </DockPanel>
+        Title="TaxMe" Height="500" Width="800">
+    <Grid>
+        <local:TestView x:Name="TestViewControl" Loaded="TestViewControlLoaded"/>
+    </Grid>
 </Window>
