@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 
 namespace TaxMeApp
 {
@@ -10,6 +11,21 @@ namespace TaxMeApp
         public TestView()
         {
             InitializeComponent();
+        }
+
+        private void PolicyRateSlider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
+        {
+            Console.WriteLine("New rate: {0}", e.NewValue);    
+        }
+
+        private void CartesianChart_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
+
+        private void PolicyRateSlider_ValueChanged_1(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
+        {
+
         }
     }
 }
