@@ -147,8 +147,8 @@ namespace TaxMeApp
 
         public void ParseCSV()
         {
-            String path = @"C:\Github\taxapp\TaxMeApp\res\2018Tax.csv"; // replace
-            // String path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "res//2018Tax.csv"); // using this gives an error in MainWindow.xaml, but it successfully builds
+            string path = "res\\2018Tax.csv";
+     
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
