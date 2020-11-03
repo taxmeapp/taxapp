@@ -239,12 +239,14 @@ namespace TaxMeApp
             //maxRate = (totalRevenueOld * maxRatio) / maxTotal;
             maxRate = 0.0;
             //while (totalRevenueNew - totalRevenueOld < 0)
-            //{
-                //maxRate += 0.01;
-                maxRate = 0.9;
+            while(totalRevenueNew - (1932 * Math.Pow(10, 9)) < 0)
+            {
+                maxRate += 0.01;
+                //maxRate = 0.9;
                 sTaxVals.Clear();
                 changeAmt = maxRate / (Brackets.Count - povertyBrackets - (Brackets.Count - maxBrackets) + 1);
                 double currentRate = maxRate;
+                totalRevenueNew = 0;
                 for (int i = Brackets.Count - 1; i >= 0; i--)
                 {
                     if (i > maxBrackets)
@@ -271,7 +273,7 @@ namespace TaxMeApp
                         Brackets.ElementAt(i).GrossIncome*1000 * currentRate);
                 }
                 sTaxVals.Reverse();
-            //}
+            }
         }
 
         //Used to find and color the number of tax brackets that pay the maximum rate
