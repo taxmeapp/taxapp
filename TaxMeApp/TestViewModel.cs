@@ -184,9 +184,23 @@ namespace TaxMeApp
                 Brackets = new ObservableCollection<BracketModel>(brackets);
             }
 
+            int i = 0;
             foreach (BracketModel bracket in Brackets)
             {
-                Population.Add(bracket.NumReturns);
+                if(i == 11)
+                {
+                    //int value = bracket.NumReturns / 2;
+                    Population.Add((bracket.NumReturns * 6)/10);
+                    Population.Add((bracket.NumReturns * 4)/10);
+                    //Population.Add(value);
+
+                }
+                else
+                {
+                    Population.Add(bracket.NumReturns);
+                }
+                
+                i++;
             }
         }
 
@@ -230,7 +244,8 @@ namespace TaxMeApp
                 "$40,000 under $50,000",
                 "$50,000 under $75,000",
                 "$75,000 under $100,000",
-                "$100,000 under $200,000",
+                "$100,000 under $150,000",
+                "$150,000 under $200,000",
                 "$200,000 under $500,000",
                 "$500,000 under $1,000,000",
                 "$1,000,000 under $1,500,000",
@@ -264,13 +279,13 @@ namespace TaxMeApp
             }
 
             //maxRate = (totalRevenueOld * maxRatio) / maxTotal;
-            maxRate = 0.0;
+            maxRate = 0.17;
             double hConst;
             hConst = 3.0; //One graphing solution, just exagerate the height by fixed amount
-            //while (totalRevenueNew - totalRevenueOld < 0)
-            while(totalRevenueNew - (1932 * Math.Pow(10, 9)) < 0)
+            while (totalRevenueNew - totalRevenueOld < 0)
+            //while(totalRevenueNew - (1932 * Math.Pow(10, 9)) < 0)
             {
-                maxRate += 0.01;
+                maxRate += 0.0001;
                 //hConst = 0.9 / maxRate; //One solution to graphing, make graph always look the same no matter the rate
                 //maxRate = 0.9;
                 sTaxVals.Clear();
