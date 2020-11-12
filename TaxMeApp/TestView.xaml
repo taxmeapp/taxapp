@@ -99,11 +99,11 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Number of people under poverty line: "/>
-                    <TextBlock Text="{Binding NumUnderPoverty}"/>
+                    <TextBlock Text="{Binding Path = numPovertyPop}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Number of people paying maximum tax rate: "/>
-                    <TextBlock Text="{Binding NumMax}"/>
+                    <TextBlock Text="{Binding Path = numMaxPop}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Total Revenue Before Slant Tax: "/>

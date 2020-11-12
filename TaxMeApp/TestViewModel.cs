@@ -3,6 +3,7 @@ using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Ink;
 using System.Windows.Input;
@@ -29,15 +31,40 @@ namespace TaxMeApp
         public double totalRevenueNew;
         public static double newPolicyRate = 0.0;
         public double maxRate = 0.0;
-        public double tRO {
-            get{ return totalRevenueOld; }
+        public string tRO {
+            get{ return totalRevenueOld.ToString("#,##0"); }
         }
-        public double tRN
+        public string tRN
         {
-            get { return totalRevenueNew; }
+            get { return totalRevenueNew.ToString("#,##0"); }
         }
-        public double rDiff {
-            get { return totalRevenueNew - totalRevenueOld; }
+        public string rDiff {
+            get
+            {
+                double diff = totalRevenueNew - totalRevenueOld;
+                string ans = diff.ToString("#,##0");
+                if (diff > 0)
+                {
+                    ans = "+" + ans + " Surplus";
+                }
+                else {
+                    ans = "-" + ans + " Deficit";
+                }
+                return ans;
+            }
+        }
+        public string numPovertyPop {
+            get 
+            {
+                return povertyPop.ToString("#,##0");
+            }
+        }
+        public string numMaxPop
+        {
+            get
+            {
+                return maxPop.ToString("#,##0");
+            }
         }
         public string mRate {
             get { return "~" + Math.Round((maxRate * 100), 2) + "%"; }
@@ -219,10 +246,10 @@ namespace TaxMeApp
             totalRevenueOld = 0;
             totalRevenueNew = 0;
             for (int i = 0; i < Brackets.Count; i++) {
-                Console.WriteLine("Bracket {0}\nGross income = {1}, revenue = {2}", i,
-                    Brackets.ElementAt(i).GrossIncome*1000,
-                    Brackets.ElementAt(i).GrossIncome*1000 * (Brackets.ElementAt(i).PercentOfGrossIncomePaid / 100));
-                totalRevenueOld += (Brackets.ElementAt(i).GrossIncome*1000 * (Brackets.ElementAt(i).PercentOfGrossIncomePaid/100));
+                Console.WriteLine("Bracket {0}\nTaxable Income = {1}, revenue = {2}", i,
+                    Brackets.ElementAt(i).TaxableIncome*1000,
+                    Brackets.ElementAt(i).TaxableIncome*1000 * (Brackets.ElementAt(i).PercentOfTaxableIncomePaid/ 100));
+                totalRevenueOld += (Brackets.ElementAt(i).TaxableIncome*1000 * (Brackets.ElementAt(i).PercentOfTaxableIncomePaid/100));
             }
             double maxTotal = 0.0;
             maxRate = 0.0;
@@ -230,7 +257,7 @@ namespace TaxMeApp
             double changeAmt = 0.0;
             double maxY = 0;
             for (int i = maxBrackets; i < Brackets.Count; i++) {
-                maxTotal += Brackets.ElementAt(i).GrossIncome*1000;
+                maxTotal += Brackets.ElementAt(i).TaxableIncome*1000;
                 if (Brackets.ElementAt(i).NumReturns > maxY) {
                     maxY = Brackets.ElementAt(i).NumReturns;
                 }
@@ -238,10 +265,13 @@ namespace TaxMeApp
 
             //maxRate = (totalRevenueOld * maxRatio) / maxTotal;
             maxRate = 0.0;
+            double hConst;
+            hConst = 3.0; //One graphing solution, just exagerate the height by fixed amount
             //while (totalRevenueNew - totalRevenueOld < 0)
             while(totalRevenueNew - (1932 * Math.Pow(10, 9)) < 0)
             {
                 maxRate += 0.01;
+                //hConst = 0.9 / maxRate; //One solution to graphing, make graph always look the same no matter the rate
                 //maxRate = 0.9;
                 sTaxVals.Clear();
                 changeAmt = maxRate / (Brackets.Count - povertyBrackets - (Brackets.Count - maxBrackets) + 1);
@@ -252,25 +282,25 @@ namespace TaxMeApp
                     if (i > maxBrackets)
                     {
                         //sTaxVals.Add((currentRate*Brackets.ElementAt(i-1).NumReturns));
-                        sTaxVals.Add(currentRate * maxY);
-                        totalRevenueNew += (Brackets.ElementAt(i).GrossIncome*1000 * currentRate);
+                        sTaxVals.Add(currentRate * maxY * hConst);
+                        totalRevenueNew += (Brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
                     }
                     else if (i <= maxBrackets && i > povertyBrackets)
                     {
                         currentRate -= changeAmt;
-                        sTaxVals.Add(currentRate * maxY);
+                        sTaxVals.Add(currentRate * maxY * hConst);
                         //sTaxVals.Add((currentRate * Brackets.ElementAt(i-1).NumReturns));
-                        totalRevenueNew += (Brackets.ElementAt(i).GrossIncome*1000 * currentRate);
+                        totalRevenueNew += (Brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
                     }
                     else
                     {
                         currentRate = 0;
                         sTaxVals.Add(0.0);
                     }
-                    Console.WriteLine("Bracket {0}\nGross income = {1}, current rate = {2}, revenue = {3}", i,
-                        Brackets.ElementAt(i).GrossIncome*1000,
+                    Console.WriteLine("Bracket {0}\nTaxable Income = {1}, current rate = {2}, revenue = {3}", i,
+                        Brackets.ElementAt(i).TaxableIncome*1000,
                         currentRate,
-                        Brackets.ElementAt(i).GrossIncome*1000 * currentRate);
+                        Brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
                 }
                 sTaxVals.Reverse();
             }
