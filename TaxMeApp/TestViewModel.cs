@@ -279,13 +279,13 @@ namespace TaxMeApp
             }
 
             //maxRate = (totalRevenueOld * maxRatio) / maxTotal;
-            maxRate = 0.0;
+            maxRate = 0.17;
             double hConst;
             hConst = 3.0; //One graphing solution, just exagerate the height by fixed amount
-            //while (totalRevenueNew - totalRevenueOld < 0)
-            while(totalRevenueNew - (1932 * Math.Pow(10, 9)) < 0)
+            while (totalRevenueNew - totalRevenueOld < 0)
+            //while(totalRevenueNew - (1932 * Math.Pow(10, 9)) < 0)
             {
-                maxRate += 0.01;
+                maxRate += 0.0001;
                 //hConst = 0.9 / maxRate; //One solution to graphing, make graph always look the same no matter the rate
                 //maxRate = 0.9;
                 sTaxVals.Clear();
