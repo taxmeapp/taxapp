@@ -184,9 +184,23 @@ namespace TaxMeApp
                 Brackets = new ObservableCollection<BracketModel>(brackets);
             }
 
+            int i = 0;
             foreach (BracketModel bracket in Brackets)
             {
-                Population.Add(bracket.NumReturns);
+                if(i == 11)
+                {
+                    //int value = bracket.NumReturns / 2;
+                    Population.Add((bracket.NumReturns * 6)/10);
+                    Population.Add((bracket.NumReturns * 4)/10);
+                    //Population.Add(value);
+
+                }
+                else
+                {
+                    Population.Add(bracket.NumReturns);
+                }
+                
+                i++;
             }
         }
 
@@ -230,7 +244,8 @@ namespace TaxMeApp
                 "$40,000 under $50,000",
                 "$50,000 under $75,000",
                 "$75,000 under $100,000",
-                "$100,000 under $200,000",
+                "$100,000 under $150,000",
+                "$150,000 under $200,000",
                 "$200,000 under $500,000",
                 "$500,000 under $1,000,000",
                 "$1,000,000 under $1,500,000",
