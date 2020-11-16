@@ -89,6 +89,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="models\BracketModel.cs" />
+    <Compile Include="models\IncomeYearModel.cs" />
+    <Compile Include="models\TaxPolicyModel.cs" />
     <Compile Include="TestModel.cs" />
     <Compile Include="TestView.xaml.cs">
       <DependentUpon>TestView.xaml</DependentUpon>

@@ -22,22 +22,29 @@ namespace TaxMeApp
 {
     public class TestViewModel : INotifyPropertyChanged
     {
-        public static int povertyBrackets = 3;
-        public static int maxBrackets = 0;
-        public static int povertyPop = 0;
-        public static int maxPop = 0;
+        public static int povertyBrackets = 3; //Fixed position of poverty line
+        public static int maxBrackets = 0; //Calculated, # of brackets on right side
+        public static int povertyPop = 0; //Calculated, currently rounded to nearest bracket
+        public static int maxPop = 0; //Calculated, population of maxBrackets
         public List<double> sTaxVals = new List<double>();
+        public List<double> originalTaxVals = new List<double>();
+        public List<double> revenueByBracketValsOld = new List<double>();
+        public List<double> revenueByBracketValsNew = new List<double>();
         public double totalRevenueOld;
         public double totalRevenueNew;
-        public static double newPolicyRate = 0.0;
         public double maxRate = 0.0;
+        public int year { get; set; }
+        //Variables used by GUI
+        //Old Revenue
         public string tRO {
             get{ return totalRevenueOld.ToString("#,##0"); }
         }
+        //New Revenue
         public string tRN
         {
             get { return totalRevenueNew.ToString("#,##0"); }
         }
+        //Difference
         public string rDiff {
             get
             {
@@ -53,12 +60,14 @@ namespace TaxMeApp
                 return ans;
             }
         }
+        //Pop under poverty (rounded to nearest bracket)
         public string numPovertyPop {
             get 
             {
                 return povertyPop.ToString("#,##0");
             }
         }
+        //Max rate population
         public string numMaxPop
         {
             get
@@ -66,11 +75,97 @@ namespace TaxMeApp
                 return maxPop.ToString("#,##0");
             }
         }
+        //Max rate with slant tax
         public string mRate {
-            get { return "~" + Math.Round((maxRate * 100), 2) + "%"; }
+            get { return "~" + Math.Round((maxRate * 100), 3) + "%"; }
         }
+        //Used by min income text box
+        public double MinIncome
+        {
+            get { return model.MinIncome; }
+            set
+            {
+
+                if (model.MinIncome != value)
+                {
+                    model.MinIncome = value;
+                    OnPropertyChange("MinIncome");
+                    OnPropertyChange("DeltaIncome");
+                }
+
+
+            }
+        }
+        //Used by max income text box
+        public double MaxIncome
+        {
+            get { return model.MaxIncome; }
+            set
+            {
+
+                if (model.MaxIncome != value)
+                {
+                    model.MaxIncome = value;
+                    OnPropertyChange("MaxIncome");
+                    OnPropertyChange("DeltaIncome");
+                }
+
+            }
+        }
+        //Used by GUI
+        public double DeltaIncome
+        {
+            get { return model.MaxIncome - model.MinIncome; }
+        }
+        public int NumUnderPoverty
+        {
+            get
+            {
+                return povertyPop;
+            }
+        }
+        public int PovertyLineIndex {
+            get {
+                return povertyBrackets;
+            }
+        }
+        public int NumMax
+        {
+            get
+            {
+                return maxPop;
+            }
+        }
+        //List of years from /res
+        public List<string> YearsAvailable {
+            get {
+                List<string> ans = new List<string>();
+
+                //Get a list of files from the res folder
+                string[] files = Directory.GetFiles("res\\");
+                string curString = "";
+                int extInd = 0; //extInd gets rid of Tax.csv
+                //Add all the years to the answer list
+                for (int i = 0; i < files.Length; i++) {
+                    curString = files[i];
+                    curString = curString.Substring(4); //get rid of res/
+                    extInd = curString.IndexOf("T");
+                    curString = curString.Substring(0, extInd); //get rid of Tax.csv
+                    ans.Add(curString);
+                }
+
+                return ans;
+            }
+        }
+        public string YearsAvailableFirst {
+            get {
+                return YearsAvailable.ElementAt(0);
+            }
+        }
+        //End of main variables
 
         private Test model;
+        ObservableCollection<IncomeYearModel> IncomeYear { get; set; }
         public ObservableCollection<BracketModel> Brackets { get; set; }
         public string[] Labels { get; set; }
         public List<int> Population = new List<int>();
@@ -107,75 +202,16 @@ namespace TaxMeApp
             LiveCharts.Charting.For<int>(povertyMapper, SeriesOrientation.Horizontal);
 
             Brackets = new ObservableCollection<BracketModel>();
-            ParseCSV();
+            //IncomeYear = new ObservableCollection<IncomeYearModel>();
+            //IncomeYear.ElementAt(0).year = 2018;
+            //IncomeYear.ElementAt(0).yearData = Brackets.ElementAt(0);
+            year = 2018;
+            ParseCSV("res\\2018Tax.csv");
             Graph();
         }
 
-        public double MinIncome
+        public void ParseCSV(string path)
         {
-            get { return model.MinIncome; }
-            set
-            {
-
-                if (model.MinIncome != value)
-                {
-                    model.MinIncome = value;
-                    OnPropertyChange("MinIncome");
-                    OnPropertyChange("DeltaIncome");
-                }
-
-
-            }
-        }
-
-        public double MaxIncome
-        {
-            get { return model.MaxIncome; }
-            set
-            {
-
-                if (model.MaxIncome != value)
-                {
-                    model.MaxIncome = value;
-                    OnPropertyChange("MaxIncome");
-                    OnPropertyChange("DeltaIncome");
-                }
-
-            }
-        }
-
-        public double DeltaIncome
-        {
-            get { return model.MaxIncome - model.MinIncome; }
-        }
-
-        public int PovertyLineIndex
-        {
-            get { return 3; }
-        }
-
-        public int NumUnderPoverty
-        {
-            get { 
-                //int total = 0;
-                //for(int i = 0; i<=PovertyLineIndex; i++)
-                //{
-                //    total += Brackets[i].NumReturns;
-                //}
-                //return total;
-                return povertyPop;
-            }
-        }
-        public int NumMax {
-            get {
-                return maxPop;
-            }
-        }
-
-        public void ParseCSV()
-        {
-            string path = "res\\2018Tax.csv";
-     
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
@@ -189,11 +225,8 @@ namespace TaxMeApp
             {
                 if(i == 11)
                 {
-                    //int value = bracket.NumReturns / 2;
                     Population.Add((bracket.NumReturns * 6)/10);
                     Population.Add((bracket.NumReturns * 4)/10);
-                    //Population.Add(value);
-
                 }
                 else
                 {
@@ -203,30 +236,54 @@ namespace TaxMeApp
                 i++;
             }
         }
-
         public void Graph()
         {
             ColorGraph(); //Find max brackets
-            sTaxGen();
+            sTaxGen(); //Get Slant Tax Values
 
-            SolidColorBrush lineFillBrush = new SolidColorBrush();
-            lineFillBrush.Color = Colors.Gold;
-            lineFillBrush.Opacity = 0.2;
+            SolidColorBrush slantTaxFillBrush = new SolidColorBrush();
+            slantTaxFillBrush.Color = Colors.Gold;
+            slantTaxFillBrush.Opacity = 0.2;
+
+            SolidColorBrush transparentBrush = new SolidColorBrush();
+            transparentBrush.Opacity = 0.0;
+            transparentBrush.Color = Colors.White;
 
             SeriesCollection = new SeriesCollection
             {
                 new ColumnSeries
                 {
-                    Title = "2018",
+                    Title = year.ToString(),
                     Values = new ChartValues<int>(Population)
                 },
 
                 new LineSeries()
                 {
+                    Title = "Old Tax Revenue By Bracket",
+                    Values = new ChartValues<double>(revenueByBracketValsOld),
+                    Stroke = Brushes.DarkGreen,
+                    Fill = transparentBrush
+                },
+                new LineSeries()
+                {
+                    Title = "New Tax Revenue By Bracket",
+                    Values = new ChartValues<double>(revenueByBracketValsNew),
+                    Stroke = Brushes.LightGreen,
+                    Fill = transparentBrush
+                },
+                new LineSeries()
+                {
+                    Title = "Old Tax Rates",
+                    Values = new ChartValues<double>(originalTaxVals),
+                    Stroke = Brushes.DarkGoldenrod,
+                    Fill = transparentBrush
+                },
+                new LineSeries()
+                {
                     Title = "Slant Tax",
                     Values = new ChartValues<double>(sTaxVals),
                     Stroke = Brushes.Yellow,
-                    Fill = lineFillBrush
+                    Fill = slantTaxFillBrush
                 }
             };
 
@@ -258,6 +315,10 @@ namespace TaxMeApp
 
         private void sTaxGen()
         {
+            double hConst;
+            double revConst;
+            hConst = 8.0; //One graphing solution, just exagerate the height by fixed amount
+            revConst = 20000; //Adjust revenue by a constant factor so that it looks nice on the graph
             totalRevenueOld = 0;
             totalRevenueNew = 0;
             for (int i = 0; i < Brackets.Count; i++) {
@@ -265,6 +326,7 @@ namespace TaxMeApp
                     Brackets.ElementAt(i).TaxableIncome*1000,
                     Brackets.ElementAt(i).TaxableIncome*1000 * (Brackets.ElementAt(i).PercentOfTaxableIncomePaid/ 100));
                 totalRevenueOld += (Brackets.ElementAt(i).TaxableIncome*1000 * (Brackets.ElementAt(i).PercentOfTaxableIncomePaid/100));
+                revenueByBracketValsOld.Add(Brackets.ElementAt(i).TaxableIncome * 1000 * (Brackets.ElementAt(i).PercentOfTaxableIncomePaid / 100) / (revConst));
             }
             double maxTotal = 0.0;
             maxRate = 0.0;
@@ -277,18 +339,15 @@ namespace TaxMeApp
                     maxY = Brackets.ElementAt(i).NumReturns;
                 }
             }
-
-            //maxRate = (totalRevenueOld * maxRatio) / maxTotal;
-            maxRate = 0.17;
-            double hConst;
-            hConst = 3.0; //One graphing solution, just exagerate the height by fixed amount
+            for (int i = 0; i < Brackets.Count; i++) {
+                originalTaxVals.Add(Brackets.ElementAt(i).PercentOfTaxableIncomePaid / 100 * maxY * hConst);
+            }
+            maxRate = 0.20; //Start at 20% to save time
             while (totalRevenueNew - totalRevenueOld < 0)
-            //while(totalRevenueNew - (1932 * Math.Pow(10, 9)) < 0)
             {
-                maxRate += 0.0001;
-                //hConst = 0.9 / maxRate; //One solution to graphing, make graph always look the same no matter the rate
-                //maxRate = 0.9;
+                maxRate += 0.00001;
                 sTaxVals.Clear();
+                revenueByBracketValsNew.Clear();
                 changeAmt = maxRate / (Brackets.Count - povertyBrackets - (Brackets.Count - maxBrackets) + 1);
                 double currentRate = maxRate;
                 totalRevenueNew = 0;
@@ -296,28 +355,26 @@ namespace TaxMeApp
                 {
                     if (i > maxBrackets)
                     {
-                        //sTaxVals.Add((currentRate*Brackets.ElementAt(i-1).NumReturns));
                         sTaxVals.Add(currentRate * maxY * hConst);
                         totalRevenueNew += (Brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
+                        revenueByBracketValsNew.Add(Brackets.ElementAt(i).TaxableIncome * 1000 * currentRate / (revConst));
                     }
                     else if (i <= maxBrackets && i > povertyBrackets)
                     {
                         currentRate -= changeAmt;
                         sTaxVals.Add(currentRate * maxY * hConst);
-                        //sTaxVals.Add((currentRate * Brackets.ElementAt(i-1).NumReturns));
                         totalRevenueNew += (Brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
+                        revenueByBracketValsNew.Add(Brackets.ElementAt(i).TaxableIncome * 1000 * currentRate / (revConst));
                     }
                     else
                     {
                         currentRate = 0;
                         sTaxVals.Add(0.0);
+                        revenueByBracketValsNew.Add(0.0);
                     }
-                    Console.WriteLine("Bracket {0}\nTaxable Income = {1}, current rate = {2}, revenue = {3}", i,
-                        Brackets.ElementAt(i).TaxableIncome*1000,
-                        currentRate,
-                        Brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
                 }
                 sTaxVals.Reverse();
+                revenueByBracketValsNew.Reverse();
             }
         }
 
@@ -352,10 +409,6 @@ namespace TaxMeApp
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
-        }
-
-        public double nPR{
-            get { return newPolicyRate; }
         }
     }
 }
