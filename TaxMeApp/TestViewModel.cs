@@ -41,11 +41,18 @@ namespace TaxMeApp
         //Old Revenue
         public string tRO {
             get{ return totalRevenueOld.ToString("#,##0"); }
+            set {
+                OnPropertyChange("tRO");
+            }
         }
         //New Revenue
         public string tRN
         {
             get { return totalRevenueNew.ToString("#,##0"); }
+            set
+            {
+                OnPropertyChange("tRN");
+            }
         }
         //Difference
         public string rDiff {
@@ -62,12 +69,24 @@ namespace TaxMeApp
                 }
                 return ans;
             }
+            set
+            {
+                OnPropertyChange("rDiff");
+            }
         }
         //Pop under poverty (rounded to nearest bracket)
         public string numPovertyPop {
             get 
             {
                 return povertyPop.ToString("#,##0");
+            }
+            set {
+                povertyPop = 0;
+                for (int i = 0; i < povertyBrackets + 1; i++)
+                {
+                    povertyPop += Population[i];
+                }
+                OnPropertyChange("numPovertyPop");
             }
         }
         //Max rate population
@@ -77,10 +96,25 @@ namespace TaxMeApp
             {
                 return maxPop.ToString("#,##0");
             }
+            set
+            {
+                int j = Population.Count - 1;
+                maxPop = 0;
+                while (maxPop < povertyPop)
+                {
+                    maxPop += Population[j];
+                    j--;
+                }
+                OnPropertyChange("numMaxPop");
+            }
         }
         //Max rate with slant tax
         public string mRate {
             get { return "~" + Math.Round((maxRate * 100), 3) + "%"; }
+            set
+            {
+                OnPropertyChange("mRate");
+            }
         }
         //Used by min income text box
         public double MinIncome
@@ -187,6 +221,12 @@ namespace TaxMeApp
             sTaxVals.Clear();
             revenueByBracketValsOld.Clear();
             revenueByBracketValsNew.Clear();
+            numPovertyPop = "0";
+            numMaxPop = "0";
+            tRO = "0";
+            tRN = "0";
+            rDiff = "0";
+            mRate = "0";
         }
 
         public ObservableCollection<IncomeYearModel> IncomeYears
