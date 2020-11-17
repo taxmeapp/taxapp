@@ -174,7 +174,9 @@ namespace TaxMeApp
                     Console.WriteLine("year changed from " + CurrentYear.year + " to " + value.year.ToString());
                     CurrentYear = value;
                     ParseCSV();
+                    Graph();
                     OnPropertyChange("SelectedYear");
+                    OnPropertyChange("Population");
                 }
             }
         }
@@ -191,13 +193,36 @@ namespace TaxMeApp
                 }
             }
         }
+
+        public ObservableCollection<int> Population
+        {
+            get
+            {
+                ObservableCollection<int> pop = new ObservableCollection<int>();
+                int i = 0;
+                foreach (BracketModel bracket in CurrentYear.brackets)
+                {
+                    if (i == 11)
+                    {
+                        pop.Add((bracket.NumReturns * 6) / 10);
+                        pop.Add((bracket.NumReturns * 4) / 10);
+                    }
+                    else
+                    {
+                        pop.Add(bracket.NumReturns);
+                    }
+
+                    i++;
+                }
+                return pop;
+            }
+        }
         //End of main variables
 
         private Test model;
         ObservableCollection<IncomeYearModel> IncomeYear { get; set; }
         public ObservableCollection<BracketModel> Brackets { get; set; }
         public string[] Labels { get; set; }
-        public List<int> Population = new List<int>();
         public SeriesCollection SeriesCollection { get; set; }
 
         public TestViewModel()
@@ -229,7 +254,7 @@ namespace TaxMeApp
 
                 });
             LiveCharts.Charting.For<int>(povertyMapper, SeriesOrientation.Horizontal);
-            this.CurrentYear = new IncomeYearModel { 
+            CurrentYear = new IncomeYearModel { 
                 year = 2018
             };
             GetYears();
@@ -249,23 +274,7 @@ namespace TaxMeApp
             {
                 reader.ReadLine();
                 var brackets = csv.GetRecords<BracketModel>();
-                Brackets = new ObservableCollection<BracketModel>(brackets);
-            }
-
-            int i = 0;
-            foreach (BracketModel bracket in Brackets)
-            {
-                if(i == 11)
-                {
-                    Population.Add((bracket.NumReturns * 6)/10);
-                    Population.Add((bracket.NumReturns * 4)/10);
-                }
-                else
-                {
-                    Population.Add(bracket.NumReturns);
-                }
-                
-                i++;
+                CurrentYear.brackets = new ObservableCollection<BracketModel>(brackets);
             }
         }
         public void Graph()
@@ -353,26 +362,27 @@ namespace TaxMeApp
             revConst = 20000; //Adjust revenue by a constant factor so that it looks nice on the graph
             totalRevenueOld = 0;
             totalRevenueNew = 0;
-            for (int i = 0; i < Brackets.Count; i++) {
+            Console.WriteLine(CurrentYear.year.ToString());
+            for (int i = 0; i < CurrentYear.brackets.Count; i++) {
                 Console.WriteLine("Bracket {0}\nTaxable Income = {1}, revenue = {2}", i,
-                    Brackets.ElementAt(i).TaxableIncome*1000,
-                    Brackets.ElementAt(i).TaxableIncome*1000 * (Brackets.ElementAt(i).PercentOfTaxableIncomePaid/ 100));
-                totalRevenueOld += (Brackets.ElementAt(i).TaxableIncome*1000 * (Brackets.ElementAt(i).PercentOfTaxableIncomePaid/100));
-                revenueByBracketValsOld.Add(Brackets.ElementAt(i).TaxableIncome * 1000 * (Brackets.ElementAt(i).PercentOfTaxableIncomePaid / 100) / (revConst));
+                    CurrentYear.brackets.ElementAt(i).TaxableIncome*1000,
+                    CurrentYear.brackets.ElementAt(i).TaxableIncome*1000 * (CurrentYear.brackets.ElementAt(i).PercentOfTaxableIncomePaid/ 100));
+                totalRevenueOld += (CurrentYear.brackets.ElementAt(i).TaxableIncome*1000 * (CurrentYear.brackets.ElementAt(i).PercentOfTaxableIncomePaid/100));
+                revenueByBracketValsOld.Add(CurrentYear.brackets.ElementAt(i).TaxableIncome * 1000 * (CurrentYear.brackets.ElementAt(i).PercentOfTaxableIncomePaid / 100) / (revConst));
             }
             double maxTotal = 0.0;
             maxRate = 0.0;
             double maxRatio = 0.9;
             double changeAmt = 0.0;
             double maxY = 0;
-            for (int i = maxBrackets; i < Brackets.Count; i++) {
-                maxTotal += Brackets.ElementAt(i).TaxableIncome*1000;
-                if (Brackets.ElementAt(i).NumReturns > maxY) {
-                    maxY = Brackets.ElementAt(i).NumReturns;
+            for (int i = maxBrackets; i < CurrentYear.brackets.Count; i++) {
+                maxTotal += CurrentYear.brackets.ElementAt(i).TaxableIncome*1000;
+                if (CurrentYear.brackets.ElementAt(i).NumReturns > maxY) {
+                    maxY = CurrentYear.brackets.ElementAt(i).NumReturns;
                 }
             }
-            for (int i = 0; i < Brackets.Count; i++) {
-                originalTaxVals.Add(Brackets.ElementAt(i).PercentOfTaxableIncomePaid / 100 * maxY * hConst);
+            for (int i = 0; i < CurrentYear.brackets.Count; i++) {
+                originalTaxVals.Add(CurrentYear.brackets.ElementAt(i).PercentOfTaxableIncomePaid / 100 * maxY * hConst);
             }
             maxRate = 0.20; //Start at 20% to save time
             while (totalRevenueNew - totalRevenueOld < 0)
@@ -380,23 +390,23 @@ namespace TaxMeApp
                 maxRate += 0.00001;
                 sTaxVals.Clear();
                 revenueByBracketValsNew.Clear();
-                changeAmt = maxRate / (Brackets.Count - povertyBrackets - (Brackets.Count - maxBrackets) + 1);
+                changeAmt = maxRate / (CurrentYear.brackets.Count - povertyBrackets - (CurrentYear.brackets.Count - maxBrackets) + 1);
                 double currentRate = maxRate;
                 totalRevenueNew = 0;
-                for (int i = Brackets.Count - 1; i >= 0; i--)
+                for (int i = CurrentYear.brackets.Count - 1; i >= 0; i--)
                 {
                     if (i > maxBrackets)
                     {
                         sTaxVals.Add(currentRate * maxY * hConst);
-                        totalRevenueNew += (Brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
-                        revenueByBracketValsNew.Add(Brackets.ElementAt(i).TaxableIncome * 1000 * currentRate / (revConst));
+                        totalRevenueNew += (CurrentYear.brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
+                        revenueByBracketValsNew.Add(CurrentYear.brackets.ElementAt(i).TaxableIncome * 1000 * currentRate / (revConst));
                     }
                     else if (i <= maxBrackets && i > povertyBrackets)
                     {
                         currentRate -= changeAmt;
                         sTaxVals.Add(currentRate * maxY * hConst);
-                        totalRevenueNew += (Brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
-                        revenueByBracketValsNew.Add(Brackets.ElementAt(i).TaxableIncome * 1000 * currentRate / (revConst));
+                        totalRevenueNew += (CurrentYear.brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
+                        revenueByBracketValsNew.Add(CurrentYear.brackets.ElementAt(i).TaxableIncome * 1000 * currentRate / (revConst));
                     }
                     else
                     {
@@ -450,6 +460,7 @@ namespace TaxMeApp
                     });
                 }
             }
+            _years = new ObservableCollection<IncomeYearModel>(_years.Reverse());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

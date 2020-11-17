@@ -29,9 +29,9 @@
                 <TextBlock Text="Year"
                        Margin="5, 5, 5, 15"/>
                 <ComboBox x:Name="YearInput"
-                     ItemsSource="{Binding Path = IncomeYears}"
-                     SelectedIndex="0"
-                     SelectedItem="{Binding Path=SelectedYear}"
+                     ItemsSource="{Binding Path = IncomeYears}" 
+                     SelectedItem="{Binding Path=SelectedYear, Mode=TwoWay}"
+                     IsSynchronizedWithCurrentItem="True"
                      DisplayMemberPath="year"
                      Margin="5, 5, 5, 15"
                      Width="175"/> 
