@@ -149,8 +149,8 @@ namespace TaxMeApp
                 for (int i = 0; i < files.Length; i++) {
                     curString = files[i];
                     curString = curString.Substring(4); //get rid of res/
-                    extInd = curString.IndexOf("T");
-                    curString = curString.Substring(0, extInd); //get rid of Tax.csv
+                    extInd = curString.IndexOf(".");
+                    curString = curString.Substring(0, extInd); //get rid of .csv
                     ans.Add(curString);
                 }
 
@@ -205,8 +205,8 @@ namespace TaxMeApp
             //IncomeYear = new ObservableCollection<IncomeYearModel>();
             //IncomeYear.ElementAt(0).year = 2018;
             //IncomeYear.ElementAt(0).yearData = Brackets.ElementAt(0);
-            year = 2018;
-            ParseCSV("res\\2018Tax.csv");
+            // year = 2018;
+            ParseCSV("res\\2010.csv");
             Graph();
         }
 
