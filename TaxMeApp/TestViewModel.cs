@@ -32,6 +32,10 @@ namespace TaxMeApp
         public List<double> revenueByBracketValsNew = new List<double>();
         private ObservableCollection<IncomeYearModel> _years;
         private IncomeYearModel CurrentYear;
+        private ObservableCollection<TaxPolicyModel> _taxPlans;
+        private TaxPolicyModel currentTaxPlan;
+        private ObservableCollection<BracketDisplayModel> _brackets;
+        private BracketDisplayModel currentBracket;
         public double totalRevenueOld;
         public double totalRevenueNew;
         public double maxRate = 0.0;
@@ -198,6 +202,32 @@ namespace TaxMeApp
                 return YearsAvailable.ElementAt(0);
             }
         }
+        public TaxPolicyModel SelectedTaxPlan
+        {
+            get { return currentTaxPlan; }
+            set
+            {
+                if (currentTaxPlan != value)
+                {
+                    Console.WriteLine("Tax plan changed from " + currentTaxPlan.name + " to " + value.name);
+                    currentTaxPlan = value;
+                    OnPropertyChange("SelectedTaxPlan");
+                }
+            }
+        }
+        public BracketDisplayModel SelectedBracket
+        {
+            get { return currentBracket; }
+            set
+            {
+                if (currentBracket != value)
+                {
+                    //Console.WriteLine("Tax plan changed from " + currentBracket.label + " to " + value.label);
+                    currentBracket = value;
+                    OnPropertyChange("SelectedBracket");
+                }
+            }
+        }
         public IncomeYearModel SelectedYear
         {
             get { return CurrentYear; }
@@ -227,8 +257,30 @@ namespace TaxMeApp
             tRN = "0";
             rDiff = "0";
             mRate = "0";
+            _brackets = new ObservableCollection<BracketDisplayModel>();
         }
-
+        public ObservableCollection<TaxPolicyModel> TaxPlans
+        {
+            get { return _taxPlans; }
+            set {
+                if (_taxPlans != value) {
+                    _taxPlans = value;
+                    OnPropertyChange("TaxPlans");
+                }
+            }
+        }
+        public ObservableCollection<BracketDisplayModel> GetBrackets
+        {
+            get { return _brackets; }
+            set
+            {
+                if (_brackets != value)
+                {
+                    _brackets = value;
+                    OnPropertyChange("GetBrackets");
+                }
+            }
+        }
         public ObservableCollection<IncomeYearModel> IncomeYears
         {
             get { return _years; }
@@ -279,7 +331,6 @@ namespace TaxMeApp
                 seriesCollection = value;
             } 
         }
-
         public TestViewModel()
         {
             model = new Test
@@ -312,11 +363,13 @@ namespace TaxMeApp
             CurrentYear = new IncomeYearModel { 
                 year = 2018
             };
+            _brackets = new ObservableCollection<BracketDisplayModel>();
             GetYears();
             //IncomeYear = new ObservableCollection<IncomeYearModel>();
             //IncomeYear.ElementAt(0).year = 2018;
             //IncomeYear.ElementAt(0).yearData = Brackets.ElementAt(0);
             // year = 2018;
+            GetTaxPlans();
             ParseCSV();
             Graph();
         }
@@ -412,6 +465,11 @@ namespace TaxMeApp
                 "$5,000,000 under $10,000,000",
                 "$10,000,000 or more"
             };
+            for (int i = 0; i < Labels.Length-1; i++)
+            {
+                _brackets.Add(new BracketDisplayModel(Labels[i], sTaxVals.ElementAt(i)));
+            }
+            SelectedBracket = _brackets.ElementAt(0);
         }
 
         private void sTaxGen()
@@ -447,6 +505,7 @@ namespace TaxMeApp
             maxRate = 0.20; //Start at 20% to save time
             while (totalRevenueNew - totalRevenueOld < 0)
             {
+                
                 maxRate += 0.00001;
                 sTaxVals.Clear();
                 revenueByBracketValsNew.Clear();
@@ -477,6 +536,7 @@ namespace TaxMeApp
                 }
                 sTaxVals.Reverse();
                 revenueByBracketValsNew.Reverse();
+                _taxPlans.ElementAt(0).vals = new ObservableCollection<double>(sTaxVals);
             }
         }
 
@@ -521,6 +581,16 @@ namespace TaxMeApp
                 }
             }
             _years = new ObservableCollection<IncomeYearModel>(_years.Reverse());
+        }
+
+        public void GetTaxPlans() {
+            _taxPlans = new ObservableCollection<TaxPolicyModel>();
+            _taxPlans.Add(new TaxPolicyModel
+            {
+                name = "Slant Tax",
+                vals = new ObservableCollection<double>()
+            });
+            currentTaxPlan = _taxPlans.ElementAt(0);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TaxMeApp"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             mc:Ignorable="d" d:DesignWidth="800" Height="507">
+             mc:Ignorable="d" d:DesignWidth="800" Height="650">
 
     <UserControl.DataContext>
         <local:TestViewModel/>
@@ -26,6 +26,19 @@
                 <TextBlock Text="Adjustable Variables"
                        FontSize="20"
                        Margin="5, 5, 5, 15"/>
+                <TextBlock Text="Tax Plan"
+                       Margin="5, 5, 5, 5"/>
+                <ComboBox x:Name="TaxPlanInput"
+                     ItemsSource="{Binding Path = TaxPlans, BindingGroupName=name}" 
+                     SelectedItem="{Binding Path=SelectedTaxPlan, Mode=TwoWay}"
+                     IsSynchronizedWithCurrentItem="True"
+                     DisplayMemberPath="name"
+                     Margin="5, 5, 5, 15"
+                     Width="175"/>
+                <StackPanel x:Name="AddPolicy" Orientation="Horizontal" Width="170"  Height="30" Margin="0, -8, 0, 5">
+                    <Button Width="70" FontSize="18" Margin="10, 0">+</Button>
+                    <Button Width="70" FontSize="18" Margin="0, 0">-</Button>
+                </StackPanel>
                 <TextBlock Text="Year"
                        Margin="5, 5, 5, 15"/>
                 <ComboBox x:Name="YearInput"
@@ -34,16 +47,25 @@
                      IsSynchronizedWithCurrentItem="True"
                      DisplayMemberPath="year"
                      Margin="5, 5, 5, 15"
-                     Width="175"/> 
+                     Width="175"/>
+                <TextBlock Text="Selected Bracket"
+                       Margin="5, 0, 5, 5"/>
+                <ComboBox x:Name="BracketInput"
+                     ItemsSource="{Binding Path = GetBrackets}" 
+                     SelectedItem="{Binding Path=SelectedBracket, Mode=TwoWay}"
+                     IsSynchronizedWithCurrentItem="True"
+                     DisplayMemberPath="label"
+                     Margin="5, 5, 5, 15"
+                     Width="175"/>
                 <TextBlock Text="Policy Rate (%)"
-                       Margin="5, 5, 5, 5"/>
+                       Margin="5, -5, 5, 5"/>
                 <Slider x:Name="PolicyRateSlider"
                     Margin="5, 5, 5, 15"
                     Minimum="0"
                     Maximum="100"
                     TickPlacement="TopLeft"
                     TickFrequency="5"
-                    IsSnapToTickEnabled="True"
+                    IsSnapToTickEnabled="False"
                     Width="175"/>
                 <TextBlock Text="Minimum Income ($)"
                        Margin="5, 5, 5, 5"/>

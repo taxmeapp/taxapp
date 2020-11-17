@@ -88,6 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="models\BracketDisplayModel.cs" />
     <Compile Include="models\BracketModel.cs" />
     <Compile Include="models\IncomeYearModel.cs" />
     <Compile Include="models\TaxPolicyModel.cs" />
