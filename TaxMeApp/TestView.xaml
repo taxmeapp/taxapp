@@ -29,10 +29,12 @@
                 <TextBlock Text="Year"
                        Margin="5, 5, 5, 15"/>
                 <ComboBox x:Name="YearInput"
-                     ItemsSource="{Binding Path = YearsAvailable}"
-                     SelectedItem="{Binding Path = YearsAvailableFirst, Mode=OneWay}"
+                     ItemsSource="{Binding Path = IncomeYears}"
+                     SelectedIndex="0"
+                     SelectedItem="{Binding Path=SelectedYear}"
+                     DisplayMemberPath="year"
                      Margin="5, 5, 5, 15"
-                     Width="175"/>
+                     Width="175"/> 
                 <TextBlock Text="Policy Rate (%)"
                        Margin="5, 5, 5, 5"/>
                 <Slider x:Name="PolicyRateSlider"
@@ -68,7 +70,9 @@
             <Grid DockPanel.Dock="Top"
                   Height="300">
                 <lvc:CartesianChart Series="{Binding SeriesCollection}" 
-                                    Zoom="X" Loaded="CartesianChart_Loaded">
+                                    Zoom="X" 
+                                    Loaded="CartesianChart_Loaded" 
+                                    LegendLocation="Right">
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Labels="{Binding Labels}" 
                                   LabelsRotation="35">

@@ -1,6 +1,6 @@
 Bracket (LowerBound to UpperBound),,-6,-8,-11,-14,-18,-19,-20
 LowerBound,UpperBound,NumReturns,GrossIncome,TaxableIncome,IncomeTax,PercentOfTaxableIncomePaid,PercentOfGrossIncomePaid,AverageTotalIncomeTax
-0,0,6231,-10474747,0,176629,[1],[1],28478
+0,0,6231,-10474747,0,176629,0,0,28478
 1,4999,259679,810746,378113,37423,9.90,4.60,144
 5000,9999,1826829,14157630,3514192,363828,10.40,2.60,199
 10000,14999,4682558,59495352,16090737,1513971,9.40,2.50,323

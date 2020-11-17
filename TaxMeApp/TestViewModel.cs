@@ -30,6 +30,8 @@ namespace TaxMeApp
         public List<double> originalTaxVals = new List<double>();
         public List<double> revenueByBracketValsOld = new List<double>();
         public List<double> revenueByBracketValsNew = new List<double>();
+        private ObservableCollection<IncomeYearModel> _years;
+        private IncomeYearModel CurrentYear;
         public double totalRevenueOld;
         public double totalRevenueNew;
         public double maxRate = 0.0;
@@ -149,8 +151,8 @@ namespace TaxMeApp
                 for (int i = 0; i < files.Length; i++) {
                     curString = files[i];
                     curString = curString.Substring(4); //get rid of res/
-                    extInd = curString.IndexOf(".");
-                    curString = curString.Substring(0, extInd); //get rid of .csv
+                    extInd = curString.IndexOf("T");
+                    curString = curString.Substring(0, extInd); //get rid of Tax.csv
                     ans.Add(curString);
                 }
 
@@ -160,6 +162,33 @@ namespace TaxMeApp
         public string YearsAvailableFirst {
             get {
                 return YearsAvailable.ElementAt(0);
+            }
+        }
+        public IncomeYearModel SelectedYear
+        {
+            get { return CurrentYear; }
+            set
+            {
+                if(CurrentYear != value)
+                {
+                    Console.WriteLine("year changed from " + CurrentYear.year + " to " + value.year.ToString());
+                    CurrentYear = value;
+                    ParseCSV();
+                    OnPropertyChange("SelectedYear");
+                }
+            }
+        }
+
+        public ObservableCollection<IncomeYearModel> IncomeYears
+        {
+            get { return _years; }
+            set
+            {
+                if(_years != value)
+                {
+                    _years = value;
+                    OnPropertyChange("IncomeYears");
+                }
             }
         }
         //End of main variables
@@ -178,7 +207,7 @@ namespace TaxMeApp
                 MinIncome = 16000,
                 MaxIncome = 400000
             };
-
+            _years = new ObservableCollection<IncomeYearModel>();
             //Brackets including and under poverty line will be one color, normal brackets will be another, 
             //and max will be another color
             Brush povertyColor = Brushes.Red;
@@ -200,18 +229,21 @@ namespace TaxMeApp
 
                 });
             LiveCharts.Charting.For<int>(povertyMapper, SeriesOrientation.Horizontal);
-
-            Brackets = new ObservableCollection<BracketModel>();
+            this.CurrentYear = new IncomeYearModel { 
+                year = 2018
+            };
+            GetYears();
             //IncomeYear = new ObservableCollection<IncomeYearModel>();
             //IncomeYear.ElementAt(0).year = 2018;
             //IncomeYear.ElementAt(0).yearData = Brackets.ElementAt(0);
             // year = 2018;
-            ParseCSV("res\\2010.csv");
+            ParseCSV();
             Graph();
         }
 
-        public void ParseCSV(string path)
+        public void ParseCSV()
         {
+            string path = ("res\\" + CurrentYear.year + ".csv");
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
@@ -253,7 +285,7 @@ namespace TaxMeApp
             {
                 new ColumnSeries
                 {
-                    Title = year.ToString(),
+                    Title = CurrentYear.year.ToString() + " Income",
                     Values = new ChartValues<int>(Population)
                 },
 
@@ -399,6 +431,25 @@ namespace TaxMeApp
                 j--;
             }
             maxBrackets = j;
+        }
+
+        public void GetYears()
+        {
+            string[] files = Directory.GetFiles("res\\");
+            foreach(String file in files)
+            {
+                using (var reader = new StreamReader(file))
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    reader.ReadLine();
+                    var brackets = csv.GetRecords<BracketModel>();
+                    _years.Add(new IncomeYearModel
+                    {
+                        year = int.Parse(file.Substring(4, 4)),
+                        brackets = new ObservableCollection<BracketModel>(brackets)
+                    });
+                }
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
