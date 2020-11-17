@@ -35,6 +35,7 @@ namespace TaxMeApp
         public double totalRevenueOld;
         public double totalRevenueNew;
         public double maxRate = 0.0;
+        public SeriesCollection seriesCollection = new SeriesCollection();
         public int year { get; set; }
         //Variables used by GUI
         //Old Revenue
@@ -94,7 +95,6 @@ namespace TaxMeApp
                     OnPropertyChange("MinIncome");
                     OnPropertyChange("DeltaIncome");
                 }
-
 
             }
         }
@@ -169,16 +169,24 @@ namespace TaxMeApp
             get { return CurrentYear; }
             set
             {
-                if(CurrentYear != value)
+                if(CurrentYear.year != value.year)
                 {
                     Console.WriteLine("year changed from " + CurrentYear.year + " to " + value.year.ToString());
                     CurrentYear = value;
                     ParseCSV();
+                    clearGraph();
                     Graph();
                     OnPropertyChange("SelectedYear");
                     OnPropertyChange("Population");
                 }
             }
+        }
+        public void clearGraph() {
+            seriesCollection.Clear();
+            originalTaxVals.Clear();
+            sTaxVals.Clear();
+            revenueByBracketValsOld.Clear();
+            revenueByBracketValsNew.Clear();
         }
 
         public ObservableCollection<IncomeYearModel> IncomeYears
@@ -223,7 +231,14 @@ namespace TaxMeApp
         ObservableCollection<IncomeYearModel> IncomeYear { get; set; }
         public ObservableCollection<BracketModel> Brackets { get; set; }
         public string[] Labels { get; set; }
-        public SeriesCollection SeriesCollection { get; set; }
+        public SeriesCollection SeriesCollection { 
+            get {
+                return seriesCollection;        
+            } 
+            set {
+                seriesCollection = value;
+            } 
+        }
 
         public TestViewModel()
         {
@@ -289,45 +304,50 @@ namespace TaxMeApp
             SolidColorBrush transparentBrush = new SolidColorBrush();
             transparentBrush.Opacity = 0.0;
             transparentBrush.Color = Colors.White;
-
-            SeriesCollection = new SeriesCollection
-            {
+            seriesCollection.Add(
                 new ColumnSeries
                 {
                     Title = CurrentYear.year.ToString() + " Income",
                     Values = new ChartValues<int>(Population)
-                },
-
+                }
+            );
+            seriesCollection.Add(
                 new LineSeries()
                 {
                     Title = "Old Tax Revenue By Bracket",
                     Values = new ChartValues<double>(revenueByBracketValsOld),
                     Stroke = Brushes.DarkGreen,
                     Fill = transparentBrush
-                },
+                }
+            );
+            seriesCollection.Add(
                 new LineSeries()
                 {
                     Title = "New Tax Revenue By Bracket",
                     Values = new ChartValues<double>(revenueByBracketValsNew),
                     Stroke = Brushes.LightGreen,
                     Fill = transparentBrush
-                },
+                }
+            );
+            seriesCollection.Add(
                 new LineSeries()
                 {
                     Title = "Old Tax Rates",
                     Values = new ChartValues<double>(originalTaxVals),
                     Stroke = Brushes.DarkGoldenrod,
                     Fill = transparentBrush
-                },
-                new LineSeries()
-                {
-                    Title = "Slant Tax",
-                    Values = new ChartValues<double>(sTaxVals),
-                    Stroke = Brushes.Yellow,
-                    Fill = slantTaxFillBrush
                 }
-            };
 
+            );
+            seriesCollection.Add(
+                 new LineSeries()
+                 {
+                     Title = "Slant Tax",
+                     Values = new ChartValues<double>(sTaxVals),
+                     Stroke = Brushes.Yellow,
+                     Fill = slantTaxFillBrush
+                 }
+            );
 
             Labels = new[]
             {
@@ -364,9 +384,9 @@ namespace TaxMeApp
             totalRevenueNew = 0;
             Console.WriteLine(CurrentYear.year.ToString());
             for (int i = 0; i < CurrentYear.brackets.Count; i++) {
-                Console.WriteLine("Bracket {0}\nTaxable Income = {1}, revenue = {2}", i,
-                    CurrentYear.brackets.ElementAt(i).TaxableIncome*1000,
-                    CurrentYear.brackets.ElementAt(i).TaxableIncome*1000 * (CurrentYear.brackets.ElementAt(i).PercentOfTaxableIncomePaid/ 100));
+                //Console.WriteLine("Bracket {0}\nTaxable Income = {1}, revenue = {2}", i,
+                //    CurrentYear.brackets.ElementAt(i).TaxableIncome*1000,
+                //    CurrentYear.brackets.ElementAt(i).TaxableIncome*1000 * (CurrentYear.brackets.ElementAt(i).PercentOfTaxableIncomePaid/ 100));
                 totalRevenueOld += (CurrentYear.brackets.ElementAt(i).TaxableIncome*1000 * (CurrentYear.brackets.ElementAt(i).PercentOfTaxableIncomePaid/100));
                 revenueByBracketValsOld.Add(CurrentYear.brackets.ElementAt(i).TaxableIncome * 1000 * (CurrentYear.brackets.ElementAt(i).PercentOfTaxableIncomePaid / 100) / (revConst));
             }
