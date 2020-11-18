@@ -220,6 +220,7 @@ namespace TaxMeApp
         }
         public void updateGraph(int ind, double rate) {
             List<double> ans = new List<double>();
+            List<double> ans2 = new List<double>();
             Console.WriteLine("Changing Bracket {0} to {1}%", ind, rate);
 
             double hConst = .03;
@@ -232,17 +233,27 @@ namespace TaxMeApp
                 }
             }
 
+            
             for (int i = 0; i < sTaxVals.Count; i++) {
                 if (i != ind)
                 {
                     ans.Add(sTaxVals.ElementAt(i));
+                    ans2.Add(sTaxRates.ElementAt(i));
                 }
                 else {
                     ans.Add(curRate * maxY * hConst);
+                    ans2.Add(curRate/100);
                 }
             }
 
             sTaxVals = ans;
+            sTaxRates = ans2;
+            totalRevenueNew = 0;
+            for (int i = 0; i < CurrentYear.brackets.Count; i++) {
+                totalRevenueNew += CurrentYear.brackets.ElementAt(i).TaxableIncome * 1000 * sTaxRates.ElementAt(i);
+            }
+            OnPropertyChange("tRN");
+            OnPropertyChange("rDiff");
 
             SolidColorBrush slantTaxFillBrush = new SolidColorBrush();
             slantTaxFillBrush.Color = Colors.Gold;
@@ -361,6 +372,8 @@ namespace TaxMeApp
                     Console.WriteLine("Selected Bracket: {0} Slant tax rate is {1}", currentBracket.label, printRate);
                     OnPropertyChange("SelectedBracket");
                 }
+                curRate = currentBracket.taxRate.ElementAt(0)*100;
+                OnPropertyChange("CurrentRate");
             }
         }
         public IncomeYearModel SelectedYear
