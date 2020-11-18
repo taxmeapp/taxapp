@@ -71,7 +71,7 @@ namespace TaxMeApp
                     ans = "+" + ans + " Surplus";
                 }
                 else {
-                    ans = "-" + ans + " Deficit";
+                    ans = ans + " Deficit";
                 }
                 return ans;
             }
@@ -156,6 +156,7 @@ namespace TaxMeApp
         }
         public double CurrentRate {
             get {
+                //curRate = sTaxRates.ElementAt(currentBracket.index) * 100;
                 return curRate;
             }
             set {
@@ -223,7 +224,8 @@ namespace TaxMeApp
             List<double> ans2 = new List<double>();
             Console.WriteLine("Changing Bracket {0} to {1}%", ind, rate);
 
-            double hConst = .03;
+            double hConst = 0;
+            hConst = .01 * 8;
             double maxY = 0;
             for (int i = maxBrackets; i < CurrentYear.brackets.Count; i++)
             {
@@ -343,6 +345,7 @@ namespace TaxMeApp
                 rateList.Add(sTaxRates.ElementAt(i));
                 _brackets.Add(new BracketDisplayModel(Labels[i], rateList, i));
             }
+            OnPropertyChange("GetBrackets");
             SelectedBracket = _brackets.ElementAt(ind);
         }
         public TaxPolicyModel SelectedTaxPlan
@@ -394,6 +397,16 @@ namespace TaxMeApp
                     tRN = "0";
                     rDiff = "0";
                     mRate = "0";
+                    SelectedBracket = _brackets.ElementAt(0);
+                    Console.WriteLine("New Tax Rate:\n");
+                    for (int i = 0; i < _brackets.Count; i++) {
+                        Console.WriteLine("Bracket {0}, Rate {1}", _brackets.ElementAt(i).label, _brackets.ElementAt(i).taxRate.ElementAt(0));
+                        List<double> ans = new List<double>();
+                        ans.Add(_brackets.ElementAt(i).taxRate.ElementAt(0));
+                        currentBracket.taxRate = ans;
+                    }
+                    OnPropertyChange("GetBrackets");
+                    OnPropertyChange("SelectedBracket");
                     OnPropertyChange("SelectedYear");
                     OnPropertyChange("Population");
                 }

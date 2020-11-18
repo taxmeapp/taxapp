@@ -59,6 +59,11 @@
                      Width="175"/>
                 <TextBlock Text="Policy Rate (%)"
                        Margin="5, -5, 5, 5"/>
+                <TextBox Text="{Binding Path =CurrentRate}"
+                     Margin="0, 0, 0, 4"
+                     Height="25"
+                     Width="175"
+                     FontSize="16"/>
                 <Slider x:Name="PolicyRateSlider"
                     Value="{Binding Path=CurrentRate, Mode=TwoWay}"
                     Margin="5, 5, 5, 15"
