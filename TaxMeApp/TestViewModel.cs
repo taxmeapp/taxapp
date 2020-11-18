@@ -27,6 +27,7 @@ namespace TaxMeApp
         public static int povertyPop = 0; //Calculated, currently rounded to nearest bracket
         public static int maxPop = 0; //Calculated, population of maxBrackets
         public List<double> sTaxVals = new List<double>();
+        public List<double> sTaxRates = new List<double>();
         public List<double> originalTaxVals = new List<double>();
         public List<double> revenueByBracketValsOld = new List<double>();
         public List<double> revenueByBracketValsNew = new List<double>();
@@ -34,11 +35,12 @@ namespace TaxMeApp
         private IncomeYearModel CurrentYear;
         private ObservableCollection<TaxPolicyModel> _taxPlans;
         private TaxPolicyModel currentTaxPlan;
-        private ObservableCollection<BracketDisplayModel> _brackets;
+        private ObservableCollection<BracketDisplayModel> _brackets = new ObservableCollection<BracketDisplayModel>();
         private BracketDisplayModel currentBracket;
         public double totalRevenueOld;
         public double totalRevenueNew;
         public double maxRate = 0.0;
+        public double curRate = 0.0;
         public SeriesCollection seriesCollection = new SeriesCollection();
         public int year { get; set; }
         //Variables used by GUI
@@ -152,6 +154,20 @@ namespace TaxMeApp
 
             }
         }
+        public double CurrentRate {
+            get {
+                return curRate;
+            }
+            set {
+                if (curRate != value) {
+                    curRate = value;
+                    OnPropertyChange("CurrentRate");
+                    updateGraph(currentBracket.index, curRate);
+                }
+                Console.WriteLine("Current Slider Rate = {0}, Bracket Index = {1}", curRate, currentBracket.index);
+            }
+        }
+
         //Used by GUI
         public double DeltaIncome
         {
@@ -202,6 +218,122 @@ namespace TaxMeApp
                 return YearsAvailable.ElementAt(0);
             }
         }
+        public void updateGraph(int ind, double rate) {
+            List<double> ans = new List<double>();
+            Console.WriteLine("Changing Bracket {0} to {1}%", ind, rate);
+
+            double hConst = .03;
+            double maxY = 0;
+            for (int i = maxBrackets; i < CurrentYear.brackets.Count; i++)
+            {
+                if (CurrentYear.brackets.ElementAt(i).NumReturns > maxY)
+                {
+                    maxY = CurrentYear.brackets.ElementAt(i).NumReturns;
+                }
+            }
+
+            for (int i = 0; i < sTaxVals.Count; i++) {
+                if (i != ind)
+                {
+                    ans.Add(sTaxVals.ElementAt(i));
+                }
+                else {
+                    ans.Add(curRate * maxY * hConst);
+                }
+            }
+
+            sTaxVals = ans;
+
+            SolidColorBrush slantTaxFillBrush = new SolidColorBrush();
+            slantTaxFillBrush.Color = Colors.Gold;
+            slantTaxFillBrush.Opacity = 0.2;
+
+            SolidColorBrush transparentBrush = new SolidColorBrush();
+            transparentBrush.Opacity = 0.0;
+            transparentBrush.Color = Colors.White;
+
+            seriesCollection.Clear();
+
+            seriesCollection.Add(
+                new ColumnSeries
+                {
+                    Title = CurrentYear.year.ToString() + " Income",
+                    Values = new ChartValues<int>(Population)
+                }
+            );
+            seriesCollection.Add(
+                new LineSeries()
+                {
+                    Title = "Old Tax Revenue By Bracket",
+                    Values = new ChartValues<double>(revenueByBracketValsOld),
+                    Stroke = Brushes.DarkGreen,
+                    Fill = transparentBrush
+                }
+            );
+            seriesCollection.Add(
+                new LineSeries()
+                {
+                    Title = "New Tax Revenue By Bracket",
+                    Values = new ChartValues<double>(revenueByBracketValsNew),
+                    Stroke = Brushes.LightGreen,
+                    Fill = transparentBrush
+                }
+            );
+            seriesCollection.Add(
+                new LineSeries()
+                {
+                    Title = "Old Tax Rates",
+                    Values = new ChartValues<double>(originalTaxVals),
+                    Stroke = Brushes.DarkGoldenrod,
+                    Fill = transparentBrush
+                }
+
+            );
+            seriesCollection.Add(
+                 new LineSeries()
+                 {
+                     Title = "Slant Tax",
+                     Values = new ChartValues<double>(ans),
+                     Stroke = Brushes.Yellow,
+                     Fill = slantTaxFillBrush
+                 }
+            );
+
+            Labels = new[]
+            {
+                "$0",
+                "$1 under $5,000",
+                "$5,000 under $10,000",
+                "$10,000 under $15,000",
+                "$15,000 under $20,000",
+                "$20,000 under $25,000",
+                "$25,000 under $30,000",
+                "$30,000 under $40,000",
+                "$40,000 under $50,000",
+                "$50,000 under $75,000",
+                "$75,000 under $100,000",
+                "$100,000 under $150,000",
+                "$150,000 under $200,000",
+                "$200,000 under $500,000",
+                "$500,000 under $1,000,000",
+                "$1,000,000 under $1,500,000",
+                "$1,500,000 under $2,000,000",
+                "$2,000,000 under $5,000,000",
+                "$5,000,000 under $10,000,000",
+                "$10,000,000 or more"
+            };
+            if (_brackets.Count > 0)
+            {
+                _brackets.Clear();
+            }
+            for (int i = 0; i < Labels.Length - 1; i++)
+            {
+                List<double> rateList = new List<double>();
+                rateList.Add(sTaxRates.ElementAt(i));
+                _brackets.Add(new BracketDisplayModel(Labels[i], rateList, i));
+            }
+            SelectedBracket = _brackets.ElementAt(ind);
+        }
         public TaxPolicyModel SelectedTaxPlan
         {
             get { return currentTaxPlan; }
@@ -220,10 +352,13 @@ namespace TaxMeApp
             get { return currentBracket; }
             set
             {
-                if (currentBracket != value)
+                if (currentBracket != value && value != null)
                 {
                     //Console.WriteLine("Tax plan changed from " + currentBracket.label + " to " + value.label);
                     currentBracket = value;
+                    double cRate = currentBracket.taxRate.ElementAt(0) * 100;
+                    string printRate = "~" + cRate.ToString("##0.###") + "%";
+                    Console.WriteLine("Selected Bracket: {0} Slant tax rate is {1}", currentBracket.label, printRate);
                     OnPropertyChange("SelectedBracket");
                 }
             }
@@ -240,6 +375,12 @@ namespace TaxMeApp
                     ParseCSV();
                     clearGraph();
                     Graph();
+                    numPovertyPop = "0";
+                    numMaxPop = "0";
+                    tRO = "0";
+                    tRN = "0";
+                    rDiff = "0";
+                    mRate = "0";
                     OnPropertyChange("SelectedYear");
                     OnPropertyChange("Population");
                 }
@@ -465,9 +606,14 @@ namespace TaxMeApp
                 "$5,000,000 under $10,000,000",
                 "$10,000,000 or more"
             };
+            if (_brackets.Count > 0) {
+                _brackets = new ObservableCollection<BracketDisplayModel>();
+            }
             for (int i = 0; i < Labels.Length-1; i++)
             {
-                _brackets.Add(new BracketDisplayModel(Labels[i], sTaxVals.ElementAt(i)));
+                List<double> rateList = new List<double>();
+                rateList.Add(sTaxRates.ElementAt(i));
+                _brackets.Add(new BracketDisplayModel(Labels[i], rateList, i));
             }
             SelectedBracket = _brackets.ElementAt(0);
         }
@@ -505,7 +651,7 @@ namespace TaxMeApp
             maxRate = 0.20; //Start at 20% to save time
             while (totalRevenueNew - totalRevenueOld < 0)
             {
-                
+                sTaxRates.Clear();
                 maxRate += 0.00001;
                 sTaxVals.Clear();
                 revenueByBracketValsNew.Clear();
@@ -517,6 +663,7 @@ namespace TaxMeApp
                     if (i > maxBrackets)
                     {
                         sTaxVals.Add(currentRate * maxY * hConst);
+                        sTaxRates.Add(currentRate);
                         totalRevenueNew += (CurrentYear.brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
                         revenueByBracketValsNew.Add(CurrentYear.brackets.ElementAt(i).TaxableIncome * 1000 * currentRate / (revConst));
                     }
@@ -524,6 +671,7 @@ namespace TaxMeApp
                     {
                         currentRate -= changeAmt;
                         sTaxVals.Add(currentRate * maxY * hConst);
+                        sTaxRates.Add(currentRate);
                         totalRevenueNew += (CurrentYear.brackets.ElementAt(i).TaxableIncome*1000 * currentRate);
                         revenueByBracketValsNew.Add(CurrentYear.brackets.ElementAt(i).TaxableIncome * 1000 * currentRate / (revConst));
                     }
@@ -531,10 +679,12 @@ namespace TaxMeApp
                     {
                         currentRate = 0;
                         sTaxVals.Add(0.0);
+                        sTaxRates.Add(currentRate);
                         revenueByBracketValsNew.Add(0.0);
                     }
                 }
                 sTaxVals.Reverse();
+                sTaxRates.Reverse();
                 revenueByBracketValsNew.Reverse();
                 _taxPlans.ElementAt(0).vals = new ObservableCollection<double>(sTaxVals);
             }

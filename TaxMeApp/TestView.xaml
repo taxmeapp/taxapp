@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TaxMeApp"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             mc:Ignorable="d" d:DesignWidth="800" Height="650">
+             mc:Ignorable="d" d:DesignWidth="800" Height="700">
 
     <UserControl.DataContext>
         <local:TestViewModel/>
@@ -15,7 +15,7 @@
         <DockPanel>
             <StackPanel DockPanel.Dock="Left" 
                     Background="LightGray"
-                    Width="200">
+                    Width="200" Height="700">
                 <TextBlock Text="Control Panel"
                        FontSize="20"
                        Margin="5, 5, 5, 5"/>
@@ -60,6 +60,7 @@
                 <TextBlock Text="Policy Rate (%)"
                        Margin="5, -5, 5, 5"/>
                 <Slider x:Name="PolicyRateSlider"
+                    Value="{Binding Path=CurrentRate, Mode=TwoWay}"
                     Margin="5, 5, 5, 15"
                     Minimum="0"
                     Maximum="100"
