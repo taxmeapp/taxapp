@@ -251,8 +251,10 @@ namespace TaxMeApp
             sTaxVals = ans;
             sTaxRates = ans2;
             totalRevenueNew = 0;
+            revenueByBracketValsNew = new List<double>();
             for (int i = 0; i < CurrentYear.brackets.Count; i++) {
                 totalRevenueNew += CurrentYear.brackets.ElementAt(i).TaxableIncome * 1000 * sTaxRates.ElementAt(i);
+                revenueByBracketValsNew.Add(CurrentYear.brackets.ElementAt(i).TaxableIncome * 1000 * sTaxRates.ElementAt(i) / 20000);
             }
             OnPropertyChange("tRN");
             OnPropertyChange("rDiff");
