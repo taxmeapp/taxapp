@@ -18,6 +18,7 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using TaxMeApp.models;
+using TaxMeApp.viewmodels;
 
 namespace TaxMeApp
 {
@@ -55,12 +56,6 @@ namespace TaxMeApp
         public void Init()
         {
 
-            model = new Test
-            {
-                MinIncome = 16000,
-                MaxIncome = 400000
-            };
-
             graphInit();
 
             // have to fix this still:
@@ -70,6 +65,9 @@ namespace TaxMeApp
             Graph();
 
         }
+
+        // View Model references
+        public GraphViewModel GraphVM { get; set; }
 
         // Model references
         private YearsModel yearsModel = new YearsModel();
@@ -106,30 +104,22 @@ namespace TaxMeApp
             {
                 //Trace.WriteLine("Changing selected year to: " + value);
 
-                clearGraph();
-
                 yearsModel.SelectedYear = value;
 
                 Graph();
 
                 OnPropertyChange("SelectedYear");
+
             }
         }
 
+        
         // References for graph
-        public SeriesCollection SeriesCollection
+        public SeriesCollection Series
         {
             get
             {
-                return graphModel.SeriesCollection;
-            }
-        }
-
-        public string[] Labels
-        {
-            get
-            {
-                return graphModel.Labels;
+                return graphModel.Series;
             }
         }
 
@@ -138,6 +128,16 @@ namespace TaxMeApp
             get
             {
                 return graphModel.PovertyLineIndex;
+            }
+        }
+
+        
+
+        public string[] Labels
+        {
+            get
+            {
+                return graphModel.Labels;
             }
         }
 
@@ -167,6 +167,97 @@ namespace TaxMeApp
 
                 });
             Charting.For<int>(povertyMapper, SeriesOrientation.Horizontal);
+        }
+
+        public void Graph()
+        {
+
+            // Reference the model
+            graphModel.Series.Clear();
+
+
+            // Rework into models?
+            originalTaxVals.Clear();
+            sTaxVals.Clear();
+            revenueByBracketValsOld.Clear();
+            revenueByBracketValsNew.Clear();
+
+            ColorGraph(); //Find max brackets
+            sTaxGen(); //Get Slant Tax Values
+
+            SolidColorBrush slantTaxFillBrush = new SolidColorBrush();
+            slantTaxFillBrush.Color = Colors.Gold;
+            slantTaxFillBrush.Opacity = 0.2;
+
+            SolidColorBrush transparentBrush = new SolidColorBrush();
+            transparentBrush.Opacity = 0.0;
+            transparentBrush.Color = Colors.White;
+
+            graphModel.Series.Add(
+                new ColumnSeries
+                {
+                    Title = yearsModel.SelectedIncomeYearModel.Year + " Income",
+                    Values = new ChartValues<int>(Population)
+                }
+            );
+            
+            graphModel.Series.Add(
+                new LineSeries()
+                {
+                    Title = "Old Tax Revenue By Bracket",
+                    Values = new ChartValues<double>(revenueByBracketValsOld),
+                    Stroke = Brushes.DarkGreen,
+                    Fill = transparentBrush
+                }
+            );
+            graphModel.Series.Add(
+                new LineSeries()
+                {
+                    Title = "New Tax Revenue By Bracket",
+                    Values = new ChartValues<double>(revenueByBracketValsNew),
+                    Stroke = Brushes.LightGreen,
+                    Fill = transparentBrush
+                }
+            );
+            graphModel.Series.Add(
+                new LineSeries()
+                {
+                    Title = "Old Tax Rates",
+                    Values = new ChartValues<double>(originalTaxVals),
+                    Stroke = Brushes.DarkGoldenrod,
+                    Fill = transparentBrush
+                }
+
+            );
+            graphModel.Series.Add(
+                 new LineSeries()
+                 {
+                     Title = "Slant Tax",
+                     Values = new ChartValues<double>(sTaxVals),
+                     Stroke = Brushes.Yellow,
+                     Fill = slantTaxFillBrush
+                 }
+            );
+
+            if (brackets.Count > 0)
+            {
+                brackets = new ObservableCollection<BracketDisplayModel>();
+            }            
+
+            for (int i = 0; i < graphModel.Labels.Length - 1; i++)
+            {
+                List<double> rateList = new List<double>();
+                rateList.Add(sTaxRates.ElementAt(i));
+                brackets.Add(new BracketDisplayModel
+                {
+                    Label = graphModel.Labels[i],
+                    TaxRate = rateList,
+                    Index = i
+                });
+            }
+
+            //SelectedBracket = brackets.ElementAt(0);
+            
         }
 
         /*
@@ -587,7 +678,7 @@ namespace TaxMeApp
 
         public void clearGraph()
         {
-            graphModel.SeriesCollection.Clear();
+            graphModel.Series.Clear();
             originalTaxVals.Clear();
             sTaxVals.Clear();
             revenueByBracketValsOld.Clear();
@@ -598,7 +689,7 @@ namespace TaxMeApp
             tRN = "0";
             rDiff = "0";
             mRate = "0";
-            brackets = new ObservableCollection<BracketDisplayModel>();
+            //brackets = new ObservableCollection<BracketDisplayModel>();
         }
         public ObservableCollection<TaxPolicyModel> TaxPlans
         {
@@ -668,124 +759,6 @@ namespace TaxMeApp
 
 
         
-
-        public void ParseCSV()
-        {
-            string path = ("res\\" + yearsModel.SelectedIncomeYearModel.Year + ".csv");
-            using (var reader = new StreamReader(path))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                reader.ReadLine();
-                var brackets = csv.GetRecords<BracketModel>();
-                yearsModel.SelectedIncomeYearModel.Brackets = new ObservableCollection<BracketModel>(brackets);
-            }
-        }
-
-        public void Graph()
-        {
-            ColorGraph(); //Find max brackets
-            sTaxGen(); //Get Slant Tax Values
-
-            SolidColorBrush slantTaxFillBrush = new SolidColorBrush();
-            slantTaxFillBrush.Color = Colors.Gold;
-            slantTaxFillBrush.Opacity = 0.2;
-
-            SolidColorBrush transparentBrush = new SolidColorBrush();
-            transparentBrush.Opacity = 0.0;
-            transparentBrush.Color = Colors.White;
-
-            graphModel.SeriesCollection.Add(
-                new ColumnSeries
-                {
-                    Title = yearsModel.SelectedIncomeYearModel.Year + " Income",
-                    Values = new ChartValues<int>(Population)
-                }
-            );
-            graphModel.SeriesCollection.Add(
-                new LineSeries()
-                {
-                    Title = "Old Tax Revenue By Bracket",
-                    Values = new ChartValues<double>(revenueByBracketValsOld),
-                    Stroke = Brushes.DarkGreen,
-                    Fill = transparentBrush
-                }
-            );
-            graphModel.SeriesCollection.Add(
-                new LineSeries()
-                {
-                    Title = "New Tax Revenue By Bracket",
-                    Values = new ChartValues<double>(revenueByBracketValsNew),
-                    Stroke = Brushes.LightGreen,
-                    Fill = transparentBrush
-                }
-            );
-            graphModel.SeriesCollection.Add(
-                new LineSeries()
-                {
-                    Title = "Old Tax Rates",
-                    Values = new ChartValues<double>(originalTaxVals),
-                    Stroke = Brushes.DarkGoldenrod,
-                    Fill = transparentBrush
-                }
-
-            );
-            graphModel.SeriesCollection.Add(
-                 new LineSeries()
-                 {
-                     Title = "Slant Tax",
-                     Values = new ChartValues<double>(sTaxVals),
-                     Stroke = Brushes.Yellow,
-                     Fill = slantTaxFillBrush
-                 }
-            );
-
-            /*
-            Labels = new[]
-            {
-                "$0",
-                "$1 under $5,000",
-                "$5,000 under $10,000",
-                "$10,000 under $15,000",
-                "$15,000 under $20,000",
-                "$20,000 under $25,000",
-                "$25,000 under $30,000",
-                "$30,000 under $40,000",
-                "$40,000 under $50,000",
-                "$50,000 under $75,000",
-                "$75,000 under $100,000",
-                "$100,000 under $150,000",
-                "$150,000 under $200,000",
-                "$200,000 under $500,000",
-                "$500,000 under $1,000,000",
-                "$1,000,000 under $1,500,000",
-                "$1,500,000 under $2,000,000",
-                "$2,000,000 under $5,000,000",
-                "$5,000,000 under $10,000,000",
-                "$10,000,000 or more"
-            };
-            */
-
-            if (brackets.Count > 0)
-            {
-                brackets = new ObservableCollection<BracketDisplayModel>();
-            }
-
-            
-
-            for (int i = 0; i < graphModel.Labels.Length - 1; i++)
-            {
-                List<double> rateList = new List<double>();
-                rateList.Add(sTaxRates.ElementAt(i));
-                brackets.Add(new BracketDisplayModel
-                {
-                    Label = graphModel.Labels[i],
-                    TaxRate = rateList,
-                    Index = i
-                });
-            }
-
-            SelectedBracket = brackets.ElementAt(0);
-        }
 
         private void sTaxGen()
         {

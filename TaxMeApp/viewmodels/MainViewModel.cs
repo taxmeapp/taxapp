@@ -11,7 +11,7 @@ namespace TaxMeApp.viewmodels
     public class MainViewModel : INotifyPropertyChanged
     {
 
-        protected GraphModel graphModel;
+        protected GraphModel graphModel = new GraphModel();
 
         public void setGraphModel(GraphModel graphModel)
         {

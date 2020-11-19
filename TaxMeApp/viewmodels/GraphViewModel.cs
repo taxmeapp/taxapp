@@ -1,20 +1,22 @@
 ﻿using LiveCharts;
+using LiveCharts.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace TaxMeApp.viewmodels
 {
-    class GraphViewModel : MainViewModel
+    public class GraphViewModel : MainViewModel
     {
 
-        public SeriesCollection SeriesCollection
+        public SeriesCollection Series
         {
             get
             {
-                return graphModel.SeriesCollection;
+                return graphModel.Series;
             }
         }
 

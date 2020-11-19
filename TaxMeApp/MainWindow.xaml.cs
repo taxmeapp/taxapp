@@ -24,6 +24,8 @@ namespace TaxMeApp
 
 
             TestViewControl.DataContext = loader.testVM;
+            
+
 
             //TestViewModel testViewModel = new TestViewModel();
             //TestViewControl.DataContext = testViewModel;

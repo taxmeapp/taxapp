@@ -39,10 +39,14 @@ namespace TaxMeApp
             testVM = new TestViewModel();
             testVM.setYearsModel(yearsModel);
             testVM.setGraphModel(graphModel);
-            testVM.Init();
 
             graphVM = new GraphViewModel();
             graphVM.setGraphModel(graphModel);
+
+            testVM.GraphVM = graphVM;
+
+
+            testVM.Init();
 
         }
 
