@@ -8,13 +8,11 @@ namespace TaxMeApp.models
 {
     public class BracketDisplayModel
     {
-        public string label { get; set; }
-        public List<double> taxRate { get; set; }
-        public int index { get; set; }
-        public BracketDisplayModel(string l, List<double> t, int i) {
-            label = l;
-            taxRate = t;
-            index = i;
-        }
+        public string Label { get; set; }
+        public List<double> TaxRate { get; set; }
+        public int Index { get; set; }
+
+
+
     }
 }

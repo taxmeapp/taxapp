@@ -88,15 +88,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\Parser.cs" />
+    <Compile Include="Loader.cs" />
     <Compile Include="models\BracketDisplayModel.cs" />
     <Compile Include="models\BracketModel.cs" />
+    <Compile Include="models\GraphModel.cs" />
     <Compile Include="models\IncomeYearModel.cs" />
     <Compile Include="models\TaxPolicyModel.cs" />
-    <Compile Include="TestModel.cs" />
-    <Compile Include="TestView.xaml.cs">
+    <Compile Include="models\TestModel.cs" />
+    <Compile Include="models\YearsModel.cs" />
+    <Compile Include="views\TestView.xaml.cs">
       <DependentUpon>TestView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TestViewModel.cs" />
+    <Compile Include="viewmodels\TestViewModel.cs" />
+    <Compile Include="viewmodels\GraphViewModel.cs" />
+    <Compile Include="viewmodels\MainViewModel.cs" />
+    <Compile Include="views\GraphView.xaml.cs">
+      <DependentUpon>GraphView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -109,7 +118,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="TestView.xaml">
+    <Page Include="views\TestView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\GraphView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -137,62 +150,59 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="res\2018.csv">
+    <Content Include="res\TaxCSV\2018.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2003.csv">
+    <Content Include="res\TaxCSV\2003.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2004.csv">
+    <Content Include="res\TaxCSV\2004.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2005.csv">
+    <Content Include="res\TaxCSV\2005.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2006.csv">
+    <Content Include="res\TaxCSV\2006.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2007.csv">
+    <Content Include="res\TaxCSV\2007.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2008.csv">
+    <Content Include="res\TaxCSV\2008.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2009.csv">
+    <Content Include="res\TaxCSV\2009.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2010.csv">
+    <Content Include="res\TaxCSV\2010.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2011.csv">
+    <Content Include="res\TaxCSV\2011.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2012.csv">
+    <Content Include="res\TaxCSV\2012.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2013.csv">
+    <Content Include="res\TaxCSV\2013.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2014.csv">
+    <Content Include="res\TaxCSV\2014.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2015.csv">
+    <Content Include="res\TaxCSV\2015.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2016.csv">
+    <Content Include="res\TaxCSV\2016.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="res\2017.csv">
+    <Content Include="res\TaxCSV\2017.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="viewmodels\" />
-    <Folder Include="views\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
       <Visible>False</Visible>

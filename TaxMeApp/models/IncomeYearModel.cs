@@ -9,7 +9,7 @@ namespace TaxMeApp.models
 {
     public class IncomeYearModel
     {
-        public int year { get; set; }
-        public ObservableCollection<BracketModel> brackets { get; set; }
+        public int Year { get; set; }
+        public ObservableCollection<BracketModel> Brackets { get; set; }
     }
 }

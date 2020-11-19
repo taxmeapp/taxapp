@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="TaxMe" Height="730" Width="800">
     <Grid>
-        <local:TestView x:Name="TestViewControl" Loaded="TestViewControlLoaded" Margin="-2,0,1.6,0"/>
+        <local:TestView x:Name="TestViewControl" Loaded="TestViewControl_Loaded"/>
     </Grid>
 </Window>

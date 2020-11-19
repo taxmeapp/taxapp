@@ -11,16 +11,29 @@ namespace TaxMeApp
         // Intro to panels, how to set up basics of XAML
         //https://www.wpf-tutorial.com/panels/introduction-to-wpf-panels/
 
+        private Loader loader;
+
         public MainWindow()
         {
+
+            loader = new Loader();
+
+
+
             InitializeComponent();
+
+
+            TestViewControl.DataContext = loader.testVM;
+
+            //TestViewModel testViewModel = new TestViewModel();
+            //TestViewControl.DataContext = testViewModel;
+
         }
 
-        private void TestViewControlLoaded(object sender, RoutedEventArgs e)
+        private void TestViewControl_Loaded(object sender, RoutedEventArgs e)
         {
-            TestViewModel testViewModel = new TestViewModel();
-            TestViewControl.DataContext = testViewModel;
-        }
 
+            //TestViewControl.DataContext = loader.testVM;
+        }
     }
 }
