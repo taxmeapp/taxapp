@@ -8,7 +8,7 @@ using TaxMeApp.models;
 
 namespace TaxMeApp.viewmodels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public abstract class MainViewModel : INotifyPropertyChanged
     {
 
         public GraphModel GraphModel { get; set; } = new GraphModel();

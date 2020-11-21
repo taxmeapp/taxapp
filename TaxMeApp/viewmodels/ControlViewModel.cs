@@ -80,7 +80,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return DataModel.oldRevenueByBracket;
+                return DataModel.OldRevenueByBracket;
             }
         }
 
@@ -88,7 +88,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return DataModel.newRevenueByBracket;
+                return DataModel.NewRevenueByBracket;
             }
         }
 
@@ -96,7 +96,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return DataModel.oldTaxPctByBracket;
+                return DataModel.OldTaxPctByBracket;
             }
         }
 
@@ -104,7 +104,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return DataModel.newTaxPctByBracket;
+                return DataModel.NewTaxPctByBracket;
             }
         }
 
@@ -193,11 +193,11 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return GraphModel.showNumberOfReturns;
+                return GraphModel.ShowNumberOfReturns;
             }
             set
             {
-                GraphModel.showNumberOfReturns = value;
+                GraphModel.ShowNumberOfReturns = value;
 
                 displayOnlyGraphReset();
 
@@ -208,11 +208,11 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return GraphModel.showOldRevenue;
+                return GraphModel.ShowOldRevenue;
             }
             set
             {
-                GraphModel.showOldRevenue = value;
+                GraphModel.ShowOldRevenue = value;
 
                 displayOnlyGraphReset();
 
@@ -223,11 +223,11 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return GraphModel.showNewRevenue;
+                return GraphModel.ShowNewRevenue;
             }
             set
             {
-                GraphModel.showNewRevenue = value;
+                GraphModel.ShowNewRevenue = value;
 
                 displayOnlyGraphReset();
 
@@ -238,12 +238,12 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return GraphModel.showOldPercentage;
+                return GraphModel.ShowOldPercentage;
             }
             set
             {
 
-                GraphModel.showOldPercentage = value;
+                GraphModel.ShowOldPercentage = value;
 
                 displayOnlyGraphReset();
 
@@ -254,12 +254,12 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return GraphModel.showNewPercentage;
+                return GraphModel.ShowNewPercentage;
             }
             set
             {
 
-                GraphModel.showNewPercentage = value;
+                GraphModel.ShowNewPercentage = value;
 
                 displayOnlyGraphReset();
 

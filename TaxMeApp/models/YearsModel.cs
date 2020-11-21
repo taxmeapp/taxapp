@@ -11,7 +11,7 @@ namespace TaxMeApp.models
     {
 
         // Store dictionary references of all years
-        public Dictionary<int, IncomeYearModel> Years { get; }
+        public Dictionary<int, IncomeYearModel> Years { get; } = new Dictionary<int, IncomeYearModel>();
 
         // Get a list of all years in the dictionary
         public List<int> YearList
@@ -40,11 +40,6 @@ namespace TaxMeApp.models
                 return selected; 
             }
 
-        }
-
-        public YearsModel()
-        {
-            Years = new Dictionary<int, IncomeYearModel>();
         }
 
     }

@@ -26,13 +26,13 @@ namespace TaxMeApp.models
 
         public int MaxTaxRate { get; set; } = 20;
 
-        public List<long> oldRevenueByBracket { get; } = new List<long>();
+        public List<long> OldRevenueByBracket { get; } = new List<long>();
 
-        public List<long> newRevenueByBracket { get; } = new List<long>();
+        public List<long> NewRevenueByBracket { get; } = new List<long>();
 
-        public List<double> oldTaxPctByBracket { get; } = new List<double>();
+        public List<double> OldTaxPctByBracket { get; } = new List<double>();
 
-        public List<double> newTaxPctByBracket { get; } = new List<double>();
+        public List<double> NewTaxPctByBracket { get; } = new List<double>();
 
     }
 }
