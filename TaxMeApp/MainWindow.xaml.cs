@@ -23,19 +23,11 @@ namespace TaxMeApp
             InitializeComponent();
 
 
-            TestViewControl.DataContext = loader.testVM;
-            
+            ControlView.DataContext = loader.controlVM;
 
-
-            //TestViewModel testViewModel = new TestViewModel();
-            //TestViewControl.DataContext = testViewModel;
 
         }
 
-        private void TestViewControl_Loaded(object sender, RoutedEventArgs e)
-        {
 
-            //TestViewControl.DataContext = loader.testVM;
-        }
     }
 }

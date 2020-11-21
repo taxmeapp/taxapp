@@ -13,6 +13,7 @@ namespace TaxMeApp.models
 
         public SeriesCollection Series { get; } = new SeriesCollection();
 
+       
         public AxisSection MaxBracketLine { get; set; } = new AxisSection();
 
         public string[] Labels { get; } =

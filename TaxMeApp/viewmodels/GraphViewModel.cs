@@ -16,7 +16,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return graphModel.Series;
+                return GraphModel.Series;
             }
         }
 
@@ -24,7 +24,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return graphModel.Labels;
+                return GraphModel.Labels;
             }
         }
 
@@ -32,7 +32,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return graphModel.PovertyLineIndex;
+                return GraphModel.PovertyLineIndex;
             }
         }
 

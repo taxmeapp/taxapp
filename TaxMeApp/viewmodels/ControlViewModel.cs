@@ -1,35 +1,17 @@
-﻿using CsvHelper;
-using LiveCharts;
+﻿using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Ink;
-using System.Windows.Input;
 using System.Windows.Media;
 using TaxMeApp.Helpers;
 using TaxMeApp.models;
-using TaxMeApp.viewmodels;
 
-namespace TaxMeApp
+namespace TaxMeApp.viewmodels
 {
-    public class TestViewModel : MainViewModel
+    public class ControlViewModel : MainViewModel
     {
-
-        public TestViewModel()
-        {
-           
-        }
 
         // TestViewModel init
         public void Init()
@@ -39,7 +21,7 @@ namespace TaxMeApp
             graphInit();
 
             // Automatically select the first item in the list
-            SelectedYear = yearsModel.YearList[0];
+            SelectedYear = YearsModel.YearList[0];
 
         }
 
@@ -57,7 +39,7 @@ namespace TaxMeApp
         {
             get
             {
-                return graphModel.Series;
+                return GraphModel.Series;
             }
         }
 
@@ -65,7 +47,7 @@ namespace TaxMeApp
         {
             get
             {
-                return yearsModel.SelectedIncomeYearModel.Brackets;
+                return YearsModel.SelectedIncomeYearModel.Brackets;
             }
         }
 
@@ -74,7 +56,7 @@ namespace TaxMeApp
         {
             get
             {
-                return dataModel.Population;
+                return DataModel.Population;
             }
         }
 
@@ -82,7 +64,7 @@ namespace TaxMeApp
         {
             get
             {
-                return graphModel.PovertyLineIndex;
+                return GraphModel.PovertyLineIndex;
             }
         }
 
@@ -90,7 +72,7 @@ namespace TaxMeApp
         {
             get
             {
-                return yearsModel.SelectedIncomeYearModel.Brackets.Count;
+                return YearsModel.SelectedIncomeYearModel.Brackets.Count;
             }
         }
 
@@ -98,7 +80,7 @@ namespace TaxMeApp
         {
             get
             {
-                return dataModel.oldRevenueByBracket;
+                return DataModel.oldRevenueByBracket;
             }
         }
 
@@ -106,7 +88,7 @@ namespace TaxMeApp
         {
             get
             {
-                return dataModel.newRevenueByBracket;
+                return DataModel.newRevenueByBracket;
             }
         }
 
@@ -114,7 +96,7 @@ namespace TaxMeApp
         {
             get
             {
-                return dataModel.oldTaxPctByBracket;
+                return DataModel.oldTaxPctByBracket;
             }
         }
 
@@ -122,7 +104,7 @@ namespace TaxMeApp
         {
             get
             {
-                return dataModel.newTaxPctByBracket;
+                return DataModel.newTaxPctByBracket;
             }
         }
 
@@ -135,20 +117,20 @@ namespace TaxMeApp
         {
             get
             {
-                return yearsModel.YearList;
+                return YearsModel.YearList;
             }
         }
 
         // When user changes the dropdown selection:
         public int SelectedYear
         {
-            get { return yearsModel.SelectedYear; }
+            get { return YearsModel.SelectedYear; }
             set
             {
                 //Trace.WriteLine("Changing selected year to: " + value);
 
                 // Save it in our data model
-                yearsModel.SelectedYear = value;
+                YearsModel.SelectedYear = value;
 
                 totalGraphReset();
 
@@ -160,11 +142,11 @@ namespace TaxMeApp
         {
             get
             {
-                return dataModel.MaxTaxRate;
+                return DataModel.MaxTaxRate;
             }
             set
             {
-                dataModel.MaxTaxRate = value;
+                DataModel.MaxTaxRate = value;
 
                 newDataGraphReset();
 
@@ -177,11 +159,11 @@ namespace TaxMeApp
         {
             get
             {
-                return graphModel.MaxBracketCount;
+                return GraphModel.MaxBracketCount;
             }
             set
             {
-                graphModel.MaxBracketCount = value;
+                GraphModel.MaxBracketCount = value;
 
                 OnPropertyChange("MaxBracketCount");
             }
@@ -192,11 +174,11 @@ namespace TaxMeApp
         {
             get
             {
-                return graphModel.MaxBracketCount;
+                return GraphModel.MaxBracketCount;
             }
             set
             {
-                graphModel.MaxBracketCount = value;
+                GraphModel.MaxBracketCount = value;
 
                 newDataGraphReset();
 
@@ -211,11 +193,11 @@ namespace TaxMeApp
         {
             get
             {
-                return graphModel.showNumberOfReturns;
+                return GraphModel.showNumberOfReturns;
             }
             set
             {
-                graphModel.showNumberOfReturns = value;
+                GraphModel.showNumberOfReturns = value;
 
                 displayOnlyGraphReset();
 
@@ -226,11 +208,11 @@ namespace TaxMeApp
         {
             get
             {
-                return graphModel.showOldRevenue;
+                return GraphModel.showOldRevenue;
             }
             set
             {
-                graphModel.showOldRevenue = value;
+                GraphModel.showOldRevenue = value;
 
                 displayOnlyGraphReset();
 
@@ -241,11 +223,11 @@ namespace TaxMeApp
         {
             get
             {
-                return graphModel.showNewRevenue;
+                return GraphModel.showNewRevenue;
             }
             set
             {
-                graphModel.showNewRevenue = value;
+                GraphModel.showNewRevenue = value;
 
                 displayOnlyGraphReset();
 
@@ -256,12 +238,12 @@ namespace TaxMeApp
         {
             get
             {
-                return graphModel.showOldPercentage;
+                return GraphModel.showOldPercentage;
             }
             set
             {
 
-                graphModel.showOldPercentage = value;
+                GraphModel.showOldPercentage = value;
 
                 displayOnlyGraphReset();
 
@@ -272,12 +254,12 @@ namespace TaxMeApp
         {
             get
             {
-                return graphModel.showNewPercentage;
+                return GraphModel.showNewPercentage;
             }
             set
             {
 
-                graphModel.showNewPercentage = value;
+                GraphModel.showNewPercentage = value;
 
                 displayOnlyGraphReset();
 
@@ -297,11 +279,11 @@ namespace TaxMeApp
         {
             get
             {
-                return dataModel.NumPovertyPop;
+                return DataModel.NumPovertyPop;
             }
             set
             {
-                dataModel.NumPovertyPop = value;
+                DataModel.NumPovertyPop = value;
                 OnPropertyChange("NumPovertyPopOutput");
             }
         }
@@ -318,11 +300,11 @@ namespace TaxMeApp
         {
             get
             {
-                return dataModel.NumMaxPop;
+                return DataModel.NumMaxPop;
             }
             set
             {
-                dataModel.NumMaxPop = value;
+                DataModel.NumMaxPop = value;
                 OnPropertyChange("NumMaxPopOutput");
             }
         }
@@ -339,11 +321,11 @@ namespace TaxMeApp
         {
             get
             {
-                return dataModel.TotalRevenueOld;
+                return DataModel.TotalRevenueOld;
             }
             set
             {
-                dataModel.TotalRevenueOld = value;
+                DataModel.TotalRevenueOld = value;
                 OnPropertyChange("TotalRevenueOldOutput");
                 OnPropertyChange("RevenueDifferenceOutput");
             }
@@ -361,11 +343,11 @@ namespace TaxMeApp
         {
             get
             {
-                return dataModel.TotalRevenueNew;
+                return DataModel.TotalRevenueNew;
             }
             set
             {
-                dataModel.TotalRevenueNew = value;
+                DataModel.TotalRevenueNew = value;
                 OnPropertyChange("TotalRevenueNewOutput");
                 OnPropertyChange("RevenueDifferenceOutput");
             }
@@ -383,7 +365,7 @@ namespace TaxMeApp
         {
             get
             {
-                return Formatter.Format(dataModel.RevenueDifference);
+                return Formatter.Format(DataModel.RevenueDifference);
             }
         }
 
@@ -422,7 +404,7 @@ namespace TaxMeApp
 
         }
 
-        // Collections of calls to update 
+        // Collections of calls to update only the new data (e.g. max % or # of max brackets changed)
         private void newDataGraphReset()
         {
 
@@ -440,6 +422,7 @@ namespace TaxMeApp
 
         }
 
+        // Colections of calls to update only what is shown on the graph (e.g. checkboxes ticked/unticked)
         private void displayOnlyGraphReset()
         {
 
@@ -576,6 +559,7 @@ namespace TaxMeApp
         }
 
         // Accumulate the data we need using new tax calculations
+        // Specifically hardcoded for slant tax currently
         private void calculateNewTaxData()
         {
 
@@ -677,6 +661,7 @@ namespace TaxMeApp
 
                 });
             Charting.For<int>(povertyMapper, SeriesOrientation.Horizontal);
+
         }
 
         // Graph things based on whether or not they are checked in the control panel
@@ -719,9 +704,10 @@ namespace TaxMeApp
                 new ColumnSeries
                 {
                     Title = SelectedYear + " Income",
-                    Values = new ChartValues<int>(population)
+                    Values = new ChartValues<int>(population),
+                    ScalesYAt = 0
                 }
-            );            
+            );          
 
         }
 
@@ -735,7 +721,8 @@ namespace TaxMeApp
                     Title = "Old Tax Revenue By Bracket",
                     Values = new ChartValues<long>(oldRevenueByBracket),
                     Stroke = Brushes.DarkGreen,
-                    Fill = Brushes.Transparent
+                    Fill = Brushes.Transparent,
+                    ScalesYAt = 1
                 }
             );
 
@@ -751,7 +738,8 @@ namespace TaxMeApp
                     Title = "New Tax Revenue By Bracket",
                     Values = new ChartValues<long>(newRevenueByBracket),
                     Stroke = Brushes.LightGreen,
-                    Fill = Brushes.Transparent
+                    Fill = Brushes.Transparent,
+                    ScalesYAt = 1
                 }
             );
 
@@ -767,7 +755,8 @@ namespace TaxMeApp
                     Title = "Old Tax Percentage",
                     Values = new ChartValues<double>(oldTaxPctByBracket),
                     Stroke = Brushes.DarkGoldenrod,
-                    Fill = Brushes.Transparent
+                    Fill = Brushes.Transparent,
+                    ScalesYAt = 2
                 }
             );
 
@@ -783,7 +772,8 @@ namespace TaxMeApp
                     Title = "New Tax Percentage",
                     Values = new ChartValues<double>(newTaxPctByBracket),
                     Stroke = Brushes.Maroon,
-                    Fill = Brushes.Transparent
+                    Fill = Brushes.Transparent,
+                    ScalesYAt = 2
                 }
             );;
 

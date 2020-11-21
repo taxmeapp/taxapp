@@ -96,10 +96,10 @@
     <Compile Include="models\GraphModel.cs" />
     <Compile Include="models\IncomeYearModel.cs" />
     <Compile Include="models\YearsModel.cs" />
-    <Compile Include="views\TestView.xaml.cs">
-      <DependentUpon>TestView.xaml</DependentUpon>
+    <Compile Include="views\ControlView.xaml.cs">
+      <DependentUpon>ControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="viewmodels\TestViewModel.cs" />
+    <Compile Include="viewmodels\ControlViewModel.cs" />
     <Compile Include="viewmodels\GraphViewModel.cs" />
     <Compile Include="viewmodels\MainViewModel.cs" />
     <Compile Include="views\GraphView.xaml.cs">
@@ -117,7 +117,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="views\TestView.xaml">
+    <Page Include="views\ControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

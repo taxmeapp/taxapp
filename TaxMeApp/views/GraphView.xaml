@@ -11,18 +11,19 @@
 
     <Grid>
         <lvc:CartesianChart Series="{Binding Series}" 
-                                    Zoom="None" 
-                                    LegendLocation="Bottom">
+                            Zoom="None" 
+                            LegendLocation="Bottom">
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Labels="{Binding Labels}" 
-                                  LabelsRotation="35"
+                          LabelsRotation="35"
                           MinValue="0"
                           MaxValue="19">
+                    <!-- This should be dynamically determined based on loaded data -->
                     <lvc:Axis.Sections>
                         <lvc:AxisSection Value="{Binding PovertyLineIndex}" 
-                                                 Stroke="Firebrick" 
-                                                 StrokeThickness ="1" 
-                                                 Label="Poverty Line"/>
+                                         Stroke="Firebrick" 
+                                         StrokeThickness ="1" 
+                                         Label="Poverty Line"/>
                     </lvc:Axis.Sections>
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="1"></lvc:Separator>
@@ -30,7 +31,12 @@
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis ShowLabels="False"></lvc:Axis>
+                <lvc:Axis Position="RightTop"
+                          ShowLabels="False"/>
+                <lvc:Axis Position="RightTop"
+                          ShowLabels="False"/>
+                <lvc:Axis Position="RightTop" 
+                          ShowLabels="False"/>
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
     </Grid>
