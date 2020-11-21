@@ -1,4 +1,5 @@
 ﻿using LiveCharts;
+using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace TaxMeApp.models
     {
 
         public SeriesCollection Series { get; } = new SeriesCollection();
+
+        public AxisSection MaxBracketLine { get; set; } = new AxisSection();
 
         public string[] Labels { get; } =
         {
@@ -25,8 +28,7 @@ namespace TaxMeApp.models
                 "$40,000 under $50,000",
                 "$50,000 under $75,000",
                 "$75,000 under $100,000",
-                "$100,000 under $150,000",
-                "$150,000 under $200,000",
+                "$100,000 under $200,000",
                 "$200,000 under $500,000",
                 "$500,000 under $1,000,000",
                 "$1,000,000 under $1,500,000",
@@ -37,6 +39,16 @@ namespace TaxMeApp.models
         };
 
         public int PovertyLineIndex { get; } = 3;
+
+        public int MaxBracketCount { get; set; }
+
+
+        // Set the defaults for what are displayed on the graph
+        public bool showNumberOfReturns { get; set; } = true;
+        public bool showOldRevenue { get; set; } = false;
+        public bool showNewRevenue { get; set; } = false;
+        public bool showOldPercentage { get; set; } = false;
+        public bool showNewPercentage { get; set; } = false;
 
     }
 }

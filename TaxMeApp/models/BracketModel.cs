@@ -9,7 +9,7 @@ namespace TaxMeApp.models
         public int NumReturns { get; set; }
         public long GrossIncome { get; set; }
         public long TaxableIncome { get; set; }
-        public int IncomeTax { get; set; }
+        public long IncomeTax { get; set; }
         public double PercentOfTaxableIncomePaid { get; set; }
         public double PercentOfGrossIncomePaid { get; set; }
         public double AverageTotalIncomeTax { get; set; }

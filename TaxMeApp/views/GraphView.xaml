@@ -9,23 +9,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.DataContext>
-        <viewmodels:GraphViewModel/>
-    </UserControl.DataContext>
-
-    <Grid Height="300">
+    <Grid>
         <lvc:CartesianChart Series="{Binding Series}" 
-                                    Zoom="X" 
-                                    LegendLocation="Right">
+                                    Zoom="None" 
+                                    LegendLocation="Bottom">
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Labels="{Binding Labels}" 
-                                  LabelsRotation="35">
+                                  LabelsRotation="35"
+                          MinValue="0"
+                          MaxValue="19">
                     <lvc:Axis.Sections>
                         <lvc:AxisSection Value="{Binding PovertyLineIndex}" 
                                                  Stroke="Firebrick" 
                                                  StrokeThickness ="1" 
-                                                 Label="Poverty Line">
-                        </lvc:AxisSection>
+                                                 Label="Poverty Line"/>
                     </lvc:Axis.Sections>
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="1"></lvc:Separator>

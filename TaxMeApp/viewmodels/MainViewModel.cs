@@ -8,14 +8,26 @@ using TaxMeApp.models;
 
 namespace TaxMeApp.viewmodels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public abstract class MainViewModel : INotifyPropertyChanged
     {
 
         protected GraphModel graphModel = new GraphModel();
+        protected DataModel dataModel = new DataModel();
+        protected YearsModel yearsModel = new YearsModel();
 
         public void setGraphModel(GraphModel graphModel)
         {
             this.graphModel = graphModel;
+        }
+
+        public virtual void setDataModel(DataModel dataModel)
+        {
+            this.dataModel = dataModel;
+        }
+
+        public void setYearsModel(YearsModel yearsModel)
+        {
+            this.yearsModel = yearsModel;
         }
 
 
@@ -24,10 +36,7 @@ namespace TaxMeApp.viewmodels
 
         protected void OnPropertyChange(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }

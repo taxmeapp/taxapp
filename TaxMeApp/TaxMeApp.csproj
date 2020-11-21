@@ -88,14 +88,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\Formatter.cs" />
     <Compile Include="Helpers\Parser.cs" />
-    <Compile Include="Loader.cs" />
-    <Compile Include="models\BracketDisplayModel.cs" />
+    <Compile Include="Helpers\Loader.cs" />
     <Compile Include="models\BracketModel.cs" />
+    <Compile Include="models\DataModel.cs" />
     <Compile Include="models\GraphModel.cs" />
     <Compile Include="models\IncomeYearModel.cs" />
-    <Compile Include="models\TaxPolicyModel.cs" />
-    <Compile Include="models\TestModel.cs" />
     <Compile Include="models\YearsModel.cs" />
     <Compile Include="views\TestView.xaml.cs">
       <DependentUpon>TestView.xaml</DependentUpon>

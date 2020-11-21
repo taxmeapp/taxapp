@@ -11,5 +11,6 @@ namespace TaxMeApp.models
     {
         public int Year { get; set; }
         public ObservableCollection<BracketModel> Brackets { get; set; }
+
     }
 }

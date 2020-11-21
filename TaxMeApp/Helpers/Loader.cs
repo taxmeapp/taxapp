@@ -19,6 +19,7 @@ namespace TaxMeApp
 
         private YearsModel yearsModel;
         private GraphModel graphModel;
+        private DataModel dataModel;
 
         public Loader()
         {
@@ -26,22 +27,24 @@ namespace TaxMeApp
             // Make models
             yearsModel = new YearsModel();
             graphModel = new GraphModel();
-
+            dataModel = new DataModel();
 
 
             // Load CSVs
             loadYears();
 
-            yearsModel.SelectedYear = yearsModel.YearList[0];
+            //yearsModel.SelectedYear = yearsModel.YearList[0];
 
 
             // make view models
             testVM = new TestViewModel();
             testVM.setYearsModel(yearsModel);
             testVM.setGraphModel(graphModel);
+            testVM.setDataModel(dataModel);
 
             graphVM = new GraphViewModel();
             graphVM.setGraphModel(graphModel);
+
 
             testVM.GraphVM = graphVM;
 
