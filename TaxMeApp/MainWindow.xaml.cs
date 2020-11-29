@@ -19,7 +19,6 @@ namespace TaxMeApp
             loader = new Loader();
 
 
-
             InitializeComponent();
 
 

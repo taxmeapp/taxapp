@@ -11,7 +11,7 @@ using TaxMeApp.viewmodels;
 
 namespace TaxMeApp
 {
-    class Loader
+    public class Loader
     {
 
         public ControlViewModel controlVM { get; private set; }
@@ -52,7 +52,7 @@ namespace TaxMeApp
 
         }
 
-        private void loadYears()
+        public string[] loadYears()
         {
 
             // Return an array of all filenames from the directory that end in .csv
@@ -69,7 +69,7 @@ namespace TaxMeApp
                 yearsModel.Years.Add(year.Year, year);
 
             }
-
+            return files;
         }
 
 
