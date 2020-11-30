@@ -1,4 +1,5 @@
 ﻿using LiveCharts;
+using LiveCharts.Wpf;
 using LiveCharts.Configurations;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return GraphModel.Series;
+                return base.GraphModel.Series;
             }
         }
 
@@ -24,7 +25,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return GraphModel.Labels;
+                return base.GraphModel.Labels;
             }
         }
 
@@ -32,7 +33,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return GraphModel.PovertyLineIndex;
+                return base.GraphModel.PovertyLineIndex;
             }
         }
 

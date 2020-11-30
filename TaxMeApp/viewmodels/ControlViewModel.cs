@@ -12,6 +12,12 @@ namespace TaxMeApp.viewmodels
 {
     public class ControlViewModel : MainViewModel
     {
+        public ControlViewModel()
+        {
+            this.YearsModel = new YearsModel();
+            this.GraphModel = new GraphModel();
+            this.DataModel = new DataModel();
+        }
         public ControlViewModel(YearsModel yearsModel, GraphModel graphModel, DataModel dataModel) {
             this.YearsModel = yearsModel;
             this.GraphModel = graphModel;
@@ -57,7 +63,7 @@ namespace TaxMeApp.viewmodels
         }
 
         // Population array
-        private ObservableCollection<int> population
+        public ObservableCollection<int> population
         {
             get
             {
@@ -280,7 +286,7 @@ namespace TaxMeApp.viewmodels
         // The private member interacts with the model and this viewmodel
         // The public member formats it for the view to pull
 
-        private int NumPovertyPop
+        public int NumPovertyPop
         {
             get
             {
@@ -445,7 +451,7 @@ namespace TaxMeApp.viewmodels
         */
 
         // Recalculate population collection
-        private void calculatePopulation()
+        public void calculatePopulation()
         {
 
             // Clear our current count
@@ -462,12 +468,13 @@ namespace TaxMeApp.viewmodels
         }
 
         // Count the population that is included in the poverty brackets
-        private void countUnderPoverty()
+        public void countUnderPoverty()
         {
             int povertyPop = 0;
 
             // Count the number of returns up to and including the designated poverty bracket
-            for (int i = 0; i <= povertyBrackets; i++)
+            //for (int i = 0; i <= povertyBrackets; i++)
+            for (int i = 0; i <= 3; i++)
             {
                 povertyPop += population[i];
             }
@@ -528,6 +535,30 @@ namespace TaxMeApp.viewmodels
 
             // Save our value
             NumMaxPop = maxPopCount;
+
+        }
+
+        public int countPopulationWithMaxBrackets(int maxBrackets)
+        {
+
+            // Initialize population and bracket counters
+            int maxPopCount = 0;
+
+            int brackets = population.Count - 1;
+
+            // Starting at the end of array, work backwards
+            // as long as our max population count is below our poverty population count
+            for (int i = brackets; i > brackets - maxBrackets; i--)
+            {
+
+                // Add to our counters
+                maxPopCount += population[i];
+
+            }
+
+            //Trace.WriteLine("There are " + maxPopCount + " returns at max rate.");
+
+            return maxPopCount;
 
         }
 
