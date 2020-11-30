@@ -1,27 +1,17 @@
+﻿using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Text;
 using TaxMeApp;
 using TaxMeApp.Helpers;
 using TaxMeApp.models;
 using TaxMeApp.viewmodels;
-using TaxMeApp.views;
-using LiveCharts;
-using LiveCharts.Wpf;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using Moq;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 
 namespace TaxMeAppNUnitTesting
 {
-    public class Tests
+    class UnitTestHelpers
     {
         public ControlViewModel cvm;
         string[] filePaths;
@@ -44,7 +34,8 @@ namespace TaxMeAppNUnitTesting
 
         //Check that numbers are formatted correctly
         [Test]
-        public void TestFormatterThousands() {
+        public void TestFormatterThousands()
+        {
             Random r = new Random();
             long t1, t2;
 
@@ -52,14 +43,15 @@ namespace TaxMeAppNUnitTesting
             //1st Set of Cases, numbers < 1,000 and numbers > 1,000 but < 1,000,000
             t1 = r.Next(1, 999);
             t2 = r.Next(1, 999) * (long)Math.Pow(10, 3);
-           
+
             //Test Each Case
             Assert.AreEqual(t1.ToString(), Formatter.Format(t1));
             Assert.AreEqual(t2.ToString("#,##0"), Formatter.Format(t2));
         }
 
         [Test]
-        public void TestFormatterMillions() {
+        public void TestFormatterMillions()
+        {
             Random r = new Random();
             long t3, t4;
             string t3Ans, t4Ans;
@@ -79,7 +71,8 @@ namespace TaxMeAppNUnitTesting
         }
 
         [Test]
-        public void TestFormatterBillions() {
+        public void TestFormatterBillions()
+        {
             Random r = new Random();
             long t5, t6;
             string t5Ans, t6Ans;
@@ -99,7 +92,8 @@ namespace TaxMeAppNUnitTesting
         }
 
         [Test]
-        public void TestFormatterTrillions() {
+        public void TestFormatterTrillions()
+        {
             Random r = new Random();
             long t7, t8;
             string t7Ans, t8Ans;
@@ -123,12 +117,13 @@ namespace TaxMeAppNUnitTesting
         {
             //Check that all of the years are loaded properly
             //Loader loader = new Loader();
-            
+
             //Create answer of 2003-2018
             string[] fileNames = new string[18 - 2];
             string ans = "";
             int j;
-            for (int i = 0; i < fileNames.Length; i++) {
+            for (int i = 0; i < fileNames.Length; i++)
+            {
                 ans = "res\\TaxCSV\\";
                 ans += "20";
                 j = i + 3;
@@ -136,7 +131,8 @@ namespace TaxMeAppNUnitTesting
                 {
                     ans += "0" + j;
                 }
-                else {
+                else
+                {
                     ans += j;
                 }
                 ans += ".csv";
@@ -397,7 +393,7 @@ namespace TaxMeAppNUnitTesting
             //Add brackets to answer
             ans1.Brackets = brackets1;
             answers.Add(ans1);
-            
+
             //Go through all the tests (Right now there's just 1 for the year 2003)
             for (int i = 0; i < testModels.Count; i++)
             {
@@ -419,94 +415,6 @@ namespace TaxMeAppNUnitTesting
                     Assert.AreEqual(answers[i].Brackets[j].AverageTotalIncomeTax, testModels[i].Brackets[j].AverageTotalIncomeTax);
                 }
             }
-        }
-
-        //-------------------------------------------------------------------------------------------------
-        //Testing View Models
-        //-------------------------------------------------------------------------------------------------
-        
-        //ControlViewModel
-        [Test]
-        public void TestControllerViewModelYearChange()
-        {
-            
-            //Check that year is set correctly
-            cvm.YearsModel.SelectedYear = 5;
-            Assert.AreEqual(5, cvm.YearsModel.SelectedYear);
-
-            ObservableCollection<BracketModel> answerBracket;
-            //Check that the brackets match
-            answerBracket = Parser.ParseCSV(filePaths[5]).Brackets;
-            for (int i = 0; i < answerBracket.Count; i++) {
-                Assert.AreEqual(answerBracket.ElementAt(i).LowerBound, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).LowerBound);
-                Assert.AreEqual(answerBracket.ElementAt(i).UpperBound, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).UpperBound);
-                Assert.AreEqual(answerBracket.ElementAt(i).NumReturns, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).NumReturns);
-                Assert.AreEqual(answerBracket.ElementAt(i).GrossIncome, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).GrossIncome);
-                Assert.AreEqual(answerBracket.ElementAt(i).TaxableIncome, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).TaxableIncome);
-                Assert.AreEqual(answerBracket.ElementAt(i).IncomeTax, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).IncomeTax);
-                Assert.AreEqual(answerBracket.ElementAt(i).PercentOfTaxableIncomePaid, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).PercentOfTaxableIncomePaid);
-                Assert.AreEqual(answerBracket.ElementAt(i).PercentOfGrossIncomePaid, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).PercentOfGrossIncomePaid);
-                Assert.AreEqual(answerBracket.ElementAt(i).AverageTotalIncomeTax, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).AverageTotalIncomeTax);
-            }
-
-            //Check that year changed
-            cvm.YearsModel.SelectedYear = 6;
-            Assert.AreEqual(6, cvm.YearsModel.SelectedYear);
-
-            //Check that the brackets changed
-            answerBracket = Parser.ParseCSV(filePaths[6]).Brackets;
-            for (int i = 0; i < answerBracket.Count; i++)
-            {
-                Assert.AreEqual(answerBracket.ElementAt(i).LowerBound, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).LowerBound);
-                Assert.AreEqual(answerBracket.ElementAt(i).UpperBound, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).UpperBound);
-                Assert.AreEqual(answerBracket.ElementAt(i).NumReturns, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).NumReturns);
-                Assert.AreEqual(answerBracket.ElementAt(i).GrossIncome, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).GrossIncome);
-                Assert.AreEqual(answerBracket.ElementAt(i).TaxableIncome, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).TaxableIncome);
-                Assert.AreEqual(answerBracket.ElementAt(i).IncomeTax, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).IncomeTax);
-                Assert.AreEqual(answerBracket.ElementAt(i).PercentOfTaxableIncomePaid, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).PercentOfTaxableIncomePaid);
-                Assert.AreEqual(answerBracket.ElementAt(i).PercentOfGrossIncomePaid, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).PercentOfGrossIncomePaid);
-                Assert.AreEqual(answerBracket.ElementAt(i).AverageTotalIncomeTax, cvm.YearsModel.Years[cvm.SelectedYear].Brackets.ElementAt(i).AverageTotalIncomeTax);
-            }
-        }
-
-        [Test]
-        public void TestControllerViewModelCalculatePopulation() {            
-            cvm.calculatePopulation();
-            //Test that the population changes
-            Assert.AreEqual(4522, cvm.population[0]);
-        }
-
-        [Test]
-        public void TestControllerViewModelCountUnderPoverty() {
-            cvm.calculatePopulation();
-            cvm.countUnderPoverty();
-            Assert.AreEqual(10999610, cvm.NumPovertyPop);
-        }
-
-        [Test]
-        public void TestControllerViewModelCalcMaxPop() {
-            cvm.calculatePopulation();
-            Assert.AreEqual(2533618, cvm.countPopulationWithMaxBrackets(7));
-        }
-        [Test]
-        public void TestControllerViewModelCalcNewTaxData() {
-            cvm.calculatePopulation();
-            Assert.AreEqual(507862946387, cvm.calculateNewTaxDataFromBracks(3, 7));
-        }
-
-        //GraphViewModel
-        [Test]
-        public void TestGraphViewModel() {
-            GraphViewModel gvm = new GraphViewModel();
-            Assert.IsFalse(gvm.Equals(null));
-        }
-        //MainViewModel
-        [Test]
-        public void TestMainViewModel() {
-            GraphViewModel gvm = new GraphViewModel();
-            gvm.YearsModel = new YearsModel();
-            gvm.YearsModel.SelectedYear = 2003;
-            Assert.IsTrue(gvm.YearsModel.SelectedYear == 2003);
         }
     }
 }
