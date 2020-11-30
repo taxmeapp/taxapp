@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxMeApp", "TaxMeApp\TaxMeA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxMeAppNUnitTesting", "TaxMeAppNUnitTesting\TaxMeAppNUnitTesting.csproj", "{1E23F277-FE56-419A-A5DF-EABD24CDDDD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSUnitTesting", "MSUnitTesting\MSUnitTesting.csproj", "{FB0C4B0E-0E01-45A6-96FF-F7EB7263BE87}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{1E23F277-FE56-419A-A5DF-EABD24CDDDD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E23F277-FE56-419A-A5DF-EABD24CDDDD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E23F277-FE56-419A-A5DF-EABD24CDDDD9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB0C4B0E-0E01-45A6-96FF-F7EB7263BE87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB0C4B0E-0E01-45A6-96FF-F7EB7263BE87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB0C4B0E-0E01-45A6-96FF-F7EB7263BE87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB0C4B0E-0E01-45A6-96FF-F7EB7263BE87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

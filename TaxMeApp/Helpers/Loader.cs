@@ -31,10 +31,6 @@ namespace TaxMeApp
             yearsModel = new YearsModel();
             graphModel = new GraphModel();
             dataModel = new DataModel();
-            //yearsModel = null;
-            //graphModel = null;
-            //dataModel = null;
-
 
             // Load CSVs
 
@@ -54,7 +50,7 @@ namespace TaxMeApp
 
         }
 
-        public string[] loadYears()
+        public void loadYears()
         {
 
             // Return an array of all filenames from the directory that end in .csv
@@ -71,9 +67,15 @@ namespace TaxMeApp
                 yearsModel.Years.Add(year.Year, year);
 
             }
-            return files;
         }
 
+        public static string[] loadYearsTest()
+        {
+
+            // Return an array of all filenames from the directory that end in .csv
+            string[] files = Directory.GetFiles("res\\TaxCSV", "*.csv");
+            return files;
+        }
 
     }
 }
