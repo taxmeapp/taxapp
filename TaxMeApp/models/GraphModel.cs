@@ -10,7 +10,6 @@ namespace TaxMeApp.models
 {
     public class GraphModel
     {
-
         public SeriesCollection Series { get; } = new SeriesCollection();
 
        

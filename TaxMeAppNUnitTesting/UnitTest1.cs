@@ -3,21 +3,37 @@ using TaxMeApp.Helpers;
 using TaxMeApp.models;
 using TaxMeApp.viewmodels;
 using TaxMeApp.views;
+using LiveCharts;
+using LiveCharts.Wpf;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using Moq;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
 
 namespace TaxMeAppNUnitTesting
 {
     public class Tests
-    {        
+    {
         [SetUp]
         public void Setup()
-        {
+        {        
+            
         }
 
+        //-------------------------------------------------------------------------------------------------
         //Testing Helpers
+        //-------------------------------------------------------------------------------------------------
+
+        //Check that numbers are formatted correctly
         [Test]
         public void TestFormatter()
         {
@@ -58,7 +74,7 @@ namespace TaxMeAppNUnitTesting
             Assert.AreEqual(t8Ans, Formatter.Format(t8));
         }
 
-        //[Test]
+        [Test]
         public void TestLoader()
         {
             //Check that all of the years are loaded properly
@@ -81,6 +97,7 @@ namespace TaxMeAppNUnitTesting
             Assert.AreEqual(fileNames, loader.loadYears());
         }
 
+        //Testing that a file is parsed correctly
         [Test]
         public void TestParser()
         {
@@ -354,5 +371,26 @@ namespace TaxMeAppNUnitTesting
                 }
             }
         }
+
+        //-------------------------------------------------------------------------------------------------
+        //Testing View Models
+        //-------------------------------------------------------------------------------------------------
+        
+        //ControlViewModel
+        [Test]
+        public void TestYearChange()
+        {
+            ControlViewModel cvm = new ControlViewModel();
+          
+            //Change to year 5
+            cvm.SelectedYear = 5;
+
+            //Check that set worked correctly
+            Assert.AreEqual(5, cvm.SelectedYear);
+            //Check that the brackets changed
+            Assert.AreEqual(cvm.YearsModel.Years[5].Brackets, cvm.YearsModel.Years[cvm.SelectedYear].Brackets);
+        }
+        //GraphViewModel
+        //MainViewModel
     }
 }
