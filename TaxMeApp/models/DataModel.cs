@@ -10,6 +10,18 @@ namespace TaxMeApp.models
 {
     public class DataModel
     {
+        public DataModel() {
+            Population = new ObservableCollection<int>();
+            NumPovertyPop = 0;
+            NumMaxPop = 0;
+            TotalRevenueOld = 0;
+            TotalRevenueNew = 0;
+            MaxTaxRate = 0;
+            OldRevenueByBracket = new List<long>();
+            NewRevenueByBracket = new List<long>();
+            OldTaxPctByBracket = new List<double>();
+            NewTaxPctByBracket = new List<double>();
+        }
         public ObservableCollection<int> Population { get; } = new ObservableCollection<int>();
         public int NumPovertyPop { get; set; }
         public int NumMaxPop { get; set; }
@@ -26,13 +38,13 @@ namespace TaxMeApp.models
 
         public int MaxTaxRate { get; set; } = 20;
 
-        public List<long> OldRevenueByBracket { get; } = new List<long>();
+        public List<long> OldRevenueByBracket { get; set; } = new List<long>();
 
-        public List<long> NewRevenueByBracket { get; } = new List<long>();
+        public List<long> NewRevenueByBracket { get; set; } = new List<long>();
 
-        public List<double> OldTaxPctByBracket { get; } = new List<double>();
+        public List<double> OldTaxPctByBracket { get; set; } = new List<double>();
 
-        public List<double> NewTaxPctByBracket { get; } = new List<double>();
+        public List<double> NewTaxPctByBracket { get; set; } = new List<double>();
 
     }
 }

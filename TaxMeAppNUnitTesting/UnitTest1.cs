@@ -488,6 +488,11 @@ namespace TaxMeAppNUnitTesting
             cvm.calculatePopulation();
             Assert.AreEqual(2533618, cvm.countPopulationWithMaxBrackets(7));
         }
+        [Test]
+        public void TestControllerViewModelCalcNewTaxData() {
+            cvm.calculatePopulation();
+            Assert.AreEqual(507862946387, cvm.calculateNewTaxDataFromBracks(3, 7));
+        }
 
         //GraphViewModel
         [Test]

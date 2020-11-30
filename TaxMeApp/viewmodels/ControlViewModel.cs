@@ -364,6 +364,21 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public long totalRevenueNewTesting = 0;
+        public long TotalRevenueNewTesting
+        {
+            get
+            {
+                return totalRevenueNewTesting;
+            }
+            set
+            {
+                totalRevenueNewTesting = value;
+
+            }
+        
+        }
+
         public string TotalRevenueNewOutput
         {
             get
@@ -665,6 +680,74 @@ namespace TaxMeApp.viewmodels
 
         }
 
+        public long calculateNewTaxDataFromBracks(int povBracks, int maxBracks)
+        {
+
+            // Clear our bracket lists so we can add to fresh lists
+            List<long> nRevByBrack = new List<long>();
+            List<double> nTaxPctByBrack = new List<double>();
+
+            // Initialize our variables
+            int middleCount = selectedBrackets.Count - maxBracks;
+            long totalRevenueNew = 0;
+            double rate = 0;
+
+            // Initialize our index counter that is shared for all three loops
+            int i = 0;
+
+            // Handle poverty brackets
+            for (; i <= povBracks; i++)
+            {
+
+                // Revenue is 0
+                nRevByBrack.Add(0);
+                // Rate is 0
+                nTaxPctByBrack.Add(0);
+
+            }
+
+            // Determine how many divisons we want to spread our increment over
+            int divisions = middleCount - i + 1;
+
+            // Determine the rate at how much to increment, and round to 1 decimal place
+            double increment = Math.Round(25 / (double)divisions, 1);
+
+            // Incremental brackets
+            for (; i < middleCount; i++)
+            {
+
+                rate = rate + increment;
+
+                // Revenue is Taxable Income * Tax Rate
+                long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 1000 * rate / 100);
+                totalRevenueNew += bracketRevenue;
+
+                nRevByBrack.Add(bracketRevenue);
+
+                // Rate is incremental
+                nTaxPctByBrack.Add(rate);
+
+            }
+
+            // Max rate:
+            for (; i < selectedBrackets.Count; i++)
+            {
+
+                // Revenue is Taxable Income * Max Rate
+                long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * MaxTaxRate / 100;
+                totalRevenueNew += bracketRevenue;
+
+                nRevByBrack.Add(bracketRevenue);
+
+                // Rate is max
+                nTaxPctByBrack.Add(MaxTaxRate);
+
+            }
+
+            // Save our total revenue calculation
+            //TotalRevenueNewTesting = totalRevenueNew;
+            return totalRevenueNew;
+        }
 
         /*
             Graph functions 
@@ -678,15 +761,40 @@ namespace TaxMeApp.viewmodels
             Brush povertyColor = Brushes.Red;
             Brush normalColor = Brushes.Blue;
             Brush maxColor = Brushes.Lime;
-            CartesianMapper<int> povertyMapper = new CartesianMapper<int>()
+            CartesianMapper<int> povertyMapper;
+            if (this.GraphModel != null)
+            {
+                povertyMapper = new CartesianMapper<int>()
+                    .X((value, index) => index)
+                    .Y((value) => value)
+                    .Fill((value, index) =>
+                    {
+                        if (index <= povertyBrackets)
+                        {
+                            return povertyColor;
+                        }
+                        else if (index > povertyBrackets && index < totalBrackets - MaxBracketCount)
+                        {
+                            return normalColor;
+                        }
+                        else
+                        {
+                            return maxColor;
+                        }
+
+                    });
+            }
+            else {
+                povertyMapper = new CartesianMapper<int>()
                 .X((value, index) => index)
                 .Y((value) => value)
-                .Fill((value, index) => {
-                    if (index <= povertyBrackets)
+                .Fill((value, index) =>
+                {
+                    if (index <= 3)
                     {
                         return povertyColor;
                     }
-                    else if (index > povertyBrackets && index < totalBrackets - MaxBracketCount)
+                    else if (index > 3 && index < totalBrackets - 7)
                     {
                         return normalColor;
                     }
@@ -696,6 +804,7 @@ namespace TaxMeApp.viewmodels
                     }
 
                 });
+            }
             Charting.For<int>(povertyMapper, SeriesOrientation.Horizontal);
 
         }
