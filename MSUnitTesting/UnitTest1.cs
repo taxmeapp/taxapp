@@ -1,40 +1,25 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
 using TaxMeApp;
 using TaxMeApp.Helpers;
 using TaxMeApp.models;
 using TaxMeApp.viewmodels;
 using TaxMeApp.views;
-using LiveCharts;
-using LiveCharts.Wpf;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using Moq;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-
-
-namespace TaxMeAppNUnitTesting
+namespace MSUnitTesting
 {
-    public class Tests
+    [TestClass]
+    public class UnitTest1
     {
-        [SetUp]
-        public void Setup()
-        {        
-            
-        }
 
         //-------------------------------------------------------------------------------------------------
         //Testing Helpers
         //-------------------------------------------------------------------------------------------------
 
         //Check that numbers are formatted correctly
-        [Test]
+        [TestMethod]
         public void TestFormatter()
         {
             Random r = new Random();
@@ -44,7 +29,7 @@ namespace TaxMeAppNUnitTesting
             //Generate Random numbers to test
             //1st Set of Cases, numbers < 1,000 and numbers > 1,000 but < 1,000,000
             t1 = r.Next(1, 999);
-            t2 = r.Next(1, 999) * (long) Math.Pow(10, 3);
+            t2 = r.Next(1, 999) * (long)Math.Pow(10, 3);
             //2nd Set of Cases, numbers in the millions
             t3 = r.Next(1, 999) * (long)Math.Pow(10, 6);
             t4 = r.Next(1, 999) * (long)Math.Pow(10, 6);
@@ -74,22 +59,24 @@ namespace TaxMeAppNUnitTesting
             Assert.AreEqual(t8Ans, Formatter.Format(t8));
         }
 
-        [Test]
+        [TestMethod]
         public void TestLoader()
         {
             //Check that all of the years are loaded properly
             Loader loader = new Loader();
-            
+
             //Create answer of 2003-2018
             string[] fileNames = new string[18 - 3];
             string ans = "";
-            for (int i = 0; i < fileNames.Length; i++) {
+            for (int i = 0; i < fileNames.Length; i++)
+            {
                 ans = "20";
                 if (i < 10)
                 {
                     ans += "0" + i;
                 }
-                else {
+                else
+                {
                     ans += i;
                 }
                 fileNames[i] = ans;
@@ -99,7 +86,7 @@ namespace TaxMeAppNUnitTesting
         }
 
         //Testing that a file is parsed correctly
-        [Test]
+        [TestMethod]
         public void TestParser()
         {
             //Make a list of income year models to test
@@ -349,7 +336,7 @@ namespace TaxMeAppNUnitTesting
             //Add brackets to answer
             ans1.Brackets = brackets1;
             answers.Add(ans1);
-            
+
             //Go through all the tests (Right now there's just 1 for the year 2003)
             for (int i = 0; i < testModels.Count; i++)
             {
@@ -376,13 +363,13 @@ namespace TaxMeAppNUnitTesting
         //-------------------------------------------------------------------------------------------------
         //Testing View Models
         //-------------------------------------------------------------------------------------------------
-        
+
         //ControlViewModel
-        //[Test]
+        [TestMethod]
         public void TestYearChange()
         {
-            //ControlViewModel cvm = new ControlViewModel();
-            ControlViewModel cvm = null;
+            ControlViewModel cvm = new ControlViewModel(new YearsModel(), new GraphModel(), new DataModel());
+            //ControlViewModel cvm = null;
             //Change to year 5
             cvm.SelectedYear = 5;
 

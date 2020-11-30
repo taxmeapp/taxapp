@@ -8,18 +8,20 @@ using System.Threading.Tasks;
 using TaxMeApp.Helpers;
 using TaxMeApp.models;
 using TaxMeApp.viewmodels;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace TaxMeApp
 {
     public class Loader
     {
 
-        public ControlViewModel controlVM { get; private set; }
-        public GraphViewModel graphVM { get; private set; }
+        public ControlViewModel controlVM { get; set; }
+        public GraphViewModel graphVM { get; set; }
 
-        private YearsModel yearsModel;
-        private GraphModel graphModel;
-        private DataModel dataModel;
+        public YearsModel yearsModel { get; set; }
+        public GraphModel graphModel { get; set; }
+        public DataModel dataModel { get; set; }
 
         public Loader()
         {
@@ -29,6 +31,9 @@ namespace TaxMeApp
             yearsModel = new YearsModel();
             graphModel = new GraphModel();
             dataModel = new DataModel();
+            //yearsModel = null;
+            //graphModel = null;
+            //dataModel = null;
 
 
             // Load CSVs
@@ -38,10 +43,7 @@ namespace TaxMeApp
 
             // make view models
 
-            controlVM = new ControlViewModel();
-            controlVM.YearsModel = yearsModel;
-            controlVM.GraphModel = graphModel;
-            controlVM.DataModel = dataModel;
+            controlVM = new ControlViewModel(yearsModel, graphModel, dataModel);
 
             graphVM = new GraphViewModel();
             graphVM.GraphModel = graphModel;

@@ -11,9 +11,9 @@ namespace TaxMeApp.viewmodels
     public abstract class MainViewModel : INotifyPropertyChanged
     {
 
-        public GraphModel GraphModel { get; set; } = new GraphModel();
-        public DataModel DataModel { get; set; } = new DataModel();
-        public YearsModel YearsModel { get; set; } = new YearsModel();
+        public GraphModel GraphModel { get; set; }
+        public DataModel DataModel { get; set; }
+        public YearsModel YearsModel { get; set; }
 
 
         // Inherited from the interface, for notifying the view to update

@@ -10,7 +10,7 @@ namespace TaxMeApp.models
 {
     public class GraphModel
     {
-        public SeriesCollection Series { get; } = new SeriesCollection();
+        public SeriesCollection Series { get; set; } = new SeriesCollection();
 
        
         public AxisSection MaxBracketLine { get; set; } = new AxisSection();

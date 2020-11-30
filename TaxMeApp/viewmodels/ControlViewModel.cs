@@ -12,6 +12,11 @@ namespace TaxMeApp.viewmodels
 {
     public class ControlViewModel : MainViewModel
     {
+        public ControlViewModel(YearsModel yearsModel, GraphModel graphModel, DataModel dataModel) {
+            this.YearsModel = yearsModel;
+            this.GraphModel = graphModel;
+            this.DataModel = dataModel;
+        }
 
         // TestViewModel init
         public void Init()
@@ -635,7 +640,7 @@ namespace TaxMeApp.viewmodels
         */
 
         // Graph initialization
-        private void graphInit()
+        public void graphInit()
         {
             //Brackets including and under poverty line will be one color, normal brackets will be another, 
             //and max will be another color
