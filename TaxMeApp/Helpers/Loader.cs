@@ -16,41 +16,60 @@ namespace TaxMeApp
     public class Loader
     {
 
-        public ControlViewModel controlVM { get; set; }
-        public GraphViewModel graphVM { get; set; }
+        public MainViewModel MainVM { get; set; }
+        public DataViewModel DataVM { get; set; }
+        public ControlViewModel ControlVM { get; set; }
+        public GraphViewModel GraphVM { get; set; }
+        public OutputViewModel OutputVM { get; set; }
 
-        public YearsModel yearsModel { get; set; }
-        public GraphModel graphModel { get; set; }
-        public DataModel dataModel { get; set; }
+        public YearsModel YearsModel { get; set; }
+        public GraphModel GraphModel { get; set; }
+        public DataModel DataModel { get; set; }
 
         public Loader()
         {
 
             // Make models
 
-            yearsModel = new YearsModel();
-            graphModel = new GraphModel();
-            dataModel = new DataModel();
+            YearsModel = new YearsModel();
+            GraphModel = new GraphModel();
+            DataModel = new DataModel();
 
             // Load CSVs
 
-            loadYears();
+            LoadYears();
 
 
-            // make view models
+            // make viewmodels
+            MainVM = new MainViewModel();
+            DataVM = new DataViewModel();
+            ControlVM = new ControlViewModel();
+            GraphVM = new GraphViewModel();
+            OutputVM = new OutputViewModel();
 
-            controlVM = new ControlViewModel(yearsModel, graphModel, dataModel);
+            // Link VMs
+            MainVM.DataVM = DataVM;
+            DataVM.ControlVM = ControlVM;
+            DataVM.GraphVM = GraphVM;
+            DataVM.OutputVM = OutputVM;
 
-            graphVM = new GraphViewModel();
-            graphVM.GraphModel = graphModel;
+            ControlVM.OutputVM = OutputVM;
 
-            controlVM.GraphVM = graphVM;
+            // Connect models to VMs
+            ControlVM.YearsModel = YearsModel;
+            ControlVM.GraphModel = GraphModel;
+            ControlVM.DataModel = DataModel;
 
-            controlVM.Init();
+            GraphVM.GraphModel = GraphModel;
+            GraphVM.YearsModel = YearsModel;
+
+            OutputVM.DataModel = DataModel;
+
+            DataVM.DataInit();
 
         }
 
-        public void loadYears()
+        public void LoadYears()
         {
 
             // Return an array of all filenames from the directory that end in .csv
@@ -64,12 +83,12 @@ namespace TaxMeApp
                 IncomeYearModel year = Parser.ParseCSV(filename);
 
                 // Add that IncomeYearModel into the YearsModel
-                yearsModel.Years.Add(year.Year, year);
+                YearsModel.Years.Add(year.Year, year);
 
             }
         }
 
-        public static string[] loadYearsTest()
+        public static string[] LoadYearsTest()
         {
 
             // Return an array of all filenames from the directory that end in .csv

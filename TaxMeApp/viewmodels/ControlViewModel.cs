@@ -12,32 +12,15 @@ namespace TaxMeApp.viewmodels
 {
     public class ControlViewModel : MainViewModel
     {
-        public ControlViewModel()
-        {
-            this.YearsModel = new YearsModel();
-            this.GraphModel = new GraphModel();
-            this.DataModel = new DataModel();
-        }
-        public ControlViewModel(YearsModel yearsModel, GraphModel graphModel, DataModel dataModel) {
-            this.YearsModel = yearsModel;
-            this.GraphModel = graphModel;
-            this.DataModel = dataModel;
-        }
 
-        // TestViewModel init
-        public void Init()
+        // ControlPanel Init
+        public void ControlInit()
         {
-
-            // Initialize graph attributes
-            graphInit();
 
             // Automatically select the first item in the list
             SelectedYear = YearsModel.YearList[0];
 
         }
-
-        // View Model references
-        public GraphViewModel GraphVM { get; set; }
 
 
         /*
@@ -63,7 +46,7 @@ namespace TaxMeApp.viewmodels
         }
 
         // Population array
-        public ObservableCollection<int> population
+        public ObservableCollection<int> Population
         {
             get
             {
@@ -76,14 +59,6 @@ namespace TaxMeApp.viewmodels
             get
             {
                 return GraphModel.PovertyLineIndex;
-            }
-        }
-
-        private int totalBrackets
-        {
-            get
-            {
-                return YearsModel.SelectedIncomeYearModel.Brackets.Count;
             }
         }
 
@@ -118,6 +93,52 @@ namespace TaxMeApp.viewmodels
                 return DataModel.NewTaxPctByBracket;
             }
         }
+
+        private int numPovertyPop
+        {
+            get
+            {
+                return DataModel.NumPovertyPop;
+            }
+            set
+            {
+                DataModel.NumPovertyPop = value;
+                // force update of OutputVM
+                OutputVM.Update();
+            }
+        }
+
+        private int numMaxPop
+        {
+            set
+            {
+                DataModel.NumMaxPop = value;
+                // force update of OutputVM
+                OutputVM.Update();
+            }
+        }
+
+        private long totalRevenueOld
+        {
+            set
+            {
+                DataModel.TotalRevenueOld = value;
+                // force update of OutputVM
+                OutputVM.Update();
+            }
+        }
+
+        private long totalRevenueNew
+        {
+            set
+            {
+                DataModel.TotalRevenueNew = value;
+                // force update of OutputVM
+                OutputVM.Update();
+            }
+        }
+
+
 
         /*
                 Control Panel interaction: 
@@ -278,137 +299,24 @@ namespace TaxMeApp.viewmodels
         }
 
 
-        /*
-                Output Area 
-        */
-
-        // Each of the values represented in the output area
-        // The private member interacts with the model and this viewmodel
-        // The public member formats it for the view to pull
-
-        public int NumPovertyPop
-        {
-            get
-            {
-                return DataModel.NumPovertyPop;
-            }
-            set
-            {
-                DataModel.NumPovertyPop = value;
-                OnPropertyChange("NumPovertyPopOutput");
-            }
-        }
-
-        public string NumPovertyPopOutput
-        {
-            get
-            {
-                return Formatter.Format(NumPovertyPop);
-            }
-        }
-
-        private int NumMaxPop
-        {
-            get
-            {
-                return DataModel.NumMaxPop;
-            }
-            set
-            {
-                DataModel.NumMaxPop = value;
-                OnPropertyChange("NumMaxPopOutput");
-            }
-        }
-
-        public string NumMaxPopOutput
-        {
-            get
-            {
-                return Formatter.Format(NumMaxPop);
-            }
-        }
-
-        private long TotalRevenueOld
-        {
-            get
-            {
-                return DataModel.TotalRevenueOld;
-            }
-            set
-            {
-                DataModel.TotalRevenueOld = value;
-                OnPropertyChange("TotalRevenueOldOutput");
-                OnPropertyChange("RevenueDifferenceOutput");
-            }
-        }
-
-        public string TotalRevenueOldOutput
-        {
-            get
-            {
-                return Formatter.Format(TotalRevenueOld);
-            }
-        }
-
-        private long TotalRevenueNew
-        {
-            get
-            {
-                return DataModel.TotalRevenueNew;
-            }
-            set
-            {
-                DataModel.TotalRevenueNew = value;
-                OnPropertyChange("TotalRevenueNewOutput");
-                OnPropertyChange("RevenueDifferenceOutput");
-            }
-        }
-
-        public long totalRevenueNewTesting = 0;
-        public long TotalRevenueNewTesting
-        {
-            get
-            {
-                return totalRevenueNewTesting;
-            }
-            set
-            {
-                totalRevenueNewTesting = value;
-
-            }
         
-        }
-
-        public string TotalRevenueNewOutput
-        {
-            get
-            {
-                return Formatter.Format(TotalRevenueNew);
-            }
-        }
-
-        public string RevenueDifferenceOutput
-        {
-            get
-            {
-                return Formatter.Format(DataModel.RevenueDifference);
-            }
-        }
 
 
         /*
             Collective functions 
         */
 
+        // TODO: put these in graphVM, with some connecting call
+
         // Collection of calls to update data, clear graph, regraph
         private void totalGraphReset()
         {
 
             // Update our population counts
-            calculatePopulation();
+            CalculatePopulation();
 
             // Count how many people are under poverty line
-            countUnderPoverty();
+            CountUnderPoverty();
 
             // Determine our baseline number of brackets at max rate
             determineBaselineMaxBracketCount();
@@ -466,24 +374,24 @@ namespace TaxMeApp.viewmodels
         */
 
         // Recalculate population collection
-        public void calculatePopulation()
+        public void CalculatePopulation()
         {
 
             // Clear our current count
-            population.Clear();
+            Population.Clear();
 
             // Iterating through all brackets:
             for (int i = 0; i < selectedBrackets.Count; i++)
             {
 
-                population.Add(selectedBrackets[i].NumReturns);
+                Population.Add(selectedBrackets[i].NumReturns);
 
             }
 
         }
 
         // Count the population that is included in the poverty brackets
-        public void countUnderPoverty()
+        public void CountUnderPoverty()
         {
             int povertyPop = 0;
 
@@ -491,10 +399,10 @@ namespace TaxMeApp.viewmodels
             //for (int i = 0; i <= povertyBrackets; i++)
             for (int i = 0; i <= 3; i++)
             {
-                povertyPop += population[i];
+                povertyPop += Population[i];
             }
 
-            NumPovertyPop = povertyPop;
+            numPovertyPop = povertyPop;
 
             //Trace.WriteLine("There are " + NumPovertyPop + " returns under poverty line.");
 
@@ -507,15 +415,15 @@ namespace TaxMeApp.viewmodels
             int maxPopCount = 0;
             int maxBracketCount = 0;
 
-            int brackets = population.Count - 1;
+            int brackets = Population.Count - 1;
 
             // Starting at the end of array, work backwards
             // as long as our max population count is below our poverty population count
-            for (int i = brackets; maxPopCount < NumPovertyPop && i >= 0; i--)
+            for (int i = brackets; maxPopCount < numPovertyPop && i >= 0; i--)
             {
 
                 // Add to our counters
-                maxPopCount += population[i];
+                maxPopCount += Population[i];
                 maxBracketCount++;
 
             }
@@ -534,7 +442,7 @@ namespace TaxMeApp.viewmodels
             // Initialize population and bracket counters
             int maxPopCount = 0;
 
-            int brackets = population.Count - 1;
+            int brackets = Population.Count - 1;
 
             // Starting at the end of array, work backwards
             // as long as our max population count is below our poverty population count
@@ -542,24 +450,24 @@ namespace TaxMeApp.viewmodels
             {
 
                 // Add to our counters
-                maxPopCount += population[i];
+                maxPopCount += Population[i];
 
             }
 
             //Trace.WriteLine("There are " + maxPopCount + " returns at max rate.");
 
             // Save our value
-            NumMaxPop = maxPopCount;
+            numMaxPop = maxPopCount;
 
         }
 
-        public int countPopulationWithMaxBrackets(int maxBrackets)
+        public int CountPopulationWithMaxBrackets(int maxBrackets)
         {
 
             // Initialize population and bracket counters
             int maxPopCount = 0;
 
-            int brackets = population.Count - 1;
+            int brackets = Population.Count - 1;
 
             // Starting at the end of array, work backwards
             // as long as our max population count is below our poverty population count
@@ -567,7 +475,7 @@ namespace TaxMeApp.viewmodels
             {
 
                 // Add to our counters
-                maxPopCount += population[i];
+                maxPopCount += Population[i];
 
             }
 
@@ -605,7 +513,7 @@ namespace TaxMeApp.viewmodels
             }
 
             // Save our value for display in output region
-            TotalRevenueOld = totalRevenueOld;
+            this.totalRevenueOld = totalRevenueOld;
 
         }
 
@@ -676,11 +584,11 @@ namespace TaxMeApp.viewmodels
             }
 
             // Save our total revenue calculation
-            TotalRevenueNew = totalRevenueNew;
+            this.totalRevenueNew = totalRevenueNew;
 
         }
 
-        public long calculateNewTaxDataFromBracks(int povBracks, int maxBracks)
+        public long CalculateNewTaxDataFromBracks(int povBracks, int maxBracks)
         {
 
             // Clear our bracket lists so we can add to fresh lists
@@ -751,63 +659,7 @@ namespace TaxMeApp.viewmodels
 
         /*
             Graph functions 
-        */
-
-        // Graph initialization
-        public void graphInit()
-        {
-            //Brackets including and under poverty line will be one color, normal brackets will be another, 
-            //and max will be another color
-            Brush povertyColor = Brushes.Red;
-            Brush normalColor = Brushes.Blue;
-            Brush maxColor = Brushes.Lime;
-            CartesianMapper<int> povertyMapper;
-            if (this.GraphModel != null)
-            {
-                povertyMapper = new CartesianMapper<int>()
-                    .X((value, index) => index)
-                    .Y((value) => value)
-                    .Fill((value, index) =>
-                    {
-                        if (index <= povertyBrackets)
-                        {
-                            return povertyColor;
-                        }
-                        else if (index > povertyBrackets && index < totalBrackets - MaxBracketCount)
-                        {
-                            return normalColor;
-                        }
-                        else
-                        {
-                            return maxColor;
-                        }
-
-                    });
-            }
-            else {
-                povertyMapper = new CartesianMapper<int>()
-                .X((value, index) => index)
-                .Y((value) => value)
-                .Fill((value, index) =>
-                {
-                    if (index <= 3)
-                    {
-                        return povertyColor;
-                    }
-                    else if (index > 3 && index < totalBrackets - 7)
-                    {
-                        return normalColor;
-                    }
-                    else
-                    {
-                        return maxColor;
-                    }
-
-                });
-            }
-            Charting.For<int>(povertyMapper, SeriesOrientation.Horizontal);
-
-        }
+        */        
 
         // Graph things based on whether or not they are checked in the control panel
         private void graphAllChecked()
@@ -849,7 +701,7 @@ namespace TaxMeApp.viewmodels
                 new ColumnSeries
                 {
                     Title = SelectedYear + " Income",
-                    Values = new ChartValues<int>(population),
+                    Values = new ChartValues<int>(Population),
                     ScalesYAt = 0
                 }
             );          

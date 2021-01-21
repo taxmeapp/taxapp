@@ -22,7 +22,7 @@ namespace TaxMeApp
             InitializeComponent();
 
 
-            ControlView.DataContext = loader.controlVM;
+            DataContext = loader.MainVM;
 
 
         }

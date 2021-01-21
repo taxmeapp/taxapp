@@ -23,18 +23,22 @@ namespace TaxMeAppNUnitTesting
 {
     public class IntegrationTests
     {
-        public ControlViewModel cvm;
+        public ControlViewModel ControlVM;
         string[] filePaths;
 
         [SetUp]
         public void Setup()
         {
-            cvm = new ControlViewModel(new YearsModel(), null, new DataModel());
+            ControlVM = new ControlViewModel();
+            YearsModel yearsModel = new YearsModel();
+            DataModel dataModel = new DataModel();
+            ControlVM.YearsModel = yearsModel;
+            ControlVM.DataModel = dataModel;
 
             filePaths = Directory.GetFiles("res\\TaxCSV", "*.csv");
             for (int i = 0; i < filePaths.Length; i++)
             {
-                cvm.YearsModel.Years.Add(i, Parser.ParseCSV(filePaths[i]));
+                ControlVM.YearsModel.Years.Add(i, Parser.ParseCSV(filePaths[i]));
             }
         }
 
@@ -46,7 +50,7 @@ namespace TaxMeAppNUnitTesting
             //Loader ld = new Loader();
             //MainWindow mw = new MainWindow();
             GraphViewModel gvm = new GraphViewModel();
-            cvm.GraphVM = gvm;
+            ControlVM.GraphVM = gvm;
             //cvm.Init();
 
             Assert.IsNotNull(gvm);

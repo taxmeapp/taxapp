@@ -8,6 +8,6 @@
         mc:Ignorable="d"
         Title="TaxMe" Height="730" Width="800">
     <Grid>
-        <views:ControlView x:Name="ControlView"/>
+        <views:DataView DataContext="{Binding DataVM}"/>
     </Grid>
 </Window>

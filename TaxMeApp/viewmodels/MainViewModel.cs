@@ -8,12 +8,17 @@ using TaxMeApp.models;
 
 namespace TaxMeApp.viewmodels
 {
-    public abstract class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged
     {
 
         public GraphModel GraphModel { get; set; }
         public DataModel DataModel { get; set; }
         public YearsModel YearsModel { get; set; }
+
+        public ControlViewModel ControlVM { get; set; }
+        public DataViewModel DataVM { get; set; }
+        public GraphViewModel GraphVM { get; set; }
+        public OutputViewModel OutputVM { get; set; }
 
 
         // Inherited from the interface, for notifying the view to update
