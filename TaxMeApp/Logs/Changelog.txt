@@ -1,0 +1,4 @@
+﻿1/22 - Chris
+Moved logic to more appropriate locations around viewmodels
+	i.e. graphing functions in GraphVM, calculation functions in DataVM, only control panel manipulations in ControlVM
+Added Settings page with button to flip between our DataView and SettingsView

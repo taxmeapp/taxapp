@@ -1,0 +1,5 @@
+﻿1/22 - Chris
+Reconfigure testing since logic was moved around significantly
+Perhaps incorporate UserSettings to save last set of selections and reload on program load - I have a template for this if we want this
+Reincorporate individual bracket tax rate adjustments
+Generate smoother income data based on population density curves and some basic machine learning algorithms
