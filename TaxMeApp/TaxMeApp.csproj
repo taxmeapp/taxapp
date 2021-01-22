@@ -91,6 +91,7 @@
     <Compile Include="Helpers\Formatter.cs" />
     <Compile Include="Helpers\Parser.cs" />
     <Compile Include="Helpers\Loader.cs" />
+    <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="models\BracketModel.cs" />
     <Compile Include="models\DataModel.cs" />
     <Compile Include="models\GraphModel.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="models\YearsModel.cs" />
     <Compile Include="viewmodels\DataViewModel.cs" />
     <Compile Include="viewmodels\OutputViewModel.cs" />
+    <Compile Include="viewmodels\SettingsViewModel.cs" />
     <Compile Include="views\ControlView.xaml.cs">
       <DependentUpon>ControlView.xaml</DependentUpon>
     </Compile>
@@ -112,6 +114,9 @@
     </Compile>
     <Compile Include="views\OutputView.xaml.cs">
       <DependentUpon>OutputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -138,6 +143,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\OutputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

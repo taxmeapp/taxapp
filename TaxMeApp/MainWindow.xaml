@@ -6,8 +6,17 @@
         xmlns:local="clr-namespace:TaxMeApp"
         xmlns:views="clr-namespace:TaxMeApp.views"
         mc:Ignorable="d"
-        Title="TaxMe" Height="730" Width="800">
-    <Grid>
-        <views:DataView DataContext="{Binding DataVM}"/>
-    </Grid>
+        Title="TaxMe" MinHeight="730" MinWidth="800">
+
+
+    <TabControl BorderThickness="0"
+                Padding="0, -2, 0, 0"
+                SelectedIndex="{Binding TabSelected}" >
+        <TabItem Visibility="Collapsed">
+            <views:DataView DataContext="{Binding DataVM}"/>
+        </TabItem>
+        <TabItem Visibility="Collapsed">
+            <views:SettingsView DataContext="{Binding SettingsVM}"/>
+        </TabItem>
+    </TabControl>
 </Window>

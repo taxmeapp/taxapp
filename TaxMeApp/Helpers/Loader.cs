@@ -21,6 +21,7 @@ namespace TaxMeApp
         public ControlViewModel ControlVM { get; set; }
         public GraphViewModel GraphVM { get; set; }
         public OutputViewModel OutputVM { get; set; }
+        public SettingsViewModel SettingsVM { get; set; }
 
         public YearsModel YearsModel { get; set; }
         public GraphModel GraphModel { get; set; }
@@ -36,9 +37,7 @@ namespace TaxMeApp
             DataModel = new DataModel();
 
             // Load CSVs
-
             LoadYears();
-
 
             // make viewmodels
             MainVM = new MainViewModel();
@@ -46,22 +45,36 @@ namespace TaxMeApp
             ControlVM = new ControlViewModel();
             GraphVM = new GraphViewModel();
             OutputVM = new OutputViewModel();
+            SettingsVM = new SettingsViewModel();
 
             // Link VMs
             MainVM.DataVM = DataVM;
+            MainVM.SettingsVM = SettingsVM;
+
             DataVM.ControlVM = ControlVM;
             DataVM.GraphVM = GraphVM;
             DataVM.OutputVM = OutputVM;
 
+            ControlVM.MainVM = MainVM;
+            ControlVM.DataVM = DataVM;
             ControlVM.OutputVM = OutputVM;
+            ControlVM.GraphVM = GraphVM;
+
+            SettingsVM.MainVM = MainVM;
 
             // Connect models to VMs
+
+            DataVM.DataModel = DataModel;
+            DataVM.YearsModel = YearsModel;
+            DataVM.GraphModel = GraphModel;
+
             ControlVM.YearsModel = YearsModel;
             ControlVM.GraphModel = GraphModel;
             ControlVM.DataModel = DataModel;
 
             GraphVM.GraphModel = GraphModel;
             GraphVM.YearsModel = YearsModel;
+            GraphVM.DataModel = DataModel;
 
             OutputVM.DataModel = DataModel;
 
