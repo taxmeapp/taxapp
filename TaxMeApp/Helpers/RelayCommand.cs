@@ -82,8 +82,8 @@ namespace TaxMeApp.Helpers
     // Instantiate the command you declared above
     WhateverCommand = new RelayCommand(o => whateverClick(""));
     // For different buttons, the blank parts are the only ones that should change:
-    // With "_____Click("")" being the function you declare below
     _____Command = new RelayCommand(o => _____Click("_____"));
+    // With _____Click("_____") being the function you declare below:
 
     as a class function in the VM:
 
@@ -102,12 +102,14 @@ namespace TaxMeApp.Helpers
     // Example of passing in values for the args for code reuse:
     
     // Four buttons, one click logic (specific case passed in to arg)
+
     LapSortCommand = new RelayCommand(o => sortComparisonFiles("lap"));
     FilenameSortCommand = new RelayCommand(o => sortComparisonFiles("filename"));
     CarSortCommand = new RelayCommand(o => sortComparisonFiles("car"));
     TrackSortCommand = new RelayCommand(o => sortComparisonFiles("track"));
 
     // Not neccessarily THE way, but it is a way that I found easy to do:
+
     private void sortComparisonFiles(object sender)
     {
         // cast the args to string to use in the switch
