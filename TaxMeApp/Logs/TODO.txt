@@ -3,3 +3,8 @@ Reconfigure testing since logic was moved around significantly
 Perhaps incorporate UserSettings to save last set of selections and reload on program load - I have a template for this if we want this
 Reincorporate individual bracket tax rate adjustments
 Generate smoother income data based on population density curves and some basic machine learning algorithms
+
+1/24 - Steve
+Fix Select Tax Plan Combo Box to update and save values properly
+Implement Reset Buttons
+Add Fixed option/Proportional Editing so you don't have to change tax rates of individual brackets
