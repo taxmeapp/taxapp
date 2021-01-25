@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TaxMeApp.views"
              mc:Ignorable="d" 
              >
-    
+
     <Grid Background="White"
                   Width="450"
                   Height="250">
@@ -51,7 +51,7 @@
                            Text="{Binding TotalRevenueOldOutput}"/>
 
         <TextBlock Grid.Row="5" 
-                           Text="Total Revenue After Slant Tax: "/>
+                           Text="Total Revenue After New Tax Plan: "/>
         <TextBlock Grid.Column="2"
                            Grid.Row="5"
                            HorizontalAlignment="Right" 

@@ -12,7 +12,7 @@ namespace TaxMeApp.models
     {
         public SeriesCollection Series { get; set; } = new SeriesCollection();
 
-       
+
         public AxisSection MaxBracketLine { get; set; } = new AxisSection();
 
         public string[] Labels { get; } =
@@ -41,6 +41,9 @@ namespace TaxMeApp.models
         public int PovertyLineIndex { get; } = 3;
 
         public int MaxBracketCount { get; set; }
+
+        //Added for Bracket combo box
+        public string SelectedBracket { get; set; }
 
 
         // Set the defaults for what are displayed on the graph

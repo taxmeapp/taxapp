@@ -15,6 +15,8 @@ namespace TaxMeApp.viewmodels
         public GraphModel GraphModel { get; set; }
         public DataModel DataModel { get; set; }
         public YearsModel YearsModel { get; set; }
+        public TaxPlansModel TaxPlansModel { get; set; }
+        public OptionsModel OptionsModel { get; set; }
 
         public MainViewModel MainVM { get; set; }
         public ControlViewModel ControlVM { get; set; }
