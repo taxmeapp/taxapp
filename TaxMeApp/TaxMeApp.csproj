@@ -91,10 +91,37 @@
     <Compile Include="models\BracketDisplayModel.cs" />
     <Compile Include="models\BracketModel.cs" />
     <Compile Include="models\IncomeYearModel.cs" />
+<<<<<<< Updated upstream
     <Compile Include="models\TaxPolicyModel.cs" />
     <Compile Include="TestModel.cs" />
     <Compile Include="TestView.xaml.cs">
       <DependentUpon>TestView.xaml</DependentUpon>
+=======
+    <Compile Include="models\IndividualTaxPlanModel.cs" />
+    <Compile Include="models\OptionsModel.cs" />
+    <Compile Include="models\TaxPlansModel.cs" />
+    <Compile Include="models\YearsModel.cs" />
+    <Compile Include="viewmodels\DataViewModel.cs" />
+    <Compile Include="viewmodels\OutputViewModel.cs" />
+    <Compile Include="viewmodels\SettingsViewModel.cs" />
+    <Compile Include="views\ControlView.xaml.cs">
+      <DependentUpon>ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="viewmodels\ControlViewModel.cs" />
+    <Compile Include="viewmodels\GraphViewModel.cs" />
+    <Compile Include="viewmodels\MainViewModel.cs" />
+    <Compile Include="views\DataView.xaml.cs">
+      <DependentUpon>DataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\GraphView.xaml.cs">
+      <DependentUpon>GraphView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\OutputView.xaml.cs">
+      <DependentUpon>OutputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+>>>>>>> Stashed changes
     </Compile>
     <Compile Include="TestViewModel.cs" />
     <Page Include="MainWindow.xaml">
