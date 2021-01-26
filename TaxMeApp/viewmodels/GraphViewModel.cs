@@ -91,7 +91,17 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return GraphModel.Labels;
+                List<string> labels = new List<string>();
+
+                foreach (var bracket in YearsModel.SelectedIncomeYearModel.Brackets)
+                {
+                    labels.Add(bracket.Range);
+                }
+
+                return labels.ToArray();
+
+                /*YearsModel.SelectedIncomeYearModel.Brackets.ToList().ForEach(b => Labels.Append(b.Range));
+                return Labels;*/
             }
         }
 
