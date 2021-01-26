@@ -36,84 +36,116 @@ namespace TaxMeAppNUnitTesting
         //Testing Helpers
         //-------------------------------------------------------------------------------------------------
 
-        //Check that numbers are formatted correctly
         [Test]
-        public void TestFormatterThousands()
+        public void TestFormatter()
         {
-            Random r = new Random();
-            long t1, t2;
 
-            //Generate Random numbers to test
-            //1st Set of Cases, numbers < 1,000 and numbers > 1,000 but < 1,000,000
-            t1 = r.Next(1, 999);
-            t2 = r.Next(1, 999) * (long)Math.Pow(10, 3);
+            // Testing a number of things here:
+            // 1) Proper evaluation of Math.Abs(value), sending to correct logic
+            // 2) Proper rounding at some edges, i.e. avoiding "1000.00 billion", isntead should be "1.00 trillion"
+            // 3) Rounding of 3rd decimal place
+            // 4) Proper formatting of result into readable string with correctness
 
-            //Test Each Case
-            Assert.AreEqual(t1.ToString(), Formatter.Format(t1));
-            Assert.AreEqual(t2.ToString("#,##0"), Formatter.Format(t2));
-        }
+            long value;
 
-        [Test]
-        public void TestFormatterMillions()
-        {
-            Random r = new Random();
-            long t3, t4;
-            string t3Ans, t4Ans;
+            // Trillion logic:
+   
+            // One trillion + 1 decimal place
+            value = 1200000000000;
+            Assert.AreEqual(Formatter.Format(value), "1.20 trillion");
+            // One trillion + 2 decimal places
+            value = 1230000000000;
+            Assert.AreEqual(Formatter.Format(value), "1.23 trillion");
+            // One trillion + 3 decimal places, no round
+            value = 1234000000000;
+            Assert.AreEqual(Formatter.Format(value), "1.23 trillion");
+            // One trillion + 3 decimal places, with round
+            value = 1235000000000;
+            Assert.AreEqual(Formatter.Format(value), "1.24 trillion");
+            // Lowest value for trillion:
+            // 999,500,000,000 <- this should round to trillion
+            value = 999500000000;
+            Assert.AreEqual(Formatter.Format(value), "1.00 trillion");
 
-            //Generate Random numbers to test
-            //2nd Set of Cases, numbers in the millions
-            t3 = r.Next(1, 999) * (long)Math.Pow(10, 6);
-            t4 = r.Next(1, 999) * (long)Math.Pow(10, 6);
+            // Billion logic:
 
-            //For the millions, billions and trillions format the answer manually
-            t3Ans = (t3 / (1 * Math.Pow(10, 6))).ToString(".00") + " million";
-            t4Ans = (t4 / (1 * Math.Pow(10, 6))).ToString(".00") + " million";
+            // Highest value for billion:
+            // 999,459,999,999
+            value = 999499999999;
+            Assert.AreEqual(Formatter.Format(value), "999.50 billion");
+            // One billion + 1 decimal place
+            value = 1200000000;
+            Assert.AreEqual(Formatter.Format(value), "1.20 billion");
+            // One billion + 2 decimal places
+            value = 1230000000;
+            Assert.AreEqual(Formatter.Format(value), "1.23 billion");
+            // One billion + 3 decimal places, no round
+            value = 1234000000;
+            Assert.AreEqual(Formatter.Format(value), "1.23 billion");
+            // One billion + 3 decimal places, with round
+            value = 1235000000;
+            Assert.AreEqual(Formatter.Format(value), "1.24 billion");
+            // Lowest value for billion:
+            // 999,500,000 <- this should round to billion
+            value = 999500000; 
+            Assert.AreEqual(Formatter.Format(value), "1.00 billion");
 
-            //Test Each Case
-            Assert.AreEqual(t3Ans, Formatter.Format(t3));
-            Assert.AreEqual(t4Ans, Formatter.Format(t4));
-        }
+            // Million logic:
 
-        [Test]
-        public void TestFormatterBillions()
-        {
-            Random r = new Random();
-            long t5, t6;
-            string t5Ans, t6Ans;
+            // Highest value for million:
+            // 999,499,999 
+            value = 999499999;
+            Assert.AreEqual(Formatter.Format(value), "999.50 million");
+            // One million + 1 decimal place
+            value = 1200000;
+            Assert.AreEqual(Formatter.Format(value), "1.20 million");
+            // One million + 2 decimal places
+            value = 1230000;
+            Assert.AreEqual(Formatter.Format(value), "1.23 million");
+            // One million + 3 decimal places, no round
+            value = 1234000;
+            Assert.AreEqual(Formatter.Format(value), "1.23 million");
+            // One million + 3 decimal places, with round
+            value = 1235000;
+            Assert.AreEqual(Formatter.Format(value), "1.24 million");
+            // Lowest value for million:
+            // 1,000,000 (because we catch 999,999 and below explicitly before we evaluate value) 
+            value = 1000000;
+            Assert.AreEqual(Formatter.Format(value), "1.00 million");
 
-            //Generate Random numbers to test
-            //3rd Set of Cases, numbers in the billions
-            t5 = r.Next(1, 999) * (long)Math.Pow(10, 9);
-            t6 = r.Next(1, 999) * (long)Math.Pow(10, 9);
+            // 999,999 Highest value for just commas
+            value = 999999;
+            Assert.AreEqual(Formatter.Format(value), "999,999");
+            // 0 
+            value = 0;
+            Assert.AreEqual(Formatter.Format(value), "0");
 
-            //For the millions, billions and trillions format the answer manually
-            t5Ans = (t5 / (1 * Math.Pow(10, 9))).ToString(".00") + " billion";
-            t6Ans = (t6 / (1 * Math.Pow(10, 9))).ToString(".00") + " billion";
+            // -1
+            value = -1;
+            Assert.AreEqual(Formatter.Format(value), "-1");
+            // -999,999 Lowest value for just commas
+            value = -999999;
+            Assert.AreEqual(Formatter.Format(value), "-999,999");
 
-            //Test Each Case
-            Assert.AreEqual(t5Ans, Formatter.Format(t5));
-            Assert.AreEqual(t6Ans, Formatter.Format(t6));
-        }
+            // -1 million Highest for negative million
+            value = -1000000;
+            Assert.AreEqual(Formatter.Format(value), "-1.00 million");
+            // -999,499,999 Lowest for negative million
+            value = -999499999;
+            Assert.AreEqual(Formatter.Format(value), "-999.50 million");
 
-        [Test]
-        public void TestFormatterTrillions()
-        {
-            Random r = new Random();
-            long t7, t8;
-            string t7Ans, t8Ans;
+            // -999,500,000 Highest for negative billion
+            value = -999500000;
+            Assert.AreEqual(Formatter.Format(value), "-1.00 billion");
+            // -999,459,999,999 Lowest for negative billion
+            value = -999499999999;
+            Assert.AreEqual(Formatter.Format(value), "-999.50 billion");
 
-            //Generate Random numbers to test
-            //4th Set of Cases, numbers in the trillions
-            t7 = r.Next(1, 999) * (long)Math.Pow(10, 12);
-            t8 = r.Next(1, 999) * (long)Math.Pow(10, 12);
 
-            //For the millions, billions and trillions format the answer manually
-            t7Ans = (t7 / (1 * Math.Pow(10, 12))).ToString(".00") + " trillion";
-            t8Ans = (t8 / (1 * Math.Pow(10, 12))).ToString(".00") + " trillion";
+            // -999,500,000,000 Highest for negative trillion
+            value = -999500000000;
+            Assert.AreEqual(Formatter.Format(value), "-1.00 trillion");
 
-            //Test Each Case
-            Assert.AreEqual(t7Ans, Formatter.Format(t7));
-            Assert.AreEqual(t8Ans, Formatter.Format(t8));
         }
 
         [Test]
