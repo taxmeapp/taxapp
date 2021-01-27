@@ -89,8 +89,6 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
-                GraphModel.MaxBracketCount = value;
-
                 OnPropertyChange("MaxBracketCount");
             }
         }
@@ -217,13 +215,20 @@ namespace TaxMeApp.viewmodels
         private void totalGraphReset()
         {
 
+        
             // Update all data
-            DataVM.TotalRecalculation();
 
-            GraphVM.ClearSeries();
-
-            GraphVM.GraphAllChecked();
+            if (DataVM != null)
+            {
+                DataVM.TotalRecalculation();
+            }
             
+            if (GraphVM != null)
+            {
+                GraphVM.ClearSeries();
+
+                GraphVM.GraphAllChecked();
+            }            
 
         }
 
@@ -231,14 +236,20 @@ namespace TaxMeApp.viewmodels
         private void newDataGraphReset()
         {
 
-            // Recalculate all the *new* data only
-            DataVM.NewDataRecalcuation();
+            if (DataVM != null)
+            {
+                // Recalculate all the *new* data only
+                DataVM.NewDataRecalcuation();
+            }
+            
+            if (GraphVM != null)
+            {
+                // Clear the graph
+                GraphVM.ClearSeries();
 
-            // Clear the graph
-            GraphVM.ClearSeries();
-
-            // Graph everything that is checked
-            GraphVM.GraphAllChecked();
+                // Graph everything that is checked
+                GraphVM.GraphAllChecked();
+            }          
 
         }
 
@@ -246,11 +257,14 @@ namespace TaxMeApp.viewmodels
         private void displayOnlyGraphReset()
         {
 
-            // Clear the graph
-            GraphVM.ClearSeries();
+            if (GraphVM != null)
+            {
+                // Clear the graph
+                GraphVM.ClearSeries();
 
-            // Graph everything that is checked
-            GraphVM.GraphAllChecked();
+                // Graph everything that is checked
+                GraphVM.GraphAllChecked();
+            }
 
         }
 

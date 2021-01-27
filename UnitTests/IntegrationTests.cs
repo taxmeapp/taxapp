@@ -1,29 +1,19 @@
-using TaxMeApp;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TaxMeApp.Helpers;
 using TaxMeApp.models;
 using TaxMeApp.viewmodels;
-using TaxMeApp.views;
-using LiveCharts;
-using LiveCharts.Wpf;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using Moq;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-
-
-namespace TaxMeAppNUnitTesting
+namespace UnitTests
 {
+    [TestClass]
     public class IntegrationTests
     {
+
         private ControlViewModel controlVM;
+        private OutputViewModel outputVM;
         private DataViewModel dataVM;
 
         private YearsModel yearsModel;
@@ -32,11 +22,12 @@ namespace TaxMeAppNUnitTesting
 
         private string[] filePaths;
 
-        [SetUp]
+        [TestInitialize]
         public void Setup()
         {
             // Create VMs
             controlVM = new ControlViewModel();
+            outputVM = new OutputViewModel();
             //dataVM = new DataViewModel();
 
 
@@ -52,6 +43,7 @@ namespace TaxMeAppNUnitTesting
             // Link models to VMs
             controlVM.YearsModel = yearsModel;
             controlVM.DataModel = dataModel;
+            controlVM.GraphModel = graphModel;
 
             filePaths = Directory.GetFiles("res\\TaxCSV", "*.csv");
             for (int i = 0; i < filePaths.Length; i++)
@@ -61,32 +53,22 @@ namespace TaxMeAppNUnitTesting
         }
 
         //-------------------------------------------------------------------------------------------------
-        //Integration Testing
+        //  Integration Testing
         //-------------------------------------------------------------------------------------------------
-        [Test]
-        public void TestViewModelIntegration() {
-            //Loader ld = new Loader();
-            //MainWindow mw = new MainWindow();
-            GraphViewModel gvm = new GraphViewModel();
-            controlVM.GraphVM = gvm;
-            //cvm.Init();
-
-            Assert.IsNotNull(gvm);
-        }
 
         /*
                 ControlViewModel
         */
 
-        [Test]
+
+        // ControlVM: Testing the getter logic for initial year in the dropdown box
+        [TestMethod]
         public void TestControlVMInit()
         {
 
-            // Testing the getter logic for ControlVM's initial year in the dropdown box
-
             // When ControlInit is called, the SelectedYear should be set to the first item of the generated List of keys
             controlVM.ControlInit();
-            
+
             // Pull a copy from ControlVM's stored key value, as well as from the list of keys directly
             IncomeYearModel testOutputFromInit;
             IncomeYearModel testOutputFromList;
@@ -102,11 +84,12 @@ namespace TaxMeAppNUnitTesting
 
         }
 
-        [Test]
-        public void TestVMtoModelInteraction()
+        // ControlVM: Testing the getters/setters and their interactions with models
+        [TestMethod]
+        public void TestControlVMtoModels()
         {
 
-            // Testing the getters/setters and their interactions with models
+
 
             // YearList (only getter)
             // The getter in the model is currently set up to generate a new list on each Get
@@ -115,6 +98,7 @@ namespace TaxMeAppNUnitTesting
             List<int> yearListFromModel = yearsModel.YearList;
             // Should be same size
             Assert.AreEqual(yearListFromControlVM.Count, yearListFromModel.Count);
+            // Compare each item
             for (int i = 0; i < yearListFromModel.Count; i++)
             {
                 Assert.AreEqual(yearListFromModel[i], yearListFromControlVM[i]);
@@ -149,20 +133,69 @@ namespace TaxMeAppNUnitTesting
             Assert.AreEqual(graphModel.MaxBracketCount, controlVM.MaxBracketCountSlider);
 
 
-            // ShowNumberOfReturns
+            // Booleans for checkboxes:
+
+            // ShowNumberOfReturns 
+            // Getter
+            Assert.AreEqual(graphModel.ShowNumberOfReturns, controlVM.ShowNumberOfReturns);
+            // Setter
+            controlVM.ShowNumberOfReturns = !controlVM.ShowNumberOfReturns;
+            Assert.AreEqual(graphModel.ShowNumberOfReturns, controlVM.ShowNumberOfReturns);
 
             // ShowOldRevenue
+            // Getter
+            Assert.AreEqual(graphModel.ShowOldRevenue, controlVM.ShowOldRevenue);
+            // Setter
+            controlVM.ShowOldRevenue = !controlVM.ShowOldRevenue;
+            Assert.AreEqual(graphModel.ShowOldRevenue, controlVM.ShowOldRevenue);
 
             // ShowNewRevenue
+            // Getter
+            Assert.AreEqual(graphModel.ShowNewRevenue, controlVM.ShowNewRevenue);
+            // Setter
+            controlVM.ShowNewRevenue = !controlVM.ShowNewRevenue;
+            Assert.AreEqual(graphModel.ShowNewRevenue, controlVM.ShowNewRevenue);
 
             // ShowOldPercentage
+            // Getter
+            Assert.AreEqual(graphModel.ShowOldPercentage, controlVM.ShowOldPercentage);
+            // Setter
+            controlVM.ShowOldPercentage = !controlVM.ShowOldPercentage;
+            Assert.AreEqual(graphModel.ShowOldPercentage, controlVM.ShowOldPercentage);
 
             // ShowNewPercentage
-
+            // Getter
+            Assert.AreEqual(graphModel.ShowNewPercentage, controlVM.ShowNewPercentage);
+            // Setter
+            controlVM.ShowNewPercentage = !controlVM.ShowNewPercentage;
+            Assert.AreEqual(graphModel.ShowNewPercentage, controlVM.ShowNewPercentage);
 
 
         }
 
+
+        /*
+                OutputViewModel 
+        */ 
+
+        // OutputVM: Testing the getters and their interactions with models
+        [TestMethod]
+        public void TestOutputVMtoModels()
+        {
+
+            // All values are passed through the formatter for display
+
+            //NumPovertyPopOutput
+
+            //NumMaxPopOutput
+
+            //TotalRevenueOldOutput
+
+            //TotalRevenueNewOutput
+
+            //RevenueDifferenceOutput
+
+        }
 
     }
 }

@@ -13,14 +13,15 @@ namespace TaxMeAppNUnitTesting
 {
     class UnitTestViewModels
     {
-        public ControlViewModel ControlVM;
+        private ControlViewModel ControlVM;
+        private YearsModel yearsModel;
         string[] filePaths;
 
         [SetUp]
         public void Setup()
         {
             ControlVM = new ControlViewModel();
-            YearsModel yearsModel = new YearsModel();
+            yearsModel = new YearsModel();
             DataModel dataModel = new DataModel();
             ControlVM.YearsModel = yearsModel;
             ControlVM.DataModel = dataModel;
@@ -35,6 +36,13 @@ namespace TaxMeAppNUnitTesting
         //-------------------------------------------------------------------------------------------------
         //Testing View Models
         //-------------------------------------------------------------------------------------------------
+
+        // ControlViewModel
+
+
+
+        
+
 
         //ControlViewModel
         [Test]

@@ -1,34 +1,37 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TaxMeApp;
 using TaxMeApp.Helpers;
 using TaxMeApp.models;
 using TaxMeApp.viewmodels;
 
-namespace TaxMeAppNUnitTesting
+namespace UnitTests
 {
-    class UnitTestHelpers
+    [TestClass]
+    public class HelpersUnitTest
     {
-        public ControlViewModel ControlVM;
-        string[] filePaths;
+        private ControlViewModel controlVM;
+        private string[] filePaths;
 
-        [SetUp]
+        [TestInitialize]
         public void Setup()
         {
-            ControlVM = new ControlViewModel();
+            controlVM = new ControlViewModel();
             YearsModel yearsModel = new YearsModel();
             DataModel dataModel = new DataModel();
-            ControlVM.YearsModel = yearsModel;
-            ControlVM.DataModel = dataModel;
+            controlVM.YearsModel = yearsModel;
+            controlVM.DataModel = dataModel;
 
             filePaths = Directory.GetFiles("res\\TaxCSV", "*.csv");
             for (int i = 0; i < filePaths.Length; i++)
             {
-                ControlVM.YearsModel.Years.Add(i, Parser.ParseCSV(filePaths[i]));
+                controlVM.YearsModel.Years.Add(i, Parser.ParseCSV(filePaths[i]));
             }
         }
 
@@ -36,7 +39,7 @@ namespace TaxMeAppNUnitTesting
         //Testing Helpers
         //-------------------------------------------------------------------------------------------------
 
-        [Test]
+        [TestMethod]
         public void TestFormatter()
         {
 
@@ -49,7 +52,7 @@ namespace TaxMeAppNUnitTesting
             long value;
 
             // Trillion logic:
-   
+
             // One trillion + 1 decimal place
             value = 1200000000000;
             Assert.AreEqual("1.20 trillion", Formatter.Format(value));
@@ -87,7 +90,7 @@ namespace TaxMeAppNUnitTesting
             Assert.AreEqual("1.24 billion", Formatter.Format(value));
             // Lowest value for billion:
             // 999,500,000 <- this should round to billion
-            value = 999500000; 
+            value = 999500000;
             Assert.AreEqual("1.00 billion", Formatter.Format(value));
 
             // Million logic:
@@ -150,38 +153,8 @@ namespace TaxMeAppNUnitTesting
 
         }
 
-        [Test]
-        public void TestLoader()
-        {
-            //Check that all of the years are loaded properly
-            //Loader loader = new Loader();
-
-            //Create answer of 2003-2018
-            string[] fileNames = new string[18 - 2];
-            string ans = "";
-            int j;
-            for (int i = 0; i < fileNames.Length; i++)
-            {
-                ans = "res\\TaxCSV\\";
-                ans += "20";
-                j = i + 3;
-                if (j < 10)
-                {
-                    ans += "0" + j;
-                }
-                else
-                {
-                    ans += j;
-                }
-                ans += ".csv";
-                fileNames[i] = ans;
-            }
-            //Check that the loader got all of the years
-            Assert.AreEqual(fileNames, Loader.LoadYearsTest());
-        }
-
         //Testing that a file is parsed correctly, using 2003.csv as an example
-        [Test]
+        [TestMethod]
         public void TestParser()
         {
             //Make a list of income year models to test
@@ -454,5 +427,6 @@ namespace TaxMeAppNUnitTesting
                 }
             }
         }
+
     }
 }

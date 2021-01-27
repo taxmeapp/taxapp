@@ -70,7 +70,7 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
-                ControlVM.MaxBracketCount = value;               
+                GraphModel.MaxBracketCount = value;               
             }
         }
 
