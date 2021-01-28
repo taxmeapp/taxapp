@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,7 +58,12 @@ namespace TaxMeApp.viewmodels
             {
                 DataModel.NumPovertyPop = value;
                 // force update of OutputVM
-                OutputVM.Update();
+
+                if (OutputVM != null)
+                {
+                    OutputVM.Update();
+                }
+
             }
         }
 
@@ -81,7 +87,11 @@ namespace TaxMeApp.viewmodels
             {
                 DataModel.NumMaxPop = value;
                 // force update of OutputVM
-                OutputVM.Update();
+                if (OutputVM != null)
+                {
+                    OutputVM.Update();
+                }
+
             }
         }
 
@@ -110,7 +120,11 @@ namespace TaxMeApp.viewmodels
             {
                 DataModel.TotalRevenueOld = value;
                 // force update of OutputVM
-                OutputVM.Update();
+                if (OutputVM != null)
+                {
+                    OutputVM.Update();
+                }
+
             }
         }
 
@@ -157,7 +171,11 @@ namespace TaxMeApp.viewmodels
             {
                 DataModel.TotalRevenueNew = value;
                 // force update of OutputVM
-                OutputVM.Update();
+                if (OutputVM != null)
+                {
+                    OutputVM.Update();
+                }
+
             }
         }
 
@@ -231,7 +249,7 @@ namespace TaxMeApp.viewmodels
 
             // Count the number of returns up to and including the designated poverty bracket
             //for (int i = 0; i <= povertyBrackets; i++)
-            for (int i = 0; i <= 3; i++)
+            for (int i = 0; i <= povertyBrackets; i++)
             {
                 povertyPop += population[i];
             }
@@ -334,8 +352,9 @@ namespace TaxMeApp.viewmodels
             newRevenueByBracket.Clear();
             newTaxPctByBracket.Clear();
 
-            // Initialize our variables
-            int middleCount = selectedBrackets.Count - maxBracketCount;
+            // The number of brackets that will be taxed incrementally:
+            int middleCount = selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1);
+
             long totalRevenueNew = 0;
             double rate = 0;
 
@@ -354,19 +373,19 @@ namespace TaxMeApp.viewmodels
             }
 
             // Determine how many divisons we want to spread our increment over
-            int divisions = middleCount - i + 1;
+            int divisions = middleCount + 1;
 
             // Determine the rate at how much to increment, and round to 1 decimal place
             double increment = Math.Round(maxTaxRate / (double)divisions, 1);
 
             // Incremental brackets
-            for (; i < middleCount; i++)
+            for (; i < selectedBrackets.Count - maxBracketCount; i++)
             {
 
                 rate = rate + increment;
 
                 // Revenue is Taxable Income * Tax Rate
-                long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 1000 * rate / 100);
+                long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 10 * rate);
                 totalRevenueNew += bracketRevenue;
 
                 newRevenueByBracket.Add(bracketRevenue);

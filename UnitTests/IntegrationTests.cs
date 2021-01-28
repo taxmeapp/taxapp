@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TaxMeApp.Helpers;
@@ -20,15 +21,13 @@ namespace UnitTests
         private DataModel dataModel;
         private GraphModel graphModel;
 
-        private string[] filePaths;
-
         [TestInitialize]
         public void Setup()
         {
             // Create VMs
             controlVM = new ControlViewModel();
             outputVM = new OutputViewModel();
-            //dataVM = new DataViewModel();
+            dataVM = new DataViewModel();
 
 
             // Link VMs to VMs
@@ -45,10 +44,19 @@ namespace UnitTests
             controlVM.DataModel = dataModel;
             controlVM.GraphModel = graphModel;
 
-            filePaths = Directory.GetFiles("res\\TaxCSV", "*.csv");
+            outputVM.DataModel = dataModel;
+
+            dataVM.YearsModel = yearsModel;
+            dataVM.DataModel = dataModel;
+            dataVM.GraphModel = graphModel;
+
+            string[] filePaths = Directory.GetFiles("res\\TaxCSV", "*.csv");
             for (int i = 0; i < filePaths.Length; i++)
             {
-                controlVM.YearsModel.Years.Add(i, Parser.ParseCSV(filePaths[i]));
+
+                IncomeYearModel year = Parser.ParseCSV(filePaths[i]);
+                yearsModel.Years.Add(year.Year, year);
+
             }
         }
 
@@ -186,14 +194,278 @@ namespace UnitTests
             // All values are passed through the formatter for display
 
             //NumPovertyPopOutput
+            Assert.AreEqual(Formatter.Format(dataModel.NumPovertyPop), outputVM.NumPovertyPopOutput);
 
             //NumMaxPopOutput
+            Assert.AreEqual(Formatter.Format(dataModel.NumMaxPop), outputVM.NumMaxPopOutput);
 
             //TotalRevenueOldOutput
+            Assert.AreEqual(Formatter.Format(dataModel.TotalRevenueOld), outputVM.TotalRevenueOldOutput);
 
             //TotalRevenueNewOutput
+            Assert.AreEqual(Formatter.Format(dataModel.TotalRevenueNew), outputVM.TotalRevenueNewOutput);
 
             //RevenueDifferenceOutput
+            Assert.AreEqual(Formatter.Format(dataModel.RevenueDifference), outputVM.RevenueDifferenceOutput);
+
+        }
+
+
+        /*
+                DataViewModel 
+        */ 
+
+        [TestMethod]
+        public void TestDataVMTotalRecalculation()
+        {
+
+            // Test which compares hand calculations to computer's logic
+
+            // DataVM takes data from models -> runs calculations -> stores in models
+            // We can manipulate data in models -> run calculations -> check resulting data in models against hand calculations
+            // Select year -> Run Calculations -> Compare Results -> Select another year -> Run Calculations again -> Compare results
+
+            /*
+                    Select 2018 @ 20% max tax rate, poverty line @ 3
+            */                      
+
+            yearsModel.SelectedYear = 2018;
+            dataModel.MaxTaxRate = 20;
+            // Currently there is no setter to change this in the model, but if it becomes dynamic later, we can set it to test calculated values
+            //graphModel.PovertyLineIndex = 3;
+            Assert.IsNotNull(yearsModel.SelectedIncomeYearModel);
+
+            // On new year selection:
+            // TotalRecalculation()
+
+            dataVM.TotalRecalculation();
+
+            // calculatePopulation()
+            // clear DataModel.Population
+            // Iterate through YearsModel.SelectedIncomeYearModel.Brackets
+            // Add to DataModel.Population
+
+            // Check a few population values in bracket
+            Assert.AreEqual(dataModel.Population[0], 3135);
+            Assert.AreEqual(dataModel.Population[1], 136176);
+            Assert.AreEqual(dataModel.Population[2], 177974);
+
+            // countUnderPoverty()
+            // Count the number of returns up to and including the designated poverty bracket
+            Assert.AreEqual(dataModel.NumPovertyPop, 2876697);
+
+            // determineBaselineMaxBracketCount()
+            // Starting at the end of array, work backwards
+            // as long as our max population count is below our poverty population count
+            Assert.AreEqual(graphModel.MaxBracketCount, 7);
+
+            // countPopulationAtMaxRate()
+            // Starting at the end of array, work backwards and count population for brackets at max rate
+            Assert.AreEqual(dataModel.NumMaxPop, 8538562);
+
+            // calculateOldTaxData()
+            // Get the actual value of income tax paid (values stored as 1000 in CSV column G, multiplied for data storage), saved per bracket
+            // Test a few brackets:
+            Assert.AreEqual(dataModel.OldRevenueByBracket[1], 156305000L);
+            Assert.AreEqual(dataModel.OldRevenueByBracket[2], 42202000L);
+            Assert.AreEqual(dataModel.OldRevenueByBracket[3], 391728000L);
+            // Get the percent of income gross, saved per bracket (pulled straight from column H in CSV)
+            // Test a few brackets:
+            Assert.AreEqual(dataModel.OldTaxPctByBracket[1], 4.3);
+            Assert.AreEqual(dataModel.OldTaxPctByBracket[2], 3.2);
+            Assert.AreEqual(dataModel.OldTaxPctByBracket[3], 1.1);
+            // Get the total amount of revenue paid (sum of column F in CSV)
+            Assert.AreEqual(dataModel.TotalRevenueOld, 1509751196000L);
+
+
+            // calculateNewTaxData();
+            // This is currently set up for just slant tax
+            // Three things are calculated: NewRevenueByBracket, NewTaxPctByBracket, TotalRevenueNew
+            // Poverty and below pay 0% tax
+            // Middle brackets increment for each bracket until max-rate-bracket
+            // Max-rate-brackets pay max rate % tax
+            // Increment = maxTaxRate / (selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1) + 1) , rounded to 1 decimal place
+            // Thus, the need to set maxTaxRate for testing as above
+            // Increment = 2.2% at this MaxTaxRate (20%) w/ 7 brackets
+
+            // dataModel.NewRevenueByBracket
+            // Test some brackets to ensure calculations are correct
+            Assert.AreEqual(dataModel.NewRevenueByBracket[1], 0);
+            Assert.AreEqual(dataModel.NewRevenueByBracket[4], 568496698);
+            Assert.AreEqual(dataModel.NewRevenueByBracket[11], 407188046495);
+            // dataModel.NewTaxPctByBracket
+            Assert.AreEqual(dataModel.NewTaxPctByBracket[1], 0);
+            Assert.AreEqual(dataModel.NewTaxPctByBracket[4], 2.2);
+            // This was failing without the rounds, even though they were equal. Rounds pass
+            Assert.AreEqual(Math.Round(dataModel.NewTaxPctByBracket[11], 1), Math.Round(17.6, 1));
+
+            // dataModel.TotalRevenueNew
+            Assert.AreEqual(dataModel.TotalRevenueNew, 1504645232320);
+
+
+            /*
+                Select 2016 @ 30% max tax rate, poverty line @ 3
+            */
+
+            yearsModel.SelectedYear = 2016;
+            dataModel.MaxTaxRate = 30;
+            // Currently there is no setter to change this in the model, but if it becomes dynamic later, we can set it to test calculated values
+            //graphModel.PovertyLineIndex = 3;
+            Assert.IsNotNull(yearsModel.SelectedIncomeYearModel);
+
+            dataVM.TotalRecalculation();
+
+            // calculatePopulation()
+            // clear DataModel.Population
+            // Iterate through YearsModel.SelectedIncomeYearModel.Brackets
+            // Add to DataModel.Population
+
+            // Check a few population values in bracket
+            Assert.AreEqual(dataModel.Population[0], 6163);
+            Assert.AreEqual(dataModel.Population[1], 166102);
+            Assert.AreEqual(dataModel.Population[2], 1815136);
+
+            // countUnderPoverty()
+            // Count the number of returns up to and including the designated poverty bracket
+            Assert.AreEqual(dataModel.NumPovertyPop, 6313075);
+
+            // determineBaselineMaxBracketCount()
+            // Starting at the end of array, work backwards
+            // as long as our max population count is below our poverty population count
+            Assert.AreEqual(graphModel.MaxBracketCount, 7);
+
+            // countPopulationAtMaxRate()
+            // Starting at the end of array, work backwards and count population for brackets at max rate
+            Assert.AreEqual(dataModel.NumMaxPop, 6888588);
+
+            // calculateOldTaxData()
+            // Get the actual value of income tax paid (values stored as 1000 in CSV column G, multiplied for data storage), saved per bracket
+            // Test a few brackets:
+            Assert.AreEqual(dataModel.OldRevenueByBracket[1], 28462000L);
+            Assert.AreEqual(dataModel.OldRevenueByBracket[2], 349076000L);
+            Assert.AreEqual(dataModel.OldRevenueByBracket[3], 1395130000L);
+            // Get the percent of income gross, saved per bracket (pulled straight from column H in CSV)
+            // Test a few brackets:
+            Assert.AreEqual(dataModel.OldTaxPctByBracket[1], 5.4);
+            Assert.AreEqual(dataModel.OldTaxPctByBracket[2], 2.4);
+            Assert.AreEqual(dataModel.OldTaxPctByBracket[3], 2.5);
+            // Get the total amount of revenue paid (sum of column F in CSV)
+            Assert.AreEqual(dataModel.TotalRevenueOld, 1426595311000L);
+
+
+            // calculateNewTaxData();
+            // This is currently set up for just slant tax
+            // Three things are calculated: NewRevenueByBracket, NewTaxPctByBracket, TotalRevenueNew
+            // Poverty and below pay 0% tax
+            // Middle brackets increment for each bracket until max-rate-bracket
+            // Max-rate-brackets pay max rate % tax
+            // Increment = maxTaxRate / (selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1) + 1) , rounded to 1 decimal place
+            // Thus, the need to set maxTaxRate for testing as above
+            // Increment = 3.3% at this MaxTaxRate (30%) w/ 7 brackets
+
+            // dataModel.NewRevenueByBracket
+            // Test some brackets to ensure calculations are correct
+            Assert.AreEqual(dataModel.NewRevenueByBracket[1], 0);
+            Assert.AreEqual(dataModel.NewRevenueByBracket[4], 1199077110);
+            Assert.AreEqual(dataModel.NewRevenueByBracket[11], 505941636024);
+            // dataModel.NewTaxPctByBracket
+            Assert.AreEqual(dataModel.NewTaxPctByBracket[1], 0);
+            Assert.AreEqual(dataModel.NewTaxPctByBracket[4], 3.3);
+            // This was failing without the rounds, even though they were equal. Rounds pass
+            Assert.AreEqual(Math.Round(dataModel.NewTaxPctByBracket[11], 1), Math.Round(26.4, 1));
+
+            // dataModel.TotalRevenueNew
+            Assert.AreEqual(dataModel.TotalRevenueNew, 1831780103651);
+
+
+        }
+
+        [TestMethod]
+        public void TestDataVMNewDataRecalculation()
+        {
+
+            // DataVM takes data from models -> runs calculations -> stores in models
+            // We can manipulate data in models -> run calculations -> check resulting data in models against hand calculations
+            // Select year -> Run Calculations -> Change rate -> Compare results -> Change bracket count -> Run Calculations again -> Compare results
+
+            yearsModel.SelectedYear = 2017;
+            dataModel.MaxTaxRate = 20;
+            // Currently there is no setter to change this in the model, but if it becomes dynamic later, we can set it to test calculated values
+            //graphModel.PovertyLineIndex = 3;
+            Assert.IsNotNull(yearsModel.SelectedIncomeYearModel);
+            dataVM.TotalRecalculation();
+
+            
+            /*
+                    Change rate to 30%
+            */ 
+
+            dataModel.MaxTaxRate = 30;
+            dataVM.NewDataRecalcuation();
+
+            // Count how many people are at max tax rate
+            // countPopulationAtMaxRate();
+            Assert.AreEqual(dataModel.NumMaxPop, 7706856);
+
+            // Calculate how much tax revenue was generated under new plan
+            // calculateNewTaxData();
+            // This is currently set up for just slant tax
+            // Three things are calculated: NewRevenueByBracket, NewTaxPctByBracket, TotalRevenueNew
+            // Poverty and below pay 0% tax
+            // Middle brackets increment for each bracket until max-rate-bracket
+            // Max-rate-brackets pay max rate % tax
+            // Increment = maxTaxRate / (selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1) + 1) , rounded to 1 decimal place
+            // Thus, the need to set maxTaxRate for testing as above
+            // Increment = 3.3% at this MaxTaxRate (30%) w/ 7 brackets
+
+            // dataModel.NewRevenueByBracket
+            // Test some brackets to ensure calculations are correct
+            Assert.AreEqual(dataModel.NewRevenueByBracket[1], 0);
+            Assert.AreEqual(dataModel.NewRevenueByBracket[4], 1207095054);
+            Assert.AreEqual(dataModel.NewRevenueByBracket[11], 536492423544);
+            // dataModel.NewTaxPctByBracket
+            Assert.AreEqual(dataModel.NewTaxPctByBracket[1], 0);
+            Assert.AreEqual(dataModel.NewTaxPctByBracket[4], 3.3);
+            // This was failing without the rounds, even though they were equal. Rounds pass
+            Assert.AreEqual(Math.Round(dataModel.NewTaxPctByBracket[11], 1), Math.Round(26.4, 1));
+
+            // dataModel.TotalRevenueNew
+            Assert.AreEqual(dataModel.TotalRevenueNew, 2022975533276);
+
+            /*
+                    Change max brackets to 8
+            */
+
+            graphModel.MaxBracketCount = 8;
+            dataVM.NewDataRecalcuation();
+
+            // Count how many people are at max tax rate
+            // countPopulationAtMaxRate();
+            Assert.AreEqual(dataModel.NumMaxPop, 27493446);
+
+            // Calculate how much tax revenue was generated under new plan
+            // calculateNewTaxData();
+            // This is currently set up for just slant tax
+            // Three things are calculated: NewRevenueByBracket, NewTaxPctByBracket, TotalRevenueNew
+            // Poverty and below pay 0% tax
+            // Middle brackets increment for each bracket until max-rate-bracket
+            // Max-rate-brackets pay max rate % tax
+            // Increment = maxTaxRate / (selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1) + 1) , rounded to 1 decimal place
+            // Thus, the need to set maxTaxRate for testing as above
+            // Increment = 3.8% at this MaxTaxRate (30%) and 8 brackets
+
+            // dataModel.NewRevenueByBracket
+            // Test some brackets to ensure calculations are correct
+            Assert.AreEqual(dataModel.NewRevenueByBracket[1], 0);
+            Assert.AreEqual(dataModel.NewRevenueByBracket[4], 1389988244);
+            Assert.AreEqual(dataModel.NewRevenueByBracket[11], 609650481300);
+            // dataModel.NewTaxPctByBracket
+            Assert.AreEqual(dataModel.NewTaxPctByBracket[1], 0);
+            Assert.AreEqual(dataModel.NewTaxPctByBracket[4], 3.8);
+            Assert.AreEqual(dataModel.NewTaxPctByBracket[11], 30);
+
+            // dataModel.TotalRevenueNew
+            Assert.AreEqual(dataModel.TotalRevenueNew, 2162582174037);
 
         }
 
