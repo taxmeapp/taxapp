@@ -20,6 +20,8 @@ namespace TaxMeApp.viewmodels
         public ICommand SettingsBtnCommand { get; set; }
         public ICommand AddTaxPlanBtnCommand { get; set; }
         public ICommand DeleteTaxPlanBtnCommand { get; set; }
+        public ICommand ResetSettingsBtnCommand { get; set; }
+        public ICommand ResetTaxRatesBtnCommand { get; set; }
 
         public ControlViewModel()
         {
@@ -27,6 +29,8 @@ namespace TaxMeApp.viewmodels
             SettingsBtnCommand = new RelayCommand(o => settingsButtonClick(""));
             AddTaxPlanBtnCommand = new RelayCommand(o => addTaxPlanButtonClick());
             DeleteTaxPlanBtnCommand = new RelayCommand(o => deleteTaxPlanButtonClick());
+            ResetSettingsBtnCommand = new RelayCommand(o => resetSettingsButtonClick());
+            ResetTaxRatesBtnCommand = new RelayCommand(o => resetTaxRatesButtonClick());
         }
 
         // ControlPanel Init
@@ -244,7 +248,7 @@ namespace TaxMeApp.viewmodels
                 newDataGraphReset();
 
                 OnPropertyChange("MaxBracketCount");
-
+                OnPropertyChange("MaxBracketCountSlider");
             }
         }
 
@@ -261,6 +265,7 @@ namespace TaxMeApp.viewmodels
 
                 displayOnlyGraphReset();
 
+                OnPropertyChange("ShowNumberOfReturns");
             }
         }
 
@@ -276,6 +281,7 @@ namespace TaxMeApp.viewmodels
 
                 displayOnlyGraphReset();
 
+                OnPropertyChange("ShowOldRevenue");
             }
         }
 
@@ -291,6 +297,7 @@ namespace TaxMeApp.viewmodels
 
                 displayOnlyGraphReset();
 
+                OnPropertyChange("ShowNewRevenue");
             }
         }
 
@@ -307,6 +314,7 @@ namespace TaxMeApp.viewmodels
 
                 displayOnlyGraphReset();
 
+                OnPropertyChange("ShowOldPercentage");
             }
         }
 
@@ -323,6 +331,7 @@ namespace TaxMeApp.viewmodels
 
                 displayOnlyGraphReset();
 
+                OnPropertyChange("ShowNewPercentage");
             }
         }
 
@@ -481,6 +490,22 @@ namespace TaxMeApp.viewmodels
 
         }
 
+        //Currently Hardcoded
+        //Resets to default options
+        private void resetSettingsButtonClick(){
+            //Console.WriteLine("Reset Settings Button Clicked");
+            ShowNumberOfReturns = true;
+            ShowOldRevenue = false;
+            ShowNewRevenue = false;
+            ShowOldPercentage = false;
+            ShowNewPercentage = false;
+            MaxBracketCountSlider = 0;
+            MaxTaxRate = 0;
+        }
+
+        private void resetTaxRatesButtonClick() { 
+        
+        }
     }
 
 }

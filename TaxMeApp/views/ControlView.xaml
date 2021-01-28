@@ -89,24 +89,26 @@
             <TextBlock Margin="5,15,5,5" 
                                Text="Display:"/>
             <CheckBox Content="Number of Returns"
-                              IsChecked="{Binding ShowNumberOfReturns}"
+                              IsChecked="{Binding ShowNumberOfReturns, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
             <CheckBox Content="Tax Revenue (Old System)"
-                              IsChecked="{Binding ShowOldRevenue}"
+                              IsChecked="{Binding ShowOldRevenue, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
             <CheckBox Content="Tax Revenue (New System)"
-                              IsChecked="{Binding ShowNewRevenue}"
+                              IsChecked="{Binding ShowNewRevenue, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
             <CheckBox Content="Percent of Income (Old)"
-                              IsChecked="{Binding ShowOldPercentage}"
+                              IsChecked="{Binding ShowOldPercentage, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
             <CheckBox Content="Percent of Income (New)"
-                              IsChecked="{Binding ShowNewPercentage}"
+                              IsChecked="{Binding ShowNewPercentage, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
-            <Button Content="Reset To Default Settings"
+            <Button Command="{Binding ResetSettingsBtnCommand}"
+                    Content="Reset To Default Settings"
                     Margin="0, 30, 0, 0"
                     Width="150"/>
-            <Button Content="Reset Tax Rates"
+            <Button Command="{Binding ResetTaxRatesBtnCommand}" 
+                    Content="Reset Tax Rates"
                     Margin="0, 20, 0, 0"
                     Width="150"/>
             <Button Command="{Binding SettingsBtnCommand}"
