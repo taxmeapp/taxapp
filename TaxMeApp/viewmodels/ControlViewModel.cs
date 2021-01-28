@@ -463,6 +463,11 @@ namespace TaxMeApp.viewmodels
             GraphVM.GraphAllChecked();
         }
 
+        private void customGraphReset(List<double> customRates) {
+            GraphVM.ClearSeries();
+            GraphVM.GraphAllChecked(customRates);
+        }
+
         // Collections of calls to update only the new data (e.g. max % or # of max brackets changed)
         private void newDataGraphReset()
         {
@@ -503,8 +508,27 @@ namespace TaxMeApp.viewmodels
             MaxTaxRate = 0;
         }
 
-        private void resetTaxRatesButtonClick() { 
-        
+        private void resetTaxRatesButtonClick() {
+            if (SelectedTaxPlanName == "Slant Tax")
+            {
+                newDataGraphReset();
+                TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
+                for (int i = 0; i < selectedTaxPlan.TaxRates.Count; i++)
+                {
+                    selectedTaxPlan.TaxRates[i] = DataModel.NewTaxPctByBracket[i];
+                }
+                OnPropertyChange("TaxRateSlider");
+                OnPropertyChange("SelectedTaxRate");
+            }
+            else {
+                TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
+                for (int i = 0; i < selectedTaxPlan.TaxRates.Count; i++){
+                    selectedTaxPlan.TaxRates[i] = 0;
+                }
+                OnPropertyChange("TaxRateSlider");
+                OnPropertyChange("SelectedTaxRate");
+                customGraphReset(new List<double>(selectedTaxPlan.TaxRates));
+            }
         }
     }
 

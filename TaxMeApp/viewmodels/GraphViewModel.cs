@@ -302,6 +302,36 @@ namespace TaxMeApp.viewmodels
 
         }
 
+        // Public method to draw all relevant items
+        public void GraphAllChecked(List<double> customRates)
+        {
+
+            if (showNumberOfReturns)
+            {
+                graphTaxReturns();
+            }
+
+            if (showOldRevenue)
+            {
+                graphOldTaxRevenue();
+            }
+
+            if (showNewRevenue)
+            {
+                graphNewTaxRevenue();
+            }
+
+            if (showOldPercentage)
+            {
+                graphOldTaxPercentage();
+            }
+
+            if (showNewPercentage)
+            {
+                graphCustomRates(customRates);
+            }
+
+        }
         // Private methods to actually draw each
 
         // Bar graph for Total number of tax returns by bracket
@@ -389,5 +419,20 @@ namespace TaxMeApp.viewmodels
         }
 
 
+        private void graphCustomRates(List<double> customVals)
+        {
+
+            LineSeries lineSeries = new LineSeries()
+            {
+                Title = "New Tax Percentage",
+                Values = new ChartValues<double>(customVals),
+                Stroke = Brushes.Maroon,
+                Fill = Brushes.Transparent,
+                ScalesYAt = 2
+            };
+
+            addLineSeries(lineSeries);
+
+        }
     }
 }
