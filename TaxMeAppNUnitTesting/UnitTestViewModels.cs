@@ -37,10 +37,8 @@ namespace TaxMeAppNUnitTesting
         //Testing View Models
         //-------------------------------------------------------------------------------------------------
 
-        // ControlViewModel
 
-
-
+        // These are integration tests and / or testing methods not used in actual program logic
         
 
 

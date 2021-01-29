@@ -14,6 +14,7 @@ namespace UnitTests
     public class IntegrationTests
     {
 
+        private MainViewModel mainVM;
         private ControlViewModel controlVM;
         private OutputViewModel outputVM;
         private DataViewModel dataVM;
@@ -27,6 +28,7 @@ namespace UnitTests
         public void Setup()
         {
             // Create VMs
+            mainVM = new MainViewModel();
             dataVM = new DataViewModel();
             controlVM = new ControlViewModel();
             outputVM = new OutputViewModel();
@@ -37,7 +39,7 @@ namespace UnitTests
             dataVM.ControlVM = controlVM;
             dataVM.GraphVM = graphVM;
             //controlVM.DataVM = dataVM;
-
+            controlVM.MainVM = mainVM;
 
             // Create models
             yearsModel = new YearsModel();
@@ -188,6 +190,19 @@ namespace UnitTests
             controlVM.ShowNewPercentage = !controlVM.ShowNewPercentage;
             Assert.AreEqual(graphModel.ShowNewPercentage, controlVM.ShowNewPercentage);
 
+
+        }
+
+        [TestMethod]
+        public void TestControlVMSettingsClick()
+        {
+
+            // Testing the click button logic
+            // These steps work for private methods
+            PrivateObject obj = new PrivateObject(controlVM);
+            object sender = "";
+            obj.Invoke("settingsButtonClick", sender);
+            Assert.AreEqual(1, mainVM.TabSelected);
 
         }
 
