@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using LiveCharts.Configurations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TaxMeApp.Helpers;
 using TaxMeApp.models;
@@ -16,6 +17,7 @@ namespace UnitTests
         private ControlViewModel controlVM;
         private OutputViewModel outputVM;
         private DataViewModel dataVM;
+        private GraphViewModel graphVM;
 
         private YearsModel yearsModel;
         private DataModel dataModel;
@@ -25,12 +27,15 @@ namespace UnitTests
         public void Setup()
         {
             // Create VMs
+            dataVM = new DataViewModel();
             controlVM = new ControlViewModel();
             outputVM = new OutputViewModel();
-            dataVM = new DataViewModel();
+            graphVM = new GraphViewModel();
 
 
             // Link VMs to VMs
+            dataVM.ControlVM = controlVM;
+            dataVM.GraphVM = graphVM;
             //controlVM.DataVM = dataVM;
 
 
@@ -40,15 +45,20 @@ namespace UnitTests
             graphModel = new GraphModel();
 
             // Link models to VMs
+
+            dataVM.YearsModel = yearsModel;
+            dataVM.DataModel = dataModel;
+            dataVM.GraphModel = graphModel;
+
             controlVM.YearsModel = yearsModel;
             controlVM.DataModel = dataModel;
             controlVM.GraphModel = graphModel;
 
             outputVM.DataModel = dataModel;
 
-            dataVM.YearsModel = yearsModel;
-            dataVM.DataModel = dataModel;
-            dataVM.GraphModel = graphModel;
+            graphVM.YearsModel = yearsModel;
+            graphVM.GraphModel = graphModel;
+            graphVM.DataModel = dataModel;
 
             string[] filePaths = Directory.GetFiles("res\\TaxCSV", "*.csv");
             for (int i = 0; i < filePaths.Length; i++)
@@ -183,8 +193,52 @@ namespace UnitTests
 
 
         /*
+                TODO: GraphViewModel 
+        */
+
+        [TestMethod]
+        public void TestGraphVMInit()
+        {
+
+            // Certain global variables of the graph are initialized here
+            graphVM.GraphInit();
+
+            // Not yet sure how or what to test here, but it probably needs something.
+
+        }
+
+        [TestMethod]
+        public void TestGraphVMClear()
+        {
+
+
+        }
+
+        [TestMethod]
+        public void TestGraphVMAddColumn()
+        {
+
+
+        }
+
+        [TestMethod]
+        public void TestGraphVMAddLine()
+        {
+
+
+        }
+
+        [TestMethod]
+        public void TestGraphVMGraphAllChecked()
+        {
+
+
+
+        }
+
+        /*
                 OutputViewModel 
-        */ 
+        */
 
         // OutputVM: Testing the getters and their interactions with models
         [TestMethod]
@@ -466,6 +520,44 @@ namespace UnitTests
 
             // dataModel.TotalRevenueNew
             Assert.AreEqual(dataModel.TotalRevenueNew, 2162582174037);
+
+        }
+
+        [TestMethod]
+        public void TestDataVMInit()
+        {
+
+            // Make sure our VMs are not null
+            Assert.IsNotNull(dataVM);
+            Assert.IsNotNull(controlVM);
+            Assert.IsNotNull(graphVM);
+
+            // Run our init, which simply calls two other inits:
+            dataVM.DataInit();
+
+            /*
+                    ControlVM.ControlInit
+                    This is tested explicitly above, but it doesn't hurt to test it as its called from DataVM
+            */
+            // Pull a copy from ControlVM's stored key value, as well as from the list of keys directly
+            IncomeYearModel testOutputFromInit;
+            IncomeYearModel testOutputFromList;
+            yearsModel.Years.TryGetValue(controlVM.SelectedYear, out testOutputFromInit);
+            yearsModel.Years.TryGetValue(yearsModel.YearList[0], out testOutputFromList);
+
+            // Neither of the objects should be null
+            Assert.IsNotNull(testOutputFromInit);
+            Assert.IsNotNull(testOutputFromList);
+
+            // They should also be the same object
+            Assert.AreSame(testOutputFromInit, testOutputFromList);
+
+            /*
+                    GraphVM.GraphInit()
+            */
+
+            // Still TODO
+
 
         }
 

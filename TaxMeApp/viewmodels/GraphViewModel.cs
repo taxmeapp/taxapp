@@ -237,7 +237,7 @@ namespace TaxMeApp.viewmodels
         }
 
         // Safe method to add ColumnSeries to Series
-        private void addColumnSeries(ColumnSeries columnSeries)
+        public void AddColumnSeries(ColumnSeries columnSeries)
         {
 
             if (Series != null)
@@ -250,7 +250,7 @@ namespace TaxMeApp.viewmodels
         }
 
         // Safe method to add LineSeries to Series
-        private void addLineSeries(LineSeries lineSeries)
+        public void AddLineSeries(LineSeries lineSeries)
         {
 
             if (Series != null)
@@ -313,7 +313,7 @@ namespace TaxMeApp.viewmodels
                 ScalesYAt = 0
             };
 
-            addColumnSeries(columnSeries);
+            AddColumnSeries(columnSeries);
 
         }
 
@@ -330,7 +330,7 @@ namespace TaxMeApp.viewmodels
                 ScalesYAt = 1
             };
 
-            addLineSeries(lineSeries);
+            AddLineSeries(lineSeries);
 
         }
 
@@ -347,7 +347,7 @@ namespace TaxMeApp.viewmodels
                 ScalesYAt = 1
             };
 
-            addLineSeries(lineSeries);
+            AddLineSeries(lineSeries);
 
         }
 
@@ -364,7 +364,7 @@ namespace TaxMeApp.viewmodels
                 ScalesYAt = 2
             };
 
-            addLineSeries(lineSeries);
+            AddLineSeries(lineSeries);
 
         }
 
@@ -381,7 +381,7 @@ namespace TaxMeApp.viewmodels
                 ScalesYAt = 2
             };
 
-            addLineSeries(lineSeries);
+            AddLineSeries(lineSeries);
 
         }
 
