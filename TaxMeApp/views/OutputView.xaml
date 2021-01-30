@@ -6,63 +6,133 @@
              xmlns:local="clr-namespace:TaxMeApp.views"
              mc:Ignorable="d" 
              >
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="400">
+        <Grid Background="White"
+                      Width="850">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-    <Grid Background="White"
-                  Width="450"
-                  Height="250">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+            <TextBlock Grid.ColumnSpan="2"
+                               FontSize="20"
+                               HorizontalAlignment="Center"
+                                Text="Output"/>
 
-        <TextBlock Grid.ColumnSpan="2"
-                           FontSize="20"
-                           HorizontalAlignment="Center"
-                            Text="Output"/>
+            <TextBlock Grid.Row="2"
+                               Text="Number of people under poverty line: "/>
+            <TextBlock Grid.Column="1"
+                               Grid.Row="2"
+                               HorizontalAlignment="Right"
+                               Text="{Binding NumPovertyPopOutput}"/>
 
-        <TextBlock Grid.Row="2"
-                           Text="Number of people under poverty line: "/>
-        <TextBlock Grid.Column="1"
-                           Grid.Row="2"
-                           HorizontalAlignment="Right"
-                           Text="{Binding NumPovertyPopOutput}"/>
+            <TextBlock Grid.Row="3" 
+                               Text="Number of people paying maximum tax rate: "/>
+            <TextBlock Grid.Column="2"
+                               Grid.Row="3" 
+                               HorizontalAlignment="Right"
+                               Text="{Binding Path = NumMaxPopOutput}"/>
 
-        <TextBlock Grid.Row="3" 
-                           Text="Number of people paying maximum tax rate: "/>
-        <TextBlock Grid.Column="2"
-                           Grid.Row="3" 
-                           HorizontalAlignment="Right"
-                           Text="{Binding Path = NumMaxPopOutput}"/>
+            <TextBlock Grid.Row="4" 
+                               Text="Total Revenue Before Slant Tax: "/>
+            <TextBlock Grid.Column="2"
+                               Grid.Row="4"
+                               HorizontalAlignment="Right" 
+                               Text="{Binding TotalRevenueOldOutput}"/>
 
-        <TextBlock Grid.Row="4" 
-                           Text="Total Revenue Before Slant Tax: "/>
-        <TextBlock Grid.Column="2"
-                           Grid.Row="4"
-                           HorizontalAlignment="Right" 
-                           Text="{Binding TotalRevenueOldOutput}"/>
+            <TextBlock Grid.Row="5" 
+                               Text="Total Revenue After New Tax Plan: "/>
+            <TextBlock Grid.Column="2"
+                               Grid.Row="5"
+                               HorizontalAlignment="Right" 
+                               Text="{Binding TotalRevenueNewOutput}"/>
 
-        <TextBlock Grid.Row="5" 
-                           Text="Total Revenue After New Tax Plan: "/>
-        <TextBlock Grid.Column="2"
-                           Grid.Row="5"
-                           HorizontalAlignment="Right" 
-                           Text="{Binding TotalRevenueNewOutput}"/>
+            <TextBlock Grid.Row="6" 
+                               Text="Revenue Difference: "/>
+            <TextBlock Grid.Column="2" 
+                               Grid.Row="6" 
+                               HorizontalAlignment="Right" 
+                               Text="{Binding RevenueDifferenceOutput}"/>
+            <TextBlock Grid.Row="7" />
+            <TextBlock Grid.Row="8" Text="Existing Federal Budget:" FontWeight="Bold"/>
+            <CheckBox Grid.Row="9" Content="Defense Spending ($678 billion)"/>
+            <TextBlock Grid.Row="9" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="10" Content="Medicaid Spending ($613 billion)"/>
+            <TextBlock Grid.Row="10" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="11" Content="Welfare Spending ($361 billion)"/>
+            <TextBlock Grid.Row="11" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="12" Content="Veterans Benefits ($79 billion)"/>
+            <TextBlock Grid.Row="12" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="13" Content="Food Stamps ($68 billion)"/>
+            <TextBlock Grid.Row="13" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="14" Content="Education Spending ($61 billion)"/>
+            <TextBlock Grid.Row="14" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="15" Content="Public Housing ($56 billion)"/>
+            <TextBlock Grid.Row="15" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="16" Content="Health Spending ($53 billion)"/>
+            <TextBlock Grid.Row="16" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="17" Content="Science Spending ($30 billion)"/>
+            <TextBlock Grid.Row="17" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="18" Content="Transportation Spending ($29 billion)"/>
+            <TextBlock Grid.Row="18" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="19" Content="International Affairs Spending ($29 billion)"/>
+            <TextBlock Grid.Row="19" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="20" Content="Energy and Environment Spending ($28 billion)"/>
+            <TextBlock Grid.Row="20" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="21" Content="Unemployment Spending ($24 billion)"/>
+            <TextBlock Grid.Row="21" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="22" Content="Food and Agriculture Spending ($11 billion)"/>
+            <TextBlock Grid.Row="22" Grid.Column="2" Text="0% Funded"/>
 
-        <TextBlock Grid.Row="6" 
-                           Text="Revenue Difference: "/>
-        <TextBlock Grid.Column="2" 
-                           Grid.Row="6" 
-                           HorizontalAlignment="Right" 
-                           Text="{Binding RevenueDifferenceOutput}"/>
 
-    </Grid>
+            <TextBlock Grid.Row="23"/>
+            <TextBlock Grid.Row="24" Text="Bernie Sander's Plans:" FontWeight="Bold"/>
+            <CheckBox Grid.Row="25" Content="College Tuition Plan ($220 billion)" Foreground="Red"/>
+            <TextBlock Grid.Row="25" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="26" Content="Medicaid For All ($350 billion)" Foreground="Red"/>
+            <TextBlock Grid.Row="26" Grid.Column="2" Text="0% Funded"/>
+            <TextBlock Grid.Row="27"/>
+            <TextBlock Grid.Row="28" Text="Andrew Yang's Plans:" FontWeight="Bold"/>
+            <CheckBox Grid.Row="29" Content="UBI ($2.8 trillion)" Foreground="Red"/>
+            <TextBlock Grid.Row="29" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox Grid.Row="30" Content="Remove Existing Welfare Programs ($+1.066 trillion)" Foreground="Green"/>
+            <TextBlock Grid.Row="31"/>
+            <TextBlock Grid.Row="32"/>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
