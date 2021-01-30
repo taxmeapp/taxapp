@@ -173,6 +173,18 @@ namespace TaxMeApp.viewmodels
                     OptionsModel.MaxBracketCount = MaxBracketCountSlider;
                     MaxTaxRate = 0;
                     MaxBracketCountSlider = 0;
+
+                    if (SelectedTaxPlanName != null)
+                    {
+                        TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
+                        for (int i = 0; i < selectedTaxPlan.TaxRates.Count; i++)
+                        {
+                            DataModel.NewTaxPctByBracket[i] = selectedTaxPlan.TaxRates[i];
+
+                        }
+                        DataModel.NewRevenueByBracket = DataVM.calculateNewRevenues(selectedTaxPlan.TaxRates);
+                        customGraphReset();
+                    }
                 }
                 else
                 {
@@ -184,6 +196,8 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("SelectedTaxRate");
                 OnPropertyChange("TaxRateSlider");
                 OnPropertyChange("MaxBracketCountSlider");
+                OnPropertyChange("SelectedTaxPlanName");
+                OnPropertyChange("SelectedBracket");
                 OutputVM.Update();
 
                 //if (TaxPlansList.Contains(value))
