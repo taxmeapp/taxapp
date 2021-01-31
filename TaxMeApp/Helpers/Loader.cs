@@ -27,6 +27,7 @@ namespace TaxMeApp
         public GraphModel GraphModel { get; set; }
         public DataModel DataModel { get; set; }
         public TaxPlansModel TaxPlansModel { get; set; }
+        public OptionsModel OptionsModel { get; set; }
 
         public Loader()
         {
@@ -37,7 +38,7 @@ namespace TaxMeApp
             GraphModel = new GraphModel();
             DataModel = new DataModel();
             TaxPlansModel = new TaxPlansModel();
-            OptionsModel OptionsModel = new OptionsModel();
+            OptionsModel = new OptionsModel();
 
             // Load CSVs
             LoadYears();
@@ -87,6 +88,7 @@ namespace TaxMeApp
             GraphVM.OptionsModel = OptionsModel;
 
             OutputVM.DataModel = DataModel;
+            OutputVM.OptionsModel = OptionsModel;
 
             DataVM.DataInit();
 
