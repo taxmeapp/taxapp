@@ -407,9 +407,13 @@ namespace TaxMeApp.viewmodels
 
             }
 
+            if (OptionsModel.YangRemoveChecked)
+            {
+                totalRevenueNew += 1066000000000;
+            }
+
             // Save our total revenue calculation
             this.totalRevenueNew = totalRevenueNew;
-
         }
 
         public List<List<double>> calculateSlantTaxData()
@@ -473,6 +477,11 @@ namespace TaxMeApp.viewmodels
                 // Rate is max
                 rates.Add(maxTaxRate);
 
+            }
+
+            if (OptionsModel.YangRemoveChecked)
+            {
+                totalRevenueNew += 1066000000000;
             }
 
             // Save our total revenue calculation

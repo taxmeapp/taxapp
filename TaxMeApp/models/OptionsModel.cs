@@ -28,6 +28,11 @@ namespace TaxMeApp.models
             listOfCosts.Add((11, true, "energyandenvironment", 28000000000.0));
             listOfCosts.Add((12, true, "unemployment", 24000000000.0));
             listOfCosts.Add((13, true, "foodandagriculture", 11000000000.0));
+            
+            listOfCosts.Add((14, false, "sanderscollege", 220000000000.0));
+            listOfCosts.Add((15, false, "sandersmedicaid", 350000000000.0));
+            
+            listOfCosts.Add((16, false, "yangubi", 2800000000000.0));
 
             this.DefenseChecked = true;
             this.MedicaidChecked = true;
@@ -43,7 +48,12 @@ namespace TaxMeApp.models
             this.EnergyAndEnvironmentChecked = true;
             this.UnemploymentChecked = true;
             this.FoodAndAgricultureChecked = true;
+            
+            this.SandersCollegeChecked = false;
+            this.SandersMedicaidChecked = false;
 
+            this.YangUbiChecked = false;
+            this.YangRemoveChecked = false;
 
             fundingArray = new double[listOfCosts.Count];
         }
@@ -244,6 +254,61 @@ namespace TaxMeApp.models
             }
         }
 
+        public bool scc;
+        public bool SandersCollegeChecked
+        {
+            get
+            {
+                return scc;
+            }
+            set
+            {
+                scc = value;
+                listOfCosts[14] = (14, value, "sanderscollege", 220000000000.0);
+            }
+        }
+
+        public bool smc;
+        public bool SandersMedicaidChecked
+        {
+            get
+            {
+                return smc;
+            }
+            set
+            {
+                smc = value;
+                listOfCosts[15] = (15, value, "sandersmedicaid", 350000000000.0);
+            }
+        }
+
+        public bool yubic;
+        public bool YangUbiChecked
+        {
+            get
+            {
+                return yubic;
+            }
+            set
+            {
+                yubic = value;
+                listOfCosts[16] = (16, value, "yangubi", 2800000000000.0);
+            }
+        }
+
+        public bool yremove;
+        public bool YangRemoveChecked
+        {
+            get
+            {
+                return yremove;
+            }
+            set
+            {
+                yremove = value;
+            }
+        }
+
         public void updateFunding() {
             double funding = 0;
             for (int i = 0; i < listOfCosts.Count; i++) {
@@ -330,6 +395,18 @@ namespace TaxMeApp.models
         public string GetFoodAndAgricultureFunding()
         {
             return this.fundingArray[13].ToString("0.0") + "% Funded";
+        }
+        public string GetSandersCollegeFunding()
+        {
+            return this.fundingArray[14].ToString("0.0") + "% Funded";
+        }
+        public string GetSandersMedicaidFunding()
+        {
+            return this.fundingArray[15].ToString("0.0") + "% Funded";
+        }
+        public string GetYangUbiFunding()
+        {
+            return this.fundingArray[16].ToString("0.0") + "% Funded";
         }
     }
 }

@@ -65,6 +65,9 @@ namespace TaxMeApp
             ControlVM.GraphVM = GraphVM;
             ControlVM.OutputVM = OutputVM;
 
+            OutputVM.ControlVM = ControlVM;
+            OutputVM.DataVM = DataVM;
+
             SettingsVM.MainVM = MainVM;
 
             // Connect models to VMs

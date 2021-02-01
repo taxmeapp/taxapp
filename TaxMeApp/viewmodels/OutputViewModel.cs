@@ -12,12 +12,14 @@ namespace TaxMeApp.viewmodels
 
         public void Update()
         {
+            OptionsModel.revenue = DataModel.TotalRevenueNew;
 
             OnPropertyChange("NumPovertyPopOutput");
             OnPropertyChange("NumMaxPopOutput");
             OnPropertyChange("TotalRevenueOldOutput");
             OnPropertyChange("TotalRevenueNewOutput");
             OnPropertyChange("RevenueDifferenceOutput");
+
 
             OptionsModel.updateFunding();
             OnPropertyChange("DefenseFunding");
@@ -34,7 +36,11 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("EEFunding");
             OnPropertyChange("UnemploymentFunding");
             OnPropertyChange("AgricultureFunding");
+            
+            OnPropertyChange("SandersCollegeFunding");
+            OnPropertyChange("SandersMedicaidFunding");
 
+            OnPropertyChange("YangUbiFunding");
         }
 
 
@@ -107,21 +113,8 @@ namespace TaxMeApp.viewmodels
             }
             set {
                 OptionsModel.DefenseChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+
+                this.Update();
             } 
         }
         public string DefenseFunding {
@@ -139,21 +132,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.MedicaidChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string MedicaidFunding
@@ -173,21 +152,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.WelfareChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string WelfareFunding
@@ -207,21 +172,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.VeteransChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string VeteransFunding
@@ -241,21 +192,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.FoodStampsChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string FoodStampsFunding
@@ -275,21 +212,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.EducationChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string EducationFunding
@@ -309,21 +232,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.PublicHousingChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string PublicHousingFunding
@@ -343,21 +252,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.HealthChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string HealthFunding
@@ -377,21 +272,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.ScienceChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string ScienceFunding
@@ -411,21 +292,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.TransportationChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string TransportationFunding
@@ -445,21 +312,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.InternationalChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string InternationalFunding
@@ -479,21 +332,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.EnergyAndEnvironmentChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string EEFunding
@@ -513,21 +352,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.UnemploymentChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string UnemploymentFunding
@@ -547,21 +372,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.FoodAndAgricultureChecked = value;
-                OptionsModel.updateFunding();
-                OnPropertyChange("DefenseFunding");
-                OnPropertyChange("MedicaidFunding");
-                OnPropertyChange("WelfareFunding");
-                OnPropertyChange("VeteransFunding");
-                OnPropertyChange("FoodStampsFunding");
-                OnPropertyChange("EducationFunding");
-                OnPropertyChange("PublicHousingFunding");
-                OnPropertyChange("HealthFunding");
-                OnPropertyChange("ScienceFunding");
-                OnPropertyChange("TransportationFunding");
-                OnPropertyChange("InternationalFunding");
-                OnPropertyChange("EEFunding");
-                OnPropertyChange("UnemploymentFunding");
-                OnPropertyChange("AgricultureFunding");
+                this.Update();
             }
         }
         public string AgricultureFunding
@@ -569,6 +380,80 @@ namespace TaxMeApp.viewmodels
             get
             {
                 return OptionsModel.GetFoodAndAgricultureFunding();
+            }
+        }
+
+        public bool SandersCollegeSpendingChecked
+        {
+            get
+            {
+                return OptionsModel.SandersCollegeChecked;
+            }
+            set
+            {
+                OptionsModel.SandersCollegeChecked = value;
+                this.Update();
+            }
+        }
+        public string SandersCollegeFunding
+        {
+            get
+            {
+                return OptionsModel.GetSandersCollegeFunding();
+            }
+        }
+
+        public bool SandersMedicaidSpendingChecked
+        {
+            get
+            {
+                return OptionsModel.SandersMedicaidChecked;
+            }
+            set
+            {
+                OptionsModel.SandersMedicaidChecked = value;
+                this.Update();
+            }
+        }
+        public string SandersMedicaidFunding
+        {
+            get
+            {
+                return OptionsModel.GetSandersMedicaidFunding();
+            }
+        }
+
+        public bool YangUbiSpendingChecked
+        {
+            get
+            {
+                return OptionsModel.YangUbiChecked;
+            }
+            set
+            {
+                OptionsModel.YangUbiChecked = value;
+                this.Update();
+            }
+        }
+        public string YangUbiFunding
+        {
+            get
+            {
+                return OptionsModel.GetYangUbiFunding();
+            }
+        }
+
+        public bool YangRemoveChecked 
+        {
+            get 
+            {
+                return OptionsModel.YangRemoveChecked;            
+            }
+            set
+            {
+                OptionsModel.YangRemoveChecked = value;
+                DataVM.NewDataRecalcuation();
+                this.Update();
             }
         }
     }

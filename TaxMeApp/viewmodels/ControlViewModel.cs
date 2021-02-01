@@ -544,6 +544,15 @@ namespace TaxMeApp.viewmodels
                 customGraphReset(new List<double>(selectedTaxPlan.TaxRates));
             }
         }
+
+        public void update()
+        {
+            OnPropertyChange("SelectedTaxRate");
+            OnPropertyChange("TaxRateSlider");
+            OnPropertyChange("MaxBracketCountSlider");
+            OnPropertyChange("SelectedTaxPlanName");
+            OnPropertyChange("SelectedBracket");
+        }
     }
 
 }

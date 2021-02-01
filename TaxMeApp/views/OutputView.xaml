@@ -121,15 +121,15 @@
 
             <TextBlock Grid.Row="23"/>
             <TextBlock Grid.Row="24" Text="Bernie Sander's Plans:" FontWeight="Bold"/>
-            <CheckBox Grid.Row="25" Content="College Tuition Plan ($220 billion)" Foreground="Red"/>
-            <TextBlock Grid.Row="25" Grid.Column="2" Text="0% Funded"/>
-            <CheckBox Grid.Row="26" Content="Medicaid For All ($350 billion)" Foreground="Red"/>
-            <TextBlock Grid.Row="26" Grid.Column="2" Text="0% Funded"/>
+            <CheckBox IsChecked="{Binding SandersCollegeSpendingChecked, Mode=TwoWay}" Grid.Row="25" Content="College Tuition Plan ($220 billion)" Foreground="Red"/>
+            <TextBlock Grid.Row="25" Grid.Column="2" Text="{Binding SandersCollegeFunding}"/>
+            <CheckBox IsChecked="{Binding SandersMedicaidSpendingChecked, Mode=TwoWay}" Grid.Row="26" Content="Medicaid For All ($350 billion)" Foreground="Red"/>
+            <TextBlock Grid.Row="26" Grid.Column="2" Text="{Binding SandersMedicaidFunding}"/>
             <TextBlock Grid.Row="27"/>
             <TextBlock Grid.Row="28" Text="Andrew Yang's Plans:" FontWeight="Bold"/>
-            <CheckBox Grid.Row="29" Content="UBI ($2.8 trillion)" Foreground="Red"/>
-            <TextBlock Grid.Row="29" Grid.Column="2" Text="0% Funded"/>
-            <CheckBox Grid.Row="30" Content="Remove Existing Welfare Programs ($+1.066 trillion)" Foreground="Green"/>
+            <CheckBox IsChecked="{Binding YangUbiSpendingChecked, Mode=TwoWay}" Grid.Row="29" Content="UBI ($2.8 trillion)" Foreground="Red"/>
+            <TextBlock Grid.Row="29" Grid.Column="2" Text="{Binding YangUbiFunding}"/>
+            <CheckBox IsChecked="{Binding YangRemoveChecked, Mode=TwoWay}" Grid.Row="30" Content="Remove Existing Welfare Programs ($+1.066 trillion)" Foreground="Green"/>
             <TextBlock Grid.Row="31"/>
             <TextBlock Grid.Row="32"/>
         </Grid>
