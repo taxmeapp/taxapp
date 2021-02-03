@@ -126,7 +126,7 @@ namespace TaxMeApp.viewmodels
                 if (SelectedTaxPlanName != null)
                 {
                     TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
-                    Console.WriteLine("Selected Bracket = {0}, Tax Rate = {1}", SelectedBracket, selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)]);
+                    //Console.WriteLine("Selected Bracket = {0}, Tax Rate = {1}", SelectedBracket, selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)]);
                     return selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)];
                 }
                 return 0;
@@ -136,13 +136,68 @@ namespace TaxMeApp.viewmodels
                 if (SelectedTaxPlanName != null)
                 {
                     TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
-                    selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)] = value;
-                    DataModel.NewTaxPctByBracket[BracketList.IndexOf(SelectedBracket)] = value;
+
+                    //Calculate how much the current tax rate was changed
+                    double difference = value - selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)];
+
+                    if (LockTaxRates)
+                    {
+                        //Edit rates around the the current bracket by a proportional amount
+                        //Midpoint is the selected bracket
+                        //Go from midpoint - slider to midpoint + slider (Ex. if the selected bracket = #5, and slider = 2 go from 3 to 7 and edit brackets
+                        int midpoint = BracketList.IndexOf(SelectedBracket);
+                        for (int i = midpoint - LockNumberSlider; i < midpoint + LockNumberSlider; i++) {
+                            if (i >= 0 && i < selectedTaxPlan.TaxRates.Count) {
+                                if (selectedTaxPlan.TaxRates[i] + difference > 100)
+                                {
+                                    selectedTaxPlan.TaxRates[i] = 100;
+                                    DataModel.NewTaxPctByBracket[i] = 100;
+                                }
+                                else if (selectedTaxPlan.TaxRates[i] + difference < 0) {
+                                    selectedTaxPlan.TaxRates[i] = 0;
+                                    DataModel.NewTaxPctByBracket[i] = 0;
+                                }
+                                else
+                                {
+                                    selectedTaxPlan.TaxRates[i] += difference;
+                                    DataModel.NewTaxPctByBracket[i] += difference;
+                                }
+                            }
+                        }
+
+                    }
+                    else {
+                        selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)] = value;
+                        DataModel.NewTaxPctByBracket[BracketList.IndexOf(SelectedBracket)] = value;
+                    }
+
                     DataModel.NewRevenueByBracket = DataVM.calculateNewRevenues(selectedTaxPlan.TaxRates);
                     OnPropertyChange("SelectedTaxRate");
                     OutputVM.Update();
                     customGraphReset();
                 }
+            }
+        }
+
+        public bool locked = false;
+        public bool LockTaxRates {
+            get {
+                return locked;
+            }
+            set {
+                locked = value;
+                OnPropertyChange("LockTaxRates");
+            }
+        }
+
+        int editingBrackets = 0;
+        public int LockNumberSlider {
+            get {
+                return editingBrackets;
+            }
+            set {
+                editingBrackets = value;
+                OnPropertyChange("LockNumberSlider");
             }
         }
 
