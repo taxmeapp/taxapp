@@ -114,6 +114,39 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        // Number of brackets living at/under poverty line
+        public int PovertyLineIndex
+        {
+            get
+            {
+                return GraphModel.PovertyLineIndex;
+            }
+            set
+            {
+                GraphModel.PovertyLineIndex = value;
+
+                OnPropertyChange("PovertyLineIndex");
+            }
+        }
+
+        // Updates graph after number of brackets at/under poverty is changed
+        public int PovertyLineIndexSlider
+        {
+            get
+            {
+                return GraphModel.PovertyLineIndex;
+            }
+            set
+            {
+                GraphModel.PovertyLineIndex = value;
+
+                totalGraphReset(); // may only need to update poverty population
+
+                OnPropertyChange("PovertyLineIndex");
+
+            }
+        }
+
         // Checkboxes
         public bool ShowNumberOfReturns
         {

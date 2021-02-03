@@ -12,12 +12,11 @@ namespace TaxMeApp.models
     {
         public SeriesCollection Series { get; set; } = new SeriesCollection();
 
-
         public AxisSection MaxBracketLine { get; set; } = new AxisSection();
 
         public string[] Labels { get; set; } = new string[] { };
 
-        public int PovertyLineIndex { get; } = 3;
+        public int PovertyLineIndex { get; set; } = 3;
 
         public int MaxBracketCount { get; set; }
 

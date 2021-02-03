@@ -99,9 +99,6 @@ namespace TaxMeApp.viewmodels
                 }
 
                 return labels.ToArray();
-
-                /*YearsModel.SelectedIncomeYearModel.Brackets.ToList().ForEach(b => Labels.Append(b.Range));
-                return Labels;*/
             }
         }
 

@@ -230,8 +230,7 @@ namespace TaxMeApp.viewmodels
             int povertyPop = 0;
 
             // Count the number of returns up to and including the designated poverty bracket
-            //for (int i = 0; i <= povertyBrackets; i++)
-            for (int i = 0; i <= 3; i++)
+            for (int i = 0; i <= povertyBrackets; i++)
             {
                 povertyPop += population[i];
             }
