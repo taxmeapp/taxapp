@@ -114,7 +114,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // Number of brackets living at/under poverty line
+        // Zero-based (index) number of brackets living at/under poverty line
         public int PovertyLineIndex
         {
             get
@@ -126,6 +126,16 @@ namespace TaxMeApp.viewmodels
                 GraphModel.PovertyLineIndex = value;
 
                 OnPropertyChange("PovertyLineIndex");
+
+            }
+        }
+
+        // One-based number of brackets living at/under poverty line (for UI)
+        public int PovertyLineBrackets
+        {
+            get
+            {
+                return GraphModel.PovertyLineIndex + 1;
             }
         }
 
@@ -143,6 +153,10 @@ namespace TaxMeApp.viewmodels
                 totalGraphReset(); // may only need to update poverty population
 
                 OnPropertyChange("PovertyLineIndex");
+
+                OnPropertyChange("PovertyLineBrackets");
+
+                GraphVM.PovertyLineIndex = PovertyLineIndex;
 
             }
         }
@@ -246,7 +260,7 @@ namespace TaxMeApp.viewmodels
             Calls to recalculate and regraph based on user input
         */
 
-        // Collection of calls to update data, clear graph, regraph
+        // Collection of calls to update data, clear graph, set labels, regraph
         private void totalGraphReset()
         {
 
@@ -255,8 +269,9 @@ namespace TaxMeApp.viewmodels
 
             GraphVM.ClearSeries();
 
+            GraphVM.AddLabels();
+
             GraphVM.GraphAllChecked();
-            
 
         }
 

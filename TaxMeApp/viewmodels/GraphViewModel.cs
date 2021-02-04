@@ -91,14 +91,13 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                List<string> labels = new List<string>();
+                return GraphModel.Labels;
+            }
+            set
+            {
+                GraphModel.Labels = value;
 
-                foreach (var bracket in YearsModel.SelectedIncomeYearModel.Brackets)
-                {
-                    labels.Add(bracket.Range);
-                }
-
-                return labels.ToArray();
+                OnPropertyChange("Labels");
             }
         }
 
@@ -107,6 +106,10 @@ namespace TaxMeApp.viewmodels
             get
             {
                 return GraphModel.PovertyLineIndex;
+            }
+            set
+            {
+                OnPropertyChange("PovertyLineIndex");
             }
         }
 
@@ -392,6 +395,17 @@ namespace TaxMeApp.viewmodels
 
         }
 
+        // Updates labels upon graph total reset (e.g. when user changes year)
+        public void AddLabels()
+        {
+            List<string> labels = new List<string>();
 
+            foreach (var bracket in YearsModel.SelectedIncomeYearModel.Brackets)
+            {
+                labels.Add(bracket.Range);
+            }
+
+            Labels = labels.ToArray();
+        }
     }
 }
