@@ -1,14 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Input;
 using TaxMeApp.Helpers;
 
 namespace TaxMeApp.viewmodels
 {
     public class OutputViewModel : MainViewModel
     {
+        public ICommand AddProgramBtnCommand { get; set; }
+
+        public OutputViewModel() {
+            AddProgramBtnCommand = new RelayCommand(o => addProgramButtonClick());
+        }
+
+        public ObservableCollection<object> customProgramSource = new ObservableCollection<object>();
+        public DataGrid customProgramGrid { get; set; } = new DataGrid();
+
+        public void addProgramButtonClick() {
+            CheckBox checkBox1 = new CheckBox();
+            checkBox1.Content = "AAA";
+            customProgramSource.Add(checkBox1);
+            customProgramGrid.ItemsSource = customProgramSource;
+            OnPropertyChange("customProgramGrid");
+            
+            
+            //Console.WriteLine("\n\nAdd Program Button Clicked");
+            //for (int i = 0; i < customProgramSource.Count; i++) {
+            //    Console.WriteLine("i={0}", i);
+            //}
+            //Console.WriteLine("\n");
+        }
 
         public void Update()
         {
