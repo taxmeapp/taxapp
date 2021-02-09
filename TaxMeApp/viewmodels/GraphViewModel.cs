@@ -418,6 +418,18 @@ namespace TaxMeApp.viewmodels
 
         }
 
+        // Safe method to add LineSeries to Series
+        private void addLineSeries(LineSeries lineSeries)
+        {
+
+            if (Series != null)
+            {
+
+                Series.Add(lineSeries);
+
+            }
+
+        }
 
         private void graphCustomRates(List<double> customVals)
         {
