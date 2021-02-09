@@ -5,67 +5,116 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TaxMeApp.views" xmlns:viewmodels="clr-namespace:TaxMeApp.viewmodels"
              mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <StackPanel Background="LightGray"
+                    MinHeight="915"
+                    MinWidth="200">
+            <TextBlock Text="Control Panel"
+                               FontSize="20"
+                               Margin="5, 5, 5, 5"/>
+            <Separator Margin="10,10,10,10"/>
+            <TextBlock Text="Year"
+                               Margin="5, 5, 5, 5"/>
+            <ComboBox x:Name="YearInput"
+                                ItemsSource="{Binding YearList}" 
+                                SelectedItem="{Binding SelectedYear}"
+                                Margin="5, 5, 5, 15"
+                                Width="175"/>
+            <TextBlock Text="Tax Plan"
+                               Margin="5, 5, 5, 5"/>
+            <ComboBox x:Name="TaxPlanInput"
+                                ItemsSource="{Binding TaxPlansList}" 
+                                SelectedItem="{Binding SelectedTaxPlanName}"
+                                Margin="5, 5, 5, 15"
+                                Width="175"/>
+            <StackPanel Orientation="Horizontal"
+                        Margin="0, 5, 0, 15">
+                <Button Command="{Binding AddTaxPlanBtnCommand}" 
+                        Content="Add Tax Plan"
+                        Margin="5, 0, 0, 0"
+                        Width="90"/>
+                <Button Command="{Binding DeleteTaxPlanBtnCommand}"
+                        Content="Delete Tax Plan"
+                        Margin="10, 0, 0, 0"
+                        Width="90"/>
+            </StackPanel>
 
-    <StackPanel Background="LightGray"
-                MinHeight="700"
-                MinWidth="200">
-        <TextBlock Text="Control Panel"
-                           FontSize="20"
-                           Margin="5, 5, 5, 5"/>
-        <Separator Margin="10,10,10,10"/>
-        <TextBlock Text="Year"
-                           Margin="5, 5, 5, 5"/>
-        <ComboBox x:Name="YearInput"
-                            ItemsSource="{Binding YearList}" 
-                            SelectedItem="{Binding SelectedYear}"
+
+            <TextBlock x:Name="SlantTaxMaxRateLabel" Text="Slant Tax Maximum %"
+                               Margin="5, 5, 5, 5"/>
+            <TextBlock FontSize="20"
+                               HorizontalAlignment="Center" 
+                               Text="{Binding MaxTaxRate}"/>
+            <Slider x:Name="SlantTaxMaxRateSlider" IsSnapToTickEnabled="True" 
                             Margin="5, 5, 5, 15"
+                            Minimum="0"
+                            Maximum="100"
+                            TickFrequency="5"
+                            TickPlacement="BottomRight"
+                            Value="{Binding MaxTaxRate}"
                             Width="175"/>
-        <TextBlock Text="Slant Tax Maximum %"
-                           Margin="5, 5, 5, 5"/>
-        <TextBlock FontSize="20"
-                           HorizontalAlignment="Center" 
-                           Text="{Binding MaxTaxRate}"/>
-        <Slider IsSnapToTickEnabled="True" 
-                        Margin="5, 5, 5, 15"
-                        Minimum="0"
-                        Maximum="100"
-                        TickFrequency="5"
-                        TickPlacement="BottomRight"
-                        Value="{Binding MaxTaxRate}"
-                        Width="175"/>
-        <TextBlock Text="Tax Brackets at Max Rate"
-                           Margin="5, 5, 5, 5"/>
-        <TextBlock FontSize="20"
-                           HorizontalAlignment="Center" 
-                           Text="{Binding MaxBracketCount}"/>
-        <Slider IsSnapToTickEnabled="True" 
-                        Margin="5, 5, 5, 15"
-                        Minimum="0"
-                        Maximum="10"
-                        TickFrequency="1"
-                        TickPlacement="BottomRight"
-                        Value="{Binding MaxBracketCountSlider, Mode=TwoWay}"
-                        Width="175"/>
-        <TextBlock Margin="5,15,5,5" 
-                           Text="Display:"/>
-        <CheckBox Content="Number of Returns"
-                          IsChecked="{Binding ShowNumberOfReturns}"
-                          Margin="20,5,5,5"/>
-        <CheckBox Content="Tax Revenue (Old System)"
-                          IsChecked="{Binding ShowOldRevenue}"
-                          Margin="20,5,5,5"/>
-        <CheckBox Content="Tax Revenue (New System)"
-                          IsChecked="{Binding ShowNewRevenue}"
-                          Margin="20,5,5,5"/>
-        <CheckBox Content="Percent of Income (Old)"
-                          IsChecked="{Binding ShowOldPercentage}"
-                          Margin="20,5,5,5"/>
-        <CheckBox Content="Percent of Income (New)"
-                          IsChecked="{Binding ShowNewPercentage}"
-                          Margin="20,5,5,5"/>
-        <Button Command="{Binding SettingsBtnCommand}"
-                Content="Settings" 
-                Margin="0,100,0,0" 
-                Width="150"/>
-    </StackPanel>
+            <TextBlock x:Name="TaxBracketsLabel" Text="Tax Brackets at Max Rate"
+                               Margin="5, 5, 5, 5"/>
+            <TextBlock FontSize="20"
+                               HorizontalAlignment="Center" 
+                               Text="{Binding MaxBracketCount}"/>
+            <Slider x:Name="TaxBracketsSlider" IsSnapToTickEnabled="True" 
+                            Margin="5, 5, 5, 15"
+                            Minimum="0"
+                            Maximum="10"
+                            TickFrequency="1"
+                            TickPlacement="BottomRight"
+                            Value="{Binding MaxBracketCountSlider, Mode=TwoWay}"
+                            Width="175"/>
+            <TextBlock Text="Bracket"
+                               Margin="5, 5, 5, 5"/>
+            <ComboBox x:Name="BracketInput"
+                                ItemsSource="{Binding BracketList}" 
+                                SelectedItem="{Binding SelectedBracket, Mode=TwoWay}"
+                                Margin="5, 5, 5, 15"
+                                Width="175"/>
+            <TextBlock x:Name="TaxRateLabel" Text="Tax Rate"
+                               Margin="5, 5, 5, 5"/>
+            <TextBlock FontSize="20"
+                               HorizontalAlignment="Center" 
+                               Text="{Binding SelectedTaxRate}"/>
+            <Slider x:Name="TaxRateSlider" IsSnapToTickEnabled="True" 
+                            Margin="5, 5, 5, 15"
+                            Minimum="0"
+                            Maximum="100"
+                            TickFrequency="2.5"
+                            TickPlacement="BottomRight"
+                            Value="{Binding Path=TaxRateSlider, Mode=TwoWay}"
+                            Width="175"/>
+            <TextBlock Margin="5,15,5,5" 
+                               Text="Display:"/>
+            <CheckBox Content="Number of Returns"
+                              IsChecked="{Binding ShowNumberOfReturns, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
+            <CheckBox Content="Tax Revenue (Old System)"
+                              IsChecked="{Binding ShowOldRevenue, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
+            <CheckBox Content="Tax Revenue (New System)"
+                              IsChecked="{Binding ShowNewRevenue, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
+            <CheckBox Content="Percent of Income (Old)"
+                              IsChecked="{Binding ShowOldPercentage, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
+            <CheckBox Content="Percent of Income (New)"
+                              IsChecked="{Binding ShowNewPercentage, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
+            <Button Command="{Binding ResetSettingsBtnCommand}"
+                    Content="Reset To Default Settings"
+                    Margin="0, 30, 0, 0"
+                    Width="150"/>
+            <Button Command="{Binding ResetTaxRatesBtnCommand}" 
+                    Content="Reset Tax Rates"
+                    Margin="0, 20, 0, 0"
+                    Width="150"/>
+            <Button Command="{Binding SettingsBtnCommand}"
+                    Content="Settings" 
+                    Margin="0,20,0,0" 
+                    Width="150"/>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

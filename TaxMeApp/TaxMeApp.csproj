@@ -98,6 +98,9 @@
     <Compile Include="models\DataModel.cs" />
     <Compile Include="models\GraphModel.cs" />
     <Compile Include="models\IncomeYearModel.cs" />
+    <Compile Include="models\IndividualTaxPlanModel.cs" />
+    <Compile Include="models\OptionsModel.cs" />
+    <Compile Include="models\TaxPlansModel.cs" />
     <Compile Include="models\YearsModel.cs" />
     <Compile Include="viewmodels\DataViewModel.cs" />
     <Compile Include="viewmodels\OutputViewModel.cs" />

@@ -25,7 +25,6 @@ namespace TaxMeApp.viewmodels
         /*
          
                 Interaction with Models
-
         */
 
 
@@ -77,6 +76,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 GraphModel.MaxBracketCount = value;               
+                ControlVM.MaxBracketCount = value;
             }
         }
 
@@ -167,6 +167,10 @@ namespace TaxMeApp.viewmodels
         // New total revenue
         private long totalRevenueNew
         {
+            get
+            {
+                return DataModel.TotalRevenueNew;
+            }
             set
             {
                 DataModel.TotalRevenueNew = value;
@@ -182,7 +186,6 @@ namespace TaxMeApp.viewmodels
         /*
          
                 Calculation Logic
-
         */
 
 
@@ -220,6 +223,20 @@ namespace TaxMeApp.viewmodels
             // Calculate how much tax revenue was generated under new plan
             calculateNewTaxData();
 
+        }
+
+        //Use to calculate revenue for custom tax plan
+        public List<long> calculateNewRevenues(ObservableCollection<double> taxRates)
+        {
+            totalRevenueNew = 0;
+
+            List<long> ans = new List<long>();
+            for (int i = 0; i < selectedBrackets.Count; i++)
+            {
+                ans.Add(Convert.ToInt64(selectedBrackets[i].TaxableIncome * 1000 * taxRates[i] / 100));
+                totalRevenueNew += Convert.ToInt64(selectedBrackets[i].TaxableIncome * 1000 * taxRates[i] / 100);
+            }
+            return ans;
         }
 
 
@@ -410,11 +427,90 @@ namespace TaxMeApp.viewmodels
 
             }
 
+            if (OptionsModel.YangRemoveChecked)
+            {
+                totalRevenueNew += 1066000000000;
+            }
+
+            // Save our total revenue calculation
+            this.totalRevenueNew = totalRevenueNew;
+        }
+
+        public List<List<double>> calculateSlantTaxData()
+        {
+            List<List<double>> ans = new List<List<double>>();
+            List<double> rates = new List<double>();
+            List<double> revenueByBracket = new List<double>();
+
+            // Initialize our variables
+            int middleCount = selectedBrackets.Count - maxBracketCount;
+            long totalRevenueNew = 0;
+            double rate = 0;
+
+            // Initialize our index counter that is shared for all three loops
+            int i = 0;
+
+            // Handle poverty brackets
+            for (; i <= povertyBrackets; i++)
+            {
+
+                // Revenue is 0
+                revenueByBracket.Add(0);
+                // Rate is 0
+                rates.Add(0);
+
+            }
+
+            // Determine how many divisons we want to spread our increment over
+            int divisions = middleCount - i + 1;
+
+            // Determine the rate at how much to increment, and round to 1 decimal place
+            double increment = Math.Round(maxTaxRate / (double)divisions, 1);
+
+            // Incremental brackets
+            for (; i < middleCount; i++)
+            {
+
+                rate = rate + increment;
+
+                // Revenue is Taxable Income * Tax Rate
+                long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 1000 * rate / 100);
+                totalRevenueNew += bracketRevenue;
+
+                revenueByBracket.Add(bracketRevenue);
+
+                // Rate is incremental
+                rates.Add(rate);
+
+            }
+
+            // Max rate:
+            for (; i < selectedBrackets.Count; i++)
+            {
+
+                // Revenue is Taxable Income * Max Rate
+                long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * maxTaxRate / 100;
+                totalRevenueNew += bracketRevenue;
+
+                revenueByBracket.Add(bracketRevenue);
+
+                // Rate is max
+                rates.Add(maxTaxRate);
+
+            }
+
+            if (OptionsModel.YangRemoveChecked)
+            {
+                totalRevenueNew += 1066000000000;
+            }
+
             // Save our total revenue calculation
             this.totalRevenueNew = totalRevenueNew;
 
+            ans.Add(rates);
+            ans.Add(revenueByBracket);
+            return ans;
         }
-
 
 
     }

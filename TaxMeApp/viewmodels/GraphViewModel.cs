@@ -104,9 +104,7 @@ namespace TaxMeApp.viewmodels
         }
 
         /*
-
              Model interaction (no direct binding)
-
          */
 
         private int totalBrackets
@@ -170,9 +168,9 @@ namespace TaxMeApp.viewmodels
         // When user changes the dropdown selection:
         private int selectedYear
         {
-            get 
-            { 
-                return YearsModel.SelectedYear; 
+            get
+            {
+                return YearsModel.SelectedYear;
             }
         }
 
@@ -222,8 +220,7 @@ namespace TaxMeApp.viewmodels
         /*
         
             Modifying graph contents
-
-        */ 
+        */
 
         // Safe method to clear series
         public void ClearSeries()
@@ -231,7 +228,14 @@ namespace TaxMeApp.viewmodels
 
             if (Series != null)
             {
-                Series.Clear();
+                try
+                {
+                    Series.Clear();
+                }
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                }
             }
 
         }
@@ -265,7 +269,6 @@ namespace TaxMeApp.viewmodels
         /*
         
             Drawing on graph
-
         */
 
         // Public method to draw all relevant items
@@ -299,6 +302,36 @@ namespace TaxMeApp.viewmodels
 
         }
 
+        // Public method to draw all relevant items
+        public void GraphAllChecked(List<double> customRates)
+        {
+
+            if (showNumberOfReturns)
+            {
+                graphTaxReturns();
+            }
+
+            if (showOldRevenue)
+            {
+                graphOldTaxRevenue();
+            }
+
+            if (showNewRevenue)
+            {
+                graphNewTaxRevenue();
+            }
+
+            if (showOldPercentage)
+            {
+                graphOldTaxPercentage();
+            }
+
+            if (showNewPercentage)
+            {
+                graphCustomRates(customRates);
+            }
+
+        }
         // Private methods to actually draw each
 
         // Bar graph for Total number of tax returns by bracket
@@ -386,5 +419,20 @@ namespace TaxMeApp.viewmodels
         }
 
 
+        private void graphCustomRates(List<double> customVals)
+        {
+
+            LineSeries lineSeries = new LineSeries()
+            {
+                Title = "New Tax Percentage",
+                Values = new ChartValues<double>(customVals),
+                Stroke = Brushes.Maroon,
+                Fill = Brushes.Transparent,
+                ScalesYAt = 2
+            };
+
+            addLineSeries(lineSeries);
+
+        }
     }
 }

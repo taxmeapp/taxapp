@@ -26,6 +26,8 @@ namespace TaxMeApp
         public YearsModel YearsModel { get; set; }
         public GraphModel GraphModel { get; set; }
         public DataModel DataModel { get; set; }
+        public TaxPlansModel TaxPlansModel { get; set; }
+        public OptionsModel OptionsModel { get; set; }
 
         public Loader()
         {
@@ -35,6 +37,8 @@ namespace TaxMeApp
             YearsModel = new YearsModel();
             GraphModel = new GraphModel();
             DataModel = new DataModel();
+            TaxPlansModel = new TaxPlansModel();
+            OptionsModel = new OptionsModel();
 
             // Load CSVs
             LoadYears();
@@ -59,6 +63,10 @@ namespace TaxMeApp
             ControlVM.DataVM = DataVM;
             ControlVM.OutputVM = OutputVM;
             ControlVM.GraphVM = GraphVM;
+            ControlVM.OutputVM = OutputVM;
+
+            OutputVM.ControlVM = ControlVM;
+            OutputVM.DataVM = DataVM;
 
             SettingsVM.MainVM = MainVM;
 
@@ -67,16 +75,23 @@ namespace TaxMeApp
             DataVM.DataModel = DataModel;
             DataVM.YearsModel = YearsModel;
             DataVM.GraphModel = GraphModel;
+            DataVM.TaxPlansModel = TaxPlansModel;
+            DataVM.OptionsModel = OptionsModel;
 
             ControlVM.YearsModel = YearsModel;
             ControlVM.GraphModel = GraphModel;
             ControlVM.DataModel = DataModel;
+            ControlVM.TaxPlansModel = TaxPlansModel;
+            ControlVM.OptionsModel = OptionsModel;
 
             GraphVM.GraphModel = GraphModel;
             GraphVM.YearsModel = YearsModel;
             GraphVM.DataModel = DataModel;
+            GraphVM.TaxPlansModel = TaxPlansModel;
+            GraphVM.OptionsModel = OptionsModel;
 
             OutputVM.DataModel = DataModel;
+            OutputVM.OptionsModel = OptionsModel;
 
             DataVM.DataInit();
 
