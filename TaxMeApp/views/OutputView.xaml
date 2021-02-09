@@ -132,14 +132,14 @@
                 <CheckBox IsChecked="{Binding YangUbiSpendingChecked, Mode=TwoWay}" Grid.Row="29" Content="UBI ($2.8 trillion)" Foreground="Red"/>
                 <TextBlock Grid.Row="29" Grid.Column="2" Text="{Binding YangUbiFunding}"/>
                 <CheckBox IsChecked="{Binding YangRemoveChecked, Mode=TwoWay}" Grid.Row="30" Content="Remove Existing Welfare Programs ($+1.066 trillion)" Foreground="Green"/>
-                <TextBlock Grid.Row="31"/>
-                <TextBlock Grid.Row="32" Text="Custom Government Programs:" FontWeight="Bold"/>
-                <Button Grid.Row="33" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
+                <TextBlock Grid.Row="31" Margin="0, 20, 0, 20"/>
+                <!--<TextBlock Grid.Row="32" Text="Custom Government Programs:" FontWeight="Bold"/>
+                <Button Grid.Row="33" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>-->
             </Grid>
-            <DataGrid x:Name="CustomProgramGrid"
+            <!--<DataGrid x:Name="CustomProgramGrid"
                   Width="850"
                   ItemsSource="{Binding customProgramGrid, Mode=TwoWay}">
-            </DataGrid>
+            </DataGrid>-->
         </StackPanel>
     </ScrollViewer>
 </UserControl>
