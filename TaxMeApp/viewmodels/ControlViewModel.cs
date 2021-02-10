@@ -150,7 +150,7 @@ namespace TaxMeApp.viewmodels
             {
                 GraphModel.PovertyLineIndex = value;
 
-                totalGraphReset(); // may only need to update poverty population
+                totalGraphReset(); 
 
                 OnPropertyChange("PovertyLineIndex");
 
@@ -158,6 +158,7 @@ namespace TaxMeApp.viewmodels
 
                 GraphVM.PovertyLineIndex = PovertyLineIndex;
 
+                OnPropertyChange("MaxBracketCountSlider");
             }
         }
 
