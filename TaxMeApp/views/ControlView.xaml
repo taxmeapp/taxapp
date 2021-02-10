@@ -66,6 +66,19 @@
                             TickPlacement="BottomRight"
                             Value="{Binding MaxBracketCountSlider, Mode=TwoWay}"
                             Width="175"/>
+            <TextBlock Text="Tax Brackets Living in Poverty"
+                           Margin="5, 5, 5, 5"/>
+            <TextBlock FontSize="20"
+                           HorizontalAlignment="Center" 
+                           Text="{Binding PovertyLineBrackets}"/>
+            <Slider IsSnapToTickEnabled="True" 
+                        Margin="5, 5, 5, 15"
+                        Minimum="-1"
+                        Maximum="9"
+                        TickFrequency="1"
+                        TickPlacement="BottomRight"
+                        Value="{Binding PovertyLineIndexSlider, Mode=TwoWay}"
+                        Width="175"/>
             <TextBlock Text="Bracket"
                                Margin="5, 5, 5, 5"/>
             <ComboBox x:Name="BracketInput"

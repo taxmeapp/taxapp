@@ -44,7 +44,7 @@ namespace TaxMeApp.models
                 "$10,000,000 or more"
         };
 
-        public int PovertyLineIndex { get; } = 3;
+        public int PovertyLineIndex { get; set; } = 3;
 
         public int MaxBracketCount { get; set; }
 
