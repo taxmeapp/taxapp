@@ -232,6 +232,7 @@ namespace TaxMeApp.viewmodels
 
             if (Series != null)
             {
+
                 try
                 {
                     Series.Clear();

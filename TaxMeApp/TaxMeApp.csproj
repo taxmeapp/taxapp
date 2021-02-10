@@ -90,6 +90,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\AutoUpdater.cs" />
     <Compile Include="Helpers\Formatter.cs" />
     <Compile Include="Helpers\Parser.cs" />
     <Compile Include="Helpers\Loader.cs" />

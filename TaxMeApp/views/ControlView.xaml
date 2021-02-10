@@ -141,7 +141,8 @@
             <Button Command="{Binding SettingsBtnCommand}"
                     Content="Settings" 
                     Margin="0,20,0,0" 
-                    Width="150"/>
+                    Width="150"
+                    Visibility="Hidden"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

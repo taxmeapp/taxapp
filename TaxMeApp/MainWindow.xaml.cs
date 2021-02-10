@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-
+using TaxMeApp.Helpers;
 
 namespace TaxMeApp
 {
@@ -16,14 +16,24 @@ namespace TaxMeApp
         public MainWindow()
         {
 
-            loader = new Loader();
+            AutoUpdater autoUpdater = new AutoUpdater();
 
+            // Turn this on only for production version:
+            autoUpdater.Update();
 
-            InitializeComponent();
+            if (autoUpdater.RestartRequired)
+            {
+                autoUpdater.Restart();
+            }
+            else
+            {
 
+                loader = new Loader();
 
-            DataContext = loader.MainVM;
+                InitializeComponent();
 
+                DataContext = loader.MainVM;
+            }
 
         }
 
