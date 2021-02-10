@@ -26,7 +26,7 @@ namespace TaxMeApp.Helpers
             // Allow typeconverter to parse cells with commas and spaces
             var NumberOptions = new TypeConverterOptions
             {
-                NumberStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowThousands | NumberStyles.AllowLeadingWhite
+                NumberStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowThousands | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite
             };
 
             var reader = new StreamReader(path);
@@ -156,6 +156,11 @@ namespace TaxMeApp.Helpers
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
             if (string.IsNullOrEmpty(text))
+            {
+                return (long)0;
+            }
+
+            else if (text.Contains("--"))
             {
                 return (long)0;
             }
