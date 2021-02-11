@@ -49,6 +49,7 @@ namespace TaxMeApp.models
         public bool ShowNewRevenue { get; set; } = false;
         public bool ShowOldPercentage { get; set; } = false;
         public bool ShowNewPercentage { get; set; } = false;
+        public bool ShowNewUBI { get; set; } = false;
 
     }
 }

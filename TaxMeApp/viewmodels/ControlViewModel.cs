@@ -192,11 +192,27 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public bool ShowUBI
+        {
+            get
+            {
+                return GraphModel.ShowNewUBI;
+            }
+            set
+            {
+
+                GraphModel.ShowNewUBI = value;
+
+                displayOnlyGraphReset();
+
+            }
+        }
+
         /*
          
                 Button Logic
 
-        */ 
+        */
 
         // Settings button logic
 

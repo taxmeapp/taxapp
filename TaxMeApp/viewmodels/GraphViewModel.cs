@@ -158,6 +158,14 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        private bool showUBI
+        {
+            get
+            {
+                return GraphModel.ShowNewUBI;
+            }
+        }
+
         // Number of brackets at max rate
         private int maxBracketCount
         {
@@ -217,13 +225,19 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-
+        private List<double> ubiByBracket
+        {
+            get
+            {
+                return DataModel.UBIPayOutByBracket;
+            }
+        }
 
         /*
         
             Modifying graph contents
 
-        */ 
+        */
 
         // Safe method to clear series
         public void ClearSeries()
@@ -296,6 +310,11 @@ namespace TaxMeApp.viewmodels
             {
                 graphNewTaxPercentage();
             }
+
+            if (showUBI)
+            {
+                graphUBI();
+            }            
 
         }
 
@@ -377,6 +396,23 @@ namespace TaxMeApp.viewmodels
                 Title = "New Tax Percentage",
                 Values = new ChartValues<double>(newTaxPctByBracket),
                 Stroke = Brushes.Maroon,
+                Fill = Brushes.Transparent,
+                ScalesYAt = 2
+            };
+
+            addLineSeries(lineSeries);
+
+        }
+
+        // Line chart for UBI by bracket
+        private void graphUBI()
+        {
+
+            LineSeries lineSeries = new LineSeries()
+            {
+                Title = "UBI",
+                Values = new ChartValues<double>(ubiByBracket),
+                Stroke = Brushes.DarkViolet,
                 Fill = Brushes.Transparent,
                 ScalesYAt = 2
             };

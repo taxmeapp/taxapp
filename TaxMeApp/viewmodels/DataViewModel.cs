@@ -74,6 +74,19 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        // Number of brackets at max UBI rate implement later.....
+        //private int maxUBIBracketCount
+        //{
+        //    get
+        //    {
+        //        return GraphModel.MaxBracketCount;
+        //    }
+        //    set
+        //    {
+        //        ControlVM.MaxBracketCount = value;
+        //    }
+        //}
+
         // Population at max tax rate
         private int numMaxPop
         {
@@ -131,6 +144,15 @@ namespace TaxMeApp.viewmodels
                 return DataModel.NewTaxPctByBracket;
             }
         }
+        
+        // How much money each person would recieve based on the bracket that they are in
+        private List<double> uBIPayOutByBracket
+        {
+            get
+            {
+                return DataModel.UBIPayOutByBracket;
+            }
+        }
 
         // # of brackets in poverty
         private int povertyBrackets
@@ -156,6 +178,17 @@ namespace TaxMeApp.viewmodels
             set
             {
                 DataModel.TotalRevenueNew = value;
+                // force update of OutputVM
+                OutputVM.Update();
+            }
+        }
+
+        // Total cost of implemting UBI
+        private long totalUBICost
+        {
+            set
+            {
+                DataModel.TotalUBICost = value;
                 // force update of OutputVM
                 OutputVM.Update();
             }
@@ -190,6 +223,9 @@ namespace TaxMeApp.viewmodels
 
             // Calculate how much tax revenue was generated under new plan
             calculateNewTaxData();
+
+            // Calculate UBI cost
+            calculateUBIByBracket();
 
         }
 
@@ -396,7 +432,62 @@ namespace TaxMeApp.viewmodels
 
         }
 
+        private void calculateUBIByBracket()
+        {
 
+            // Clear our bracket lists so we can add to fresh lists
+            uBIPayOutByBracket.Clear();
+
+            // Initialize our variables
+            int middleCount = selectedBrackets.Count - maxBracketCount;
+            long totalUBICost = 0;
+            double maxUBI = 1500;
+            double rate = 0;
+
+            // Initialize our index counter that is shared for all three loops
+            int i = 0;
+
+            // Handle poverty brackets
+            for (; i <= povertyBrackets; i++)
+            {
+
+                // Revenue is 0
+                uBIPayOutByBracket.Add(maxUBI);
+                totalUBICost += (long)(maxUBI * population[i]);
+            }
+
+            // Determine how many divisons we want to spread our increment over
+            int divisions = middleCount - i + 1;
+
+            // Determine the rate at how much to increment, and round to 1 decimal place
+            double increment = Math.Round(1 / (double)divisions, 2);
+
+            // Incremental brackets
+            for (; i < middleCount; i++)
+            {
+
+                rate = rate + increment;
+
+                // Revenue is Taxable Income * Tax Rate
+                double bracketUBI = maxUBI - (rate * maxUBI);
+                long bracketUBICost = (long)(bracketUBI * population[i]);
+                totalUBICost += bracketUBICost;
+
+                uBIPayOutByBracket.Add(bracketUBI);
+            }
+
+            // Max rate:
+            for (; i < selectedBrackets.Count; i++)
+            {
+
+                uBIPayOutByBracket.Add(0);
+
+            }
+
+            // Save our total revenue calculation
+            this.totalUBICost = totalUBICost;
+
+        }
 
     }
 }

@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:TaxMeApp.views" xmlns:viewmodels="clr-namespace:TaxMeApp.viewmodels"
              mc:Ignorable="d">
 
-    <StackPanel Background="LightGray"
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Background="LightGray"
                 MinHeight="700"
                 MinWidth="200">
         <TextBlock Text="Control Panel"
@@ -63,9 +64,13 @@
         <CheckBox Content="Percent of Income (New)"
                           IsChecked="{Binding ShowNewPercentage}"
                           Margin="20,5,5,5"/>
+        <CheckBox Content="Universal Basic Income"
+                          IsChecked="{Binding ShowUBI}"
+                          Margin="20,5,5,5"/>
         <Button Command="{Binding SettingsBtnCommand}"
                 Content="Settings" 
                 Margin="0,100,0,0" 
                 Width="150"/>
-    </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

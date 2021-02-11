@@ -18,6 +18,7 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("TotalRevenueOldOutput");
             OnPropertyChange("TotalRevenueNewOutput");
             OnPropertyChange("RevenueDifferenceOutput");
+            OnPropertyChange("UBICost");
 
         }
 
@@ -80,6 +81,14 @@ namespace TaxMeApp.viewmodels
 
             }
 
+        }
+
+        public string UBICost
+        {
+            get
+            {
+                return Formatter.Format(DataModel.TotalUBICost);
+            }
         }
 
 
