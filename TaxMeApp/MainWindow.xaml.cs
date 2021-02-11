@@ -19,7 +19,7 @@ namespace TaxMeApp
             AutoUpdater autoUpdater = new AutoUpdater();
 
             // Turn this on only for production version:
-            //autoUpdater.Update();
+            autoUpdater.Update();
 
             if (autoUpdater.RestartRequired)
             {
