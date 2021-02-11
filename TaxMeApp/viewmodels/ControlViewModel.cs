@@ -565,7 +565,7 @@ namespace TaxMeApp.viewmodels
         /*
             Calls to recalculate and regraph based on user input
         */
-
+         
         // Collection of calls to update data, clear graph, regraph
         private void totalGraphReset()
         {
@@ -584,8 +584,6 @@ namespace TaxMeApp.viewmodels
 
                 GraphVM.GraphAllChecked();
             }            
-            GraphVM.GraphAllChecked();
-
 
         }
 
@@ -593,13 +591,22 @@ namespace TaxMeApp.viewmodels
         //Used for manually changing tax rates
         private void customGraphReset()
         {
-            GraphVM.ClearSeries();
-            GraphVM.GraphAllChecked();
+            if (GraphVM != null)
+            {
+                GraphVM.ClearSeries();
+
+                GraphVM.GraphAllChecked();
+            }
         }
 
-        private void customGraphReset(List<double> customRates) {
-            GraphVM.ClearSeries();
-            GraphVM.GraphAllChecked(customRates);
+        private void customGraphReset(List<double> customRates) 
+        {
+            if (GraphVM != null)
+            {
+                GraphVM.ClearSeries();
+
+                GraphVM.GraphAllChecked(customRates);
+            }
         }
 
         // Collections of calls to update only the new data (e.g. max % or # of max brackets changed)
