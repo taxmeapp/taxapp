@@ -130,6 +130,9 @@
             <CheckBox Content="Percent of Income (New)"
                               IsChecked="{Binding ShowNewPercentage, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
+            <CheckBox Content="Universal Basic Income"
+                              IsChecked="{Binding ShowUBI}"
+                              Margin="20,5,5,5"/>
             <Button Command="{Binding ResetSettingsBtnCommand}"
                     Content="Reset To Default Settings"
                     Margin="0, 30, 0, 0"
