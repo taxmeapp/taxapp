@@ -12,7 +12,7 @@ using System.Xml;
 
 namespace TaxMeApp.Helpers
 {
-    class AutoUpdater
+    public class AutoUpdater
     {
 
         private string remoteURL = "";
@@ -383,6 +383,16 @@ namespace TaxMeApp.Helpers
                     sw.WriteLine("\tCreating directory: " + localDirs);
                 }
 
+            }
+
+        }
+
+        private void flushSW()
+        {
+
+            if (sw != null)
+            {
+                sw.Flush();
             }
 
         }
