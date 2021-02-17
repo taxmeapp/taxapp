@@ -119,8 +119,6 @@ namespace UnitTests
 
             Assert.AreEqual(remoteURLStr, fromLocalVersionXML);
 
-            obj.Invoke("flushSW");
-
         } 
 
 
