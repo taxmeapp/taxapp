@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TaxMeApp.views"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" d:DesignHeight="553.907" 
              >
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="400">
         <StackPanel>
@@ -138,13 +138,10 @@
                 <TextBlock Grid.Row="29" Grid.Column="2" Text="{Binding YangUbiFunding}"/>
                 <CheckBox IsChecked="{Binding YangRemoveChecked, Mode=TwoWay}" Grid.Row="30" Content="Remove Existing Welfare Programs ($+1.066 trillion)" Foreground="Green"/>
                 <TextBlock Grid.Row="31" Margin="0, 20, 0, 20"/>
-                <!--<TextBlock Grid.Row="32" Text="Custom Government Programs:" FontWeight="Bold"/>
-                <Button Grid.Row="33" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>-->
+                <TextBlock Grid.Row="32" Text="Custom Government Programs:" FontWeight="Bold"/>
+                <Button Grid.Row="33" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
             </Grid>
-            <!--<DataGrid x:Name="CustomProgramGrid"
-                  Width="850"
-                  ItemsSource="{Binding customProgramGrid, Mode=TwoWay}">
-            </DataGrid>-->
+            <ListView ItemsSource="{Binding customProgramListView.Items}"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

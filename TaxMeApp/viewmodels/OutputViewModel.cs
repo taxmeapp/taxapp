@@ -11,30 +11,96 @@ using TaxMeApp.Helpers;
 
 namespace TaxMeApp.viewmodels
 {
+    public class spacerColumn : ColumnDefinition
+    {
+
+        public spacerColumn()
+        {
+            this.Width = new System.Windows.GridLength(30);
+        }
+    }
+
     public class OutputViewModel : MainViewModel
     {
+        public ListView customProgramListView { get; set; } = new ListView();
         public ICommand AddProgramBtnCommand { get; set; }
 
         public OutputViewModel() {
+            customProgramSource = new DataTable();
+            customProgramSource.Columns.Add(new DataColumn("Num"));
+            customProgramSource.Columns.Add(new DataColumn("Alpha"));
+            customProgramSource.Rows.Add("1", "A");
+            customProgramGrid.ItemsSource = customProgramSource.DefaultView;
+
             AddProgramBtnCommand = new RelayCommand(o => addProgramButtonClick());
         }
 
-        public ObservableCollection<object> customProgramSource = new ObservableCollection<object>();
+        //public ObservableCollection<object> customProgramSource = new ObservableCollection<object>();
         public DataGrid customProgramGrid { get; set; } = new DataGrid();
+        public DataTable customProgramSource { get; set; }
+
 
         public void addProgramButtonClick() {
-            CheckBox checkBox1 = new CheckBox();
-            checkBox1.Content = "AAA";
-            customProgramSource.Add(checkBox1);
-            customProgramGrid.ItemsSource = customProgramSource;
-            OnPropertyChange("customProgramGrid");
-            
-            
-            //Console.WriteLine("\n\nAdd Program Button Clicked");
-            //for (int i = 0; i < customProgramSource.Count; i++) {
-            //    Console.WriteLine("i={0}", i);
-            //}
-            //Console.WriteLine("\n");
+
+            //customProgramListView.Items.Clear();
+            Grid g = new Grid();
+            ColumnDefinition colTemplate1 = new ColumnDefinition();
+            colTemplate1.Width = new System.Windows.GridLength(30);
+            ColumnDefinition colTemplate2 = new ColumnDefinition();
+            colTemplate2.Width = new System.Windows.GridLength(200);
+            ColumnDefinition colTemplate3 = new ColumnDefinition();
+            colTemplate3.Width = new System.Windows.GridLength(200);
+            ColumnDefinition colTemplate4 = new ColumnDefinition();
+            colTemplate4.Width = new System.Windows.GridLength(100);
+
+            g.ColumnDefinitions.Add(colTemplate1);
+            g.ColumnDefinitions.Add(new spacerColumn());
+            g.ColumnDefinitions.Add(colTemplate2);
+            g.ColumnDefinitions.Add(new spacerColumn());
+            g.ColumnDefinitions.Add(colTemplate3);
+            g.ColumnDefinitions.Add(new spacerColumn());
+            g.ColumnDefinitions.Add(colTemplate4);
+
+            g.RowDefinitions.Add(new RowDefinition());
+            g.RowDefinitions.Add(new RowDefinition());
+
+            //Row 1
+            TextBlock nameLabel = new TextBlock();
+            nameLabel.Text = "Program Name:";
+            TextBlock costLabel = new TextBlock();
+            costLabel.Text = "Cost:";
+
+            //Row 2
+            CheckBox c1 = new CheckBox();
+            TextBox pName1 = new TextBox();
+            TextBox cost1 = new TextBox();
+            TextBlock funding1 = new TextBlock();
+            funding1.Text = "0% Funded";
+
+            g.Children.Add(nameLabel);
+            g.Children.Add(costLabel);
+            g.Children.Add(c1);
+            g.Children.Add(pName1);
+            g.Children.Add(cost1);
+            g.Children.Add(funding1);
+
+            Grid.SetRow(nameLabel, 0);
+            Grid.SetColumn(nameLabel, 2);
+            Grid.SetRow(costLabel, 0);
+            Grid.SetColumn(costLabel, 4);
+
+            Grid.SetRow(c1, 1);
+            Grid.SetColumn(c1, 0);
+            Grid.SetRow(pName1, 1);
+            Grid.SetColumn(pName1, 2);
+            Grid.SetRow(cost1, 1);
+            Grid.SetColumn(cost1, 4);
+            Grid.SetRow(funding1, 1);
+            Grid.SetColumn(funding1, 6);
+
+            customProgramListView.Items.Add(g);
+
+            OnPropertyChange("customProgramListView");
         }
 
         public void Update()
