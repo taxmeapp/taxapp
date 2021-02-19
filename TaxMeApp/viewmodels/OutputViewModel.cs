@@ -11,6 +11,7 @@ using TaxMeApp.Helpers;
 
 namespace TaxMeApp.viewmodels
 {
+    //Spacer column is just a column definition with a set width
     public class spacerColumn : ColumnDefinition
     {
 
@@ -22,6 +23,7 @@ namespace TaxMeApp.viewmodels
 
     public class OutputViewModel : MainViewModel
     {
+        //Custom gov programs are held in a listview and the items are connected to the ouputview
         public ListView customProgramListView { get; set; } = new ListView();
         public ICommand AddProgramBtnCommand { get; set; }
 
@@ -33,7 +35,10 @@ namespace TaxMeApp.viewmodels
         public void addProgramButtonClick() {
 
             //customProgramListView.Items.Clear();
+            
+            //Create a grid to store checkbox and textboxes
             Grid g = new Grid();
+            //Column definitions are used to define the width and spacing of the elements
             ColumnDefinition colTemplate1 = new ColumnDefinition();
             colTemplate1.Width = new System.Windows.GridLength(30);
             ColumnDefinition colTemplate2 = new ColumnDefinition();
@@ -43,6 +48,7 @@ namespace TaxMeApp.viewmodels
             ColumnDefinition colTemplate4 = new ColumnDefinition();
             colTemplate4.Width = new System.Windows.GridLength(100);
 
+            //Add definitons
             g.ColumnDefinitions.Add(colTemplate1);
             g.ColumnDefinitions.Add(new spacerColumn());
             g.ColumnDefinitions.Add(colTemplate2);
@@ -65,7 +71,7 @@ namespace TaxMeApp.viewmodels
             TextBox programName = new TextBox();
             TextBox programCost = new TextBox();
             TextBlock programFunding = new TextBlock();
-            programFunding.Text = "0% Funded";
+            programFunding.Text = "0.0% Funded";
 
             g.Children.Add(nameLabel);
             g.Children.Add(costLabel);
@@ -88,8 +94,10 @@ namespace TaxMeApp.viewmodels
             Grid.SetRow(programFunding, 1);
             Grid.SetColumn(programFunding, 6);
 
+            //Add program to list of costs (Used to calculate funding)
             OptionsModel.listOfCosts.Add((OptionsModel.listOfCosts.Count, false, "", 0.0));
 
+            //Set event listeners
             programChecked.Click += ProgramChecked_Click;
             programName.TextChanged += ProgramName_TextChanged;
             programCost.TextChanged += ProgramCost_TextChanged;
@@ -98,6 +106,7 @@ namespace TaxMeApp.viewmodels
 
             OnPropertyChange("customProgramListView");
 
+            //Testing:
 
             //Console.WriteLine("\nPrinting out listview contents:");
             //for (int i = 0; i < customProgramListView.Items.Count; i++) {
@@ -111,7 +120,7 @@ namespace TaxMeApp.viewmodels
 
         private void ProgramChecked_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            //Find the program that was edited
+            //Find the gov program that was edited
             int gridNum = -1;
             for (int i = 0; i < customProgramListView.Items.Count; i++)
             {
@@ -136,7 +145,7 @@ namespace TaxMeApp.viewmodels
 
         private void ProgramName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //Find the program that was edited
+            //Find the gov program that was edited
             int gridNum = -1;
             for (int i = 0; i < customProgramListView.Items.Count; i++)
             {
@@ -173,6 +182,8 @@ namespace TaxMeApp.viewmodels
             //Update List of costs with new text value
             if (gridNum != -1)
             {
+
+                //Try parsing the text value, and if it's invalid just set it to 0
                 string sdata = (sender as TextBox).Text;
                 double data = 0;
                 try
@@ -183,12 +194,16 @@ namespace TaxMeApp.viewmodels
                     Console.WriteLine(ex.StackTrace);
                 }
 
+     
                 OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, OptionsModel.listOfCosts[gridNum + 17].name, data);
 
                 Update();
                 //OptionsModel.updateFunding();
                 //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + 17].ToString("0.0") + "% Funded");
             }
+
+
+            //Print out list of costs for testing:
 
             //for (int i = 0; i < OptionsModel.listOfCosts.Count; i++) {
             //    Console.WriteLine("i={0}, name={1}, cost={2}", i, OptionsModel.listOfCosts[i].name, OptionsModel.listOfCosts[i].cost);
