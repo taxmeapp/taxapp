@@ -26,18 +26,8 @@ namespace TaxMeApp.viewmodels
         public ICommand AddProgramBtnCommand { get; set; }
 
         public OutputViewModel() {
-            customProgramSource = new DataTable();
-            customProgramSource.Columns.Add(new DataColumn("Num"));
-            customProgramSource.Columns.Add(new DataColumn("Alpha"));
-            customProgramSource.Rows.Add("1", "A");
-            customProgramGrid.ItemsSource = customProgramSource.DefaultView;
-
             AddProgramBtnCommand = new RelayCommand(o => addProgramButtonClick());
         }
-
-        //public ObservableCollection<object> customProgramSource = new ObservableCollection<object>();
-        public DataGrid customProgramGrid { get; set; } = new DataGrid();
-        public DataTable customProgramSource { get; set; }
 
 
         public void addProgramButtonClick() {
@@ -71,36 +61,129 @@ namespace TaxMeApp.viewmodels
             costLabel.Text = "Cost:";
 
             //Row 2
-            CheckBox c1 = new CheckBox();
-            TextBox pName1 = new TextBox();
-            TextBox cost1 = new TextBox();
-            TextBlock funding1 = new TextBlock();
-            funding1.Text = "0% Funded";
+            CheckBox programChecked = new CheckBox();
+            TextBox programName = new TextBox();
+            TextBox programCost = new TextBox();
+            TextBlock programFunding = new TextBlock();
+            programFunding.Text = "0% Funded";
 
             g.Children.Add(nameLabel);
             g.Children.Add(costLabel);
-            g.Children.Add(c1);
-            g.Children.Add(pName1);
-            g.Children.Add(cost1);
-            g.Children.Add(funding1);
+            g.Children.Add(programChecked);
+            g.Children.Add(programName);
+            g.Children.Add(programCost);
+            g.Children.Add(programFunding);
 
             Grid.SetRow(nameLabel, 0);
             Grid.SetColumn(nameLabel, 2);
             Grid.SetRow(costLabel, 0);
             Grid.SetColumn(costLabel, 4);
 
-            Grid.SetRow(c1, 1);
-            Grid.SetColumn(c1, 0);
-            Grid.SetRow(pName1, 1);
-            Grid.SetColumn(pName1, 2);
-            Grid.SetRow(cost1, 1);
-            Grid.SetColumn(cost1, 4);
-            Grid.SetRow(funding1, 1);
-            Grid.SetColumn(funding1, 6);
+            Grid.SetRow(programChecked, 1);
+            Grid.SetColumn(programChecked, 0);
+            Grid.SetRow(programName, 1);
+            Grid.SetColumn(programName, 2);
+            Grid.SetRow(programCost, 1);
+            Grid.SetColumn(programCost, 4);
+            Grid.SetRow(programFunding, 1);
+            Grid.SetColumn(programFunding, 6);
+
+            OptionsModel.listOfCosts.Add((OptionsModel.listOfCosts.Count, false, "", 0.0));
+
+            programChecked.Click += ProgramChecked_Click;
+            programName.TextChanged += ProgramName_TextChanged;
+            programCost.TextChanged += ProgramCost_TextChanged;
 
             customProgramListView.Items.Add(g);
 
             OnPropertyChange("customProgramListView");
+
+
+            //Console.WriteLine("\nPrinting out listview contents:");
+            //for (int i = 0; i < customProgramListView.Items.Count; i++) {
+            //    for(int j = 0; j < (customProgramListView.Items[i] as Grid).Children.Count; j++)
+            //    {
+            //        Console.WriteLine("Grid {0} child {1}: {2}", i, j, (customProgramListView.Items[i] as Grid).Children[j].ToString());
+            //    }
+            //}
+            //Console.WriteLine("\n");
+        }
+
+        private void ProgramChecked_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            //Find the program that was edited
+            int gridNum = -1;
+            for (int i = 0; i < customProgramListView.Items.Count; i++)
+            {
+                if ((customProgramListView.Items[i] as Grid).Children.Contains(sender as CheckBox))
+                {
+                    gridNum = i;
+                    break;
+                }
+            }
+
+            //Update List of costs with new text value
+            if (gridNum != -1)
+            {
+                bool data = (bool)(sender as CheckBox).IsChecked;
+                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, data, OptionsModel.listOfCosts[gridNum + 17].name, OptionsModel.listOfCosts[gridNum + 17].cost);
+
+                Update();
+                //OptionsModel.updateFunding();
+                //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + 17].ToString("0.0") + "% Funded");
+            }
+        }
+
+        private void ProgramName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //Find the program that was edited
+            int gridNum = -1;
+            for (int i = 0; i < customProgramListView.Items.Count; i++)
+            {
+                //Console.WriteLine("Checking {0} for textbox", i);
+                if ((customProgramListView.Items[i] as Grid).Children.Contains(sender as TextBox))
+                {
+                    //Console.WriteLine("Textbox Found", i);
+                    gridNum = i;
+                    break;
+                }
+            }
+
+            //Update List of costs with new text value
+            if (gridNum != -1)
+            {
+                string data = (sender as TextBox).Text;
+                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, data, OptionsModel.listOfCosts[gridNum + 17].cost);
+            }
+        }
+
+        private void ProgramCost_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //Find the program that was edited
+            int gridNum = -1;
+            for (int i = 0; i < customProgramListView.Items.Count; i++) {
+                //Console.WriteLine("Checking {0} for textbox", i);
+                if ((customProgramListView.Items[i] as Grid).Children.Contains(sender as TextBox)) {
+                    //Console.WriteLine("Textbox Found", i);
+                    gridNum = i;
+                    break;
+                }
+            }
+
+            //Update List of costs with new text value
+            if (gridNum != -1)
+            {
+                string data = (sender as TextBox).Text;
+                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, OptionsModel.listOfCosts[gridNum + 17].name, Double.Parse(data));
+
+                Update();
+                //OptionsModel.updateFunding();
+                //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + 17].ToString("0.0") + "% Funded");
+            }
+
+            //for (int i = 0; i < OptionsModel.listOfCosts.Count; i++) {
+            //    Console.WriteLine("i={0}, name={1}, cost={2}", i, OptionsModel.listOfCosts[i].name, OptionsModel.listOfCosts[i].cost);
+            //}
         }
 
         public void Update()
@@ -135,6 +218,12 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("SandersMedicaidFunding");
 
             OnPropertyChange("YangUbiFunding");
+
+            for (int i = 0; i < customProgramListView.Items.Count; i++) { 
+                //OptionsModel.updateFunding();
+                ((customProgramListView.Items[i] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[i + 17].ToString("0.0") + "% Funded");
+
+            }
         }
 
 
