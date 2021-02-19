@@ -469,7 +469,7 @@ namespace TaxMeApp.viewmodels
                 Values = new ChartValues<double>(ubiByBracket),
                 Stroke = Brushes.DarkViolet,
                 Fill = Brushes.Transparent,
-                ScalesYAt = 2
+                ScalesYAt = 3
             };
 
             addLineSeries(lineSeries);

@@ -80,18 +80,47 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // Number of brackets at max UBI rate implement later.....
-        //private int maxUBIBracketCount
-        //{
-        //    get
-        //    {
-        //        return GraphModel.MaxBracketCount;
-        //    }
-        //    set
-        //    {
-        //        ControlVM.MaxBracketCount = value;
-        //    }
-        //}
+        // Number of brackets recieving $0 UBI 
+        private int maxUBIBracketCount
+        {
+            get
+            {
+                return GraphModel.MaxUBIBracketCount;
+            }
+            set
+            {
+                ControlVM.MaxUBIBracketCount = value;
+                GraphModel.MaxUBIBracketCount = value;
+            }
+        }
+
+        // Number of brackets recieving full UBI 
+        private int minUBIBracketCount
+        {
+            get
+            {
+                return GraphModel.MinUBIBracketCount;
+            }
+            set
+            {
+                ControlVM.MinUBIBracketCount = value;
+                GraphModel.MinUBIBracketCount = value;
+            }
+        }
+
+        // max UBI rate 
+        private int maxUBI
+        {
+            get
+            {
+                return GraphModel.MaxUBI;
+            }
+            set
+            {
+                ControlVM.MaxUBI = value;
+                GraphModel.MaxUBI = value;
+            }
+        }
 
         // Population at max tax rate
         private int numMaxPop
@@ -248,6 +277,12 @@ namespace TaxMeApp.viewmodels
             // Calculate UBI cost
             calculateUBIByBracket();
 
+            //Set default UBI max
+            maxUBI = 1500;
+
+            //Set default min UBIBrackets
+            minUBIBracketCount = 3;
+
         }
 
         public void NewDataRecalcuation()
@@ -258,6 +293,9 @@ namespace TaxMeApp.viewmodels
 
             // Calculate how much tax revenue was generated under new plan
             calculateNewTaxData();
+
+            // Calculate UBI cost
+            calculateUBIByBracket();
 
         }
 
@@ -336,6 +374,7 @@ namespace TaxMeApp.viewmodels
 
             // Save our value 
             this.maxBracketCount = maxBracketCount;
+            this.maxUBIBracketCount = maxBracketCount;
 
         }
 
@@ -546,6 +585,8 @@ namespace TaxMeApp.viewmodels
             ans.Add(revenueByBracket);
             return ans;
         }
+
+        //builds list of UBI by bracket
         private void calculateUBIByBracket()
         {
 
@@ -553,21 +594,21 @@ namespace TaxMeApp.viewmodels
             uBIPayOutByBracket.Clear();
 
             // Initialize our variables
-            int middleCount = selectedBrackets.Count - maxBracketCount;
+            int middleCount = selectedBrackets.Count - maxUBIBracketCount;
             long totalUBICost = 0;
-            double maxUBI = 1500;
+            //double maxUBI = 1500;
             double rate = 0;
 
             // Initialize our index counter that is shared for all three loops
             int i = 0;
 
             // Handle poverty brackets
-            for (; i <= povertyBrackets; i++)
+            for (; i <= minUBIBracketCount; i++)
             {
 
                 // Revenue is 0
                 uBIPayOutByBracket.Add(maxUBI);
-                totalUBICost += (long)(maxUBI * population[i]);
+                totalUBICost += (long)((long)maxUBI * (long)population[i]);
             }
 
             // Determine how many divisons we want to spread our increment over

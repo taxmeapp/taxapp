@@ -329,6 +329,99 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        // Number of brackets recieving $0 in UBI
+        public int MaxUBIBracketCount
+        {
+            get
+            {
+                return GraphModel.MaxUBIBracketCount;
+            }
+            set
+            {
+                OnPropertyChange("MaxUBIBracketCount");
+            }
+        }
+
+        //MaxUBI Bracket slider
+        public int MaxUBIBracketCountSlider
+        {
+            get
+            {
+                return GraphModel.MaxUBIBracketCount;
+            }
+            set
+            {
+                GraphModel.MaxUBIBracketCount = value;
+
+                newDataGraphReset();
+
+                OnPropertyChange("MaxUBIBracketCount");
+                OnPropertyChange("MaxBracketUBICountSlider");
+            }
+        }
+
+        // Number of brackets recieving max UBI
+        public int MinUBIBracketCount
+        {
+            get
+            {
+                return GraphModel.MinUBIBracketCount;
+            }
+            set
+            {
+                OnPropertyChange("MinUBIBracketCount");
+            }
+        }
+
+        //MinUBI Bracket slider
+        public int MinUBIBracketCountSlider
+        {
+            get
+            {
+                return GraphModel.MinUBIBracketCount;
+            }
+            set
+            {
+                GraphModel.MinUBIBracketCount = value;
+
+                newDataGraphReset();
+
+                OnPropertyChange("MinUBIBracketCount");
+                OnPropertyChange("MinBracketUBICountSlider");
+            }
+        }
+
+        // $ Ammount of UBI per month
+        public int MaxUBI
+        {
+            get
+            {
+                return GraphModel.MaxUBI;
+            }
+            set
+            {
+                OnPropertyChange("MaxUBI");
+            }
+        }
+
+        // UBI ammount slider
+        public int MaxUBISlider
+        {
+            get
+            {
+                return GraphModel.MaxUBI;
+            }
+            set
+            {
+                GraphModel.MaxUBI = value;
+
+                newDataGraphReset();
+
+                OnPropertyChange("MaxUBI");
+                OnPropertyChange("MaxUBISlider");
+            }
+        }
+
         // Zero-based (index) number of brackets living at/under poverty line
         public int PovertyLineIndex
         {

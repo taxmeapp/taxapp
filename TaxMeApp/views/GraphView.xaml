@@ -37,6 +37,8 @@
                           ShowLabels="False"/>
                 <lvc:Axis Position="RightTop" 
                           ShowLabels="False"/>
+                <lvc:Axis Position="RightTop" 
+                          ShowLabels="False"/>
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
     </Grid>

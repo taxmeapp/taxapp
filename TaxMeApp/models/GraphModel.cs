@@ -59,6 +59,8 @@ namespace TaxMeApp.models
         public bool ShowOldPercentage { get; set; } = false;
         public bool ShowNewPercentage { get; set; } = false;
         public bool ShowNewUBI { get; set; } = false;
-
+        public int MaxUBIBracketCount { get; set; }
+        public int MinUBIBracketCount { get; set; }
+        public int MaxUBI { get; set; }
     }
 }
