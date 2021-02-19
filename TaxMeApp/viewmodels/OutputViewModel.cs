@@ -11,30 +11,203 @@ using TaxMeApp.Helpers;
 
 namespace TaxMeApp.viewmodels
 {
+    //Spacer column is just a column definition with a set width
+    public class spacerColumn : ColumnDefinition
+    {
+
+        public spacerColumn()
+        {
+            this.Width = new System.Windows.GridLength(30);
+        }
+    }
+
     public class OutputViewModel : MainViewModel
     {
+        //Custom gov programs are held in a listview and the items are connected to the ouputview
+        public ListView customProgramListView { get; set; } = new ListView();
         public ICommand AddProgramBtnCommand { get; set; }
 
         public OutputViewModel() {
             AddProgramBtnCommand = new RelayCommand(o => addProgramButtonClick());
         }
 
-        public ObservableCollection<object> customProgramSource = new ObservableCollection<object>();
-        public DataGrid customProgramGrid { get; set; } = new DataGrid();
 
         public void addProgramButtonClick() {
-            CheckBox checkBox1 = new CheckBox();
-            checkBox1.Content = "AAA";
-            customProgramSource.Add(checkBox1);
-            customProgramGrid.ItemsSource = customProgramSource;
-            OnPropertyChange("customProgramGrid");
+
+            //customProgramListView.Items.Clear();
             
-            
-            //Console.WriteLine("\n\nAdd Program Button Clicked");
-            //for (int i = 0; i < customProgramSource.Count; i++) {
-            //    Console.WriteLine("i={0}", i);
+            //Create a grid to store checkbox and textboxes
+            Grid g = new Grid();
+            //Column definitions are used to define the width and spacing of the elements
+            ColumnDefinition colTemplate1 = new ColumnDefinition();
+            colTemplate1.Width = new System.Windows.GridLength(30);
+            ColumnDefinition colTemplate2 = new ColumnDefinition();
+            colTemplate2.Width = new System.Windows.GridLength(200);
+            ColumnDefinition colTemplate3 = new ColumnDefinition();
+            colTemplate3.Width = new System.Windows.GridLength(200);
+            ColumnDefinition colTemplate4 = new ColumnDefinition();
+            colTemplate4.Width = new System.Windows.GridLength(100);
+
+            //Add definitons
+            g.ColumnDefinitions.Add(colTemplate1);
+            g.ColumnDefinitions.Add(new spacerColumn());
+            g.ColumnDefinitions.Add(colTemplate2);
+            g.ColumnDefinitions.Add(new spacerColumn());
+            g.ColumnDefinitions.Add(colTemplate3);
+            g.ColumnDefinitions.Add(new spacerColumn());
+            g.ColumnDefinitions.Add(colTemplate4);
+
+            g.RowDefinitions.Add(new RowDefinition());
+            g.RowDefinitions.Add(new RowDefinition());
+
+            //Row 1
+            TextBlock nameLabel = new TextBlock();
+            nameLabel.Text = "Program Name:";
+            TextBlock costLabel = new TextBlock();
+            costLabel.Text = "Cost:";
+
+            //Row 2
+            CheckBox programChecked = new CheckBox();
+            TextBox programName = new TextBox();
+            TextBox programCost = new TextBox();
+            TextBlock programFunding = new TextBlock();
+            programFunding.Text = "0.0% Funded";
+
+            g.Children.Add(nameLabel);
+            g.Children.Add(costLabel);
+            g.Children.Add(programChecked);
+            g.Children.Add(programName);
+            g.Children.Add(programCost);
+            g.Children.Add(programFunding);
+
+            Grid.SetRow(nameLabel, 0);
+            Grid.SetColumn(nameLabel, 2);
+            Grid.SetRow(costLabel, 0);
+            Grid.SetColumn(costLabel, 4);
+
+            Grid.SetRow(programChecked, 1);
+            Grid.SetColumn(programChecked, 0);
+            Grid.SetRow(programName, 1);
+            Grid.SetColumn(programName, 2);
+            Grid.SetRow(programCost, 1);
+            Grid.SetColumn(programCost, 4);
+            Grid.SetRow(programFunding, 1);
+            Grid.SetColumn(programFunding, 6);
+
+            //Add program to list of costs (Used to calculate funding)
+            OptionsModel.listOfCosts.Add((OptionsModel.listOfCosts.Count, false, "", 0.0));
+
+            //Set event listeners
+            programChecked.Click += ProgramChecked_Click;
+            programName.TextChanged += ProgramName_TextChanged;
+            programCost.TextChanged += ProgramCost_TextChanged;
+
+            customProgramListView.Items.Add(g);
+
+            OnPropertyChange("customProgramListView");
+
+            //Testing:
+
+            //Console.WriteLine("\nPrinting out listview contents:");
+            //for (int i = 0; i < customProgramListView.Items.Count; i++) {
+            //    for(int j = 0; j < (customProgramListView.Items[i] as Grid).Children.Count; j++)
+            //    {
+            //        Console.WriteLine("Grid {0} child {1}: {2}", i, j, (customProgramListView.Items[i] as Grid).Children[j].ToString());
+            //    }
             //}
             //Console.WriteLine("\n");
+        }
+
+        private void ProgramChecked_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            //Find the gov program that was edited
+            int gridNum = -1;
+            for (int i = 0; i < customProgramListView.Items.Count; i++)
+            {
+                if ((customProgramListView.Items[i] as Grid).Children.Contains(sender as CheckBox))
+                {
+                    gridNum = i;
+                    break;
+                }
+            }
+
+            //Update List of costs with new text value
+            if (gridNum != -1)
+            {
+                bool data = (bool)(sender as CheckBox).IsChecked;
+                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, data, OptionsModel.listOfCosts[gridNum + 17].name, OptionsModel.listOfCosts[gridNum + 17].cost);
+
+                Update();
+                //OptionsModel.updateFunding();
+                //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + 17].ToString("0.0") + "% Funded");
+            }
+        }
+
+        private void ProgramName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //Find the gov program that was edited
+            int gridNum = -1;
+            for (int i = 0; i < customProgramListView.Items.Count; i++)
+            {
+                //Console.WriteLine("Checking {0} for textbox", i);
+                if ((customProgramListView.Items[i] as Grid).Children.Contains(sender as TextBox))
+                {
+                    //Console.WriteLine("Textbox Found", i);
+                    gridNum = i;
+                    break;
+                }
+            }
+
+            //Update List of costs with new text value
+            if (gridNum != -1)
+            {
+                string data = (sender as TextBox).Text;
+                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, data, OptionsModel.listOfCosts[gridNum + 17].cost);
+            }
+        }
+
+        private void ProgramCost_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //Find the program that was edited
+            int gridNum = -1;
+            for (int i = 0; i < customProgramListView.Items.Count; i++) {
+                //Console.WriteLine("Checking {0} for textbox", i);
+                if ((customProgramListView.Items[i] as Grid).Children.Contains(sender as TextBox)) {
+                    //Console.WriteLine("Textbox Found", i);
+                    gridNum = i;
+                    break;
+                }
+            }
+
+            //Update List of costs with new text value
+            if (gridNum != -1)
+            {
+
+                //Try parsing the text value, and if it's invalid just set it to 0
+                string sdata = (sender as TextBox).Text;
+                double data = 0;
+                try
+                {
+                    data = Double.Parse(sdata);
+                }
+                catch (Exception ex) {
+                    Console.WriteLine(ex.StackTrace);
+                }
+
+     
+                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, OptionsModel.listOfCosts[gridNum + 17].name, data);
+
+                Update();
+                //OptionsModel.updateFunding();
+                //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + 17].ToString("0.0") + "% Funded");
+            }
+
+
+            //Print out list of costs for testing:
+
+            //for (int i = 0; i < OptionsModel.listOfCosts.Count; i++) {
+            //    Console.WriteLine("i={0}, name={1}, cost={2}", i, OptionsModel.listOfCosts[i].name, OptionsModel.listOfCosts[i].cost);
+            //}
         }
 
         public void Update()
@@ -69,6 +242,11 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("SandersMedicaidFunding");
 
             OnPropertyChange("YangUbiFunding");
+
+            for (int i = 0; i < customProgramListView.Items.Count; i++) { 
+                //OptionsModel.updateFunding();
+                ((customProgramListView.Items[i] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[i + 17].ToString("0.0") + "% Funded");
+            }
         }
 
 

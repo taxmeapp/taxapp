@@ -310,6 +310,7 @@ namespace TaxMeApp.models
         }
 
         public void updateFunding() {
+            fundingArray = new double[listOfCosts.Count];
             double funding = 0;
             for (int i = 0; i < listOfCosts.Count; i++) {
                 if (listOfCosts[i].ischecked)
