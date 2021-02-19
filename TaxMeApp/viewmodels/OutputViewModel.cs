@@ -173,8 +173,17 @@ namespace TaxMeApp.viewmodels
             //Update List of costs with new text value
             if (gridNum != -1)
             {
-                string data = (sender as TextBox).Text;
-                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, OptionsModel.listOfCosts[gridNum + 17].name, Double.Parse(data));
+                string sdata = (sender as TextBox).Text;
+                double data = 0;
+                try
+                {
+                    data = Double.Parse(sdata);
+                }
+                catch (Exception ex) {
+                    Console.WriteLine(ex.StackTrace);
+                }
+
+                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, OptionsModel.listOfCosts[gridNum + 17].name, data);
 
                 Update();
                 //OptionsModel.updateFunding();
@@ -222,7 +231,6 @@ namespace TaxMeApp.viewmodels
             for (int i = 0; i < customProgramListView.Items.Count; i++) { 
                 //OptionsModel.updateFunding();
                 ((customProgramListView.Items[i] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[i + 17].ToString("0.0") + "% Funded");
-
             }
         }
 
