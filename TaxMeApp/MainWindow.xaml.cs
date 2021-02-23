@@ -33,6 +33,13 @@ namespace TaxMeApp
                 InitializeComponent();
 
                 DataContext = loader.MainVM;
+
+                string version = autoUpdater.Version;
+                if (!version.Equals(""))
+                {
+                    Title = Title + " v." + version;
+                }
+
             }
 
         }

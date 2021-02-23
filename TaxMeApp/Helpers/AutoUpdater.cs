@@ -19,6 +19,8 @@ namespace TaxMeApp.Helpers
         private string baseRemoteURL = "";
 
         public bool RestartRequired { get; private set; } = false;
+        public string Version { get; private set; } = "";
+
         private bool updated = false;
         private bool stagingValid = true;
         private bool abort = false;
@@ -130,6 +132,10 @@ namespace TaxMeApp.Helpers
 
                 remoteURL = local.GetElementsByTagName("RemoteURL")[0].InnerText;
 
+                Version = local.GetElementsByTagName("Manifest")[0].Attributes[0].Value;
+
+                writeLine("\tLocal version is: " + Version);
+
                 writeLine("\tRemoteURL from Local Manifest: " + remoteURL);
 
             }
@@ -173,6 +179,20 @@ namespace TaxMeApp.Helpers
                 writeLine("\tError in reading Base Remote URL");
                 abort = true;
                 return;
+            }
+
+            try
+            {
+                // Read version
+                string version = remote.GetElementsByTagName("Manifest")[0].Attributes[0].Value;
+                writeLine("\tRemote version is: " + version);
+            }
+            catch (Exception e)
+            {
+
+                // This isn't critical by any means, so we can just continue. But take note of the error.
+                writeLine("\tError in reading Remote version");
+
             }
 
             // Build filename : hashmap dictionary
@@ -242,27 +262,14 @@ namespace TaxMeApp.Helpers
         private void backupEXE(string path)
         {
 
-            if (!File.Exists(path))
+            if (!File.Exists(path) || !path.EndsWith(".exe"))
             {
                 return;
             }
 
             string newFileName = path.Replace(".exe", ".bak");
 
-            deleteFile(newFileName);
-
-            try
-            {
-                File.Move(path, newFileName);
-                writeLine("\tMoving " + path + " to " + newFileName);
-            }
-            catch (Exception e)
-            {
-                writeLine("Error moving " + path);
-                abort = true;
-                stagingValid = false;
-            }
-            
+            moveFile(path, newFileName);            
 
         }
 
@@ -272,9 +279,7 @@ namespace TaxMeApp.Helpers
             if (!Directory.Exists(@"staging\"))
             {
                 return;
-            }
-
-            
+            }            
 
             string[] filesInStaging = Directory.GetFiles(@"staging\", "*", SearchOption.AllDirectories);
 
@@ -399,6 +404,7 @@ namespace TaxMeApp.Helpers
         private void createDirectory(string path)
         {
 
+
             string[] localDirsOnly = path.Split('\\');
 
             string localDirs = "";
@@ -430,17 +436,6 @@ namespace TaxMeApp.Helpers
             }
 
             sw.WriteLine(line);
-
-        }
-
-        private void closeSW()
-        {
-            if (sw == null)
-            {
-                return;
-            }
-
-            sw.Close();
 
         }
 
