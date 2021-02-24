@@ -4,8 +4,7 @@ namespace TaxMeApp.models
 {
     public class BracketModel
     {
-        public int LowerBound { get; set; }
-        public int UpperBound { get; set; }
+        public string Range { get; set; }
         public int NumReturns { get; set; }
         public long GrossIncome { get; set; }
         public long TaxableIncome { get; set; }
