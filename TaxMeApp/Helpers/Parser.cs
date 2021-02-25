@@ -32,72 +32,73 @@ namespace TaxMeApp.Helpers
             string StartLine = "size of adjusted gross income";
             string EndLine = "$10,000,000 or more";
 
-            var reader = new StreamReader(path);
-
-            // Skip initial information | todo: optimize this
-            reader.ReadLine();
-            reader.ReadLine();
-            reader.ReadLine();
-
-            // Skip header rows until start of relevant information
-            string currentLine = reader.ReadLine();
-            while (!currentLine.StartsWith(StartLine, StringComparison.InvariantCultureIgnoreCase))
+            using (var reader = new StreamReader(path))
             {
-                currentLine = reader.ReadLine();
+
+                // Skip initial information | todo: optimize this
+                reader.ReadLine();
+                reader.ReadLine();
+                reader.ReadLine();
+
+                // Skip header rows until start of relevant information
+                string currentLine = reader.ReadLine();
+                while (!currentLine.StartsWith(StartLine, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    currentLine = reader.ReadLine();
+                }
+
+                // Configure CSVReader to skip rows that are empty
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    HasHeaderRecord = false,
+                    ShouldSkipRecord = line => line.Record.All(string.IsNullOrWhiteSpace)
+                };
+                var csv = new CsvReader(reader, config);
+
+                // Add converters that check for empty or null cells and replace with 0
+                csv.Context.TypeConverterCache.AddConverter<double>(new CustomDoubleConverter());
+                csv.Context.TypeConverterCache.AddConverter<long>(new CustomLongConverter());
+
+                // Add number styling to typeconverter configuration
+                csv.Context.TypeConverterOptionsCache.AddOptions<long>(NumberOptions);
+                csv.Context.TypeConverterOptionsCache.AddOptions<int>(NumberOptions);
+
+                // Add class map to only read in designated properties
+                csv.Context.RegisterClassMap<BracketModelMap>();
+
+                // Skip cumulative tax returns row
+                csv.Read();
+
+                // Get the year from the filename:
+                // Split at the backslash
+                string[] pathSplit = path.Split('\\');
+                // Keep the last split (xxxx.csv)
+                string filename = pathSplit[pathSplit.Length - 1];
+                // Get rid of extension
+                filename = filename.Replace(".csv", "");
+
+                // The two variables we need for an IncomeYearModel:
+                int year = Int32.Parse(filename);
+                var brackets = new ObservableCollection<BracketModel>();
+
+                // Create array to check if end of relevant information has been parsed
+                var row = Array.Empty<string>();
+
+                // Check if most recent row was the last relevant line of data
+                // If not, keep reading into brackets collection
+                while (csv.Read() && !Array.Exists(row, field => field.StartsWith(EndLine)))
+                {
+                    row = csv.Parser.Record;
+                    brackets.Add(csv.GetRecord<BracketModel>());
+                }
+
+                // Create a new Model and return it
+                return new IncomeYearModel
+                {
+                    Year = year,
+                    Brackets = brackets
+                };
             }
-
-            // Configure CSVReader to skip rows that are empty
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                HasHeaderRecord = false,
-                ShouldSkipRecord = line => line.Record.All(string.IsNullOrWhiteSpace)
-            };
-            var csv = new CsvReader(reader, config);
-
-            // Add converters that check for empty or null cells and replace with 0
-            csv.Context.TypeConverterCache.AddConverter<double>(new CustomDoubleConverter());
-            csv.Context.TypeConverterCache.AddConverter<long>(new CustomLongConverter());
-
-            // Add number styling to typeconverter configuration
-            csv.Context.TypeConverterOptionsCache.AddOptions<long>(NumberOptions);
-            csv.Context.TypeConverterOptionsCache.AddOptions<int>(NumberOptions);
-
-            // Add class map to only read in designated properties
-            csv.Context.RegisterClassMap<BracketModelMap>();
-
-            // Skip cumulative tax returns row
-            csv.Read();
-
-            // Get the year from the filename:
-            // Split at the backslash
-            string[] pathSplit = path.Split('\\');
-            // Keep the last split (xxxx.csv)
-            string filename = pathSplit[pathSplit.Length - 1];
-            // Get rid of extension
-            filename = filename.Replace(".csv", "");
-
-            // The two variables we need for an IncomeYearModel:
-            int year = Int32.Parse(filename);
-            var brackets = new ObservableCollection<BracketModel>();
-
-            // Create array to check if end of relevant information has been parsed
-            var row = Array.Empty<string>();
-
-            // Check if most recent row was the last relevant line of data
-            // If not, keep reading into brackets collection
-            while (csv.Read() && !Array.Exists(row, field => field.StartsWith(EndLine)))
-            {
-                row = csv.Parser.Record;
-                brackets.Add(csv.GetRecord<BracketModel>());
-            }
-
-            // Create a new Model and return it
-            return new IncomeYearModel
-            {
-                Year = year,
-                Brackets = brackets
-            };
-
 
         }
 
