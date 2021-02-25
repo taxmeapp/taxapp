@@ -78,8 +78,7 @@ namespace UnitTests
             b19 = new BracketModel();
 
             //Manually copying the data into the brackets:
-            b1.LowerBound = 0;
-            b1.UpperBound = 0;
+            b1.Range = "No adjusted gross income.";
             b1.NumReturns = 4522;
             b1.GrossIncome = -5094991;
             b1.TaxableIncome = 0;
@@ -88,48 +87,43 @@ namespace UnitTests
             b1.PercentOfGrossIncomePaid = 0;
             b1.AverageTotalIncomeTax = 17377;
 
-            b2.LowerBound = 1;
-            b2.UpperBound = 4999;
+            b2.Range = "$1 under $5,000.";
             b2.NumReturns = 835921;
             b2.GrossIncome = 2494290;
             b2.TaxableIncome = 610224;
             b2.IncomeTax = 72959;
-            b2.PercentOfTaxableIncomePaid = 11.96;
+            b2.PercentOfTaxableIncomePaid = 12.0;
             b2.PercentOfGrossIncomePaid = 2.9;
-            b2.AverageTotalIncomeTax = 87.27977883;
+            b2.AverageTotalIncomeTax = 87;
 
-            b3.LowerBound = 5000;
-            b3.UpperBound = 9999;
+            b3.Range = "$5,000 under $10,000.";
             b3.NumReturns = 4116242;
             b3.GrossIncome = 31995563;
             b3.TaxableIncome = 7956944;
             b3.IncomeTax = 780450;
-            b3.PercentOfTaxableIncomePaid = 9.81;
+            b3.PercentOfTaxableIncomePaid = 9.8;
             b3.PercentOfGrossIncomePaid = 2.4;
-            b3.AverageTotalIncomeTax = 189.602555;
+            b3.AverageTotalIncomeTax = 190;
 
-            b4.LowerBound = 10000;
-            b4.UpperBound = 14999;
+            b4.Range = "$10,000 under $15,000.";
             b4.NumReturns = 6042925;
             b4.GrossIncome = 75393048;
             b4.TaxableIncome = 28261843;
             b4.IncomeTax = 2750658;
-            b4.PercentOfTaxableIncomePaid = 9.73;
+            b4.PercentOfTaxableIncomePaid = 9.7;
             b4.PercentOfGrossIncomePaid = 3.6;
-            b4.AverageTotalIncomeTax = 455.1865198;
+            b4.AverageTotalIncomeTax = 455;
 
-            b5.LowerBound = 15000;
-            b5.UpperBound = 19999;
+            b5.Range = "$15,000 under $20,000.";
             b5.NumReturns = 6304104;
             b5.GrossIncome = 110625567;
             b5.TaxableIncome = 50371975;
             b5.IncomeTax = 5404734;
-            b5.PercentOfTaxableIncomePaid = 10.73;
+            b5.PercentOfTaxableIncomePaid = 10.7;
             b5.PercentOfGrossIncomePaid = 4.9;
-            b5.AverageTotalIncomeTax = 857.3357927;
+            b5.AverageTotalIncomeTax = 857;
 
-            b6.LowerBound = 20000;
-            b6.UpperBound = 24999;
+            b6.Range = "$20,000 under $25,000.";
             b6.NumReturns = 6095228;
             b6.GrossIncome = 137029808;
             b6.TaxableIncome = 72410263;
@@ -138,8 +132,7 @@ namespace UnitTests
             b6.PercentOfGrossIncomePaid = 6;
             b6.AverageTotalIncomeTax = 1357;
 
-            b7.LowerBound = 25000;
-            b7.UpperBound = 29999;
+            b7.Range = "$25,000 under $30,000.";
             b7.NumReturns = 6092090;
             b7.GrossIncome = 167694124;
             b7.TaxableIncome = 97429358;
@@ -148,8 +141,7 @@ namespace UnitTests
             b7.PercentOfGrossIncomePaid = 6.6;
             b7.AverageTotalIncomeTax = 1812;
 
-            b8.LowerBound = 30000;
-            b8.UpperBound = 39999;
+            b8.Range = "$30,000 under $40,000.";
             b8.NumReturns = 11856081;
             b8.GrossIncome = 413146253;
             b8.TaxableIncome = 254354428;
@@ -158,8 +150,7 @@ namespace UnitTests
             b8.PercentOfGrossIncomePaid = 7.2;
             b8.AverageTotalIncomeTax = 2508;
 
-            b9.LowerBound = 40000;
-            b9.UpperBound = 49999;
+            b9.Range = "$40,000 under $50,000.";
             b9.NumReturns = 9668366;
             b9.GrossIncome = 432975517;
             b9.TaxableIncome = 276796514;
@@ -168,8 +159,7 @@ namespace UnitTests
             b9.PercentOfGrossIncomePaid = 8;
             b9.AverageTotalIncomeTax = 3582;
 
-            b10.LowerBound = 50000;
-            b10.UpperBound = 74999;
+            b10.Range = "$50,000 under $75,000.";
             b10.NumReturns = 17024921;
             b10.GrossIncome = 1045511568;
             b10.TaxableIncome = 702291485;
@@ -178,8 +168,7 @@ namespace UnitTests
             b10.PercentOfGrossIncomePaid = 9;
             b10.AverageTotalIncomeTax = 5536;
 
-            b11.LowerBound = 75000;
-            b11.UpperBound = 99999;
+            b11.Range = "$75,000 under $100,000.";
             b11.NumReturns = 9486123;
             b11.GrossIncome = 816206695;
             b11.TaxableIncome = 575890228;
@@ -188,8 +177,7 @@ namespace UnitTests
             b11.PercentOfGrossIncomePaid = 10.3;
             b11.AverageTotalIncomeTax = 8882;
 
-            b12.LowerBound = 100000;
-            b12.UpperBound = 199999;
+            b12.Range = "$100,000 under $200,000.";
             b12.NumReturns = 8861764;
             b12.GrossIncome = 1167988946;
             b12.TaxableIncome = 875512626;
@@ -198,8 +186,7 @@ namespace UnitTests
             b12.PercentOfGrossIncomePaid = 14;
             b12.AverageTotalIncomeTax = 18432;
 
-            b13.LowerBound = 200000;
-            b13.UpperBound = 499999;
+            b13.Range = "$200,000 under $500,000.";
             b13.NumReturns = 1996787;
             b13.GrossIncome = 575673389;
             b13.TaxableIncome = 482717655;
@@ -208,8 +195,7 @@ namespace UnitTests
             b13.PercentOfGrossIncomePaid = 21;
             b13.AverageTotalIncomeTax = 60453;
 
-            b14.LowerBound = 500000;
-            b14.UpperBound = 999999;
+            b14.Range = "$500,000 under $1,000,000.";
             b14.NumReturns = 355750;
             b14.GrossIncome = 240943755;
             b14.TaxableIncome = 212761707;
@@ -218,8 +204,7 @@ namespace UnitTests
             b14.PercentOfGrossIncomePaid = 25;
             b14.AverageTotalIncomeTax = 169166;
 
-            b15.LowerBound = 1000000;
-            b15.UpperBound = 1499999;
+            b15.Range = "$1,000,000 under $1,500,000.";
             b15.NumReturns = 81588;
             b15.GrossIncome = 98744564;
             b15.TaxableIncome = 88335720;
@@ -228,8 +213,7 @@ namespace UnitTests
             b15.PercentOfGrossIncomePaid = 25.9;
             b15.AverageTotalIncomeTax = 313177;
 
-            b16.LowerBound = 1500000;
-            b16.UpperBound = 1999999;
+            b16.Range = "$1,500,000 under $2,000,000.";
             b16.NumReturns = 33984;
             b16.GrossIncome = 58440100;
             b16.TaxableIncome = 52488902;
@@ -238,8 +222,7 @@ namespace UnitTests
             b16.PercentOfGrossIncomePaid = 26.2;
             b16.AverageTotalIncomeTax = 450683;
 
-            b17.LowerBound = 2000000;
-            b17.UpperBound = 4999999;
+            b17.Range = "$2,000,000 under $5,000,000.";
             b17.NumReturns = 48235;
             b17.GrossIncome = 142091816;
             b17.TaxableIncome = 128190317;
@@ -248,8 +231,7 @@ namespace UnitTests
             b17.PercentOfGrossIncomePaid = 26;
             b17.AverageTotalIncomeTax = 765117;
 
-            b18.LowerBound = 5000000;
-            b18.UpperBound = 9999999;
+            b18.Range = "$5,000,000 under $10,000,000.";
             b18.NumReturns = 11160;
             b18.GrossIncome = 76253821;
             b18.TaxableIncome = 68499870;
@@ -258,8 +240,7 @@ namespace UnitTests
             b18.PercentOfGrossIncomePaid = 25.3;
             b18.AverageTotalIncomeTax = 1730613;
 
-            b19.LowerBound = 10000000;
-            b19.UpperBound = 999999999;
+            b19.Range = "$10,000,000 or more.";
             b19.NumReturns = 6114;
             b19.GrossIncome = 158454920;
             b19.TaxableIncome = 140179919;
@@ -303,8 +284,7 @@ namespace UnitTests
                 //Check that each value is the same
                 for (int j = 0; j < testModels[i].Brackets.Count; j++)
                 {
-                    Assert.AreEqual(answers[i].Brackets[j].LowerBound, testModels[i].Brackets[j].LowerBound);
-                    Assert.AreEqual(answers[i].Brackets[j].UpperBound, testModels[i].Brackets[j].UpperBound);
+                    Assert.AreEqual(answers[i].Brackets[j].Range, testModels[i].Brackets[j].Range);
                     Assert.AreEqual(answers[i].Brackets[j].NumReturns, testModels[i].Brackets[j].NumReturns);
                     Assert.AreEqual(answers[i].Brackets[j].GrossIncome, testModels[i].Brackets[j].GrossIncome);
                     Assert.AreEqual(answers[i].Brackets[j].TaxableIncome, testModels[i].Brackets[j].TaxableIncome);
