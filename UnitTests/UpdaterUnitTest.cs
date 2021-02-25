@@ -30,56 +30,12 @@ namespace UnitTests
         [TestInitialize]
         public void TestInit()
         {
+
             updater = new AutoUpdater();
             updaterPrivateObj = new PrivateObject(updater);
 
-
-            // This probably necessitates rewriting how the updater deals with the updatelog file
-
-
-            // back up the old updatelog
-
-            
-            // Create new update log
-            //updaterPrivateObj.Invoke("clearUpdateLog");
-            //Assert.IsTrue(File.Exists("UpdateLog.txt"));
-
-            // restore the old update
-
-
-
-            // local
-
-
-            // make a new versioninfo.xml
-            //createMockLocalVersionXML();
-            //Assert.IsTrue(File.Exists(@".\VersionInfo.xml"));
-
-            // mock remote
-
-
-
         }
 
-
-        private void backupLocalVersionXML()
-        {
-
-            // back up the old versioninfo.xml
-            moveFile(@".\VersionInfo.xml", @".\VersionInfo.bak");
-            Assert.IsTrue(File.Exists(@".\VersionInfo.bak"));
-
-        }
-
-        private void restoreLocalVersionXML()
-        {
-
-
-            // restore the old local versioninfo.xml
-            moveFile(@".\VersionInfo.bak", @".\VersionInfo.xml");
-            Assert.IsTrue(File.Exists(@".\VersionInfo.xml"));
-
-        }
         
         private void createMockLocalVersionXML()
         {
@@ -103,6 +59,9 @@ namespace UnitTests
 
             manifest.AppendChild(filelistXML);
 
+            moveFile(@".\VersionInfo.xml", @".\VersionInfo.bak");
+            Assert.IsFalse(File.Exists(@".\VersionInfo.xml"));
+
             doc.Save(@".\VersionInfo.xml");
 
             Assert.IsTrue(File.Exists(@".\VersionInfo.xml"));
@@ -113,12 +72,9 @@ namespace UnitTests
         {
 
             // Clear remote directory and all files if it exists
-            if (Directory.Exists(@".\remote\"))
-            {
-                Directory.Delete(@".\remote\", true);
-            }
 
             string remotePath = @".\remote\";
+            cleanDirectory(remotePath);
             Directory.CreateDirectory(remotePath);
 
             StreamWriter file = new StreamWriter(testFile1path);
@@ -609,10 +565,27 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void ClearStaging()
+        public void ClearStagingWithMove()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
+
+            Assert.IsFalse(true);
+
+            // Method purpose:
+            // If argument is true, move all the files from staging to their new home
+            // Either way, clear the staging folder (delete all files inside and delete the folder)
+            // If staging folder does not exist, do nothing
+
+        }
+
+        [TestMethod]
+        public void ClearStagingWithoutMove()
+        {
+
+            Assert.IsNotNull(updaterPrivateObj);
+
+            Assert.IsFalse(true);
 
             // Method purpose:
             // If argument is true, move all the files from staging to their new home
