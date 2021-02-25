@@ -12,13 +12,15 @@ using System.Xml;
 
 namespace TaxMeApp.Helpers
 {
-    class AutoUpdater
+    public class AutoUpdater
     {
 
         private string remoteURL = "";
         private string baseRemoteURL = "";
 
         public bool RestartRequired { get; private set; } = false;
+        public string Version { get; private set; } = "";
+
         private bool updated = false;
         private bool stagingValid = true;
         private bool abort = false;
@@ -34,7 +36,7 @@ namespace TaxMeApp.Helpers
         public void Update()
         {
 
-            clearUpdateLog();
+            initUpdateLog();
 
             clearStaging(false);
 
@@ -72,13 +74,13 @@ namespace TaxMeApp.Helpers
 
                 if (stagingValid)
                 {
-                    sw.WriteLine("Staging valid.");
+                    writeLine("Staging valid.");
                     RestartRequired = true;
                     clearStaging(true);
                 }
                 else
                 {
-                    sw.WriteLine("Staging invalid.");
+                    writeLine("Staging invalid.");
                     //clearStaging(false);
                 }
 
@@ -86,7 +88,7 @@ namespace TaxMeApp.Helpers
             else
             {
                 clearStaging(true);
-                sw.WriteLine("No update required.");
+                writeLine("No update required.");
             }
 
             sw.Close();
@@ -95,16 +97,27 @@ namespace TaxMeApp.Helpers
 
         // Updating process:
 
-        private void clearUpdateLog()
+        private void initUpdateLog()
         {
 
-            sw = new StreamWriter("UpdateLog.txt");
+            moveFile("UpdateLog.txt", "UpdateLogLast.txt");
 
-            DateTime dateTime = DateTime.Now;
+            try
+            {
+                sw = new StreamWriter("UpdateLog.txt");
+                sw.AutoFlush = true;
 
-            sw.WriteLine("Update initiated at " + dateTime.ToString());
+                DateTime dateTime = DateTime.Now;
+
+                writeLine("Update initiated at " + dateTime.ToString());
+            }
+            catch (Exception e)
+            {
+                // continue without an update log
+            }
 
         }
+
 
         private void readLocalManifest()
         {
@@ -112,19 +125,23 @@ namespace TaxMeApp.Helpers
             try
             {
 
-                sw.WriteLine("Reading local manifest...");
+                writeLine("Reading local manifest...");
 
                 XmlDocument local = new XmlDocument();
                 local.Load(@".\VersionInfo.xml");
 
                 remoteURL = local.GetElementsByTagName("RemoteURL")[0].InnerText;
 
-                sw.WriteLine("\tRemoteURL from Local Manifest: " + remoteURL);
+                Version = local.GetElementsByTagName("Manifest")[0].Attributes[0].Value;
+
+                writeLine("\tLocal version is: " + Version);
+
+                writeLine("\tRemoteURL from Local Manifest: " + remoteURL);
 
             }
             catch (Exception e)
             {
-                sw.WriteLine("Error reading local manifest.");
+                writeLine("Error reading local manifest.");
                 abort = true;
                 return;
             }
@@ -134,7 +151,7 @@ namespace TaxMeApp.Helpers
         private void getRemoteManifest()
         {
 
-            sw.WriteLine("Getting remote manifest...");
+            writeLine("Getting remote manifest...");
 
             downloadFileWeb(remoteURL, @"staging\VersionInfo.xml");
 
@@ -146,7 +163,7 @@ namespace TaxMeApp.Helpers
             }
             catch (Exception e)
             {
-                sw.WriteLine("\tError in loading remote manifest.");
+                writeLine("\tError in loading remote manifest.");
                 abort = true;
                 return;
             }
@@ -155,13 +172,27 @@ namespace TaxMeApp.Helpers
             {
                 // Update base URL
                 baseRemoteURL = remote.GetElementsByTagName("BaseRemoteURL")[0].InnerText;
-                sw.WriteLine("\tBase Remote URL: " + baseRemoteURL);
+                writeLine("\tBase Remote URL: " + baseRemoteURL);
             }
             catch (Exception e)
             {
-                sw.WriteLine("\tError in reading Base Remote URL");
+                writeLine("\tError in reading Base Remote URL");
                 abort = true;
                 return;
+            }
+
+            try
+            {
+                // Read version
+                string version = remote.GetElementsByTagName("Manifest")[0].Attributes[0].Value;
+                writeLine("\tRemote version is: " + version);
+            }
+            catch (Exception e)
+            {
+
+                // This isn't critical by any means, so we can just continue. But take note of the error.
+                writeLine("\tError in reading Remote version");
+
             }
 
             // Build filename : hashmap dictionary
@@ -172,7 +203,7 @@ namespace TaxMeApp.Helpers
         private void downloadUpdates()
         {
 
-            sw.WriteLine("Files requiring updates:");
+            writeLine("Files requiring updates:");
 
             foreach (KeyValuePair<string, string> kv in fileHashDictionary)
             {
@@ -195,7 +226,7 @@ namespace TaxMeApp.Helpers
 
             string[] filesInStaging = Directory.GetFiles(@"staging\", "*", SearchOption.AllDirectories);
 
-            sw.WriteLine("Validating staged files:");
+            writeLine("Validating staged files:");
 
             foreach (string file in filesInStaging)
             {
@@ -212,12 +243,12 @@ namespace TaxMeApp.Helpers
 
                     //Trace.WriteLine(fileName + " failed staging checks");
 
-                    sw.WriteLine("\t" + file + " has failed staging checks.");
+                    writeLine("\t" + file + " has failed staging checks.");
                     stagingValid = false;
                     return;
                 }
 
-                sw.WriteLine("\t" + fileName);
+                writeLine("\t" + fileName);
 
                 if (fileName.EndsWith(".exe"))
                 {
@@ -231,27 +262,14 @@ namespace TaxMeApp.Helpers
         private void backupEXE(string path)
         {
 
-            if (!File.Exists(path))
+            if (!File.Exists(path) || !path.EndsWith(".exe"))
             {
                 return;
             }
 
             string newFileName = path.Replace(".exe", ".bak");
 
-            deleteFile(newFileName);
-
-            try
-            {
-                File.Move(path, newFileName);
-                sw.WriteLine("\tMoving " + path + " to " + newFileName);
-            }
-            catch (Exception e)
-            {
-                sw.WriteLine("Error moving " + path);
-                abort = true;
-                stagingValid = false;
-            }
-            
+            moveFile(path, newFileName);            
 
         }
 
@@ -261,31 +279,29 @@ namespace TaxMeApp.Helpers
             if (!Directory.Exists(@"staging\"))
             {
                 return;
-            }
-
-            
+            }            
 
             string[] filesInStaging = Directory.GetFiles(@"staging\", "*", SearchOption.AllDirectories);
 
             if (move)
             {
 
-                sw.WriteLine("Moving contents of staging folder...");
+                writeLine("Moving contents of staging folder...");
 
                 foreach (string file in filesInStaging)
                 {
 
                     string newPath = file.Replace(@"staging\", String.Empty);
+
                     createDirectory(newPath);
-                    deleteFile(newPath);
-                    File.Move(file, newPath);
-                    sw.WriteLine("\tMoving " + file + " to " + newPath);
+                    moveFile(file, newPath);
+                    
 
                 }
             }
             else
             {
-                sw.WriteLine("Clearing staging folder...");
+                writeLine("Clearing staging folder...");
             }
 
             Directory.Delete(@"staging\", true);
@@ -321,19 +337,42 @@ namespace TaxMeApp.Helpers
 
         }
 
-        private void deleteFile(string path)
+        private void moveFile(string filename, string newpath)
         {
 
-            if (File.Exists(path))
+            deleteFile(newpath);
+
+            if (File.Exists(filename))
             {
                 try
                 {
-                    File.Delete(path);
-                    sw.WriteLine("\tDeleting file: " + path);
+                    File.Move(filename, newpath);
+                    writeLine("\tMoving " + filename + " to " + newpath);
                 }
                 catch (Exception e)
                 {
-                    sw.WriteLine("Error deleting " + path);
+                    writeLine("\tError moving " + filename + " to " + newpath);
+                    abort = true;
+                    stagingValid = false;
+                }
+
+            }
+
+        }
+
+        private void deleteFile(string filename)
+        {
+
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    File.Delete(filename);
+                    writeLine("\tDeleting file: " + filename);
+                }
+                catch (Exception e)
+                {
+                    writeLine("Error deleting " + filename);
                     abort = true;
                     stagingValid = false;
                 }
@@ -350,11 +389,11 @@ namespace TaxMeApp.Helpers
             try
             {
                 client.DownloadFile(remotePath, localPath);
-                sw.WriteLine("\tDownloading file from: " + remotePath);
+                writeLine("\tDownloading file from: " + remotePath);
             }
             catch (WebException e)
             {
-                sw.WriteLine("\t Error downloading file from :" + remotePath);
+                writeLine("\t Error downloading file from :" + remotePath);
                 abort = true;
                 stagingValid = false;
 
@@ -364,6 +403,7 @@ namespace TaxMeApp.Helpers
 
         private void createDirectory(string path)
         {
+
 
             string[] localDirsOnly = path.Split('\\');
 
@@ -380,10 +420,22 @@ namespace TaxMeApp.Helpers
                 if (!Directory.Exists(localDirs))
                 {
                     Directory.CreateDirectory(localDirs);
-                    sw.WriteLine("\tCreating directory: " + localDirs);
+                    writeLine("\tCreating directory: " + localDirs);
                 }
 
             }
+
+        }
+
+        private void writeLine(string line)
+        {
+
+            if (sw == null)
+            {
+                return;
+            }
+
+            sw.WriteLine(line);
 
         }
 

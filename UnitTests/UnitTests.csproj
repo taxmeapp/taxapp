@@ -48,11 +48,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HelpersUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IntegrationTests.cs" />
+    <Compile Include="FormatterUnitTest.cs" />
+    <Compile Include="UpdaterUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
