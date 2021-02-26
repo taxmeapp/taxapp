@@ -22,22 +22,23 @@
                                 Width="175"/>
             <TextBlock Text="Tax Plan"
                                Margin="5, 5, 5, 5"/>
-            <ComboBox x:Name="TaxPlanInput"
-                                ItemsSource="{Binding TaxPlansList}" 
-                                SelectedItem="{Binding SelectedTaxPlanName}"
-                                Margin="5, 5, 5, 15"
-                                Width="175"/>
-            <StackPanel Orientation="Horizontal"
-                        Margin="0, 5, 0, 15">
-                <Button Command="{Binding AddTaxPlanBtnCommand}" 
-                        Content="Add Tax Plan"
-                        Margin="5, 0, 0, 0"
-                        Width="90"/>
-                <Button Command="{Binding DeleteTaxPlanBtnCommand}"
-                        Content="Delete Tax Plan"
-                        Margin="10, 0, 0, 0"
-                        Width="90"/>
-            </StackPanel>
+            <ComboBox ItemsSource="{Binding TaxPlansList}" 
+                    SelectedItem="{Binding SelectedTaxPlanName}"
+                    Margin="5, 5, 5, 15"
+                    Width="175"/>
+            <Button Command="{Binding AddTaxPlanBtnCommand}" 
+                    Content="Add Tax Plan"
+                    Margin="0, 5, 0, 5"
+                    Width="175"/>
+            <Button Command="{Binding SaveTaxPlanBtnCommand}"
+                    Content="Save Tax Plan"
+                    Margin="0,5,0,5"
+                    Width="175"/>
+            <Button Command="{Binding DeleteTaxPlanBtnCommand}"
+                    Content="Delete Tax Plan"
+                    Margin="0, 5, 0, 5"
+                    Width="175"
+                    IsEnabled="{Binding DeleteTaxPlanBtnEnabled}"/>
 
 
             <TextBlock x:Name="SlantTaxMaxRateLabel" Text="Slant Tax Maximum %"

@@ -322,10 +322,13 @@ namespace TaxMeApp.viewmodels
 
 
         public bool DefenseSpendingChecked {
-            get {
+            get 
+            {
                 return OptionsModel.DefenseChecked;    
             }
-            set {
+            set 
+            {
+                
                 OptionsModel.DefenseChecked = value;
 
                 this.Update();

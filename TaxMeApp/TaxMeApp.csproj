@@ -107,6 +107,8 @@
     <Compile Include="Helpers\Formatter.cs" />
     <Compile Include="Helpers\Parser.cs" />
     <Compile Include="Helpers\Loader.cs" />
+    <Compile Include="Plans\PlanLoader.cs" />
+    <Compile Include="Plans\PlanSaver.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="models\BracketModel.cs" />
     <Compile Include="models\DataModel.cs" />

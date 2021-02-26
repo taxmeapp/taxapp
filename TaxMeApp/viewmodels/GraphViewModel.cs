@@ -103,6 +103,7 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
+                GraphModel.PovertyLineIndex = value;
                 OnPropertyChange("PovertyLineIndex");
             }
         }

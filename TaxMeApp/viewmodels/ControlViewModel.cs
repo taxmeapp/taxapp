@@ -4,12 +4,14 @@ using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using TaxMeApp.Helpers;
 using TaxMeApp.models;
+using TaxMeApp.Plans;
 
 namespace TaxMeApp.viewmodels
 {
@@ -19,6 +21,7 @@ namespace TaxMeApp.viewmodels
 
         public ICommand SettingsBtnCommand { get; set; }
         public ICommand AddTaxPlanBtnCommand { get; set; }
+        public ICommand SaveTaxPlanBtnCommand { get; set; }
         public ICommand DeleteTaxPlanBtnCommand { get; set; }
         public ICommand ResetSettingsBtnCommand { get; set; }
         public ICommand ResetTaxRatesBtnCommand { get; set; }
@@ -28,6 +31,7 @@ namespace TaxMeApp.viewmodels
 
             SettingsBtnCommand = new RelayCommand(o => settingsButtonClick(""));
             AddTaxPlanBtnCommand = new RelayCommand(o => addTaxPlanButtonClick());
+            SaveTaxPlanBtnCommand = new RelayCommand(o => saveTaxPlanButtonClick());
             DeleteTaxPlanBtnCommand = new RelayCommand(o => deleteTaxPlanButtonClick());
             ResetSettingsBtnCommand = new RelayCommand(o => resetSettingsButtonClick());
             ResetTaxRatesBtnCommand = new RelayCommand(o => resetTaxRatesButtonClick());
@@ -45,6 +49,8 @@ namespace TaxMeApp.viewmodels
             List<double> slantTaxRates = slantTaxData[0];
             TaxPlansModel.TaxPlans.Add("Slant Tax", new IndividualTaxPlanModel("Slant Tax", new ObservableCollection<double>(slantTaxRates)));
             SelectedTaxPlanName = "Slant Tax";
+
+            PlanLoader.LoadPlans(this);
 
             //for (int i = 0; i < DataModel.NewTaxPctByBracket.Count; i++) {
             //    Console.WriteLine("Bracket {0}, Value {1}", i, DataModel.NewTaxPctByBracket[i]);
@@ -126,7 +132,7 @@ namespace TaxMeApp.viewmodels
                 if (SelectedTaxPlanName != null)
                 {
                     TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
-                    Console.WriteLine("Selected Bracket = {0}, Tax Rate = {1}", SelectedBracket, selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)]);
+                    //Console.WriteLine("Selected Bracket = {0}, Tax Rate = {1}", SelectedBracket, selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)]);
                     return selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)];
                 }
                 return 0;
@@ -176,7 +182,6 @@ namespace TaxMeApp.viewmodels
                     DataModel.NewRevenueByBracket = DataVM.calculateNewRevenues(selectedTaxPlan.TaxRates);
                     OnPropertyChange("SelectedTaxRate");
                     OutputVM.Update();
-                    OutputVM.Update();
                     customGraphReset();
                 }
             }
@@ -223,6 +228,20 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("SelectedTaxRate");
             }
         }
+
+        public bool DeleteTaxPlanBtnEnabled
+        {
+            get
+            {
+                if (SelectedTaxPlanName == null || !SelectedTaxPlanName.Equals("Slant Tax"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public string SelectedTaxPlanName
         {
             get
@@ -250,6 +269,7 @@ namespace TaxMeApp.viewmodels
                         DataModel.NewRevenueByBracket = DataVM.calculateNewRevenues(selectedTaxPlan.TaxRates);
                         customGraphReset();
                     }
+
                 }
                 else
                 {
@@ -263,6 +283,7 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("MaxBracketCountSlider");
                 OnPropertyChange("SelectedTaxPlanName");
                 OnPropertyChange("SelectedBracket");
+                OnPropertyChange("DeleteTaxPlanBtnEnabled");
                 OutputVM.Update();
 
                 //if (TaxPlansList.Contains(value))
@@ -456,15 +477,13 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
-                GraphModel.PovertyLineIndex = value;
+                GraphVM.PovertyLineIndex = value;
 
                 totalGraphReset();
 
                 OnPropertyChange("PovertyLineIndex");
 
                 OnPropertyChange("PovertyLineBrackets");
-
-                GraphVM.PovertyLineIndex = PovertyLineIndex;
 
                 OnPropertyChange("MaxBracketCountSlider");
             }
@@ -640,12 +659,14 @@ namespace TaxMeApp.viewmodels
                 //Set all of the default values to 0% tax
                 ObservableCollection<double> defaultValues = new ObservableCollection<double>(new double[(int)(GraphModel.Labels.Length)]);
 
-                TaxPlansModel.TaxPlans.Add(tb.Text, new IndividualTaxPlanModel(tb.Text, defaultValues));
-                TaxPlansList.Add(tb.Text);
-                tb.Text = "";
-                p.IsOpen = false;
+                CreateTaxPlan(tb.Text, defaultValues);
+
                 SelectedTaxPlanName = TaxPlansList[0];
                 SelectedBracket = BracketList[0];
+
+                tb.Text = "";
+                p.IsOpen = false;
+
             }
             //If the name is already being used then clear the text entry and print something out
             else
@@ -655,19 +676,105 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public void CreateTaxPlan(string name, ObservableCollection<double> taxValues)
+        {
+
+            if (TaxPlansModel.TaxPlans.ContainsKey(name))
+            {
+                return;
+            }
+
+            TaxPlansModel.TaxPlans.Add(name, new IndividualTaxPlanModel(name, taxValues));
+            TaxPlansList.Add(name);
+
+        }
+
         //The cancel button just closes the popup window
         private void CancelButton_Click(object sender, EventArgs e, Popup p)
         {
             p.IsOpen = false;
         }
 
+        private void saveTaxPlanButtonClick()
+        {
+
+            // print EVERYTHING
+
+            string taxPlanName = SelectedTaxPlanName;
+
+            if (SelectedTaxPlanName != null && SelectedTaxPlanName.Equals("Slant Tax"))
+            {
+                taxPlanName += " (modified)";
+            }
+
+            //Trace.WriteLine(taxPlanName);
+
+            Dictionary<string, object> values = new Dictionary<string, object>();
+
+            values.Add("MaxTaxRate", MaxTaxRate);
+            values.Add("MaxBracketCount", MaxBracketCount);
+            values.Add("PovertyLineBrackets", PovertyLineBrackets);
+
+            if (TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan))
+            { 
+                values.Add("TaxRates", selectedTaxPlan.TaxRates);
+            }
+            else
+            {
+                //Set all of the default values to 0% tax
+                values.Add("TaxRates", new ObservableCollection<double>(new double[(int)(GraphModel.Labels.Length)]));
+            }
+
+            /*
+
+            values.Add("ShowNumberOfReturns", ShowNumberOfReturns);
+            values.Add("ShowOldRevenue", ShowOldRevenue);
+            values.Add("ShowNewRevenue", ShowNewRevenue);
+            values.Add("ShowOldPercentage", ShowOldPercentage);
+            values.Add("ShowNewPercentage", ShowNewPercentage);
+            values.Add("ShowUBI", ShowUBI);
+            values.Add("MaxUBIBracketCount", MaxUBIBracketCount);
+            values.Add("MinUBIBracketCount", MinUBIBracketCount);
+            values.Add("MaxUBI", MaxUBI);
+
+            values.Add("DefenseChecked", OptionsModel.DefenseChecked);
+            values.Add("MedicaidChecked", OptionsModel.MedicaidChecked);
+            values.Add("WelfareChecked", OptionsModel.WelfareChecked);
+            values.Add("VeteransChecked", OptionsModel.VeteransChecked);
+            values.Add("FoodStampsChecked", OptionsModel.FoodStampsChecked);
+            values.Add("EducationChecked", OptionsModel.EducationChecked);
+            values.Add("PublicHousingChecked", OptionsModel.PublicHousingChecked);
+            values.Add("HealthChecked", OptionsModel.HealthChecked);
+            values.Add("ScienceChecked", OptionsModel.ScienceChecked);
+            values.Add("TransportationChecked", OptionsModel.TransportationChecked);
+            values.Add("InternationalChecked", OptionsModel.InternationalChecked);
+            values.Add("EnergyAndEnvironmentChecked", OptionsModel.EnergyAndEnvironmentChecked);
+            values.Add("UnemploymentChecked", OptionsModel.UnemploymentChecked);
+            values.Add("FoodAndAgricultureChecked", OptionsModel.FoodAndAgricultureChecked);
+            values.Add("SandersCollegeChecked", OptionsModel.SandersCollegeChecked);
+            values.Add("SandersMedicaidChecked", OptionsModel.SandersMedicaidChecked);
+            values.Add("YangUbiChecked", OptionsModel.YangUbiChecked);
+            values.Add("YangRemoveChecked", OptionsModel.YangRemoveChecked);
+
+            */
+
+
+            PlanSaver.SavePlan(taxPlanName, values);
+
+        }
+
+
         //The Delete Tax Plan button deletes the selected tax plan but it can't delete the default slant tax plan
         private void deleteTaxPlanButtonClick()
         {
             if (SelectedTaxPlanName != "Slant Tax")
             {
+
+                PlanSaver.DeletePlan(SelectedTaxPlanName);
+
                 TaxPlansModel.TaxPlans.Remove(SelectedTaxPlanName);
                 SelectedTaxPlanName = TaxPlansList[0];
+
             }
         }
 
