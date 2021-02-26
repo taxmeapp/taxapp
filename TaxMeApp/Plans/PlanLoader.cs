@@ -17,6 +17,12 @@ namespace TaxMeApp.Plans
         public static bool LoadPlans(ControlViewModel controlVM)
         {
             string userPlanPath = @".\userPlans\";
+
+            if (!Directory.Exists(userPlanPath))
+            {
+                return false;
+            }
+
             string[] plans = Directory.GetFiles(userPlanPath, "*.xml");
 
             foreach (string plan in plans)
