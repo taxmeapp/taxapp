@@ -12,8 +12,6 @@ namespace TaxMeApp.models
         public double PercentOfTaxableIncomePaid { get; set; }
         public double PercentOfGrossIncomePaid { get; set; }
         public double AverageTotalIncomeTax { get; set; }
-        public int LowerBound { get; set; }
-        public int UpperBound { get; set; }
     }
 
 }

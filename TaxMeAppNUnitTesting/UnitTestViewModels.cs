@@ -56,8 +56,7 @@ namespace TaxMeAppNUnitTesting
             answerBracket = Parser.ParseCSV(filePaths[5]).Brackets;
             for (int i = 0; i < answerBracket.Count; i++)
             {
-                Assert.AreEqual(answerBracket.ElementAt(i).LowerBound, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).LowerBound);
-                Assert.AreEqual(answerBracket.ElementAt(i).UpperBound, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).UpperBound);
+                Assert.AreEqual(answerBracket.ElementAt(i).Range, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).Range);
                 Assert.AreEqual(answerBracket.ElementAt(i).NumReturns, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).NumReturns);
                 Assert.AreEqual(answerBracket.ElementAt(i).GrossIncome, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).GrossIncome);
                 Assert.AreEqual(answerBracket.ElementAt(i).TaxableIncome, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).TaxableIncome);
@@ -75,8 +74,7 @@ namespace TaxMeAppNUnitTesting
             answerBracket = Parser.ParseCSV(filePaths[6]).Brackets;
             for (int i = 0; i < answerBracket.Count; i++)
             {
-                Assert.AreEqual(answerBracket.ElementAt(i).LowerBound, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).LowerBound);
-                Assert.AreEqual(answerBracket.ElementAt(i).UpperBound, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).UpperBound);
+                Assert.AreEqual(answerBracket.ElementAt(i).Range, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).Range);
                 Assert.AreEqual(answerBracket.ElementAt(i).NumReturns, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).NumReturns);
                 Assert.AreEqual(answerBracket.ElementAt(i).GrossIncome, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).GrossIncome);
                 Assert.AreEqual(answerBracket.ElementAt(i).TaxableIncome, ControlVM.YearsModel.Years[ControlVM.SelectedYear].Brackets.ElementAt(i).TaxableIncome);
