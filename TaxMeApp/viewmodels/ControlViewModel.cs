@@ -311,8 +311,11 @@ namespace TaxMeApp.viewmodels
 
                 List<List<double>> slantTaxData = DataVM.calculateSlantTaxData();
                 List<double> slantTaxRates = slantTaxData[0];
-                TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
-                stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
+                try
+                {
+                    TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
+                    stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
+                } catch { }
                 OnPropertyChange("TaxRateSlider");
                 OnPropertyChange("SelectedTaxRate");
             }

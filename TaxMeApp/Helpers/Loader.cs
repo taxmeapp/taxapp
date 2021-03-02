@@ -63,7 +63,6 @@ namespace TaxMeApp
             ControlVM.DataVM = DataVM;
             ControlVM.OutputVM = OutputVM;
             ControlVM.GraphVM = GraphVM;
-            ControlVM.OutputVM = OutputVM;
 
             OutputVM.ControlVM = ControlVM;
             OutputVM.DataVM = DataVM;
