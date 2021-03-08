@@ -25,6 +25,7 @@ namespace TaxMeApp.viewmodels
         public ICommand DeleteTaxPlanBtnCommand { get; set; }
         public ICommand ResetSettingsBtnCommand { get; set; }
         public ICommand ResetTaxRatesBtnCommand { get; set; }
+        public ICommand AutoFitSlantTaxBtnCommand { get; set; }
 
         public ControlViewModel()
         {
@@ -35,6 +36,7 @@ namespace TaxMeApp.viewmodels
             DeleteTaxPlanBtnCommand = new RelayCommand(o => deleteTaxPlanButtonClick());
             ResetSettingsBtnCommand = new RelayCommand(o => resetSettingsButtonClick());
             ResetTaxRatesBtnCommand = new RelayCommand(o => resetTaxRatesButtonClick());
+            AutoFitSlantTaxBtnCommand = new RelayCommand(o => autoFitSlantTaxButtonClick());
         }
 
         // ControlPanel Init
@@ -907,6 +909,35 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("MaxBracketCountSlider");
             OnPropertyChange("SelectedTaxPlanName");
             OnPropertyChange("SelectedBracket");
+        }
+
+        public void autoFitSlantTaxButtonClick() {
+            double budget = OptionsModel.GetTotalBudget();
+            double revenue = 0;
+
+            this.MaxBracketCountSlider = 0;
+            this.MaxTaxRate = 0;
+            revenue = DataModel.TotalRevenueNew;
+
+            while (revenue < budget) {
+                for (int i = 0; i < 11; i++) {
+                    MaxBracketCountSlider = i;
+                    revenue = DataModel.TotalRevenueNew;
+                    if (revenue >= budget) {
+                        break;
+                    }
+                }
+                if (revenue < budget) {
+                    this.MaxTaxRate += 1;
+                    revenue = DataModel.TotalRevenueNew;
+                }
+                if (this.MaxTaxRate > 100) {
+                    break;
+                }
+            }
+            if (this.MaxTaxRate > 100) {
+                this.MaxTaxRate = 100;
+            }
         }
     }
 

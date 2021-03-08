@@ -80,6 +80,9 @@
                         TickPlacement="BottomRight"
                         Value="{Binding PovertyLineIndexSlider, Mode=TwoWay}"
                         Width="175"/>
+            <Button Margin="15, 5, 15, 5"
+                    Command="{Binding AutoFitSlantTaxBtnCommand}" 
+                    Content="Auto-Fit Slant Tax"/>
             <TextBlock Text="Bracket"
                                Margin="5, 5, 5, 5"/>
             <ComboBox x:Name="BracketInput"
