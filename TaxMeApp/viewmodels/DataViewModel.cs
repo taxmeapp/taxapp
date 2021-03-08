@@ -703,7 +703,7 @@ namespace TaxMeApp.viewmodels
 
         private void CalculatePreTaxMedian()
         {
-            int frequency, totalFreq = 0, medianBracket = 0;
+            int frequency, totalFreq = 0, medianBracketIndex = 0;
             int[] cumulativeBracketFrequency = new int[selectedBrackets.Count];
 
             foreach(BracketModel bracket in selectedBrackets)
@@ -719,7 +719,7 @@ namespace TaxMeApp.viewmodels
                     cumulativeBracketFrequency[i] = frequency;
                     if(cumulativeBracketFrequency[i] > (totalFreq / 2))
                     {
-                        medianBracket = i;
+                        medianBracketIndex = i;
                         break;
                     }
                 }
@@ -728,12 +728,17 @@ namespace TaxMeApp.viewmodels
                     cumulativeBracketFrequency[i] = cumulativeBracketFrequency[i-1] + frequency;
                     if (cumulativeBracketFrequency[i] > (totalFreq / 2))
                     {
-                        medianBracket = i;
+                        medianBracketIndex = i;
                         break;
                     }
                 }
             }
-            Console.WriteLine("Median Bracket = {0}", medianBracket);
+            BracketModel medianBracket = selectedBrackets[medianBracketIndex];
+            frequency = medianBracket.NumReturns;
+            int width = medianBracket.UpperBound - medianBracket.LowerBound;
+            double difference = (totalFreq / 2) - cumulativeBracketFrequency[medianBracketIndex - 1];
+            double median = medianBracket.LowerBound + (difference / frequency) * width;
+            Console.WriteLine("Pre-tax median bracket = {0} | median: ${1}", medianBracketIndex, median);
         }
 
         private void CalculatePreTaxMean()
