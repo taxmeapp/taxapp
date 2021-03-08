@@ -409,5 +409,14 @@ namespace TaxMeApp.models
         {
             return this.fundingArray[16].ToString("0.0") + "% Funded";
         }
+        public double GetTotalBudget() {
+            double ans = 0;
+            for (int i = 0; i < listOfCosts.Count; i++) {
+                if (listOfCosts[i].ischecked) {
+                    ans += listOfCosts[i].cost;
+                }
+            }
+            return ans;
+        }
     }
 }

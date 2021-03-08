@@ -243,6 +243,9 @@ namespace TaxMeApp.viewmodels
 
             OnPropertyChange("YangUbiFunding");
 
+            OnPropertyChange("TotalSelectedBudget");
+            OnPropertyChange("LeftOverBudget");
+
             for (int i = 0; i < customProgramListView.Items.Count; i++) { 
                 //OptionsModel.updateFunding();
                 ((customProgramListView.Items[i] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[i + 17].ToString("0.0") + "% Funded");
@@ -671,6 +674,85 @@ namespace TaxMeApp.viewmodels
                 OptionsModel.YangRemoveChecked = value;
                 DataVM.NewDataRecalcuation();
                 this.Update();
+            }
+        }
+
+        public string TotalSelectedBudget {
+            get {
+                string ans = "";
+                double tb = OptionsModel.GetTotalBudget();
+                if (tb >= 1000000000000)
+                {
+                    tb = tb / 1000000000000;
+                    ans = "$" + tb.ToString("0.###") + " Trillion";
+                }
+                else if (tb >= 1000000000)
+                {
+                    tb = tb / 1000000000;
+                    ans = "$" + tb.ToString("0.###") + " Billion";
+                }
+                else if (tb >= 1000000)
+                {
+                    tb = tb / 1000000;
+                    ans = "$" + tb.ToString("0.###") + " Million";
+                }
+                else if (tb >= 1000)
+                {
+                    tb = tb / 1000;
+                    ans = "$" + tb.ToString("0.###") + " Thousand";
+                }
+                else {
+                    ans = "$" + tb.ToString();
+                }
+
+                return ans;
+            }
+        }
+
+        public string LeftOverBudget {
+            get {
+                string ans = "";
+                double tb = OptionsModel.GetTotalBudget();
+                double difference = DataModel.TotalRevenueNew - tb;
+                double ab = Math.Abs(difference);
+
+                if (ab >= 1000000000000)
+                {
+                    difference = difference / 1000000000000;
+                    ans = "$" + difference.ToString("0.###") + " Trillion";
+                }
+                else if (ab >= 1000000000)
+                {
+                    difference = difference / 1000000000;
+                    ans = "$" + difference.ToString("0.###") + " Billion";
+                }
+                else if (ab >= 1000000)
+                {
+                    difference = difference / 1000000;
+                    ans = "$" + difference.ToString("0.###") + " Million";
+                }
+                else if (ab >= 1000)
+                {
+                    difference = difference / 1000;
+                    ans = "$" + difference.ToString("0.###") + " Thousand";
+                }
+                else
+                {
+                    ans = "$" + difference.ToString("0.###");
+                }
+
+
+
+                if (difference > 0)
+                {
+                    ans += " Surplus";
+                }
+                else if (difference < 0)
+                {
+                    ans += " Deficit";
+                }
+
+                return ans;
             }
         }
     }
