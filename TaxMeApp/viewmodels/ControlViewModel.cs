@@ -930,13 +930,14 @@ namespace TaxMeApp.viewmodels
                 for (int i = 0; i < 11; i++) {
                     MaxBracketCountSlider = i;
                     revenue = DataModel.TotalRevenueNew;
+                    Console.WriteLine("TaxRate = {0}, Brackets = {1}, Revenue = {2}, Budget = {3}", MaxTaxRate, MaxBracketCountSlider, revenue, budget);
                     if (revenue >= budget) {
                         break;
                     }
                 }
                 if (revenue < budget) {
                     this.MaxTaxRate += 1;
-                    revenue = DataModel.TotalRevenueNew;
+                    //revenue = DataModel.TotalRevenueNew;
                 }
                 if (this.MaxTaxRate > 100) {
                     break;

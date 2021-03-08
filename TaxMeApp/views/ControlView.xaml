@@ -50,7 +50,7 @@
                             Margin="5, 5, 5, 15"
                             Minimum="0"
                             Maximum="100"
-                            TickFrequency="5"
+                            TickFrequency="1"
                             TickPlacement="BottomRight"
                             Value="{Binding MaxTaxRate}"
                             Width="175"/>
@@ -99,7 +99,7 @@
                             Margin="5, 5, 5, 15"
                             Minimum="0"
                             Maximum="100"
-                            TickFrequency="2.5"
+                            TickFrequency="1"
                             TickPlacement="BottomRight"
                             Value="{Binding Path=TaxRateSlider, Mode=TwoWay}"
                             Width="175"/>
