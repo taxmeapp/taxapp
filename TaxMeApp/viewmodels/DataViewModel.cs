@@ -337,6 +337,9 @@ namespace TaxMeApp.viewmodels
 
             // Calculate mean before taxation*
             CalculatePreTaxMean();
+
+            //Calculate median before taxation*
+            CalculatePreTaxMedian();
         }
 
         public void NewDataRecalcuation()
@@ -700,24 +703,52 @@ namespace TaxMeApp.viewmodels
 
         private void CalculatePreTaxMedian()
         {
+            int frequency, totalFreq = 0, medianBracket = 0;
+            int[] cumulativeBracketFrequency = new int[selectedBrackets.Count];
 
+            foreach(BracketModel bracket in selectedBrackets)
+            {
+                totalFreq += bracket.NumReturns;
+            }
+
+            for (int i = 0; i < cumulativeBracketFrequency.Length; i++)
+            {
+                frequency = selectedBrackets[i].NumReturns;
+                if (i == 0)
+                {
+                    cumulativeBracketFrequency[i] = frequency;
+                    if(cumulativeBracketFrequency[i] > (totalFreq / 2))
+                    {
+                        medianBracket = i;
+                        break;
+                    }
+                }
+                else
+                {
+                    cumulativeBracketFrequency[i] = cumulativeBracketFrequency[i-1] + frequency;
+                    if (cumulativeBracketFrequency[i] > (totalFreq / 2))
+                    {
+                        medianBracket = i;
+                        break;
+                    }
+                }
+            }
+            Console.WriteLine("Median Bracket = {0}", medianBracket);
         }
 
         private void CalculatePreTaxMean()
         {
-            int frequency = 0;
-            double midpoint = 0;
-            double totalmidfreq = 0;
-            double totalfreq = 0;
+            int frequency, totalFreq = 0;
+            double midpoint, totalMidFreq = 0;
             foreach (BracketModel bracket in selectedBrackets)
             {
                 frequency = bracket.NumReturns;
                 midpoint = (bracket.LowerBound + bracket.UpperBound) / 2;
-                totalmidfreq += (frequency * midpoint);
-                totalfreq += frequency;
+                totalMidFreq += (frequency * midpoint);
+                totalFreq += frequency;
             }
 
-            this.PreTaxMean = totalmidfreq / totalfreq;
+            this.PreTaxMean = totalMidFreq / totalFreq;
             Console.WriteLine("Pre-tax mean: ${0}", PreTaxMean);
         }
 
