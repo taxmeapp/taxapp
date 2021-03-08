@@ -245,6 +245,58 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        // Mean income before tax
+        private double PreTaxMean
+        {
+            get
+            {
+                return DataModel.PreTaxMean;
+            }
+            set
+            {
+                DataModel.PreTaxMean = value;
+            }
+        }
+
+        // Median income before tax
+        private double PreTaxMedian
+        {
+            get
+            {
+                return DataModel.PreTaxMedian;
+            }
+            set
+            {
+                DataModel.PreTaxMedian = value;
+            }
+        }
+
+        // Median income after tax
+        private double PostTaxMedian
+        {
+            get
+            {
+                return DataModel.PostTaxMedian;
+            }
+            set
+            {
+                DataModel.PostTaxMedian = value;
+            }
+        }
+
+        // Mean income after tax
+        private double PostTaxMean
+        {
+            get
+            {
+                return DataModel.PostTaxMean;
+            }
+            set
+            {
+                DataModel.PostTaxMean = value;
+            }
+        }
+
         /*
          
                 Calculation Logic
@@ -283,6 +335,8 @@ namespace TaxMeApp.viewmodels
             //Set default min UBIBrackets
             minUBIBracketCount = 3;
 
+            // Calculate mean before taxation*
+            CalculatePreTaxMean();
         }
 
         public void NewDataRecalcuation()
@@ -641,6 +695,39 @@ namespace TaxMeApp.viewmodels
 
             // Save our total revenue calculation
             this.totalUBICost = totalUBICost;
+
+        }
+
+        private void CalculatePreTaxMedian()
+        {
+
+        }
+
+        private void CalculatePreTaxMean()
+        {
+            int frequency = 0;
+            double midpoint = 0;
+            double totalmidfreq = 0;
+            double totalfreq = 0;
+            foreach (BracketModel bracket in selectedBrackets)
+            {
+                frequency = bracket.NumReturns;
+                midpoint = (bracket.LowerBound + bracket.UpperBound) / 2;
+                totalmidfreq += (frequency * midpoint);
+                totalfreq += frequency;
+            }
+
+            this.PreTaxMean = totalmidfreq / totalfreq;
+            Console.WriteLine("Pre-tax mean: ${0}", PreTaxMean);
+        }
+
+        private void CalculatePostTaxMedian()
+        {
+
+        }
+
+        private void CalculatePostTaxMean()
+        {
 
         }
 
