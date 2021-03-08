@@ -491,6 +491,13 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("PovertyLineBrackets");
 
                 OnPropertyChange("MaxBracketCountSlider");
+
+
+                //UBI sometimes changes when poverty brackets change
+                //OnPropertyChange("MaxUBIBracketCount");
+                //OnPropertyChange("MaxUBIBracketCountSlider");
+                //OnPropertyChange("MaxUBISlider");
+
             }
         }
 

@@ -262,8 +262,17 @@ namespace TaxMeApp.viewmodels
             // Count how many people are under poverty line
             countUnderPoverty();
 
+            
+            
+
+
             // Determine our baseline number of brackets at max rate
-            determineBaselineMaxBracketCount();
+            //COMMENTED OUT so that the program wouldn't change max tax brackets when the poverty line changes
+            //determineBaselineMaxBracketCount();
+            
+
+
+            
 
             // Count how many people are at max tax rate
             countPopulationAtMaxRate();
