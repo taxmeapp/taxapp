@@ -108,6 +108,58 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public int PreTaxMeanLine
+        {
+            get
+            {
+                return GraphModel.PreTaxMeanLine;
+            }
+            set
+            {
+                GraphModel.PreTaxMeanLine = value;
+                OnPropertyChange("PreTaxMeanLine");
+            }
+        }
+
+        public int PreTaxMedianLine
+        {
+            get
+            {
+                return GraphModel.PreTaxMedianLine;
+            }
+            set
+            {
+                GraphModel.PreTaxMedianLine = value;
+                OnPropertyChange("PreTaxMedianLine");
+            }
+        }
+
+        public int PostTaxMeanLine
+        {
+            get
+            {
+                return GraphModel.PostTaxMeanLine;
+            }
+            set
+            {
+                GraphModel.PostTaxMeanLine = value;
+                OnPropertyChange("PostTaxMeanLine");
+            }
+        }
+
+        public int PostTaxMedianLine
+        {
+            get
+            {
+                return GraphModel.PostTaxMedianLine;
+            }
+            set
+            {
+                GraphModel.PostTaxMedianLine = value;
+                OnPropertyChange("PostTaxMedianLine");
+            }
+        }
+
         /*
              Model interaction (no direct binding)
          */
