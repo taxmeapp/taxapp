@@ -340,6 +340,9 @@ namespace TaxMeApp.viewmodels
 
             //Calculate median before taxation*
             CalculatePreTaxMedian();
+
+            // Calculate mean after tax
+            CalculatePostTaxMean();
         }
 
         public void NewDataRecalcuation()
@@ -737,8 +740,8 @@ namespace TaxMeApp.viewmodels
             frequency = medianBracket.NumReturns;
             int width = medianBracket.UpperBound - medianBracket.LowerBound;
             double difference = (totalFreq / 2) - cumulativeBracketFrequency[medianBracketIndex - 1];
-            double median = medianBracket.LowerBound + (difference / frequency) * width;
-            Console.WriteLine("Pre-tax median bracket = {0} | median: ${1}", medianBracketIndex, median);
+            this.PreTaxMedian = medianBracket.LowerBound + (difference / frequency) * width;
+            Console.WriteLine("Pre-tax median bracket = {0} | median: ${1}", medianBracketIndex, PreTaxMedian);
         }
 
         private void CalculatePreTaxMean()
@@ -764,7 +767,21 @@ namespace TaxMeApp.viewmodels
 
         private void CalculatePostTaxMean()
         {
+            int frequency, totalFreq = 0, index = 0;
+            double midpoint, totalMidFreq = 0;
+            foreach (BracketModel bracket in selectedBrackets)
+            {
+                frequency = bracket.NumReturns;
+                double newLowerBound = bracket.LowerBound * (100 - newTaxPctByBracket[index]) / 100;
+                double newUpperBound = bracket.UpperBound * (100 - newTaxPctByBracket[index]) / 100;
+                midpoint = (newLowerBound + newUpperBound) / 2;
+                totalMidFreq += (frequency * midpoint);
+                totalFreq += frequency;
+                ++index;
+            }
 
+            this.PostTaxMean = totalMidFreq / totalFreq;
+            Console.WriteLine("Post-tax mean: ${0}", PostTaxMean);
         }
 
     }
