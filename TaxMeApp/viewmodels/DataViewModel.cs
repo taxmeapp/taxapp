@@ -343,6 +343,9 @@ namespace TaxMeApp.viewmodels
 
             // Calculate mean after tax
             CalculatePostTaxMean();
+
+            // Calculate median after tax
+            CalculatePostTaxMedian();
         }
 
         public void NewDataRecalcuation()
@@ -762,7 +765,44 @@ namespace TaxMeApp.viewmodels
 
         private void CalculatePostTaxMedian()
         {
+            int frequency, totalFreq = 0, medianBracketIndex = 0;
+            int[] cumulativeBracketFrequency = new int[selectedBrackets.Count];
 
+            foreach (BracketModel bracket in selectedBrackets)
+            {
+                totalFreq += bracket.NumReturns;
+            }
+
+            for (int i = 0; i < cumulativeBracketFrequency.Length; i++)
+            {
+                frequency = selectedBrackets[i].NumReturns;
+                if (i == 0)
+                {
+                    cumulativeBracketFrequency[i] = frequency;
+                    if (cumulativeBracketFrequency[i] > (totalFreq / 2))
+                    {
+                        medianBracketIndex = i;
+                        break;
+                    }
+                }
+                else
+                {
+                    cumulativeBracketFrequency[i] = cumulativeBracketFrequency[i - 1] + frequency;
+                    if (cumulativeBracketFrequency[i] > (totalFreq / 2))
+                    {
+                        medianBracketIndex = i;
+                        break;
+                    }
+                }
+            }
+            BracketModel medianBracket = selectedBrackets[medianBracketIndex];
+            frequency = medianBracket.NumReturns;
+            double newLowerBound = medianBracket.LowerBound * (100 - newTaxPctByBracket[medianBracketIndex]) / 100;
+            double newUpperBound = medianBracket.UpperBound * (100 - newTaxPctByBracket[medianBracketIndex]) / 100;
+            double width = newUpperBound - newLowerBound;
+            double difference = (totalFreq / 2) - cumulativeBracketFrequency[medianBracketIndex - 1];
+            this.PostTaxMedian = newLowerBound + (difference / frequency) * width;
+            Console.WriteLine("Post-tax median bracket = {0} | median: ${1}", medianBracketIndex, PostTaxMedian);
         }
 
         private void CalculatePostTaxMean()
