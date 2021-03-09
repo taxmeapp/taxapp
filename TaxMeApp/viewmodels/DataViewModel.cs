@@ -300,6 +300,10 @@ namespace TaxMeApp.viewmodels
         // Bracket containing pre-tax mean
         private int PreTaxMeanBracket
         {
+            get
+            {
+                return GraphModel.PreTaxMeanLine;
+            }
             set
             {
                 GraphVM.PreTaxMeanLine = value;
@@ -309,6 +313,10 @@ namespace TaxMeApp.viewmodels
         // Bracket containing pre-tax median
         private int PreTaxMedianBracket
         {
+            get
+            {
+                return GraphModel.PreTaxMedianLine;
+            }
             set
             {
                 GraphVM.PreTaxMedianLine = value;
@@ -318,6 +326,10 @@ namespace TaxMeApp.viewmodels
         // Bracket containing post-tax mean
         private int PostTaxMeanBracket
         {
+            get
+            {
+                return GraphModel.PostTaxMeanLine;
+            }
             set
             {
                 GraphVM.PostTaxMeanLine = value;
@@ -327,6 +339,10 @@ namespace TaxMeApp.viewmodels
         // Bracket containing pre-tax mean
         private int PostTaxMedianBracket
         {
+            get
+            {
+                return GraphModel.PostTaxMedianLine;
+            }
             set
             {
                 GraphVM.PostTaxMedianLine = value;
@@ -793,6 +809,7 @@ namespace TaxMeApp.viewmodels
             // calculate post tax median using grouped data median formula
             this.PreTaxMedian = medianBracket.LowerBound + (difference / frequency) * width;
             this.PreTaxMedianBracket = DetermineMeanMedianBracket(PreTaxMedian);
+            Console.WriteLine("Pre-tax median bracket = {0} | median: ${1}", PreTaxMedianBracket, PreTaxMedian);
         }
 
         private void CalculatePreTaxMean()
@@ -816,6 +833,7 @@ namespace TaxMeApp.viewmodels
             // calculate post-tax mean by dividing summation of midpoint-frequency by summation of frequency
             this.PreTaxMean = totalMidFreq / totalFreq;
             this.PreTaxMeanBracket = DetermineMeanMedianBracket(PreTaxMean);
+            Console.WriteLine("Pre-tax mean: ${0}, Bracket: {1}", PreTaxMean, PreTaxMeanBracket);
         }
 
         private void CalculatePostTaxMedian()
@@ -870,6 +888,7 @@ namespace TaxMeApp.viewmodels
             // calculate post tax median using grouped data median formula
             this.PostTaxMedian = newLowerBound + (difference / frequency) * width;
             this.PostTaxMedianBracket = DetermineMeanMedianBracket(PostTaxMedian);
+            Console.WriteLine("Post-tax median bracket = {0} | median: ${1}", PostTaxMedianBracket, PostTaxMedian);
         }
 
         private void CalculatePostTaxMean()
@@ -898,6 +917,7 @@ namespace TaxMeApp.viewmodels
             // calculate post-tax mean by dividing summation of midpoint-frequency by summation of frequency
             this.PostTaxMean = totalMidFreq / totalFreq;
             this.PostTaxMeanBracket = DetermineMeanMedianBracket(PostTaxMean);
+            Console.WriteLine("Post-tax mean: ${0}, Bracket: {1}", PostTaxMean, PostTaxMeanBracket);
         }
 
         private int DetermineMeanMedianBracket(double income) {
