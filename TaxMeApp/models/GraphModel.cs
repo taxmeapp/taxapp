@@ -63,9 +63,9 @@ namespace TaxMeApp.models
         public int MinUBIBracketCount { get; set; }
         public int MaxUBI { get; set; }
         // bracket index
-        public int PreTaxMeanBracket { get; set; }
-        public int PreTaxMedianBracket { get; set; }
-        public int PostTaxMeanBracket { get; set; }
-        public int PostTaxMedianBracket { get; set; }
+        public int PreTaxMeanLine { get; set; }
+        public int PreTaxMedianLine { get; set; }
+        public int PostTaxMeanLine { get; set; }
+        public int PostTaxMedianLine { get; set; }
     }
 }

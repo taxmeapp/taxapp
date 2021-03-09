@@ -37,7 +37,6 @@ namespace TaxMeApp.models
                 this.LowerBound = int.Parse(bounds[0], NumberStyles.AllowThousands);
                 this.UpperBound = int.Parse(bounds[1], NumberStyles.AllowThousands)-1;
             }
-            Console.WriteLine("R: {0} | LB: {1} | UB: {2}", this.Range, this.LowerBound, this.UpperBound);
         }
     }
 
