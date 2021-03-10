@@ -126,6 +126,9 @@
                             TickPlacement="BottomRight"
                             Value="{Binding Path=TargetFundingSlider, Mode=TwoWay}"
                             Width="175"/>
+            <Button Margin="15, 5, 15, 5"
+                    Command="{Binding AutoFitBudgetBtnCommand}" 
+                    Content="Auto-Fit Budget"/>
             <TextBlock Margin="5,15,5,5" 
                                Text="Display:"/>
             <CheckBox Content="Lock Tax Rates"

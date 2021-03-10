@@ -26,6 +26,8 @@ namespace TaxMeApp.viewmodels
         public ICommand ResetSettingsBtnCommand { get; set; }
         public ICommand ResetTaxRatesBtnCommand { get; set; }
         public ICommand AutoFitSlantTaxBtnCommand { get; set; }
+        public ICommand AutoFitBudgetBtnCommand { get; set; }
+
 
         public ControlViewModel()
         {
@@ -37,6 +39,7 @@ namespace TaxMeApp.viewmodels
             ResetSettingsBtnCommand = new RelayCommand(o => resetSettingsButtonClick());
             ResetTaxRatesBtnCommand = new RelayCommand(o => resetTaxRatesButtonClick());
             AutoFitSlantTaxBtnCommand = new RelayCommand(o => autoFitSlantTaxButtonClick());
+            AutoFitBudgetBtnCommand = new RelayCommand(o => autoFitBudgetButtonClick());
         }
 
         // ControlPanel Init
@@ -987,7 +990,7 @@ namespace TaxMeApp.viewmodels
                 for (int i = 0; i < 11; i++) {
                     MaxBracketCountSlider = i;
                     revenue = DataModel.TotalRevenueNew;
-                    Console.WriteLine("TaxRate = {0}, Brackets = {1}, Revenue = {2}, Budget = {3}", MaxTaxRate, MaxBracketCountSlider, revenue, budget);
+                    //Console.WriteLine("TaxRate = {0}, Brackets = {1}, Revenue = {2}, Budget = {3}", MaxTaxRate, MaxBracketCountSlider, revenue, budget);
                     if (revenue >= budget) {
                         break;
                     }
@@ -1004,6 +1007,25 @@ namespace TaxMeApp.viewmodels
                 this.MaxTaxRate = 100;
             }
         }
-    }
 
+        public void autoFitBudgetButtonClick(){
+            double revenue = DataModel.TotalRevenueNew;
+            double flatTFunding = 100.0;
+
+            OptionsModel.setFlatTFunding(flatTFunding);
+
+            double budget = OptionsModel.GetTotalBudget();
+
+            while (revenue < budget && flatTFunding >= 0) {
+                OptionsModel.setFlatTFunding(flatTFunding);
+                flatTFunding -= 1;
+                budget = OptionsModel.GetTotalBudget();
+            }
+            OutputVM.Update();
+            OnPropertyChange("SelectedTargetFunding");
+            OnPropertyChange("SelectedTargetBudget");
+            OnPropertyChange("TargetFundingSlider");
+
+        }
+    }
 }
