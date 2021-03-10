@@ -92,6 +92,54 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public List<string> GovProgramList
+        {
+            get
+            {
+                return OptionsModel.GetGovProgramList();
+            }
+        }
+        public string SelectedGovProgram
+        {
+            get
+            {
+                return OptionsModel.SelectedGovProgram;
+            }
+            set
+            {
+                OptionsModel.SelectedGovProgram = value;
+                OnPropertyChange("SelectedGovProgram");
+                OnPropertyChange("SelectedTargetFunding");
+                OnPropertyChange("TargetFundingSlider");
+            }
+        }
+
+        public double SelectedTargetFunding
+        {
+            get
+            {
+                return OptionsModel.GetSelectedTargetFunding(GovProgramList.IndexOf(SelectedGovProgram));
+            }
+        }
+
+        public double TargetFundingSlider {
+            get {
+                return OptionsModel.GetSelectedTargetFunding(GovProgramList.IndexOf(SelectedGovProgram));
+            }
+            set {
+                //int priority, bool ischecked, string name, double cost, double tFunding)
+                int priority = GovProgramList.IndexOf(SelectedGovProgram);
+                bool isChecked = OptionsModel.listOfCosts[priority].ischecked;
+                string name = SelectedGovProgram;
+                double cost = OptionsModel.listOfCosts[priority].cost;
+
+                OptionsModel.listOfCosts[GovProgramList.IndexOf(SelectedGovProgram)] = (priority, isChecked, name, cost, value);
+                OnPropertyChange("SelectedTargetFunding");
+                OutputVM.propChange("TotalSelectedBudget");
+                OutputVM.propChange("LeftOverBudget");
+            }
+        }
+
         public List<string> BracketList
         {
             get

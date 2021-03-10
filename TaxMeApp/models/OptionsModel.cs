@@ -13,26 +13,26 @@ namespace TaxMeApp.models
             this.MaxTaxRate = 0;
             this.MaxBracketCount = 0;
 
-            listOfCosts = new List<(int priority, bool ischecked, string name, double cost)>();
-            listOfCosts.Add((0, true, "defense", 678000000000.0));
-            listOfCosts.Add((1, true, "medicaid", 613000000000.0));
-            listOfCosts.Add((2, true, "welfare", 361000000000.0));
-            listOfCosts.Add((3, true, "veterans", 79000000000.0));
-            listOfCosts.Add((4, true, "foodstamps", 68000000000.0));
-            listOfCosts.Add((5, true, "education", 61000000000.0));
-            listOfCosts.Add((6, true, "publichousing", 56000000000.0));
-            listOfCosts.Add((7, true, "health", 53000000000.0));
-            listOfCosts.Add((8, true, "science", 30000000000.0));
-            listOfCosts.Add((9, true, "transportation", 29000000000.0));
-            listOfCosts.Add((10, true, "international", 29000000000.0));
-            listOfCosts.Add((11, true, "energyandenvironment", 28000000000.0));
-            listOfCosts.Add((12, true, "unemployment", 24000000000.0));
-            listOfCosts.Add((13, true, "foodandagriculture", 11000000000.0));
+            listOfCosts = new List<(int priority, bool ischecked, string name, double cost, double tFunding)>();
+            listOfCosts.Add((0, true, "defense", 678000000000.0, 100.0));
+            listOfCosts.Add((1, true, "medicaid", 613000000000.0, 100.0));
+            listOfCosts.Add((2, true, "welfare", 361000000000.0, 100.0));
+            listOfCosts.Add((3, true, "veterans", 79000000000.0, 100.0));
+            listOfCosts.Add((4, true, "foodstamps", 68000000000.0, 100.0));
+            listOfCosts.Add((5, true, "education", 61000000000.0, 100.0));
+            listOfCosts.Add((6, true, "publichousing", 56000000000.0, 100.0));
+            listOfCosts.Add((7, true, "health", 53000000000.0, 100.0));
+            listOfCosts.Add((8, true, "science", 30000000000.0, 100.0));
+            listOfCosts.Add((9, true, "transportation", 29000000000.0, 100.0));
+            listOfCosts.Add((10, true, "international", 29000000000.0, 100.0));
+            listOfCosts.Add((11, true, "energyandenvironment", 28000000000.0, 100.0));
+            listOfCosts.Add((12, true, "unemployment", 24000000000.0, 100.0));
+            listOfCosts.Add((13, true, "foodandagriculture", 11000000000.0, 100.0));
             
-            listOfCosts.Add((14, false, "sanderscollege", 220000000000.0));
-            listOfCosts.Add((15, false, "sandersmedicaid", 350000000000.0));
+            listOfCosts.Add((14, false, "sanderscollege", 220000000000.0, 100.0));
+            listOfCosts.Add((15, false, "sandersmedicaid", 350000000000.0, 100.0));
             
-            listOfCosts.Add((16, false, "yangubi", 2800000000000.0));
+            listOfCosts.Add((16, false, "yangubi", 2800000000000.0, 100.0));
 
             this.DefenseChecked = true;
             this.MedicaidChecked = true;
@@ -62,7 +62,7 @@ namespace TaxMeApp.models
         public int MaxBracketCount { get; set; }
 
         public long revenue { get; set; } = 0;
-        public List<(int priority, bool ischecked, string name, double cost)> listOfCosts;
+        public List<(int priority, bool ischecked, string name, double cost, double tFunding)> listOfCosts;
         public double[] fundingArray;
 
         public bool dc;
@@ -72,7 +72,7 @@ namespace TaxMeApp.models
             } 
             set {
                 dc = value;
-                listOfCosts[0] = (0, value, "defense", 678000000000.0);
+                listOfCosts[0] = (0, value, "defense", 678000000000.0, listOfCosts[0].tFunding);
             } 
         }
         public bool mc;
@@ -85,7 +85,7 @@ namespace TaxMeApp.models
             set
             {
                 mc = value;
-                listOfCosts[1] = (1, value, "medicaid", 613000000000.0);
+                listOfCosts[1] = (1, value, "medicaid", 613000000000.0, listOfCosts[1].tFunding);
             }
         }
 
@@ -99,7 +99,7 @@ namespace TaxMeApp.models
             set
             {
                 wc = value;
-                listOfCosts[2] = (2, value, "welfare", 361000000000.0);
+                listOfCosts[2] = (2, value, "welfare", 361000000000.0, listOfCosts[2].tFunding);
             }
         }
 
@@ -113,7 +113,7 @@ namespace TaxMeApp.models
             set
             {
                 vc = value;
-                listOfCosts[3] = (3, value, "veterans", 79000000000.0);
+                listOfCosts[3] = (3, value, "veterans", 79000000000.0, listOfCosts[3].tFunding);
             }
         }
 
@@ -127,7 +127,7 @@ namespace TaxMeApp.models
             set
             {
                 fsc = value;
-                listOfCosts[4] = (4, value, "foodstamps", 68000000000.0);
+                listOfCosts[4] = (4, value, "foodstamps", 68000000000.0, listOfCosts[4].tFunding);
             }
         }
         public bool edc;
@@ -140,7 +140,7 @@ namespace TaxMeApp.models
             set
             {
                 edc = value;
-                listOfCosts[5] = (5, value, "education", 61000000000.0);
+                listOfCosts[5] = (5, value, "education", 61000000000.0, listOfCosts[5].tFunding);
             }
         }
         public bool phc;
@@ -153,7 +153,7 @@ namespace TaxMeApp.models
             set
             {
                 phc = value;
-                listOfCosts[6] = (6, value, "publichousing", 56000000000.0);
+                listOfCosts[6] = (6, value, "publichousing", 56000000000.0, listOfCosts[6].tFunding);
             }
         }
 
@@ -167,7 +167,7 @@ namespace TaxMeApp.models
             set
             {
                 hltc = value;
-                listOfCosts[7] = (7, value, "health", 53000000000.0);
+                listOfCosts[7] = (7, value, "health", 53000000000.0, listOfCosts[7].tFunding);
             }
         }
 
@@ -181,7 +181,7 @@ namespace TaxMeApp.models
             set
             {
                 scic = value;
-                listOfCosts[8] = (8, value, "science", 30000000000.0);
+                listOfCosts[8] = (8, value, "science", 30000000000.0, listOfCosts[8].tFunding);
             }
         }
 
@@ -195,7 +195,7 @@ namespace TaxMeApp.models
             set
             {
                 trpc = value;
-                listOfCosts[9] = (9, value, "transportation", 29000000000.0);
+                listOfCosts[9] = (9, value, "transportation", 29000000000.0, listOfCosts[9].tFunding);
             }
         }
 
@@ -209,7 +209,7 @@ namespace TaxMeApp.models
             set
             {
                 intc = value;
-                listOfCosts[10] = (10, value, "international", 29000000000.0);
+                listOfCosts[10] = (10, value, "international", 29000000000.0, listOfCosts[10].tFunding);
             }
         }
 
@@ -223,7 +223,7 @@ namespace TaxMeApp.models
             set
             {
                 eec = value;
-                listOfCosts[11] = (11, value, "transportation", 28000000000.0);
+                listOfCosts[11] = (11, value, "transportation", 28000000000.0, listOfCosts[11].tFunding);
             }
         }
         public bool unc;
@@ -236,7 +236,7 @@ namespace TaxMeApp.models
             set
             {
                 unc = value;
-                listOfCosts[12] = (12, value, "unemployment", 24000000000.0);
+                listOfCosts[12] = (12, value, "unemployment", 24000000000.0, listOfCosts[12].tFunding);
             }
         }
 
@@ -250,7 +250,7 @@ namespace TaxMeApp.models
             set
             {
                 fac = value;
-                listOfCosts[13] = (13, value, "foodandagriculture", 11000000000.0);
+                listOfCosts[13] = (13, value, "foodandagriculture", 11000000000.0, listOfCosts[13].tFunding);
             }
         }
 
@@ -264,7 +264,7 @@ namespace TaxMeApp.models
             set
             {
                 scc = value;
-                listOfCosts[14] = (14, value, "sanderscollege", 220000000000.0);
+                listOfCosts[14] = (14, value, "sanderscollege", 220000000000.0, listOfCosts[14].tFunding);
             }
         }
 
@@ -278,7 +278,7 @@ namespace TaxMeApp.models
             set
             {
                 smc = value;
-                listOfCosts[15] = (15, value, "sandersmedicaid", 350000000000.0);
+                listOfCosts[15] = (15, value, "sandersmedicaid", 350000000000.0, listOfCosts[15].tFunding);
             }
         }
 
@@ -292,7 +292,7 @@ namespace TaxMeApp.models
             set
             {
                 yubic = value;
-                listOfCosts[16] = (16, value, "yangubi", 2800000000000.0);
+                listOfCosts[16] = (16, value, "yangubi", 2800000000000.0, listOfCosts[16].tFunding);
             }
         }
 
@@ -317,11 +317,11 @@ namespace TaxMeApp.models
                 {
                     if (revenue > 0)
                     {
-                        funding = revenue / listOfCosts[i].cost;
+                        funding = revenue / (listOfCosts[i].cost * (listOfCosts[i].tFunding / 100));
                         if (funding >= 1)
                         {
                             funding = 1;
-                            revenue -= long.Parse(listOfCosts[i].cost.ToString());
+                            revenue -= long.Parse((listOfCosts[i].cost * (listOfCosts[i].tFunding / 100)).ToString());
                         }
                         else
                         {
@@ -413,10 +413,23 @@ namespace TaxMeApp.models
             double ans = 0;
             for (int i = 0; i < listOfCosts.Count; i++) {
                 if (listOfCosts[i].ischecked) {
-                    ans += listOfCosts[i].cost;
+                    ans += listOfCosts[i].cost * (listOfCosts[i].tFunding / 100);
                 }
             }
             return ans;
+        }
+
+        public List<string> GetGovProgramList() {
+            List<string> ans = new List<string>();
+            for (int i = 0; i < listOfCosts.Count; i++) {
+                ans.Add(listOfCosts[i].name);
+            }
+            return ans;
+        }
+        public string SelectedGovProgram { get; set; } = "defense";
+
+        public double GetSelectedTargetFunding(int i) {
+            return listOfCosts[i].tFunding;
         }
     }
 }

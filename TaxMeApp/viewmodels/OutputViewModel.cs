@@ -95,7 +95,7 @@ namespace TaxMeApp.viewmodels
             Grid.SetColumn(programFunding, 6);
 
             //Add program to list of costs (Used to calculate funding)
-            OptionsModel.listOfCosts.Add((OptionsModel.listOfCosts.Count, false, "", 0.0));
+            OptionsModel.listOfCosts.Add((OptionsModel.listOfCosts.Count, false, "", 0.0, 100.0));
 
             //Set event listeners
             programChecked.Click += ProgramChecked_Click;
@@ -105,6 +105,7 @@ namespace TaxMeApp.viewmodels
             customProgramListView.Items.Add(g);
 
             OnPropertyChange("customProgramListView");
+            ControlVM.propChange("GovProgramList");
 
             //Testing:
 
@@ -135,7 +136,7 @@ namespace TaxMeApp.viewmodels
             if (gridNum != -1)
             {
                 bool data = (bool)(sender as CheckBox).IsChecked;
-                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, data, OptionsModel.listOfCosts[gridNum + 17].name, OptionsModel.listOfCosts[gridNum + 17].cost);
+                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, data, OptionsModel.listOfCosts[gridNum + 17].name, OptionsModel.listOfCosts[gridNum + 17].cost, OptionsModel.listOfCosts[gridNum + 17].tFunding);
 
                 Update();
                 //OptionsModel.updateFunding();
@@ -162,8 +163,9 @@ namespace TaxMeApp.viewmodels
             if (gridNum != -1)
             {
                 string data = (sender as TextBox).Text;
-                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, data, OptionsModel.listOfCosts[gridNum + 17].cost);
+                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, data, OptionsModel.listOfCosts[gridNum + 17].cost, OptionsModel.listOfCosts[gridNum + 17].tFunding);
             }
+            ControlVM.propChange("GovProgramList");
         }
 
         private void ProgramCost_TextChanged(object sender, TextChangedEventArgs e)
@@ -195,7 +197,7 @@ namespace TaxMeApp.viewmodels
                 }
 
      
-                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, OptionsModel.listOfCosts[gridNum + 17].name, data);
+                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, OptionsModel.listOfCosts[gridNum + 17].name, data, OptionsModel.listOfCosts[gridNum + 17].tFunding);
 
                 Update();
                 //OptionsModel.updateFunding();

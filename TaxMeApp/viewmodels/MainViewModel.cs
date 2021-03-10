@@ -49,6 +49,10 @@ namespace TaxMeApp.viewmodels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        public void propChange(string propertyName)
+        {
+            this.OnPropertyChange(propertyName);
+        }
 
     }
 }
