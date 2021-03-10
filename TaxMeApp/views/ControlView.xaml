@@ -115,6 +115,9 @@
             <TextBlock FontSize="20"
                                HorizontalAlignment="Center" 
                                Text="{Binding SelectedTargetFunding}"/>
+            <TextBlock FontSize="20"
+                               HorizontalAlignment="Center" 
+                               Text="{Binding SelectedTargetBudget}"/>
             <Slider x:Name="TargetFundingSlider" IsSnapToTickEnabled="True" 
                             Margin="5, 5, 5, 15"
                             Minimum="0"

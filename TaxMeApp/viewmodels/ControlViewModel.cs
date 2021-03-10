@@ -111,6 +111,7 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("SelectedGovProgram");
                 OnPropertyChange("SelectedTargetFunding");
                 OnPropertyChange("TargetFundingSlider");
+                OnPropertyChange("SelectedTargetBudget");
             }
         }
 
@@ -119,6 +120,14 @@ namespace TaxMeApp.viewmodels
             get
             {
                 return OptionsModel.GetSelectedTargetFunding(GovProgramList.IndexOf(SelectedGovProgram));
+            }
+        }
+
+        public string SelectedTargetBudget
+        {
+            get
+            {
+                return OptionsModel.GetSelectedTargetBudget(GovProgramList.IndexOf(SelectedGovProgram));
             }
         }
 
@@ -135,8 +144,8 @@ namespace TaxMeApp.viewmodels
 
                 OptionsModel.listOfCosts[GovProgramList.IndexOf(SelectedGovProgram)] = (priority, isChecked, name, cost, value);
                 OnPropertyChange("SelectedTargetFunding");
-                OutputVM.propChange("TotalSelectedBudget");
-                OutputVM.propChange("LeftOverBudget");
+                OnPropertyChange("SelectedTargetBudget");
+                OutputVM.Update();
             }
         }
 

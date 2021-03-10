@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxMeApp.Helpers;
 
 namespace TaxMeApp.models
 {
@@ -430,6 +431,16 @@ namespace TaxMeApp.models
 
         public double GetSelectedTargetFunding(int i) {
             return listOfCosts[i].tFunding;
+        }
+
+        public string GetSelectedTargetBudget(int i)
+        {
+            string ans = "$";
+            double targetBudget = listOfCosts[i].cost * (listOfCosts[i].tFunding / 100);
+
+            ans += Formatter.Format(long.Parse(targetBudget.ToString()));
+
+            return ans;
         }
     }
 }
