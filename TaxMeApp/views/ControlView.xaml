@@ -131,6 +131,9 @@
             <CheckBox Content="Percent of Income (New)"
                               IsChecked="{Binding ShowNewPercentage, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
+            <CheckBox Content="Show Average and Median Income"
+                              IsChecked="{Binding ShowMeanMedian, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
             <CheckBox Content="Universal Basic Income"
                               IsChecked="{Binding ShowUBI, Mode=TwoWay}"
                               Margin="20,5,5,5"/>

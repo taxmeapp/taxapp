@@ -591,6 +591,20 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public bool ShowMeanMedian
+        {
+            get
+            {
+                return GraphModel.ShowMeanMedian;
+            }
+            set
+            {
+                GraphVM.showMeanMedian = value;
+
+                OnPropertyChange("ShowMeanMedian");
+            }
+        }
+
         /*
          
                 Button Logic

@@ -112,6 +112,10 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
+                if (!showMeanMedian)
+                {
+                    return -1;
+                }
                 return GraphModel.PreTaxMeanLine;
             }
             set
@@ -125,6 +129,10 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
+                if (!showMeanMedian)
+                {
+                    return -1;
+                }
                 return GraphModel.PreTaxMedianLine;
             }
             set
@@ -138,6 +146,10 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
+                if (!showMeanMedian)
+                {
+                    return -1;
+                }
                 return GraphModel.PostTaxMeanLine;
             }
             set
@@ -151,6 +163,10 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
+                if (!showMeanMedian)
+                {
+                    return -1;
+                }
                 return GraphModel.PostTaxMedianLine;
             }
             set
@@ -218,6 +234,22 @@ namespace TaxMeApp.viewmodels
             get
             {
                 return GraphModel.ShowNewUBI;
+            }
+        }
+
+        public bool showMeanMedian
+        {
+            get
+            {
+                return GraphModel.ShowMeanMedian;
+            }
+            set
+            {
+                GraphModel.ShowMeanMedian = value;
+                OnPropertyChange("PreTaxMeanLine");
+                OnPropertyChange("PreTaxMedianLine");
+                OnPropertyChange("PostTaxMeanLine");
+                OnPropertyChange("PostTaxMedianLine");
             }
         }
 
