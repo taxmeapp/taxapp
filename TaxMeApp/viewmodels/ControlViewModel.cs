@@ -122,7 +122,14 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return OptionsModel.GetSelectedTargetFunding(GovProgramList.IndexOf(SelectedGovProgram));
+                double ans = OptionsModel.GetSelectedTargetFunding(GovProgramList.IndexOf(SelectedGovProgram));
+                if (ans == -1) {
+                    SelectedGovProgram = OptionsModel.GetGovProgramList()[GovProgramList.Count-1];
+                    OnPropertyChange("SelectedGovProgram");
+                    ans = OptionsModel.GetSelectedTargetFunding(GovProgramList.IndexOf(SelectedGovProgram));
+                }
+
+                return ans;
             }
         }
 

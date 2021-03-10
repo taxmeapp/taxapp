@@ -105,7 +105,13 @@ namespace TaxMeApp.viewmodels
             customProgramListView.Items.Add(g);
 
             OnPropertyChange("customProgramListView");
+
+            OptionsModel.SelectedGovProgram = OptionsModel.GetGovProgramList()[OptionsModel.GetGovProgramList().Count - 1];
             ControlVM.propChange("GovProgramList");
+            ControlVM.propChange("SelectedGovProgram");
+            ControlVM.propChange("SelectedTargetFunding");
+            ControlVM.propChange("SelectedTargetBudget");
+
 
             //Testing:
 
@@ -165,7 +171,9 @@ namespace TaxMeApp.viewmodels
                 string data = (sender as TextBox).Text;
                 OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, data, OptionsModel.listOfCosts[gridNum + 17].cost, OptionsModel.listOfCosts[gridNum + 17].tFunding);
             }
+            ControlVM.propChange("SelectedTargetFunding");
             ControlVM.propChange("GovProgramList");
+            ControlVM.propChange("SelectedGovProgram");
         }
 
         private void ProgramCost_TextChanged(object sender, TextChangedEventArgs e)
@@ -210,6 +218,9 @@ namespace TaxMeApp.viewmodels
             //for (int i = 0; i < OptionsModel.listOfCosts.Count; i++) {
             //    Console.WriteLine("i={0}, name={1}, cost={2}", i, OptionsModel.listOfCosts[i].name, OptionsModel.listOfCosts[i].cost);
             //}
+
+            ControlVM.propChange("SelectedTargetBudget");
+            ControlVM.propChange("SelectedGovProgram");
         }
 
         public void Update()
