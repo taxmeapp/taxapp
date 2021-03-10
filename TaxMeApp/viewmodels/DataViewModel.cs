@@ -268,6 +268,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 DataModel.PreTaxMedian = value;
+                OutputVM.Update();
             }
         }
 
@@ -281,6 +282,7 @@ namespace TaxMeApp.viewmodels
             set
             {
                 DataModel.PostTaxMedian = value;
+                OutputVM.Update();
             }
         }
 
@@ -387,17 +389,8 @@ namespace TaxMeApp.viewmodels
             //Set default min UBIBrackets
             minUBIBracketCount = 3;
 
-            // Calculate mean before tax
-            CalculatePreTaxMean();
-
-            // Calculate median before tax
-            CalculatePreTaxMedian();
-
-            // Calculate mean after tax
-            CalculatePostTaxMean();
-
-            // Calculate median after tax
-            CalculatePostTaxMedian();
+            // Calculate statistics pre/post-tax
+            calculateMeanMedian();
         }
 
         public void NewDataRecalcuation()
@@ -412,6 +405,23 @@ namespace TaxMeApp.viewmodels
             // Calculate UBI cost
             calculateUBIByBracket();
 
+            // Calculate statistics pre/post-tax
+            calculateMeanMedian();
+        }
+
+        public void calculateMeanMedian()
+        {
+            // Calculate mean before tax
+            CalculatePreTaxMean();
+
+            // Calculate median before tax
+            CalculatePreTaxMedian();
+
+            // Calculate mean after tax
+            CalculatePostTaxMean();
+
+            // Calculate median after tax
+            CalculatePostTaxMedian();
         }
 
         //Use to calculate revenue for custom tax plan

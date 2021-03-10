@@ -220,7 +220,8 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("TotalRevenueNewOutput");
             OnPropertyChange("RevenueDifferenceOutput");
             OnPropertyChange("UBICost");
-
+            OnPropertyChange("PreTaxMeanMedian");
+            OnPropertyChange("PostTaxMeanMedian");
 
             OptionsModel.updateFunding();
             OnPropertyChange("DefenseFunding");
@@ -671,6 +672,26 @@ namespace TaxMeApp.viewmodels
                 OptionsModel.YangRemoveChecked = value;
                 DataVM.NewDataRecalcuation();
                 this.Update();
+            }
+        }
+
+        public string PreTaxMeanMedian
+        {
+            get
+            {
+                return $"Pre-tax: Mean: ${DataModel.PreTaxMean:n0}  " +
+                    $"|  Median: ${DataModel.PreTaxMedian:n0}  " +
+                    $"|  Difference: ${Math.Abs(DataModel.PreTaxMedian-DataModel.PreTaxMean):n0}";
+            }
+        }
+
+        public string PostTaxMeanMedian
+        {
+            get
+            {
+                return $"Post-tax: Mean: ${DataModel.PostTaxMean:n0}  " +
+                    $"|  Median: ${DataModel.PostTaxMedian:n0}  " +
+                    $"|  Difference: ${Math.Abs(DataModel.PostTaxMedian - DataModel.PostTaxMean):n0}";
             }
         }
     }
