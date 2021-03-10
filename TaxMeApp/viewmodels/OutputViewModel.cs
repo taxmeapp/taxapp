@@ -679,7 +679,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return $"Pre-tax: Mean: ${DataModel.PreTaxMean:n0}  " +
+                return $"Pre-tax: Average: ${DataModel.PreTaxMean:n0}  " +
                     $"|  Median: ${DataModel.PreTaxMedian:n0}  " +
                     $"|  Difference: ${Math.Abs(DataModel.PreTaxMedian-DataModel.PreTaxMean):n0}";
             }
@@ -689,7 +689,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return $"Post-tax: Mean: ${DataModel.PostTaxMean:n0}  " +
+                return $"Post-tax: Average: ${DataModel.PostTaxMean:n0}  " +
                     $"|  Median: ${DataModel.PostTaxMedian:n0}  " +
                     $"|  Difference: ${Math.Abs(DataModel.PostTaxMedian - DataModel.PostTaxMean):n0}";
             }

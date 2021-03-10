@@ -95,9 +95,9 @@
                                    Grid.Row="6" 
                                    HorizontalAlignment="Right" 
                                    Text="{Binding RevenueDifferenceOutput}"/>
-                <Expander Header="Statistics" Grid.Row="7">
+                <Expander Header="Income Statistics" Grid.Row="7">
                     <StackPanel>
-                        <TextBlock Text="{Binding PreTaxMeanMedian}" Grid.Column="2"></TextBlock>
+                        <TextBlock Text="{Binding PreTaxMeanMedian}"></TextBlock>
                         <TextBlock Text="{Binding PostTaxMeanMedian}"></TextBlock>
                     </StackPanel>
                 </Expander>
