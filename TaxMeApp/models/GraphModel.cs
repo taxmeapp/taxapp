@@ -59,8 +59,16 @@ namespace TaxMeApp.models
         public bool ShowOldPercentage { get; set; } = false;
         public bool ShowNewPercentage { get; set; } = false;
         public bool ShowNewUBI { get; set; } = false;
+        public bool ShowPreTaxMedian { get; set; } = false;
+        public bool ShowPreTaxMean { get; set; } = false;
+        public bool ShowPostTaxMedian { get; set; } = false;
+        public bool ShowPostTaxMean { get; set; } = false;
         public int MaxUBIBracketCount { get; set; }
         public int MinUBIBracketCount { get; set; }
         public int MaxUBI { get; set; }
+        public int PreTaxMeanLine { get; set; }
+        public int PreTaxMedianLine { get; set; }
+        public int PostTaxMeanLine { get; set; }
+        public int PostTaxMedianLine { get; set; }
     }
 }

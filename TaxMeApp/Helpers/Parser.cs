@@ -90,7 +90,9 @@ namespace TaxMeApp.Helpers
                 while (csv.Read() && !Array.Exists(row, field => field.StartsWith(EndLine)))
                 {
                     row = csv.Parser.Record;
-                    brackets.Add(csv.GetRecord<BracketModel>());
+                    BracketModel bracket = csv.GetRecord<BracketModel>();
+                    bracket.SetBounds();
+                    brackets.Add(bracket);
                 }
 
                 // Create a new Model and return it
