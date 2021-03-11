@@ -112,7 +112,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if (!showMeanMedian)
+                if (!showPreTaxMean)
                 {
                     return -1;
                 }
@@ -129,7 +129,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if (!showMeanMedian)
+                if (!showPreTaxMedian)
                 {
                     return -1;
                 }
@@ -146,7 +146,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if (!showMeanMedian)
+                if (!showPostTaxMean)
                 {
                     return -1;
                 }
@@ -163,7 +163,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if (!showMeanMedian)
+                if (!showPostTaxMedian)
                 {
                     return -1;
                 }
@@ -237,19 +237,55 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        public bool showMeanMedian
+        public bool showPreTaxMedian
         {
             get
             {
-                return GraphModel.ShowMeanMedian;
+                return GraphModel.ShowPreTaxMedian;
             }
             set
             {
-                GraphModel.ShowMeanMedian = value;
-                OnPropertyChange("PreTaxMeanLine");
+                GraphModel.ShowPreTaxMedian = value;
                 OnPropertyChange("PreTaxMedianLine");
-                OnPropertyChange("PostTaxMeanLine");
+            }
+        }
+
+        public bool showPreTaxMean
+        {
+            get
+            {
+                return GraphModel.ShowPreTaxMean;
+            }
+            set
+            {
+                GraphModel.ShowPreTaxMean = value;
+                OnPropertyChange("PreTaxMeanLine");
+            }
+        }
+
+        public bool showPostTaxMedian
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMedian;
+            }
+            set
+            {
+                GraphModel.ShowPostTaxMedian = value;
                 OnPropertyChange("PostTaxMedianLine");
+            }
+        }
+
+        public bool showPostTaxMean
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMean;
+            }
+            set
+            {
+                GraphModel.ShowPostTaxMean = value;
+                OnPropertyChange("PostTaxMeanLine");
             }
         }
 

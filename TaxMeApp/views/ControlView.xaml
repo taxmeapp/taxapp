@@ -131,8 +131,17 @@
             <CheckBox Content="Percent of Income (New)"
                               IsChecked="{Binding ShowNewPercentage, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
-            <CheckBox Content="Average and Median Income"
-                              IsChecked="{Binding ShowMeanMedian, Mode=TwoWay}"
+            <CheckBox Content="Median Income (Pre-tax)"
+                              IsChecked="{Binding ShowPreTaxMedian, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
+            <CheckBox Content="Mean Income (Pre-tax)"
+                              IsChecked="{Binding ShowPreTaxMean, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
+            <CheckBox Content="Median Income (Post-tax)"
+                              IsChecked="{Binding ShowPostTaxMedian, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
+            <CheckBox Content="Mean Income (Post-tax)"
+                              IsChecked="{Binding ShowPostTaxMean, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
             <CheckBox Content="Universal Basic Income"
                               IsChecked="{Binding ShowUBI, Mode=TwoWay}"

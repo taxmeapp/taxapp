@@ -591,17 +591,59 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        public bool ShowMeanMedian
+        public bool ShowPreTaxMedian
         {
             get
             {
-                return GraphModel.ShowMeanMedian;
+                return GraphModel.ShowPreTaxMedian;
             }
             set
             {
-                GraphVM.showMeanMedian = value;
+                GraphVM.showPreTaxMedian = value;
 
-                OnPropertyChange("ShowMeanMedian");
+                OnPropertyChange("ShowPreTaxMedian");
+            }
+        }
+
+        public bool ShowPreTaxMean
+        {
+            get
+            {
+                return GraphModel.ShowPreTaxMean;
+            }
+            set
+            {
+                GraphVM.showPreTaxMean = value;
+
+                OnPropertyChange("ShowPreTaxMean");
+            }
+        }
+
+        public bool ShowPostTaxMedian
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMedian;
+            }
+            set
+            {
+                GraphVM.showPostTaxMedian = value;
+
+                OnPropertyChange("ShowPostTaxMedian");
+            }
+        }
+
+        public bool ShowPostTaxMean
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMean;
+            }
+            set
+            {
+                GraphVM.showPostTaxMean = value;
+
+                OnPropertyChange("ShowPostTaxMean");
             }
         }
 
