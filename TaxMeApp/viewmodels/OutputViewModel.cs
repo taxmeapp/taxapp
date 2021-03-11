@@ -111,7 +111,7 @@ namespace TaxMeApp.viewmodels
             ControlVM.propChange("SelectedGovProgram");
             ControlVM.propChange("SelectedTargetFunding");
             ControlVM.propChange("SelectedTargetBudget");
-
+            ControlVM.propChange("TargetFundingSlider");
 
             //Testing:
 

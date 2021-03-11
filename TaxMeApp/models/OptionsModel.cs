@@ -322,7 +322,8 @@ namespace TaxMeApp.models
                         if (funding >= 1)
                         {
                             funding = 1;
-                            revenue -= long.Parse((listOfCosts[i].cost * (listOfCosts[i].tFunding / 100)).ToString());
+                            revenue -= Convert.ToInt64(listOfCosts[i].cost * (listOfCosts[i].tFunding / 100));
+                            //revenue -= long.Parse((listOfCosts[i].cost * (listOfCosts[i].tFunding / 100)).ToString());
                         }
                         else
                         {
@@ -420,14 +421,14 @@ namespace TaxMeApp.models
             return ans;
         }
 
-        public List<string> GetGovProgramList() {
-            List<string> ans = new List<string>();
+        public List<Tuple<int, string>> GetGovProgramList() {
+            List<Tuple<int, string>> ans = new List<Tuple<int, string>>();
             for (int i = 0; i < listOfCosts.Count; i++) {
-                ans.Add(listOfCosts[i].name);
+                ans.Add(new Tuple<int, string>(listOfCosts[i].priority, listOfCosts[i].name));
             }
             return ans;
         }
-        public string SelectedGovProgram { get; set; } = "Defense";
+        public Tuple<int, string> SelectedGovProgram { get; set; } = new Tuple<int, string>(0, "Defense");
 
         public double GetSelectedTargetFunding(int i) {
             if (i >= 0)

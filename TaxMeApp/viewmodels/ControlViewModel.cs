@@ -95,14 +95,16 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        public List<string> GovProgramList
+
+        public List<Tuple<int, string>> GovProgramList
         {
             get
             {
                 return OptionsModel.GetGovProgramList();
             }
         }
-        public string SelectedGovProgram
+
+        public Tuple<int, string> SelectedGovProgram
         {
             get
             {
@@ -122,8 +124,8 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                double ans = OptionsModel.GetSelectedTargetFunding(GovProgramList.IndexOf(SelectedGovProgram));
-                if (ans == -1) {
+                double ans = OptionsModel.GetSelectedTargetFunding(SelectedGovProgram.Item1);
+                if (OptionsModel.GetGovProgramList().IndexOf(SelectedGovProgram) < 0){
                     SelectedGovProgram = OptionsModel.GetGovProgramList()[GovProgramList.Count-1];
                     OnPropertyChange("SelectedGovProgram");
                     ans = OptionsModel.GetSelectedTargetFunding(GovProgramList.IndexOf(SelectedGovProgram));
@@ -137,22 +139,22 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return OptionsModel.GetSelectedTargetBudget(GovProgramList.IndexOf(SelectedGovProgram));
+                return OptionsModel.GetSelectedTargetBudget(SelectedGovProgram.Item1);
             }
         }
 
         public double TargetFundingSlider {
             get {
-                return OptionsModel.GetSelectedTargetFunding(GovProgramList.IndexOf(SelectedGovProgram));
+                return OptionsModel.GetSelectedTargetFunding(SelectedGovProgram.Item1);
             }
             set {
                 //int priority, bool ischecked, string name, double cost, double tFunding)
-                int priority = GovProgramList.IndexOf(SelectedGovProgram);
+                int priority = SelectedGovProgram.Item1;
                 bool isChecked = OptionsModel.listOfCosts[priority].ischecked;
-                string name = SelectedGovProgram;
+                string name = SelectedGovProgram.Item2;
                 double cost = OptionsModel.listOfCosts[priority].cost;
 
-                OptionsModel.listOfCosts[GovProgramList.IndexOf(SelectedGovProgram)] = (priority, isChecked, name, cost, value);
+                OptionsModel.listOfCosts[SelectedGovProgram.Item1] = (priority, isChecked, name, cost, value);
                 OnPropertyChange("SelectedTargetFunding");
                 OnPropertyChange("SelectedTargetBudget");
                 OutputVM.Update();
