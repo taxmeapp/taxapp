@@ -245,6 +245,111 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        // Mean income before tax
+        private double PreTaxMean
+        {
+            get
+            {
+                return DataModel.PreTaxMean;
+            }
+            set
+            {
+                DataModel.PreTaxMean = value;
+            }
+        }
+
+        // Median income before tax
+        private double PreTaxMedian
+        {
+            get
+            {
+                return DataModel.PreTaxMedian;
+            }
+            set
+            {
+                DataModel.PreTaxMedian = value;
+            }
+        }
+
+        // Median income after tax
+        private double PostTaxMedian
+        {
+            get
+            {
+                return DataModel.PostTaxMedian;
+            }
+            set
+            {
+                DataModel.PostTaxMedian = value;
+                OutputVM.Update();
+            }
+        }
+
+        // Mean income after tax
+        private double PostTaxMean
+        {
+            get
+            {
+                return DataModel.PostTaxMean;
+            }
+            set
+            {
+                DataModel.PostTaxMean = value;
+            }
+        }
+
+        // Bracket containing pre-tax mean
+        private int PreTaxMeanBracket
+        {
+            get
+            {
+                return GraphModel.PreTaxMeanLine;
+            }
+            set
+            {
+                GraphVM.PreTaxMeanLine = value;
+            }
+        }
+
+        // Bracket containing pre-tax median
+        private int PreTaxMedianBracket
+        {
+            get
+            {
+                return GraphModel.PreTaxMedianLine;
+            }
+            set
+            {
+                GraphVM.PreTaxMedianLine = value;
+            }
+        }
+
+        // Bracket containing post-tax mean
+        private int PostTaxMeanBracket
+        {
+            get
+            {
+                return GraphModel.PostTaxMeanLine;
+            }
+            set
+            {
+                GraphVM.PostTaxMeanLine = value;
+            }
+        }
+
+        // Bracket containing pre-tax mean
+        private int PostTaxMedianBracket
+        {
+            get
+            {
+                return GraphModel.PostTaxMedianLine;
+            }
+            set
+            {
+                GraphVM.PostTaxMedianLine = value;
+            }
+        }
+
         /*
          
                 Calculation Logic
@@ -292,6 +397,9 @@ namespace TaxMeApp.viewmodels
             //Set default min UBIBrackets
             minUBIBracketCount = 3;
 
+            // Calculate statistics pre/post-tax
+            calculateMeanMedian();
+
         }
 
         public void NewDataRecalcuation()
@@ -306,6 +414,24 @@ namespace TaxMeApp.viewmodels
             // Calculate UBI cost
             calculateUBIByBracket();
 
+            // Calculate statistics pre/post-tax
+            calculateMeanMedian();
+
+        }
+
+        public void calculateMeanMedian()
+        {
+            // Calculate mean before tax
+            CalculatePreTaxMean();
+
+            // Calculate median before tax
+            CalculatePreTaxMedian();
+
+            // Calculate mean after tax
+            CalculatePostTaxMean();
+
+            // Calculate median after tax
+            CalculatePostTaxMedian();
         }
 
         //Use to calculate revenue for custom tax plan
@@ -651,6 +777,179 @@ namespace TaxMeApp.viewmodels
             // Save our total revenue calculation
             this.totalUBICost = totalUBICost;
 
+        }
+
+        private void CalculatePreTaxMedian()
+        {
+            int frequency, totalFreq = 0, medianBracketIndex = 0;
+            int[] cumulativeBracketFrequency = new int[selectedBrackets.Count];
+
+            // get the total number of observations in the income year
+            foreach (BracketModel bracket in selectedBrackets)
+            {
+                totalFreq += bracket.NumReturns;
+            }
+
+            // find the index of the bracket that contains the median
+            // median bracket is first bracket that has a cumulative frequency that is greater than total num of observations (totalFreq) divided by 2
+            // cumulative frequency is total number (sum) of observations (numReturns) up to (and including) the current bracket
+            for (int i = 0; i < cumulativeBracketFrequency.Length; i++)
+            {
+                frequency = selectedBrackets[i].NumReturns;
+                if (i == 0)
+                {
+                    cumulativeBracketFrequency[i] = frequency;
+                    if(cumulativeBracketFrequency[i] > (totalFreq / 2))
+                    {
+                        medianBracketIndex = i;
+                        break;
+                    }
+                }
+                else
+                {
+                    cumulativeBracketFrequency[i] = cumulativeBracketFrequency[i-1] + frequency;
+                    if (cumulativeBracketFrequency[i] > (totalFreq / 2))
+                    {
+                        medianBracketIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            // create an instance of the median bracket to retrieve relevant information
+            BracketModel medianBracket = selectedBrackets[medianBracketIndex];
+            frequency = medianBracket.NumReturns;
+
+            // calculate width of median bracket's range
+            int width = medianBracket.UpperBound - medianBracket.LowerBound;
+
+            // find the difference between the total number of observations divided by 2 and the cumulative frequency of the bracket preceding the median bracket
+            double difference = (totalFreq / 2) - cumulativeBracketFrequency[medianBracketIndex - 1];
+
+            // calculate post tax median using grouped data median formula
+            this.PreTaxMedian = medianBracket.LowerBound + (difference / frequency) * width;
+            this.PreTaxMedianBracket = DetermineMeanMedianBracket(PreTaxMedian);
+            Console.WriteLine("Pre-tax median bracket = {0} | median: ${1}", PreTaxMedianBracket, PreTaxMedian);
+        }
+
+        private void CalculatePreTaxMean()
+        {
+            int frequency, totalFreq = 0;
+            double midpoint, totalMidFreq = 0;
+
+            foreach (BracketModel bracket in selectedBrackets)
+            {
+                // frequency equals total number of observations per bracket
+                frequency = bracket.NumReturns;
+
+                // calculate midpoint of bracket's range
+                midpoint = (bracket.LowerBound + bracket.UpperBound) / 2;
+
+                // increment running total of midpoint frequency and frequency by current bracket's
+                totalMidFreq += (frequency * midpoint);
+                totalFreq += frequency;
+            }
+
+            // calculate post-tax mean by dividing summation of midpoint-frequency by summation of frequency
+            this.PreTaxMean = totalMidFreq / totalFreq;
+            this.PreTaxMeanBracket = DetermineMeanMedianBracket(PreTaxMean);
+            Console.WriteLine("Pre-tax mean: ${0}, Bracket: {1}", PreTaxMean, PreTaxMeanBracket);
+        }
+
+        private void CalculatePostTaxMedian()
+        {
+            int frequency, totalFreq = 0, medianBracketIndex = 0;
+            int[] cumulativeBracketFrequency = new int[selectedBrackets.Count];
+
+            // get the total number of observations in the income year
+            foreach (BracketModel bracket in selectedBrackets)
+            {
+                totalFreq += bracket.NumReturns;
+            }
+
+            // find the index of the bracket that contains the median
+            // median bracket is first bracket that has a cumulative frequency that is greater than total num of observations (totalFreq) divided by 2
+            // cumulative frequency is total number (sum) of observations (numReturns) up to (and including) the current bracket
+            for (int i = 0; i < cumulativeBracketFrequency.Length; i++)
+            {
+                frequency = selectedBrackets[i].NumReturns;
+                if (i == 0)
+                {
+                    cumulativeBracketFrequency[i] = frequency;
+                    if (cumulativeBracketFrequency[i] > (totalFreq / 2))
+                    {
+                        medianBracketIndex = i;
+                        break;
+                    }
+                }
+                else
+                {
+                    cumulativeBracketFrequency[i] = cumulativeBracketFrequency[i - 1] + frequency;
+                    if (cumulativeBracketFrequency[i] > (totalFreq / 2))
+                    {
+                        medianBracketIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            // create an instance of the median bracket to retrieve relevant information
+            BracketModel medianBracket = selectedBrackets[medianBracketIndex];
+            frequency = medianBracket.NumReturns;
+
+            // calculate width of new (post-tax) bracket bounds after applying tax rates to pre-tax bounds
+            double newLowerBound = medianBracket.LowerBound * (100 - newTaxPctByBracket[medianBracketIndex]) / 100;
+            double newUpperBound = medianBracket.UpperBound * (100 - newTaxPctByBracket[medianBracketIndex]) / 100;
+            double width = newUpperBound - newLowerBound;
+
+            // find the difference between the total number of observations divided by 2 and the cumulative frequency of the bracket preceding the median bracket
+            double difference = (totalFreq / 2) - cumulativeBracketFrequency[medianBracketIndex - 1];
+
+            // calculate post tax median using grouped data median formula
+            this.PostTaxMedian = newLowerBound + (difference / frequency) * width;
+            this.PostTaxMedianBracket = DetermineMeanMedianBracket(PostTaxMedian);
+            Console.WriteLine("Post-tax median bracket = {0} | median: ${1}", PostTaxMedianBracket, PostTaxMedian);
+        }
+
+        private void CalculatePostTaxMean()
+        {
+            int frequency, totalFreq = 0, index = 0;
+            double midpoint, totalMidFreq = 0;
+
+            foreach (BracketModel bracket in selectedBrackets)
+            {
+                // frequency equals total number of observations per bracket
+                frequency = bracket.NumReturns;
+
+                // calculate new (post-tax) bracket range after applying tax rate to bounds
+                double newLowerBound = bracket.LowerBound * (100 - newTaxPctByBracket[index]) / 100;
+                double newUpperBound = bracket.UpperBound * (100 - newTaxPctByBracket[index]) / 100;
+
+                // find midpoint of new bracket range
+                midpoint = (newLowerBound + newUpperBound) / 2;
+
+                // increment running total of midpoint frequency and frequency by current bracket's 
+                totalMidFreq += (frequency * midpoint);
+                totalFreq += frequency;
+                ++index;
+            }
+
+            // calculate post-tax mean by dividing summation of midpoint-frequency by summation of frequency
+            this.PostTaxMean = totalMidFreq / totalFreq;
+            this.PostTaxMeanBracket = DetermineMeanMedianBracket(PostTaxMean);
+            Console.WriteLine("Post-tax mean: ${0}, Bracket: {1}", PostTaxMean, PostTaxMeanBracket);
+        }
+
+        private int DetermineMeanMedianBracket(double income) {
+            int bracketIndex = 0;
+            foreach(BracketModel bracket in selectedBrackets)
+            {
+                if(income >= bracket.LowerBound && income <= bracket.UpperBound)
+                {
+                    bracketIndex = selectedBrackets.IndexOf(bracket);
+                }
+            }
+            return bracketIndex;
         }
 
     }

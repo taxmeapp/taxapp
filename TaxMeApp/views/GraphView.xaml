@@ -24,6 +24,18 @@
                                          Stroke="Firebrick" 
                                          StrokeThickness ="1" 
                                          Label="Poverty Line"/>
+                        <lvc:AxisSection Value="{Binding PreTaxMeanLine}"
+                                         Stroke="LightSkyBlue"
+                                         StrokeThickness="2"/>
+                        <lvc:AxisSection Value="{Binding PreTaxMedianLine}"
+                                         Stroke="LightGreen"
+                                         StrokeThickness="2"/>
+                        <lvc:AxisSection Value="{Binding PostTaxMeanLine}"
+                                         Stroke="CornflowerBlue"
+                                         StrokeThickness="2"/>
+                        <lvc:AxisSection Value="{Binding PostTaxMedianLine}"
+                                         Stroke="ForestGreen"
+                                         StrokeThickness="2"/>
                     </lvc:Axis.Sections>
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="1"></lvc:Separator>

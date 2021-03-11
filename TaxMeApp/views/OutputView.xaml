@@ -103,9 +103,12 @@
                                     Grid.Row="8"
                                     HorizontalAlignment="Right"
                                     Text="{Binding LeftOverBudget}"/>
-
-
-                <TextBlock Grid.Row="9" />
+                <Expander Header="Income Statistics" Grid.Row="9">
+                    <DataGrid ItemsSource="{Binding MeanMedian}" 
+                              CanUserAddRows="False" 
+                              IsReadOnly="True" 
+                              HorizontalAlignment="Left"/>
+                </Expander>
                 <TextBlock Grid.Row="10" Text="Existing Federal Budget:" FontWeight="Bold"/>
                 <CheckBox IsChecked="{Binding DefenseSpendingChecked, Mode=TwoWay}" Grid.Row="11" Content="Defense Spending ($678 billion)"/>
                 <TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding DefenseFunding}" HorizontalAlignment="Right"/>

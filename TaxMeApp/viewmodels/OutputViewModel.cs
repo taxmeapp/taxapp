@@ -233,7 +233,7 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("TotalRevenueNewOutput");
             OnPropertyChange("RevenueDifferenceOutput");
             OnPropertyChange("UBICost");
-
+            OnPropertyChange("MeanMedian");
 
             OptionsModel.updateFunding();
             OnPropertyChange("DefenseFunding");
@@ -766,6 +766,34 @@ namespace TaxMeApp.viewmodels
                 }
 
                 return ans;
+            }
+        }
+
+        public DataTable MeanMedian
+        {
+            get
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add("System", typeof(string));
+                table.Columns.Add("Mean", typeof(string));
+                table.Columns.Add("Median", typeof(string));
+                table.Columns.Add("Difference", typeof(string));
+
+                var preTaxRow = table.NewRow();
+                preTaxRow["System"] = "Pre-Tax";
+                preTaxRow["Mean"] = $"${ DataModel.PreTaxMean:n0}";
+                preTaxRow["Median"] = $"${DataModel.PreTaxMedian:n0}";
+                preTaxRow["Difference"] = $"${Math.Abs(DataModel.PreTaxMedian - DataModel.PreTaxMean):n0}";
+                table.Rows.Add(preTaxRow);
+
+                var postTaxRow = table.NewRow();
+                postTaxRow["System"] = "Post-Tax";
+                postTaxRow["Mean"] = $"${DataModel.PostTaxMean:n0}";
+                postTaxRow["Median"] = $"${DataModel.PostTaxMedian:n0}";
+                postTaxRow["Difference"] = $"${Math.Abs(DataModel.PostTaxMedian - DataModel.PostTaxMean):n0}";
+                table.Rows.Add(postTaxRow);
+
+                return table;
             }
         }
     }
