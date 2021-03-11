@@ -103,7 +103,7 @@
                                     Grid.Row="8"
                                     HorizontalAlignment="Right"
                                     Text="{Binding LeftOverBudget}"/>
-                <Expander Header="Income Statistics" Grid.Row="9">
+                <Expander Header="Statistics" Grid.Row="9">
                     <DataGrid ItemsSource="{Binding MeanMedian}" 
                               CanUserAddRows="False" 
                               IsReadOnly="True" 

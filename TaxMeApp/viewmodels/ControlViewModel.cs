@@ -252,6 +252,7 @@ namespace TaxMeApp.viewmodels
 
                     DataModel.NewRevenueByBracket = DataVM.calculateNewRevenues(selectedTaxPlan.TaxRates);
                     OnPropertyChange("SelectedTaxRate");
+                    DataVM.calculateMeanMedian();
                     OutputVM.Update();
                     customGraphReset();
                 }
