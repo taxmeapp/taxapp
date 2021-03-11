@@ -131,27 +131,33 @@
             <CheckBox Content="Percent of Income (New)"
                               IsChecked="{Binding ShowNewPercentage, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
-            <CheckBox Content="Median Income (Pre-tax)"
+            <Expander Header="Statistics">
+                <StackPanel>
+                    <CheckBox Content="Median Income (Pre-tax)"
                               IsChecked="{Binding ShowPreTaxMedian, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
-            <CheckBox Content="Mean Income (Pre-tax)"
+                    <CheckBox Content="Mean Income (Pre-tax)"
                               IsChecked="{Binding ShowPreTaxMean, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
-            <CheckBox Content="Median Income (Post-tax)"
+                    <CheckBox Content="Median Income (Post-tax)"
                               IsChecked="{Binding ShowPostTaxMedian, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
-            <CheckBox Content="Mean Income (Post-tax)"
+                    <CheckBox Content="Mean Income (Post-tax)"
                               IsChecked="{Binding ShowPostTaxMean, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
+                </StackPanel>
+            </Expander>
             <CheckBox Content="Universal Basic Income"
                               IsChecked="{Binding ShowUBI, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
-            <TextBlock x:Name="UBIBracketsLabel" Text="Brackets that recieve no UBI"
+            <Expander Header="UBI Settings">
+                <StackPanel>
+                    <TextBlock x:Name="UBIBracketsLabel" Text="Brackets that recieve no UBI"
                                Margin="5,15,5,0"/>
-            <TextBlock FontSize="20"
+                    <TextBlock FontSize="20"
                                HorizontalAlignment="Center" 
                                Text="{Binding MaxUBIBracketCount}"/>
-            <Slider x:Name="UBIBracketsSlider" IsSnapToTickEnabled="True" 
+                    <Slider x:Name="UBIBracketsSlider" IsSnapToTickEnabled="True" 
                             Margin="5,0,5,15"
                             Minimum="0"
                             Maximum="18"
@@ -159,12 +165,12 @@
                             TickPlacement="BottomRight"
                             Value="{Binding MaxUBIBracketCountSlider, Mode=TwoWay}"
                             Width="175"/>
-            <TextBlock x:Name="MinUBIBracketsLabel" Text="Brackets that recieve max UBI"
+                    <TextBlock x:Name="MinUBIBracketsLabel" Text="Brackets that recieve max UBI"
                                Margin="5,15,5,0"/>
-            <TextBlock FontSize="20"
+                    <TextBlock FontSize="20"
                                HorizontalAlignment="Center" 
                                Text="{Binding MinUBIBracketCount}"/>
-            <Slider x:Name="MinUBIBracketsSlider" IsSnapToTickEnabled="True" 
+                    <Slider x:Name="MinUBIBracketsSlider" IsSnapToTickEnabled="True" 
                             Margin="5,0,5,15"
                             Minimum="0"
                             Maximum="18"
@@ -172,12 +178,12 @@
                             TickPlacement="BottomRight"
                             Value="{Binding MinUBIBracketCountSlider, Mode=TwoWay}"
                             Width="175"/>
-            <TextBlock x:Name="UBIMax" Text="Max UBI"
+                    <TextBlock x:Name="UBIMax" Text="Max UBI"
                                Margin="5,15,5,0"/>
-            <TextBlock FontSize="20"
+                    <TextBlock FontSize="20"
                                HorizontalAlignment="Center" 
                                Text="{Binding MaxUBI}"/>
-            <Slider x:Name="MaxUBISlider" IsSnapToTickEnabled="True" 
+                    <Slider x:Name="MaxUBISlider" IsSnapToTickEnabled="True" 
                             Margin="5,0,5,15"
                             Minimum="0"
                             Maximum="5000"
@@ -185,6 +191,8 @@
                             TickPlacement="BottomRight"
                             Value="{Binding MaxUBISlider, Mode=TwoWay}"
                             Width="175"/>
+                </StackPanel>
+            </Expander>
             <Button Command="{Binding ResetSettingsBtnCommand}"
                     Content="Reset To Default Settings"
                     Margin="0, 30, 0, 0"
