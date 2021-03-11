@@ -131,6 +131,9 @@
             <Button Margin="15, 5, 15, 5"
                     Command="{Binding AutoFitBudgetBtnCommand}" 
                     Content="Auto-Fit Budget"/>
+            <Button Margin="15, 5, 15, 5"
+                    Command="{Binding ResetBudgetBtnCommand}" 
+                    Content="Reset Budget"/>
             <TextBlock Margin="5,15,5,5" 
                                Text="Display:"/>
             <CheckBox Content="Lock Tax Rates"
