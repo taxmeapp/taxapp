@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TaxMeApp.Helpers;
+using TaxMeApp.models;
 
 namespace TaxMeApp.viewmodels
 {
@@ -29,6 +30,176 @@ namespace TaxMeApp.viewmodels
 
         public OutputViewModel() {
             AddProgramBtnCommand = new RelayCommand(o => addProgramButtonClick());
+        }
+
+        public BudgetYearModel bym = new BudgetYearModel();
+        public void updateBYM() {
+            for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+            {
+                if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                {
+                    bym = BudgetDataModel.YearData[i];
+                    break;
+                }
+            }
+        }
+
+        public string OldBudget
+        {
+            get
+            {
+                string ans = "$";
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        ans += BudgetDataModel.YearData[i].TotalBudget + " Trillion";
+                        break;
+                    }
+                }
+                return ans;
+            }
+        }
+        public string OldBudgetPercent
+        {
+            get
+            {
+                string ans = "";
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        ans += BudgetDataModel.YearData[i].BudgetPercent.ToString("#,##0.##") + " %";
+                        break;
+                    }
+                }
+                return ans;
+            }
+        }
+        public string OldDeficit
+        {
+            get
+            {
+                string ans = "$";
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        double deficit = BudgetDataModel.YearData[i].Deficit * 1000;
+                        ans += deficit + " Billion";
+                        break;
+                    }
+                }
+                return ans;
+            }
+        }
+        public string OldDeficitPercent
+        {
+            get
+            {
+                string ans = "";
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        ans += BudgetDataModel.YearData[i].BudgetPercent.ToString("#,##0.##") + " %";
+                        break;
+                    }
+                }
+                return ans;
+            }
+        }
+        public string NewBudgetPercent
+        {
+            get
+            {
+                string ans = "";
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        double p = 0;
+                        double GDP = BudgetDataModel.YearData[i].GDP * (Math.Pow(10, 12));
+                        p = OptionsModel.GetTotalBudget() / GDP * 100;
+                        ans += p.ToString("#,##0.##") + " %";
+                        break;
+                    }
+                }
+                return ans;
+            }
+        }
+        public string NewDeficitPercent
+        {
+            get
+            {
+                string ans = "";
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        double p = 0;
+                        double GDP = BudgetDataModel.YearData[i].GDP * (Math.Pow(10, 12));
+                        double tb = OptionsModel.GetTotalBudget();
+                        double difference = DataModel.TotalRevenueNew - tb;
+                        p = difference / GDP * 100;
+                        ans += p.ToString("#,##0.##") + " %";
+                        break;
+                    }
+                }
+                return ans;
+            }
+        }
+        public string TotalDebt
+        {
+            get
+            {
+                string ans = "$";
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        ans += BudgetDataModel.YearData[i].TotalDebt.ToString("#,##0.##");
+                        break;
+                    }
+                }
+                return ans;
+            }
+        }
+        public string OldDebtPercent
+        {
+            get
+            {
+                string ans = "";
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        double p = 0;
+                        double GDP = BudgetDataModel.YearData[i].GDP * (Math.Pow(10, 12));
+                        p = BudgetDataModel.YearData[i].TotalDebt / GDP * 100;
+                        ans += p.ToString("#,##0.##") + " %";
+                        break;
+                    }
+                }
+                return ans;
+            }
+        }
+
+        public string GDP
+        {
+            get
+            {
+                string ans = "$";
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        ans += BudgetDataModel.YearData[i].GDP + " Trillion";
+                        break;
+                    }
+                }
+                return ans;
+            }
         }
 
 
@@ -225,6 +396,8 @@ namespace TaxMeApp.viewmodels
 
         public void Update()
         {
+            updateBYM();
+
             OptionsModel.revenue = DataModel.TotalRevenueNew;
 
             OnPropertyChange("NumPovertyPopOutput");
@@ -258,6 +431,16 @@ namespace TaxMeApp.viewmodels
 
             OnPropertyChange("TotalSelectedBudget");
             OnPropertyChange("LeftOverBudget");
+
+            OnPropertyChange("GDP");
+            OnPropertyChange("OldBudget");
+            OnPropertyChange("OldDebtPercent");
+            OnPropertyChange("OldDeficit");
+            OnPropertyChange("OldBudgetPercent");
+            OnPropertyChange("NewBudgetPercent");
+            OnPropertyChange("OldDeficitPercent");
+            OnPropertyChange("NewDeficitPercent");
+            OnPropertyChange("TotalDebt");
 
             for (int i = 0; i < customProgramListView.Items.Count; i++) { 
                 //OptionsModel.updateFunding();

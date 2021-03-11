@@ -27,6 +27,7 @@ namespace TaxMeApp.viewmodels
         public ICommand ResetTaxRatesBtnCommand { get; set; }
         public ICommand AutoFitSlantTaxBtnCommand { get; set; }
         public ICommand AutoFitBudgetBtnCommand { get; set; }
+        public ICommand ResetBudgetBtnCommand { get; set; }
 
 
         public ControlViewModel()
@@ -40,6 +41,8 @@ namespace TaxMeApp.viewmodels
             ResetTaxRatesBtnCommand = new RelayCommand(o => resetTaxRatesButtonClick());
             AutoFitSlantTaxBtnCommand = new RelayCommand(o => autoFitSlantTaxButtonClick());
             AutoFitBudgetBtnCommand = new RelayCommand(o => autoFitBudgetButtonClick());
+            ResetBudgetBtnCommand = new RelayCommand(o => resetBudgetButtonClick());
+
         }
 
         // ControlPanel Init
@@ -95,6 +98,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+    
 
         public List<Tuple<int, string>> GovProgramList
         {
@@ -1092,6 +1096,15 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("SelectedTargetBudget");
             OnPropertyChange("TargetFundingSlider");
 
+        }
+
+        public void resetBudgetButtonClick()
+        {
+            OptionsModel.setAllTFunding(100.0);
+            OutputVM.Update();
+            OnPropertyChange("SelectedTargetFunding");
+            OnPropertyChange("SelectedTargetBudget");
+            OnPropertyChange("TargetFundingSlider");
         }
     }
 }

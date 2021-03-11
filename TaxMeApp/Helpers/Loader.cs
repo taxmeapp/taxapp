@@ -24,6 +24,7 @@ namespace TaxMeApp
         public SettingsViewModel SettingsVM { get; set; }
 
         public YearsModel YearsModel { get; set; }
+        public BudgetDataModel BudgetDataModel { get; set; }
         public GraphModel GraphModel { get; set; }
         public DataModel DataModel { get; set; }
         public TaxPlansModel TaxPlansModel { get; set; }
@@ -35,6 +36,7 @@ namespace TaxMeApp
             // Make models
 
             YearsModel = new YearsModel();
+            BudgetDataModel = new BudgetDataModel();
             GraphModel = new GraphModel();
             DataModel = new DataModel();
             TaxPlansModel = new TaxPlansModel();
@@ -42,6 +44,7 @@ namespace TaxMeApp
 
             // Load CSVs
             LoadYears();
+            LoadBudget();
 
             // make viewmodels
             MainVM = new MainViewModel();
@@ -82,6 +85,7 @@ namespace TaxMeApp
             ControlVM.DataModel = DataModel;
             ControlVM.TaxPlansModel = TaxPlansModel;
             ControlVM.OptionsModel = OptionsModel;
+            ControlVM.BudgetDataModel = BudgetDataModel;
 
             GraphVM.GraphModel = GraphModel;
             GraphVM.YearsModel = YearsModel;
@@ -91,6 +95,8 @@ namespace TaxMeApp
 
             OutputVM.DataModel = DataModel;
             OutputVM.OptionsModel = OptionsModel;
+            OutputVM.BudgetDataModel = BudgetDataModel;
+
 
             DataVM.DataInit();
 
@@ -113,6 +119,11 @@ namespace TaxMeApp
                 YearsModel.Years.Add(year.Year, year);
 
             }
+        }
+
+        public void LoadBudget() {
+            string[] files = Directory.GetFiles("res\\BudgetData", "*.csv");
+            BudgetDataModel = Parser.ParseBudgetData(files[0]);
         }
 
         public static string[] LoadYearsTest()

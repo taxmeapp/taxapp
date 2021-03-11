@@ -460,5 +460,13 @@ namespace TaxMeApp.models
             }
             updateFunding();
         }
+        public void setAllTFunding(double flatTFunding)
+        {
+            for (int i = 0; i < listOfCosts.Count; i++)
+            {
+                listOfCosts[i] = (listOfCosts[i].priority, listOfCosts[i].ischecked, listOfCosts[i].name, listOfCosts[i].cost, flatTFunding);
+            }
+            updateFunding();
+        }
     }
 }
