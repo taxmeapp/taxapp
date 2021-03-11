@@ -103,7 +103,7 @@
                                     Grid.Row="8"
                                     HorizontalAlignment="Right"
                                     Text="{Binding LeftOverBudget}"/>
-                
+
 
                 <TextBlock Grid.Row="9" />
                 <TextBlock Grid.Row="10" Text="Existing Federal Budget:" FontWeight="Bold"/>
@@ -151,7 +151,7 @@
                 <TextBlock Grid.Row="34" Text="Custom Government Programs:" FontWeight="Bold"/>
                 <Button Grid.Row="35" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
             </Grid>
-            <ListView ItemsSource="{Binding customProgramListView.Items}"/>
+            <ListView ItemsSource="{Binding customProgramListView.Items}" Margin="0, 10, 0, 40"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
