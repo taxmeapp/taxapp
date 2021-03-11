@@ -96,10 +96,10 @@
                                    HorizontalAlignment="Right" 
                                    Text="{Binding RevenueDifferenceOutput}"/>
                 <Expander Header="Income Statistics" Grid.Row="7">
-                    <StackPanel>
-                        <TextBlock Text="{Binding PreTaxMeanMedian}"></TextBlock>
-                        <TextBlock Text="{Binding PostTaxMeanMedian}"></TextBlock>
-                    </StackPanel>
+                    <DataGrid ItemsSource="{Binding MeanMedian}" 
+                              CanUserAddRows="False" 
+                              IsReadOnly="True" 
+                              HorizontalAlignment="Left"/>
                 </Expander>
                 <TextBlock Grid.Row="8" />
                 <TextBlock Grid.Row="9" Text="Existing Federal Budget:" FontWeight="Bold"/>
