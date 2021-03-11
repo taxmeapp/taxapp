@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TaxMeApp.Helpers;
+using TaxMeApp.models;
 
 namespace TaxMeApp.viewmodels
 {
@@ -29,6 +30,18 @@ namespace TaxMeApp.viewmodels
 
         public OutputViewModel() {
             AddProgramBtnCommand = new RelayCommand(o => addProgramButtonClick());
+        }
+
+        public BudgetYearModel bym = new BudgetYearModel();
+        public void updateBYM() {
+            for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+            {
+                if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                {
+                    bym = BudgetDataModel.YearData[i];
+                    break;
+                }
+            }
         }
 
         public string OldBudget
@@ -383,6 +396,8 @@ namespace TaxMeApp.viewmodels
 
         public void Update()
         {
+            updateBYM();
+
             OptionsModel.revenue = DataModel.TotalRevenueNew;
 
             OnPropertyChange("NumPovertyPopOutput");
