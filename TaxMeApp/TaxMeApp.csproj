@@ -236,8 +236,12 @@
     <Content Include="res\TaxCSV\2018.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="res\BudgetData\BudgetGDP.csv" />
-    <None Include="res\BudgetData\BudgetGDP.xlsx" />
+    <Content Include="res\BudgetData\BudgetGDP.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\BudgetData\BudgetGDP.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Logs\TODO.txt" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

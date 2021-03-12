@@ -141,12 +141,6 @@
                                     Grid.Row="13"
                                     HorizontalAlignment="Right"
                                     Text="{Binding LeftOverBudget}"/>
-                    <Expander Header="Income Statistics" Grid.Row="17">
-                        <DataGrid ItemsSource="{Binding MeanMedian}" 
-                              CanUserAddRows="False" 
-                              IsReadOnly="True" 
-                              HorizontalAlignment="Left"/>
-                    </Expander>
                 <TextBlock Grid.Row="14"
                            Text="Left Over Revenue % Of GDP:"/>
                 <TextBlock Grid.Column="2"
@@ -161,11 +155,17 @@
                            Text="{Binding TotalDebt}"/>
                 <TextBlock Grid.Row="16"
                            Text="Debt % Of GDP:"/>
-                    <TextBlock Grid.Row="16"
-                           Grid.Column="2"
-                           HorizontalAlignment="Right"
-                           Text="{Binding OldDebtPercent}"/>
-                    <TextBlock Grid.Row="18" Text="Existing Federal Budget:" FontWeight="Bold" Margin="0, 10, 0, 0"/>
+                <TextBlock Grid.Row="16"
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Text="{Binding OldDebtPercent}"/>
+                <Expander Header="Statistics" Grid.Row="17">
+                    <DataGrid ItemsSource="{Binding MeanMedian}" 
+                            CanUserAddRows="False" 
+                            IsReadOnly="True" 
+                            HorizontalAlignment="Left"/>
+                </Expander>
+                <TextBlock Grid.Row="18" Text="Existing Federal Budget:" FontWeight="Bold" Margin="0, 10, 0, 0"/>
                 <CheckBox IsChecked="{Binding DefenseSpendingChecked, Mode=TwoWay}" Grid.Row="19" Content="Defense Spending ($678 billion)"/>
                 <TextBlock Grid.Row="19" Grid.Column="2" Text="{Binding DefenseFunding}" HorizontalAlignment="Right"/>
                 <CheckBox IsChecked="{Binding MedicaidSpendingChecked, Mode=TwoWay}" Grid.Row="20" Content="Medicaid Spending ($613 billion)"/>
