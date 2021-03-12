@@ -296,6 +296,8 @@ namespace TaxMeApp.viewmodels
             //Console.WriteLine("\n");
         }
 
+        int customStart = 18;
+
         private void ProgramChecked_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             //Find the gov program that was edited
@@ -313,11 +315,11 @@ namespace TaxMeApp.viewmodels
             if (gridNum != -1)
             {
                 bool data = (bool)(sender as CheckBox).IsChecked;
-                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, data, OptionsModel.listOfCosts[gridNum + 17].name, OptionsModel.listOfCosts[gridNum + 17].cost, OptionsModel.listOfCosts[gridNum + 17].tFunding);
+                OptionsModel.listOfCosts[gridNum + customStart] = (gridNum + customStart, data, OptionsModel.listOfCosts[gridNum + customStart].name, OptionsModel.listOfCosts[gridNum + customStart].cost, OptionsModel.listOfCosts[gridNum + customStart].tFunding);
 
                 Update();
                 //OptionsModel.updateFunding();
-                //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + 17].ToString("0.0") + "% Funded");
+                //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + customStart].ToString("0.0") + "% Funded");
             }
         }
 
@@ -340,7 +342,7 @@ namespace TaxMeApp.viewmodels
             if (gridNum != -1)
             {
                 string data = (sender as TextBox).Text;
-                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, data, OptionsModel.listOfCosts[gridNum + 17].cost, OptionsModel.listOfCosts[gridNum + 17].tFunding);
+                OptionsModel.listOfCosts[gridNum + customStart] = (gridNum + customStart, OptionsModel.listOfCosts[gridNum + customStart].ischecked, data, OptionsModel.listOfCosts[gridNum + customStart].cost, OptionsModel.listOfCosts[gridNum + customStart].tFunding);
             }
             ControlVM.propChange("SelectedTargetFunding");
             ControlVM.propChange("GovProgramList");
@@ -376,11 +378,11 @@ namespace TaxMeApp.viewmodels
                 }
 
      
-                OptionsModel.listOfCosts[gridNum + 17] = (gridNum + 17, OptionsModel.listOfCosts[gridNum + 17].ischecked, OptionsModel.listOfCosts[gridNum + 17].name, data, OptionsModel.listOfCosts[gridNum + 17].tFunding);
+                OptionsModel.listOfCosts[gridNum + customStart] = (gridNum + customStart, OptionsModel.listOfCosts[gridNum + customStart].ischecked, OptionsModel.listOfCosts[gridNum + customStart].name, data, OptionsModel.listOfCosts[gridNum + customStart].tFunding);
 
                 Update();
                 //OptionsModel.updateFunding();
-                //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + 17].ToString("0.0") + "% Funded");
+                //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + customStart].ToString("0.0") + "% Funded");
             }
 
 
@@ -652,7 +654,7 @@ namespace TaxMeApp.viewmodels
 
             for (int i = 0; i < customProgramListView.Items.Count; i++) { 
                 //OptionsModel.updateFunding();
-                ((customProgramListView.Items[i] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[i + 17].ToString("0.0") + "% Funded");
+                ((customProgramListView.Items[i] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[i + customStart].ToString("0.0") + "% Funded");
             }
         }
 
@@ -722,7 +724,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return Formatter.Format(DataModel.TotalUBICost * (OptionsModel.listOfCosts[17].tFunding / 100));
+                return Formatter.Format(DataModel.TotalUBICost * (OptionsModel.listOfCosts[customStart].tFunding / 100));
             }
         }
 
