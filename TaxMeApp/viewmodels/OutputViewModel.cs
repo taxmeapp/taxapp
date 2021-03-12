@@ -397,6 +397,7 @@ namespace TaxMeApp.viewmodels
         public void Update()
         {
             updateBYM();
+            OptionsModel.UpdateUBI(DataModel.TotalUBICost);
 
             OptionsModel.revenue = DataModel.TotalRevenueNew;
 
@@ -428,6 +429,10 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("SandersMedicaidFunding");
 
             OnPropertyChange("YangUbiFunding");
+
+            OnPropertyChange("UBIFunding");
+            OnPropertyChange("UBIText");
+
 
             OnPropertyChange("TotalSelectedBudget");
             OnPropertyChange("LeftOverBudget");
@@ -870,6 +875,32 @@ namespace TaxMeApp.viewmodels
                 OptionsModel.YangRemoveChecked = value;
                 DataVM.NewDataRecalcuation();
                 this.Update();
+            }
+        }
+
+        public bool UBIChecked
+        {
+            get
+            {
+                return OptionsModel.UBIChecked;
+            }
+            set
+            {
+                OptionsModel.UBIChecked = value;
+                this.Update();
+            }
+        }
+        public string UBIFunding
+        {
+            get
+            {
+                return OptionsModel.GetUBIFunding();
+            }
+        }
+
+        public string UBIText {
+            get {
+                return OptionsModel.GetUBIText();
             }
         }
 

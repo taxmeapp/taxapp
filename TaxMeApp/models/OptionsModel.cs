@@ -35,6 +35,8 @@ namespace TaxMeApp.models
             
             listOfCosts.Add((16, false, "Yang UBI", 2800000000000.0, 100.0));
 
+            listOfCosts.Add((17, false, "UBI", 0.0, 100.0));
+
             this.DefenseChecked = true;
             this.MedicaidChecked = true;
             this.WelfareChecked = true;
@@ -55,6 +57,8 @@ namespace TaxMeApp.models
 
             this.YangUbiChecked = false;
             this.YangRemoveChecked = false;
+
+            this.UBIChecked = false;
 
             fundingArray = new double[listOfCosts.Count];
         }
@@ -310,6 +314,34 @@ namespace TaxMeApp.models
             }
         }
 
+        public bool ubic;
+        public bool UBIChecked
+        {
+            get
+            {
+                return ubic;
+            }
+            set
+            {
+                ubic = value;
+                listOfCosts[17] = (17, value, "UBI", 0.0, listOfCosts[17].tFunding);
+            }
+        }
+
+        public string GetUBIText() {
+            string ans = "UBI";
+
+            double cost = listOfCosts[17].cost;
+
+            ans += " ($" + Formatter.Format(cost) + ")";
+
+            return ans;
+        }
+
+        public void UpdateUBI(double c) {
+            listOfCosts[17] = (17, listOfCosts[17].ischecked, listOfCosts[17].name, c, listOfCosts[17].tFunding);
+        }
+
         public void updateFunding() {
             fundingArray = new double[listOfCosts.Count];
             double funding = 0;
@@ -410,6 +442,10 @@ namespace TaxMeApp.models
         public string GetYangUbiFunding()
         {
             return this.fundingArray[16].ToString("0.0") + "% Funded";
+        }
+        public string GetUBIFunding()
+        {
+            return this.fundingArray[17].ToString("0.0") + "% Funded";
         }
         public double GetTotalBudget() {
             double ans = 0;
