@@ -398,6 +398,7 @@ namespace TaxMeApp.viewmodels
         {
             updateBYM();
             OptionsModel.UpdateUBI(DataModel.TotalUBICost);
+            ControlVM.propChange("SelectedTargetBudget");
 
             OptionsModel.revenue = DataModel.TotalRevenueNew;
 
