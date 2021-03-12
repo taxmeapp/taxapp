@@ -394,6 +394,190 @@ namespace TaxMeApp.viewmodels
             ControlVM.propChange("SelectedGovProgram");
         }
 
+        public string DefenseText {
+            get{
+                string ans = "Defense Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[0].cost * (OptionsModel.listOfCosts[0].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+        public string MedicaidText
+        {
+            get
+            {
+                string ans = "Medicaid Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[1].cost * (OptionsModel.listOfCosts[1].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string WelfareText
+        {
+            get
+            {
+                string ans = "Welfare Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[2].cost * (OptionsModel.listOfCosts[2].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string VeteransText
+        {
+            get
+            {
+                string ans = "Veterans Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[3].cost * (OptionsModel.listOfCosts[3].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string FoodStampsText
+        {
+            get
+            {
+                string ans = "Food Stamps Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[4].cost * (OptionsModel.listOfCosts[4].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string EducationText
+        {
+            get
+            {
+                string ans = "Education Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[5].cost * (OptionsModel.listOfCosts[5].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string PublicHousingText
+        {
+            get
+            {
+                string ans = "Public Housing Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[6].cost * (OptionsModel.listOfCosts[6].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string HealthText
+        {
+            get
+            {
+                string ans = "Health Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[7].cost * (OptionsModel.listOfCosts[7].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string ScienceText
+        {
+            get
+            {
+                string ans = "Science Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[8].cost * (OptionsModel.listOfCosts[8].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string TransportationText
+        {
+            get
+            {
+                string ans = "Transportation Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[9].cost * (OptionsModel.listOfCosts[9].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string InternationalAffairsText
+        {
+            get
+            {
+                string ans = "International Affairs Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[10].cost * (OptionsModel.listOfCosts[10].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string EnergyAndEnvironmentText
+        {
+            get
+            {
+                string ans = "Energy and Environment Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[11].cost * (OptionsModel.listOfCosts[11].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string UnemploymentText
+        {
+            get
+            {
+                string ans = "Unemployment Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[12].cost * (OptionsModel.listOfCosts[12].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string FoodAndAgricultureText
+        {
+            get
+            {
+                string ans = "Food and Agriculture Spending ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[13].cost * (OptionsModel.listOfCosts[13].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string SandersCollegeText
+        {
+            get
+            {
+                string ans = "College Tuition Plan ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[14].cost * (OptionsModel.listOfCosts[14].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string SandersMedicaidText
+        {
+            get
+            {
+                string ans = "Medicaid For all ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[15].cost * (OptionsModel.listOfCosts[15].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
+        public string YangUbiText
+        {
+            get
+            {
+                string ans = "Yang UBI Plan ($";
+                string cost = Formatter.Format(OptionsModel.listOfCosts[16].cost * (OptionsModel.listOfCosts[16].tFunding / 100));
+                ans += cost + ")";
+                return ans;
+            }
+        }
+
         public void Update()
         {
             updateBYM();
@@ -409,6 +593,24 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("RevenueDifferenceOutput");
             OnPropertyChange("UBICost");
             OnPropertyChange("MeanMedian");
+
+            OnPropertyChange("DefenseText");
+            OnPropertyChange("MedicaidText");
+            OnPropertyChange("WelfareText");
+            OnPropertyChange("VeteransText");
+            OnPropertyChange("FoodStampsText");
+            OnPropertyChange("EducationText");
+            OnPropertyChange("PublicHousingText");
+            OnPropertyChange("HealthText");
+            OnPropertyChange("ScienceText");
+            OnPropertyChange("TransportationText");
+            OnPropertyChange("InternationalAffairsText");
+            OnPropertyChange("EnergyAndEnvironmentText");
+            OnPropertyChange("UnemploymentText");
+            OnPropertyChange("FoodAndAgricultureText");
+            OnPropertyChange("SandersCollegeText");
+            OnPropertyChange("SandersMedicaidText");
+            OnPropertyChange("YangUbiText");
 
             OptionsModel.updateFunding();
             OnPropertyChange("DefenseFunding");
@@ -520,7 +722,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return Formatter.Format(DataModel.TotalUBICost);
+                return Formatter.Format(DataModel.TotalUBICost * (OptionsModel.listOfCosts[17].tFunding / 100));
             }
         }
 

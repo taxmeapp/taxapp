@@ -331,7 +331,7 @@ namespace TaxMeApp.models
         public string GetUBIText() {
             string ans = "UBI";
 
-            double cost = listOfCosts[17].cost;
+            double cost = listOfCosts[17].cost * (listOfCosts[17].tFunding / 100);
 
             ans += " ($" + Formatter.Format(cost) + ")";
 

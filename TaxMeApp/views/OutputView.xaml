@@ -168,44 +168,44 @@
                             HorizontalAlignment="Left"/>
                 </Expander>
                 <TextBlock Grid.Row="18" Text="Existing Federal Budget:" FontWeight="Bold" Margin="0, 10, 0, 0"/>
-                <CheckBox IsChecked="{Binding DefenseSpendingChecked, Mode=TwoWay}" Grid.Row="19" Content="Defense Spending ($678 billion)"/>
+                <CheckBox IsChecked="{Binding DefenseSpendingChecked, Mode=TwoWay}" Grid.Row="19" Content="{Binding DefenseText}"/>
                 <TextBlock Grid.Row="19" Grid.Column="2" Text="{Binding DefenseFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding MedicaidSpendingChecked, Mode=TwoWay}" Grid.Row="20" Content="Medicaid Spending ($613 billion)"/>
+                <CheckBox IsChecked="{Binding MedicaidSpendingChecked, Mode=TwoWay}" Grid.Row="20" Content="{Binding MedicaidText}"/>
                 <TextBlock Grid.Row="20" Grid.Column="2" Text="{Binding MedicaidFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding WelfareSpendingChecked, Mode=TwoWay}" Grid.Row="21" Content="Welfare Spending ($361 billion)"/>
+                <CheckBox IsChecked="{Binding WelfareSpendingChecked, Mode=TwoWay}" Grid.Row="21" Content="{Binding WelfareText}"/>
                 <TextBlock Grid.Row="21" Grid.Column="2" Text="{Binding WelfareFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding VeteransSpendingChecked, Mode=TwoWay}" Grid.Row="22" Content="Veterans Benefits ($79 billion)"/>
+                <CheckBox IsChecked="{Binding VeteransSpendingChecked, Mode=TwoWay}" Grid.Row="22" Content="{Binding VeteransText}"/>
                 <TextBlock Grid.Row="22" Grid.Column="2" Text="{Binding VeteransFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding FoodStampsSpendingChecked, Mode=TwoWay}" Grid.Row="23" Content="Food Stamps ($68 billion)"/>
+                <CheckBox IsChecked="{Binding FoodStampsSpendingChecked, Mode=TwoWay}" Grid.Row="23" Content="{Binding FoodStampsText}"/>
                 <TextBlock Grid.Row="23" Grid.Column="2" Text="{Binding FoodStampsFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding EducationSpendingChecked, Mode=TwoWay}" Grid.Row="24" Content="Education Spending ($61 billion)"/>
+                <CheckBox IsChecked="{Binding EducationSpendingChecked, Mode=TwoWay}" Grid.Row="24" Content="{Binding EducationText}"/>
                 <TextBlock Grid.Row="24" Grid.Column="2" Text="{Binding EducationFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding PublicHousingSpendingChecked, Mode=TwoWay}" Grid.Row="25" Content="Public Housing ($56 billion)"/>
+                <CheckBox IsChecked="{Binding PublicHousingSpendingChecked, Mode=TwoWay}" Grid.Row="25" Content="{Binding PublicHousingText}"/>
                 <TextBlock Grid.Row="25" Grid.Column="2" Text="{Binding PublicHousingFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding HealthSpendingChecked, Mode=TwoWay}" Grid.Row="26" Content="Health Spending ($53 billion)"/>
+                <CheckBox IsChecked="{Binding HealthSpendingChecked, Mode=TwoWay}" Grid.Row="26" Content="{Binding HealthText}"/>
                 <TextBlock Grid.Row="26" Grid.Column="2" Text="{Binding HealthFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding ScienceSpendingChecked, Mode=TwoWay}" Grid.Row="27" Content="Science Spending ($30 billion)"/>
+                <CheckBox IsChecked="{Binding ScienceSpendingChecked, Mode=TwoWay}" Grid.Row="27" Content="{Binding ScienceText}"/>
                 <TextBlock Grid.Row="27" Grid.Column="2" Text="{Binding ScienceFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding TransportationSpendingChecked, Mode=TwoWay}" Grid.Row="28" Content="Transportation Spending ($29 billion)"/>
+                <CheckBox IsChecked="{Binding TransportationSpendingChecked, Mode=TwoWay}" Grid.Row="28" Content="{Binding TransportationText}"/>
                 <TextBlock Grid.Row="28" Grid.Column="2" Text="{Binding TransportationFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding InternationalSpendingChecked, Mode=TwoWay}" Grid.Row="29" Content="International Affairs Spending ($29 billion)"/>
+                <CheckBox IsChecked="{Binding InternationalSpendingChecked, Mode=TwoWay}" Grid.Row="29" Content="{Binding InternationalAffairsText}"/>
                 <TextBlock Grid.Row="29" Grid.Column="2" Text="{Binding InternationalFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding EESpendingChecked, Mode=TwoWay}" Grid.Row="30" Content="Energy and Environment Spending ($28 billion)"/>
+                <CheckBox IsChecked="{Binding EESpendingChecked, Mode=TwoWay}" Grid.Row="30" Content="{Binding EnergyAndEnvironmentText}"/>
                 <TextBlock Grid.Row="30" Grid.Column="2" Text="{Binding EEFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding UnemploymentSpendingChecked, Mode=TwoWay}" Grid.Row="31" Content="Unemployment Spending ($24 billion)"/>
+                <CheckBox IsChecked="{Binding UnemploymentSpendingChecked, Mode=TwoWay}" Grid.Row="31" Content="{Binding UnemploymentText}"/>
                 <TextBlock Grid.Row="31" Grid.Column="2" Text="{Binding UnemploymentFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding AgricultureSpendingChecked, Mode=TwoWay}" Grid.Row="32" Content="Food and Agriculture Spending ($11 billion)"/>
+                <CheckBox IsChecked="{Binding AgricultureSpendingChecked, Mode=TwoWay}" Grid.Row="32" Content="{Binding FoodAndAgricultureText}"/>
                 <TextBlock Grid.Row="32" Grid.Column="2" Text="{Binding AgricultureFunding}" HorizontalAlignment="Right"/>
 
                 <TextBlock Grid.Row="33"/>
                 <TextBlock Grid.Row="34" Text="Bernie Sander's Plans:" FontWeight="Bold"/>
-                <CheckBox IsChecked="{Binding SandersCollegeSpendingChecked, Mode=TwoWay}" Grid.Row="35" Content="College Tuition Plan ($220 billion)" Foreground="Red"/>
+                <CheckBox IsChecked="{Binding SandersCollegeSpendingChecked, Mode=TwoWay}" Grid.Row="35" Content="{Binding SandersCollegeText}" Foreground="Red"/>
                 <TextBlock Grid.Row="35" Grid.Column="2" Text="{Binding SandersCollegeFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding SandersMedicaidSpendingChecked, Mode=TwoWay}" Grid.Row="36" Content="Medicaid For All ($350 billion)" Foreground="Red"/>
+                <CheckBox IsChecked="{Binding SandersMedicaidSpendingChecked, Mode=TwoWay}" Grid.Row="36" Content="{Binding SandersMedicaidText}" Foreground="Red"/>
                 <TextBlock Grid.Row="36" Grid.Column="2" Text="{Binding SandersMedicaidFunding}" HorizontalAlignment="Right"/>
                 <TextBlock Grid.Row="37"/>
                 <TextBlock Grid.Row="38" Text="Andrew Yang's Plans:" FontWeight="Bold"/>
-                <CheckBox IsChecked="{Binding YangUbiSpendingChecked, Mode=TwoWay}" Grid.Row="39" Content="UBI ($2.8 trillion)" Foreground="Red"/>
+                <CheckBox IsChecked="{Binding YangUbiSpendingChecked, Mode=TwoWay}" Grid.Row="39" Content="{Binding YangUbiText}" Foreground="Red"/>
                 <TextBlock Grid.Row="39" Grid.Column="2" Text="{Binding YangUbiFunding}" HorizontalAlignment="Right"/>
                 <CheckBox IsChecked="{Binding YangRemoveChecked, Mode=TwoWay}" Grid.Row="40" Content="Remove Existing Welfare Programs ($+1.066 trillion)" Foreground="Green"/>
                 <TextBlock Grid.Row="41" Text="UBI:" FontWeight="Bold" Margin="0, 10, 0, 0"/>
