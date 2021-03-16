@@ -26,6 +26,7 @@ namespace TaxMeApp.viewmodels
         public ICommand ResetSettingsBtnCommand { get; set; }
         public ICommand ResetTaxRatesBtnCommand { get; set; }
         public ICommand AutoFitSlantTaxBtnCommand { get; set; }
+        public ICommand AutoFitFlatTaxBtnCommand { get; set; }
         public ICommand AutoFitBudgetBtnCommand { get; set; }
         public ICommand ResetBudgetBtnCommand { get; set; }
 
@@ -40,6 +41,7 @@ namespace TaxMeApp.viewmodels
             ResetSettingsBtnCommand = new RelayCommand(o => resetSettingsButtonClick());
             ResetTaxRatesBtnCommand = new RelayCommand(o => resetTaxRatesButtonClick());
             AutoFitSlantTaxBtnCommand = new RelayCommand(o => autoFitSlantTaxButtonClick());
+            AutoFitFlatTaxBtnCommand = new RelayCommand(o => autoFitFlatTaxButtonClick());
             AutoFitBudgetBtnCommand = new RelayCommand(o => autoFitBudgetButtonClick());
             ResetBudgetBtnCommand = new RelayCommand(o => resetBudgetButtonClick());
 
@@ -1076,6 +1078,42 @@ namespace TaxMeApp.viewmodels
             if (this.MaxTaxRate > 100) {
                 this.MaxTaxRate = 100;
             }
+        }
+
+        public void autoFitFlatTaxButtonClick(){
+            double budget = OptionsModel.GetTotalBudget();
+            double revenue = 0;
+
+            this.MaxBracketCountSlider = 0;
+            this.MaxTaxRate = 0;
+            revenue = DataModel.TotalRevenueNew;
+
+            long flatRate = 0;
+            ObservableCollection<double> flatRates = new ObservableCollection<double>();
+
+            while (revenue < budget) {
+                flatRate++;
+                flatRates = new ObservableCollection<double>();
+
+                for (int i = 0; i < DataModel.NewTaxPctByBracket.Count; i++) {
+                    flatRates.Add(flatRate);
+                }
+
+                DataVM.calculateNewRevenues(flatRates);
+                revenue = DataModel.TotalRevenueNew;
+            }
+
+            Console.WriteLine("Flat Rate = {0}", flatRate);
+
+            TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
+            selectedTaxPlan.TaxRates = flatRates;
+            DataModel.NewTaxPctByBracket = new List<double>(flatRates);
+
+            DataModel.NewRevenueByBracket = DataVM.calculateNewRevenues(selectedTaxPlan.TaxRates);
+            DataVM.calculateMeanMedian();
+            OutputVM.Update();
+            customGraphReset();
+            this.update();
         }
 
         public void autoFitBudgetButtonClick(){
