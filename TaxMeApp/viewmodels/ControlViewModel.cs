@@ -60,6 +60,8 @@ namespace TaxMeApp.viewmodels
             TaxPlansModel.TaxPlans.Add("Slant Tax", new IndividualTaxPlanModel("Slant Tax", new ObservableCollection<double>(slantTaxRates)));
             SelectedTaxPlanName = "Slant Tax";
 
+            TaxPlansModel.TaxPlans.Add("Flat Tax", new IndividualTaxPlanModel("Flat Tax", new ObservableCollection<double>(new double[(int)GraphModel.Labels.Length])));
+
             PlanLoader.LoadPlans(this);
 
             //for (int i = 0; i < DataModel.NewTaxPctByBracket.Count; i++) {
@@ -577,6 +579,38 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        // Rate that all brackets are taxed at for flat tax plan
+        public int FlatTaxRate
+        {
+            get
+            {
+                return (int)DataModel.NewTaxPctByBracket[0];
+            }
+        }
+
+        public int FlatTaxSlider
+        {
+            get
+            {
+                return (int)DataModel.NewTaxPctByBracket[0];
+            }
+            set
+            {
+                TaxPlansModel.TaxPlans.TryGetValue("Flat Tax", out IndividualTaxPlanModel selectedTaxPlan);
+                foreach(var bracket in BracketList)
+                {
+                    selectedTaxPlan.TaxRates[BracketList.IndexOf(bracket)] = value;
+                    DataModel.NewTaxPctByBracket[BracketList.IndexOf(bracket)] = value;
+                }
+                DataModel.NewRevenueByBracket = DataVM.calculateNewRevenues(selectedTaxPlan.TaxRates);
+                OnPropertyChange("FlatTaxRate");
+                DataVM.calculateMeanMedian();
+                OutputVM.Update();
+                customGraphReset();
+            }
+        }
+
+
         // Checkboxes
         public bool ShowNumberOfReturns
         {
@@ -1016,6 +1050,7 @@ namespace TaxMeApp.viewmodels
             ShowNewPercentage = false;
             MaxBracketCountSlider = 0;
             MaxTaxRate = 0;
+            FlatTaxSlider = 0;
         }
 
         private void resetTaxRatesButtonClick() {
@@ -1050,6 +1085,7 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("SelectedBracket");
             OnPropertyChange("TargetFundingSlider");
             OnPropertyChange("SelectedTargetBudget");
+            OnPropertyChange("FlatTaxSlider");
         }
 
         public void autoFitSlantTaxButtonClick() {
