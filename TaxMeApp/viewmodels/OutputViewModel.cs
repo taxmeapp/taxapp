@@ -667,6 +667,11 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("TargetDebtPercent");
             OnPropertyChange("YearlyGDPGrowth");
 
+            OnPropertyChange("ProjectedGDP");
+            OnPropertyChange("TargetDebt");
+            OnPropertyChange("DebtDifference");
+
+
             ControlVM.update();
 
             for (int i = 0; i < customProgramListView.Items.Count; i++)
@@ -1351,6 +1356,44 @@ namespace TaxMeApp.viewmodels
                     OptionsModel.YearlyGDPGrowth = 0;
                 }
                 this.Update();
+            }
+        }
+
+        public string ProjectedGDP
+        {
+            get
+            {
+                return "$" + Formatter.Format(OptionsModel.PGDP);
+            }
+        }
+        public string FormattedTotalDebt
+        {
+            get
+            {
+                string ans = "$";
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        ans += Formatter.Format(BudgetDataModel.YearData[i].TotalDebt);
+                        break;
+                    }
+                }
+                return ans;
+            }
+        }
+        public string TargetDebt
+        {
+            get
+            {
+                return "$" + Formatter.Format(OptionsModel.TargetDebt);
+            }
+        }
+        public string DebtDifference
+        {
+            get
+            {
+                return "$" + Formatter.Format(OptionsModel.DebtDifference);
             }
         }
     }

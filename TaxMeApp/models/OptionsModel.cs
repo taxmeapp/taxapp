@@ -531,16 +531,21 @@ namespace TaxMeApp.models
         public double TargetDebtPercent { get; set; } = 10;
         public double DebtYears { get; set; } = 10;
         public double YearlyGDPGrowth { get; set; } = 2.3;
+        public double PGDP { get; set; }
+        public double TargetDebt { get; set; }
+        public double DebtDifference { get; set; }
 
         public double CalculateYearlyDebtPayment(double currentDebt, double GDP) {
             GDP = GDP * Math.Pow(10, 12);
 
             double ans = 0;
             double projectedGDP = GDP * Math.Pow((1 + (YearlyGDPGrowth / 100)), DebtYears);
+            PGDP = projectedGDP;
             Console.WriteLine("Current GDP = {0}, Projected GDP = {1}", GDP, projectedGDP);
             double targetDebtAmount = projectedGDP * (TargetDebtPercent / 100);
+            TargetDebt = targetDebtAmount;
             double difference = currentDebt - targetDebtAmount;
-
+            DebtDifference = difference;
 
             ans = difference / DebtYears;
 
@@ -549,5 +554,6 @@ namespace TaxMeApp.models
 
             return ans;
         }
+
     }
 }
