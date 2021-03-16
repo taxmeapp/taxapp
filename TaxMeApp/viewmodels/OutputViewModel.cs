@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,12 +29,14 @@ namespace TaxMeApp.viewmodels
         public ListView customProgramListView { get; set; } = new ListView();
         public ICommand AddProgramBtnCommand { get; set; }
 
-        public OutputViewModel() {
+        public OutputViewModel()
+        {
             AddProgramBtnCommand = new RelayCommand(o => addProgramButtonClick());
         }
 
         public BudgetYearModel bym = new BudgetYearModel();
-        public void updateBYM() {
+        public void updateBYM()
+        {
             for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
             {
                 if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
@@ -203,10 +206,11 @@ namespace TaxMeApp.viewmodels
         }
 
 
-        public void addProgramButtonClick() {
+        public void addProgramButtonClick()
+        {
 
             //customProgramListView.Items.Clear();
-            
+
             //Create a grid to store checkbox and textboxes
             Grid g = new Grid();
             //Column definitions are used to define the width and spacing of the elements
@@ -296,7 +300,7 @@ namespace TaxMeApp.viewmodels
             //Console.WriteLine("\n");
         }
 
-        int customStart = 18;
+        int customStart = 19;
 
         private void ProgramChecked_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -353,9 +357,11 @@ namespace TaxMeApp.viewmodels
         {
             //Find the program that was edited
             int gridNum = -1;
-            for (int i = 0; i < customProgramListView.Items.Count; i++) {
+            for (int i = 0; i < customProgramListView.Items.Count; i++)
+            {
                 //Console.WriteLine("Checking {0} for textbox", i);
-                if ((customProgramListView.Items[i] as Grid).Children.Contains(sender as TextBox)) {
+                if ((customProgramListView.Items[i] as Grid).Children.Contains(sender as TextBox))
+                {
                     //Console.WriteLine("Textbox Found", i);
                     gridNum = i;
                     break;
@@ -373,11 +379,12 @@ namespace TaxMeApp.viewmodels
                 {
                     data = Double.Parse(sdata);
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex.StackTrace);
                 }
 
-     
+
                 OptionsModel.listOfCosts[gridNum + customStart] = (gridNum + customStart, OptionsModel.listOfCosts[gridNum + customStart].ischecked, OptionsModel.listOfCosts[gridNum + customStart].name, data, OptionsModel.listOfCosts[gridNum + customStart].tFunding);
 
                 Update();
@@ -396,8 +403,10 @@ namespace TaxMeApp.viewmodels
             ControlVM.propChange("SelectedGovProgram");
         }
 
-        public string DefenseText {
-            get{
+        public string DefenseText
+        {
+            get
+            {
                 string ans = "Defense Spending ($";
                 string cost = Formatter.Format(OptionsModel.listOfCosts[0].cost * (OptionsModel.listOfCosts[0].tFunding / 100));
                 ans += cost + ")";
@@ -629,7 +638,7 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("EEFunding");
             OnPropertyChange("UnemploymentFunding");
             OnPropertyChange("AgricultureFunding");
-            
+
             OnPropertyChange("SandersCollegeFunding");
             OnPropertyChange("SandersMedicaidFunding");
 
@@ -652,7 +661,16 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("NewDeficitPercent");
             OnPropertyChange("TotalDebt");
 
-            for (int i = 0; i < customProgramListView.Items.Count; i++) { 
+            OnPropertyChange("DebtReductionFunding");
+            OnPropertyChange("DebtReductionText");
+            OnPropertyChange("DebtYears");
+            OnPropertyChange("TargetDebtPercent");
+            OnPropertyChange("YearlyGDPGrowth");
+
+            ControlVM.update();
+
+            for (int i = 0; i < customProgramListView.Items.Count; i++)
+            {
                 //OptionsModel.updateFunding();
                 ((customProgramListView.Items[i] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[i + customStart].ToString("0.0") + "% Funded");
             }
@@ -730,21 +748,24 @@ namespace TaxMeApp.viewmodels
 
 
 
-        public bool DefenseSpendingChecked {
-            get 
+        public bool DefenseSpendingChecked
+        {
+            get
             {
-                return OptionsModel.DefenseChecked;    
+                return OptionsModel.DefenseChecked;
             }
-            set 
+            set
             {
-                
+
                 OptionsModel.DefenseChecked = value;
 
                 this.Update();
-            } 
+            }
         }
-        public string DefenseFunding {
-            get {
+        public string DefenseFunding
+        {
+            get
+            {
                 return OptionsModel.GetDefenseFunding();
             }
         }
@@ -1069,11 +1090,11 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        public bool YangRemoveChecked 
+        public bool YangRemoveChecked
         {
-            get 
+            get
             {
-                return OptionsModel.YangRemoveChecked;            
+                return OptionsModel.YangRemoveChecked;
             }
             set
             {
@@ -1103,14 +1124,33 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        public string UBIText {
-            get {
+        public string UBIText
+        {
+            get
+            {
                 return OptionsModel.GetUBIText();
             }
         }
 
-        public string TotalSelectedBudget {
-            get {
+        public bool DebtReductionChecked
+        {
+            get
+            {
+                return OptionsModel.DebtReductionChecked;
+            }
+            set
+            {
+
+                OptionsModel.DebtReductionChecked = value;
+
+                this.Update();
+            }
+        }
+
+        public string TotalSelectedBudget
+        {
+            get
+            {
                 string ans = "";
                 double tb = OptionsModel.GetTotalBudget();
                 if (tb >= 1000000000000)
@@ -1133,7 +1173,8 @@ namespace TaxMeApp.viewmodels
                     tb = tb / 1000;
                     ans = "$" + tb.ToString("0.###") + " Thousand";
                 }
-                else {
+                else
+                {
                     ans = "$" + tb.ToString();
                 }
 
@@ -1141,8 +1182,10 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        public string LeftOverBudget {
-            get {
+        public string LeftOverBudget
+        {
+            get
+            {
                 string ans = "";
                 double tb = OptionsModel.GetTotalBudget();
                 double difference = DataModel.TotalRevenueNew - tb;
@@ -1213,6 +1256,101 @@ namespace TaxMeApp.viewmodels
                 table.Rows.Add(postTaxRow);
 
                 return table;
+            }
+        }
+
+        public string DebtReductionText
+        {
+            get
+            {
+                string ans = "Debt Redution ";
+                string debtPaymentString = "";
+                double debt = 0;
+                double gdp = 0;
+                
+                for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
+                {
+                    if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
+                    {
+                        debt = BudgetDataModel.YearData[i].TotalDebt;
+                        gdp = BudgetDataModel.YearData[i].GDP;
+                        break;
+                    }
+                }
+
+                double fundingTarget = OptionsModel.CalculateYearlyDebtPayment(debt, gdp) * (OptionsModel.listOfCosts[18].tFunding / 100);
+                debtPaymentString = Formatter.Format(fundingTarget);
+                
+                ans += "($" + debtPaymentString + ")";
+
+                return ans;
+            }
+        }
+
+        public string DebtReductionFunding {
+            get 
+            {
+                return OptionsModel.GetDebtReductionFunding();
+            }
+        }
+
+        public string TargetDebtPercent
+        {
+            get
+            {
+                return OptionsModel.TargetDebtPercent.ToString();
+            }
+            set
+            {
+                try
+                {
+                    OptionsModel.TargetDebtPercent = double.Parse(value, CultureInfo.InvariantCulture);
+                }
+                catch (Exception e)
+                {
+                    OptionsModel.TargetDebtPercent = 0;
+                }
+                this.Update();
+            }
+        }
+
+        public string DebtYears
+        {
+            get
+            {
+                return OptionsModel.DebtYears.ToString();
+            }
+            set
+            {
+                try
+                {
+                    OptionsModel.DebtYears = double.Parse(value, CultureInfo.InvariantCulture);
+                }
+                catch (Exception e)
+                {
+                    OptionsModel.DebtYears = 0;
+                }
+                this.Update();
+            }
+        }
+
+        public string YearlyGDPGrowth
+        {
+            get
+            {
+                return OptionsModel.YearlyGDPGrowth.ToString();
+            }
+            set
+            {
+                try
+                {
+                    OptionsModel.YearlyGDPGrowth = double.Parse(value, CultureInfo.InvariantCulture);
+                }
+                catch (Exception e)
+                {
+                    OptionsModel.YearlyGDPGrowth = 0;
+                }
+                this.Update();
             }
         }
     }

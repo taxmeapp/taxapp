@@ -97,7 +97,6 @@ namespace TaxMeApp
             OutputVM.OptionsModel = OptionsModel;
             OutputVM.BudgetDataModel = BudgetDataModel;
 
-
             DataVM.DataInit();
 
         }

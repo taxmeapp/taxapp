@@ -1048,6 +1048,8 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("MaxBracketCountSlider");
             OnPropertyChange("SelectedTaxPlanName");
             OnPropertyChange("SelectedBracket");
+            OnPropertyChange("TargetFundingSlider");
+            OnPropertyChange("SelectedTargetBudget");
         }
 
         public void autoFitSlantTaxButtonClick() {
@@ -1091,7 +1093,7 @@ namespace TaxMeApp.viewmodels
             long flatRate = 0;
             ObservableCollection<double> flatRates = new ObservableCollection<double>();
 
-            while (revenue < budget) {
+            while (revenue < budget && flatRate < 100) {
                 flatRate++;
                 flatRates = new ObservableCollection<double>();
 
@@ -1101,6 +1103,7 @@ namespace TaxMeApp.viewmodels
 
                 DataVM.calculateNewRevenues(flatRates);
                 revenue = DataModel.TotalRevenueNew;
+
             }
 
             Console.WriteLine("Flat Rate = {0}", flatRate);

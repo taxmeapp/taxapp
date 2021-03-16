@@ -60,6 +60,12 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="1" 
                                    Text="GDP:"/>
@@ -161,7 +167,7 @@
                         Grid.Column="2"
                         HorizontalAlignment="Right"
                         Text="{Binding OldDebtPercent}"/>
-                <Expander Header="Statistics" Grid.Row="17">
+                <Expander Header="Income Statistics" Grid.Row="17">
                     <DataGrid ItemsSource="{Binding MeanMedian}" 
                             CanUserAddRows="False" 
                             IsReadOnly="True" 
@@ -212,9 +218,30 @@
                 <CheckBox IsChecked="{Binding UBIChecked, Mode=TwoWay}" Grid.Row="42" Content="{Binding UBIText}"/>
                 <TextBlock Grid.Row="42" Grid.Column="2" Text="{Binding UBIFunding}" HorizontalAlignment="Right"/>
 
-                <TextBlock Grid.Row="43" Margin="0, 20, 0, 20"/>
-                <TextBlock Grid.Row="44" Text="Custom Government Programs:" FontWeight="Bold"/>
-                <Button Grid.Row="45" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
+                <TextBlock Grid.Row="43" Text="Debt Reduction:" FontWeight="Bold" Margin="0, 20, 0, 0"/>
+                <TextBlock Grid.Row="44" Text="Target Percentage: "/>
+                <WrapPanel Grid.Row="44" Grid.Column="2">
+                    <TextBox Text="{Binding TargetDebtPercent, Mode=TwoWay}" Width="30"/>
+                    <TextBlock Text="%" Margin="5, 0, 0, 0"/>
+                </WrapPanel>
+                <TextBlock Grid.Row="45" Text="Number of Years: "/>
+                <WrapPanel Grid.Row="45" Grid.Column="2">
+                    <TextBox Text="{Binding DebtYears, Mode=TwoWay}" Width="30"/>
+                    <TextBlock Text="Years" Margin="5, 0, 0, 0"/>
+                </WrapPanel>
+                <TextBlock Grid.Row="46" Text="Yearly GDP Growth: "/>
+                <WrapPanel Grid.Row="46" Grid.Column="2">
+                    <TextBox Text="{Binding YearlyGDPGrowth, Mode=TwoWay}" Width="30"/>
+                    <TextBlock Text="%" Margin="5, 0, 0, 0"/>
+                </WrapPanel>
+                <CheckBox Grid.Row="47" IsChecked="{Binding DebtReductionChecked, Mode=TwoWay}" Content="{Binding DebtReductionText}"/>
+                <TextBlock Grid.Row="47" Grid.Column="2" Text="{Binding DebtReductionFunding}"/>
+
+
+                <TextBlock Grid.Row="48" Margin="0, 20, 0, 20"/>
+                <TextBlock Grid.Row="49" Text="Custom Government Programs:" FontWeight="Bold"/>
+                <Button Grid.Row="50" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
+
             </Grid>
             <ListView ItemsSource="{Binding customProgramListView.Items}" Margin="0, 10, 0, 40"/>
         </StackPanel>

@@ -37,6 +37,9 @@ namespace TaxMeApp.models
 
             listOfCosts.Add((17, false, "UBI", 0.0, 100.0));
 
+            listOfCosts.Add((18, false, "Debt Reduction Funding", 0.0, 100.0));
+
+
             this.DefenseChecked = true;
             this.MedicaidChecked = true;
             this.WelfareChecked = true;
@@ -59,6 +62,8 @@ namespace TaxMeApp.models
             this.YangRemoveChecked = false;
 
             this.UBIChecked = false;
+
+            this.DebtReductionChecked = false;
 
             fundingArray = new double[listOfCosts.Count];
         }
@@ -324,7 +329,21 @@ namespace TaxMeApp.models
             set
             {
                 ubic = value;
-                listOfCosts[17] = (17, value, "UBI", 0.0, listOfCosts[17].tFunding);
+                listOfCosts[17] = (17, value, "UBI", listOfCosts[17].cost, listOfCosts[17].tFunding);
+            }
+        }
+
+        public bool drc;
+        public bool DebtReductionChecked
+        {
+            get
+            {
+                return drc;
+            }
+            set
+            {
+                drc = value;
+                listOfCosts[18] = (18, value, "Debt Reduction", listOfCosts[18].cost, listOfCosts[18].tFunding);
             }
         }
 
@@ -447,6 +466,10 @@ namespace TaxMeApp.models
         {
             return this.fundingArray[17].ToString("0.0") + "% Funded";
         }
+        public string GetDebtReductionFunding()
+        {
+            return this.fundingArray[18].ToString("0.0") + "% Funded";
+        }
         public double GetTotalBudget() {
             double ans = 0;
             for (int i = 0; i < listOfCosts.Count; i++) {
@@ -503,6 +526,28 @@ namespace TaxMeApp.models
                 listOfCosts[i] = (listOfCosts[i].priority, listOfCosts[i].ischecked, listOfCosts[i].name, listOfCosts[i].cost, flatTFunding);
             }
             updateFunding();
+        }
+
+        public double TargetDebtPercent { get; set; } = 10;
+        public double DebtYears { get; set; } = 10;
+        public double YearlyGDPGrowth { get; set; } = 2.3;
+
+        public double CalculateYearlyDebtPayment(double currentDebt, double GDP) {
+            GDP = GDP * Math.Pow(10, 12);
+
+            double ans = 0;
+            double projectedGDP = GDP * Math.Pow((1 + (YearlyGDPGrowth / 100)), DebtYears);
+            Console.WriteLine("Current GDP = {0}, Projected GDP = {1}", GDP, projectedGDP);
+            double targetDebtAmount = projectedGDP * (TargetDebtPercent / 100);
+            double difference = currentDebt - targetDebtAmount;
+
+
+            ans = difference / DebtYears;
+
+
+            listOfCosts[18] = (18, listOfCosts[18].ischecked, listOfCosts[18].name, ans, listOfCosts[18].tFunding);
+
+            return ans;
         }
     }
 }
