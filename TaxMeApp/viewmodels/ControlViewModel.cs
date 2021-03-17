@@ -1171,15 +1171,7 @@ namespace TaxMeApp.viewmodels
             }
 
             Console.WriteLine("Flat Rate = {0}", flatRate);
-
-            TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
-            selectedTaxPlan.TaxRates = flatRates;
-            DataModel.NewTaxPctByBracket = new List<double>(flatRates);
-
-            DataModel.NewRevenueByBracket = DataVM.calculateNewRevenues(selectedTaxPlan.TaxRates);
-            DataVM.calculateMeanMedian();
-            OutputVM.Update();
-            customGraphReset();
+            FlatTaxSlider = (int)flatRate;
             this.update();
         }
 
