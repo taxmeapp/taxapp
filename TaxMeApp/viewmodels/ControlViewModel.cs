@@ -631,17 +631,20 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
-                TaxPlansModel.TaxPlans.TryGetValue("Flat Tax", out IndividualTaxPlanModel selectedTaxPlan);
-                foreach(var bracket in BracketList)
+                if (SelectedTaxPlanName == "Flat Tax")
                 {
-                    selectedTaxPlan.TaxRates[BracketList.IndexOf(bracket)] = value;
-                    DataModel.NewTaxPctByBracket[BracketList.IndexOf(bracket)] = value;
+                    TaxPlansModel.TaxPlans.TryGetValue("Flat Tax", out IndividualTaxPlanModel selectedTaxPlan);
+                    foreach (var bracket in BracketList)
+                    {
+                        selectedTaxPlan.TaxRates[BracketList.IndexOf(bracket)] = value;
+                        DataModel.NewTaxPctByBracket[BracketList.IndexOf(bracket)] = value;
+                    }
+                    DataModel.NewRevenueByBracket = DataVM.CalculateNewRevenues(selectedTaxPlan.TaxRates);
+                    OnPropertyChange("FlatTaxRate");
+                    DataVM.calculateMeanMedian();
+                    OutputVM.Update();
+                    customGraphReset();
                 }
-                DataModel.NewRevenueByBracket = DataVM.CalculateNewRevenues(selectedTaxPlan.TaxRates);
-                OnPropertyChange("FlatTaxRate");
-                DataVM.calculateMeanMedian();
-                OutputVM.Update();
-                customGraphReset();
             }
         }
 
@@ -742,6 +745,7 @@ namespace TaxMeApp.viewmodels
 
                 displayOnlyGraphReset();
 
+                OnPropertyChange("ShowUBI");
             }
         }
 
@@ -1112,6 +1116,13 @@ namespace TaxMeApp.viewmodels
             ShowNewRevenue = false;
             ShowOldPercentage = false;
             ShowNewPercentage = false;
+            ShowUBI = false;
+            ShowPreTaxMean = false;
+            ShowPreTaxMedian = false;
+            ShowPostTaxMean = false;
+            ShowPostTaxMedian = false;
+            ShowPostTaxMeanUBI = false;
+            ShowPostTaxMedianUBI = false;
             MaxBracketCountSlider = 0;
             MaxTaxRate = 0;
             FlatTaxSlider = 0;
@@ -1126,6 +1137,12 @@ namespace TaxMeApp.viewmodels
                 {
                     selectedTaxPlan.TaxRates[i] = DataModel.NewTaxPctByBracket[i];
                 }
+                OnPropertyChange("TaxRateSlider");
+                OnPropertyChange("SelectedTaxRate");
+            }
+            else if (SelectedTaxPlanName == "Flat Tax")
+            {
+                FlatTaxSlider = 0;
                 OnPropertyChange("TaxRateSlider");
                 OnPropertyChange("SelectedTaxRate");
             }
