@@ -766,6 +766,34 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public bool ShowPostTaxMedianUBI
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMedianUBI;
+            }
+            set
+            {
+                GraphVM.showPostTaxMedianUBI = value;
+
+                OnPropertyChange("ShowPostTaxMedianUBI");
+            }
+        }
+
+        public bool ShowPostTaxMeanUBI
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMeanUBI;
+            }
+            set
+            {
+                GraphVM.showPostTaxMeanUBI = value;
+
+                OnPropertyChange("ShowPostTaxMeanUBI");
+            }
+        }
+
         /*
          
                 Button Logic

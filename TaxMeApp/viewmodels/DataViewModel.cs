@@ -363,7 +363,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // Bracket containing pre-tax mean
+        // Bracket containing post-tax median
         private int PostTaxMedianBracket
         {
             get
@@ -376,6 +376,31 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        // Bracket containing post-tax mean plus UBI
+        private int PostTaxMeanUBIBracket
+        {
+            get
+            {
+                return GraphModel.PostTaxMeanUBILine;
+            }
+            set
+            {
+                GraphVM.PostTaxMeanUBILine = value;
+            }
+        }
+
+        // Bracket containing post-tax mean plus UBI
+        private int PostTaxMedianUBIBracket
+        {
+            get
+            {
+                return GraphModel.PostTaxMedianUBILine;
+            }
+            set
+            {
+                GraphVM.PostTaxMedianUBILine = value;
+            }
+        }
         /*
          
                 Calculation Logic
@@ -939,6 +964,7 @@ namespace TaxMeApp.viewmodels
             this.PostTaxMedianUBI = newLowerBoundWithUBI + (difference / frequency) * widthUBI;
             this.PostTaxMedian = newLowerBound + (difference / frequency) * width;
             this.PostTaxMedianBracket = DetermineMeanMedianBracket(PostTaxMedian);
+            this.PostTaxMedianUBIBracket = DetermineMeanMedianBracket(PostTaxMedianUBI);
             //Console.WriteLine("Post-tax median bracket = {0} | median: ${1}", PostTaxMedianBracket, PostTaxMedian);
         }
 
@@ -973,6 +999,7 @@ namespace TaxMeApp.viewmodels
             this.PostTaxMean = totalMidFreq / totalFreq;
             this.PostTaxMeanUBI = totalMidFreqWithUBI / totalFreq;
             this.PostTaxMeanBracket = DetermineMeanMedianBracket(PostTaxMean);
+            this.PostTaxMeanUBIBracket = DetermineMeanMedianBracket(PostTaxMeanUBI);
             //Console.WriteLine("Post-tax mean: ${0}, Bracket: {1}", PostTaxMean, PostTaxMeanBracket);
         }
 

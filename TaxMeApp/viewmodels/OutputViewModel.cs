@@ -1248,23 +1248,23 @@ namespace TaxMeApp.viewmodels
 
                 var preTaxRow = table.NewRow();
                 preTaxRow["System"] = "Pre-Tax";
-                preTaxRow["Mean Income"] = $"${ DataModel.PreTaxMean:n0}";
-                preTaxRow["Median Income"] = $"${DataModel.PreTaxMedian:n0}";
-                preTaxRow["Difference"] = $"${Math.Abs(DataModel.PreTaxMedian - DataModel.PreTaxMean):n0}";
+                preTaxRow["Mean Income"] = $"{DataModel.PreTaxMean:c0}";
+                preTaxRow["Median Income"] = $"{DataModel.PreTaxMedian:c0}";
+                preTaxRow["Difference"] = $"{Math.Abs(DataModel.PreTaxMedian - DataModel.PreTaxMean):c0}";
                 table.Rows.Add(preTaxRow);
 
                 var postTaxRow = table.NewRow();
                 postTaxRow["System"] = "Post-Tax";
-                postTaxRow["Mean Income"] = $"${DataModel.PostTaxMean:n0}";
-                postTaxRow["Median Income"] = $"${DataModel.PostTaxMedian:n0}";
-                postTaxRow["Difference"] = $"${Math.Abs(DataModel.PostTaxMedian - DataModel.PostTaxMean):n0}";
+                postTaxRow["Mean Income"] = $"{DataModel.PostTaxMean:c0}";
+                postTaxRow["Median Income"] = $"{DataModel.PostTaxMedian:c0}";
+                postTaxRow["Difference"] = $"{Math.Abs(DataModel.PostTaxMedian - DataModel.PostTaxMean):c0}";
                 table.Rows.Add(postTaxRow);
 
                 var postTaxUBIRow = table.NewRow();
                 postTaxUBIRow["System"] = "Post-Tax (with UBI)";
-                postTaxUBIRow["Mean Income"] = $"${DataModel.PostTaxMeanWithUBI:n0}";
-                postTaxUBIRow["Median Income"] = $"${DataModel.PostTaxMedianWithUBI:n0}";
-                postTaxUBIRow["Difference"] = $"${Math.Abs(DataModel.PostTaxMedianWithUBI - DataModel.PostTaxMeanWithUBI):n0}";
+                postTaxUBIRow["Mean Income"] = $"{DataModel.PostTaxMeanWithUBI:c0}";
+                postTaxUBIRow["Median Income"] = $"{DataModel.PostTaxMedianWithUBI:c0}";
+                postTaxUBIRow["Difference"] = $"{Math.Abs(DataModel.PostTaxMedianWithUBI - DataModel.PostTaxMeanWithUBI):c0}";
                 table.Rows.Add(postTaxUBIRow);
 
                 return table;

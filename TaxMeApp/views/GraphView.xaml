@@ -28,13 +28,19 @@
                                          Stroke="LightSkyBlue"
                                          StrokeThickness="2"/>
                         <lvc:AxisSection Value="{Binding PreTaxMedianLine}"
-                                         Stroke="LightGreen"
+                                         Stroke="DodgerBlue"
                                          StrokeThickness="2"/>
                         <lvc:AxisSection Value="{Binding PostTaxMeanLine}"
-                                         Stroke="CornflowerBlue"
+                                         Stroke="MediumSeaGreen"
                                          StrokeThickness="2"/>
                         <lvc:AxisSection Value="{Binding PostTaxMedianLine}"
                                          Stroke="ForestGreen"
+                                         StrokeThickness="2"/>
+                        <lvc:AxisSection Value="{Binding PostTaxMeanUBILine}"
+                                         Stroke="DarkGoldenrod"
+                                         StrokeThickness="2"/>
+                        <lvc:AxisSection Value="{Binding PostTaxMedianUBILine}"
+                                         Stroke="SaddleBrown"
                                          StrokeThickness="2"/>
                     </lvc:Axis.Sections>
                     <lvc:Axis.Separator>

@@ -176,6 +176,40 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public int PostTaxMeanUBILine
+        {
+            get
+            {
+                if (!showPostTaxMeanUBI)
+                {
+                    return -1;
+                }
+                return GraphModel.PostTaxMeanUBILine;
+            }
+            set
+            {
+                GraphModel.PostTaxMeanUBILine = value;
+                OnPropertyChange("PostTaxMeanUBILine");
+            }
+        }
+
+        public int PostTaxMedianUBILine
+        {
+            get
+            {
+                if (!showPostTaxMedianUBI)
+                {
+                    return -1;
+                }
+                return GraphModel.PostTaxMedianUBILine;
+            }
+            set
+            {
+                GraphModel.PostTaxMedianUBILine = value;
+                OnPropertyChange("PostTaxMedianUBILine");
+            }
+        }
+
         /*
              Model interaction (no direct binding)
          */
@@ -286,6 +320,32 @@ namespace TaxMeApp.viewmodels
             {
                 GraphModel.ShowPostTaxMean = value;
                 OnPropertyChange("PostTaxMeanLine");
+            }
+        }
+
+        public bool showPostTaxMedianUBI
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMedianUBI;
+            }
+            set
+            {
+                GraphModel.ShowPostTaxMedianUBI = value;
+                OnPropertyChange("PostTaxMedianUBILine");
+            }
+        }
+
+        public bool showPostTaxMeanUBI
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMeanUBI;
+            }
+            set
+            {
+                GraphModel.ShowPostTaxMeanUBI = value;
+                OnPropertyChange("PostTaxMeanUBILine");
             }
         }
 

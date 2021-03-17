@@ -227,19 +227,25 @@
                             Width="175"/>
                 </StackPanel>
             </Expander>
-            <Expander Header="Statistics">
+            <Expander Header="Income Statistics">
                 <StackPanel>
-                    <CheckBox Content="Median Income (Pre-tax)"
+                    <CheckBox Content="Median (Pre-tax)"
                               IsChecked="{Binding ShowPreTaxMedian, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
-                    <CheckBox Content="Mean Income (Pre-tax)"
+                    <CheckBox Content="Mean (Pre-tax)"
                               IsChecked="{Binding ShowPreTaxMean, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
-                    <CheckBox Content="Median Income (Post-tax)"
+                    <CheckBox Content="Median (Post-tax)"
                               IsChecked="{Binding ShowPostTaxMedian, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
-                    <CheckBox Content="Mean Income (Post-tax)"
+                    <CheckBox Content="Mean (Post-tax)"
                               IsChecked="{Binding ShowPostTaxMean, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
+                    <CheckBox Content="Median (Post-tax, with UBI)"
+                              IsChecked="{Binding ShowPostTaxMedianUBI, Mode=TwoWay}"
+                              Margin="20,5,5,5"/>
+                    <CheckBox Content="Mean (Post-tax, with UBI)"
+                              IsChecked="{Binding ShowPostTaxMeanUBI, Mode=TwoWay}"
                               Margin="20,5,5,5"/>
                 </StackPanel>
             </Expander>
