@@ -49,18 +49,35 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
-
-                <TextBlock Grid.ColumnSpan="2"
-                                   FontSize="20"
-                                   HorizontalAlignment="Center"
-                                    Text="Output"/>
                 <TextBlock Grid.Row="1" 
-                                   Text="UBI Cost: "/>
+                                   Text="GDP:"/>
                 <TextBlock Grid.Column="1" 
                                    Grid.Row="1" 
                                    HorizontalAlignment="Right" 
-                                   Text="{Binding UBICost}"/>
+                                   Text="{Binding GDP}"/>
                 <TextBlock Grid.Row="2"
                                    Text="Number of people under poverty line: "/>
                 <TextBlock Grid.Column="1"
@@ -88,60 +105,161 @@
                                    Grid.Row="5"
                                    HorizontalAlignment="Right" 
                                    Text="{Binding TotalRevenueNewOutput}"/>
-
                 <TextBlock Grid.Row="6" 
-                                   Text="Revenue Difference: "/>
+                                   Text="Old Vs. New Revenue Difference: "/>
                 <TextBlock Grid.Column="2" 
                                    Grid.Row="6" 
                                    HorizontalAlignment="Right" 
                                    Text="{Binding RevenueDifferenceOutput}"/>
-                <TextBlock Grid.Row="7" />
-                <TextBlock Grid.Row="8" Text="Existing Federal Budget:" FontWeight="Bold"/>
-                <CheckBox IsChecked="{Binding DefenseSpendingChecked, Mode=TwoWay}" Grid.Row="9" Content="Defense Spending ($678 billion)"/>
-                <TextBlock Grid.Row="9" Grid.Column="2" Text="{Binding DefenseFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding MedicaidSpendingChecked, Mode=TwoWay}" Grid.Row="10" Content="Medicaid Spending ($613 billion)"/>
-                <TextBlock Grid.Row="10" Grid.Column="2" Text="{Binding MedicaidFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding WelfareSpendingChecked, Mode=TwoWay}" Grid.Row="11" Content="Welfare Spending ($361 billion)"/>
-                <TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding WelfareFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding VeteransSpendingChecked, Mode=TwoWay}" Grid.Row="12" Content="Veterans Benefits ($79 billion)"/>
-                <TextBlock Grid.Row="12" Grid.Column="2" Text="{Binding VeteransFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding FoodStampsSpendingChecked, Mode=TwoWay}" Grid.Row="13" Content="Food Stamps ($68 billion)"/>
-                <TextBlock Grid.Row="13" Grid.Column="2" Text="{Binding FoodStampsFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding EducationSpendingChecked, Mode=TwoWay}" Grid.Row="14" Content="Education Spending ($61 billion)"/>
-                <TextBlock Grid.Row="14" Grid.Column="2" Text="{Binding EducationFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding PublicHousingSpendingChecked, Mode=TwoWay}" Grid.Row="15" Content="Public Housing ($56 billion)"/>
-                <TextBlock Grid.Row="15" Grid.Column="2" Text="{Binding PublicHousingFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding HealthSpendingChecked, Mode=TwoWay}" Grid.Row="16" Content="Health Spending ($53 billion)"/>
-                <TextBlock Grid.Row="16" Grid.Column="2" Text="{Binding HealthFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding ScienceSpendingChecked, Mode=TwoWay}" Grid.Row="17" Content="Science Spending ($30 billion)"/>
-                <TextBlock Grid.Row="17" Grid.Column="2" Text="{Binding ScienceFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding TransportationSpendingChecked, Mode=TwoWay}" Grid.Row="18" Content="Transportation Spending ($29 billion)"/>
-                <TextBlock Grid.Row="18" Grid.Column="2" Text="{Binding TransportationFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding InternationalSpendingChecked, Mode=TwoWay}" Grid.Row="19" Content="International Affairs Spending ($29 billion)"/>
-                <TextBlock Grid.Row="19" Grid.Column="2" Text="{Binding InternationalFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding EESpendingChecked, Mode=TwoWay}" Grid.Row="20" Content="Energy and Environment Spending ($28 billion)"/>
-                <TextBlock Grid.Row="20" Grid.Column="2" Text="{Binding EEFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding UnemploymentSpendingChecked, Mode=TwoWay}" Grid.Row="21" Content="Unemployment Spending ($24 billion)"/>
-                <TextBlock Grid.Row="21" Grid.Column="2" Text="{Binding UnemploymentFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding AgricultureSpendingChecked, Mode=TwoWay}" Grid.Row="22" Content="Food and Agriculture Spending ($11 billion)"/>
-                <TextBlock Grid.Row="22" Grid.Column="2" Text="{Binding AgricultureFunding}" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Row="7"
+                           Text="Old Government Budget:"
+                           />
+                <TextBlock Grid.Row="7"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           Text="{Binding OldBudget}"/>
+                <TextBlock Grid.Row="8"
+                           Text="Old Budget % Of GDP:"/>
+                <TextBlock Grid.Row="8"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           Text="{Binding OldBudgetPercent}"/>
+                <TextBlock Grid.Row="9"
+                           Text="Old Government Deficit:"/>
+                <TextBlock Grid.Row="9"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           Text="{Binding OldDeficit}"/>
+                <TextBlock Grid.Row="10"
+                           Text="Old Deficit % Of GDP:"/>
+                <TextBlock Grid.Row="10"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           Text="{Binding OldDeficitPercent}"/>
+                <TextBlock Grid.Row="11"
+                           Text="New Government Budget:"/>
+                <TextBlock Grid.Column="2"
+                                    Grid.Row="11"
+                                    HorizontalAlignment="Right"
+                                    Text="{Binding TotalSelectedBudget}"/>
+                <TextBlock Grid.Row="12"
+                           Text="New Budget % Of GDP:"/>
+                <TextBlock Grid.Row="12"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           Text="{Binding NewBudgetPercent}"/>
+                <TextBlock Grid.Row="13"
+                           Text="Surplus or Additional Revenue Needed:"/>
+                <TextBlock Grid.Column="2"
+                                    Grid.Row="13"
+                                    HorizontalAlignment="Right"
+                                    Text="{Binding LeftOverBudget}"/>
+                <TextBlock Grid.Row="14"
+                           Text="Left Over Revenue % Of GDP:"/>
+                <TextBlock Grid.Column="2"
+                                    Grid.Row="14"
+                                    HorizontalAlignment="Right"
+                                    Text="{Binding NewDeficitPercent}"/>
+                <TextBlock Grid.Row="15"
+                           Text="Total Debt:"/>
+                <TextBlock Grid.Row="15"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           Text="{Binding TotalDebt}"/>
+                <TextBlock Grid.Row="16"
+                           Text="Debt % Of GDP:"/>
+                <TextBlock Grid.Row="16"
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Text="{Binding OldDebtPercent}"/>
+                <Expander Header="Income Statistics" Grid.Row="17">
+                    <DataGrid ItemsSource="{Binding MeanMedian}" 
+                            CanUserAddRows="False" 
+                            IsReadOnly="True" 
+                            HorizontalAlignment="Left"/>
+                </Expander>
+                <TextBlock Grid.Row="18" Text="Existing Federal Budget:" FontWeight="Bold" Margin="0, 10, 0, 0"/>
+                <CheckBox IsChecked="{Binding DefenseSpendingChecked, Mode=TwoWay}" Grid.Row="19" Content="{Binding DefenseText}"/>
+                <TextBlock Grid.Row="19" Grid.Column="2" Text="{Binding DefenseFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding MedicaidSpendingChecked, Mode=TwoWay}" Grid.Row="20" Content="{Binding MedicaidText}"/>
+                <TextBlock Grid.Row="20" Grid.Column="2" Text="{Binding MedicaidFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding WelfareSpendingChecked, Mode=TwoWay}" Grid.Row="21" Content="{Binding WelfareText}"/>
+                <TextBlock Grid.Row="21" Grid.Column="2" Text="{Binding WelfareFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding VeteransSpendingChecked, Mode=TwoWay}" Grid.Row="22" Content="{Binding VeteransText}"/>
+                <TextBlock Grid.Row="22" Grid.Column="2" Text="{Binding VeteransFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding FoodStampsSpendingChecked, Mode=TwoWay}" Grid.Row="23" Content="{Binding FoodStampsText}"/>
+                <TextBlock Grid.Row="23" Grid.Column="2" Text="{Binding FoodStampsFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding EducationSpendingChecked, Mode=TwoWay}" Grid.Row="24" Content="{Binding EducationText}"/>
+                <TextBlock Grid.Row="24" Grid.Column="2" Text="{Binding EducationFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding PublicHousingSpendingChecked, Mode=TwoWay}" Grid.Row="25" Content="{Binding PublicHousingText}"/>
+                <TextBlock Grid.Row="25" Grid.Column="2" Text="{Binding PublicHousingFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding HealthSpendingChecked, Mode=TwoWay}" Grid.Row="26" Content="{Binding HealthText}"/>
+                <TextBlock Grid.Row="26" Grid.Column="2" Text="{Binding HealthFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding ScienceSpendingChecked, Mode=TwoWay}" Grid.Row="27" Content="{Binding ScienceText}"/>
+                <TextBlock Grid.Row="27" Grid.Column="2" Text="{Binding ScienceFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding TransportationSpendingChecked, Mode=TwoWay}" Grid.Row="28" Content="{Binding TransportationText}"/>
+                <TextBlock Grid.Row="28" Grid.Column="2" Text="{Binding TransportationFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding InternationalSpendingChecked, Mode=TwoWay}" Grid.Row="29" Content="{Binding InternationalAffairsText}"/>
+                <TextBlock Grid.Row="29" Grid.Column="2" Text="{Binding InternationalFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding EESpendingChecked, Mode=TwoWay}" Grid.Row="30" Content="{Binding EnergyAndEnvironmentText}"/>
+                <TextBlock Grid.Row="30" Grid.Column="2" Text="{Binding EEFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding UnemploymentSpendingChecked, Mode=TwoWay}" Grid.Row="31" Content="{Binding UnemploymentText}"/>
+                <TextBlock Grid.Row="31" Grid.Column="2" Text="{Binding UnemploymentFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding AgricultureSpendingChecked, Mode=TwoWay}" Grid.Row="32" Content="{Binding FoodAndAgricultureText}"/>
+                <TextBlock Grid.Row="32" Grid.Column="2" Text="{Binding AgricultureFunding}" HorizontalAlignment="Right"/>
 
-                <TextBlock Grid.Row="23"/>
-                <TextBlock Grid.Row="24" Text="Bernie Sander's Plans:" FontWeight="Bold"/>
-                <CheckBox IsChecked="{Binding SandersCollegeSpendingChecked, Mode=TwoWay}" Grid.Row="25" Content="College Tuition Plan ($220 billion)" Foreground="Red"/>
-                <TextBlock Grid.Row="25" Grid.Column="2" Text="{Binding SandersCollegeFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding SandersMedicaidSpendingChecked, Mode=TwoWay}" Grid.Row="26" Content="Medicaid For All ($350 billion)" Foreground="Red"/>
-                <TextBlock Grid.Row="26" Grid.Column="2" Text="{Binding SandersMedicaidFunding}" HorizontalAlignment="Right"/>
-                <TextBlock Grid.Row="27"/>
-                <TextBlock Grid.Row="28" Text="Andrew Yang's Plans:" FontWeight="Bold"/>
-                <CheckBox IsChecked="{Binding YangUbiSpendingChecked, Mode=TwoWay}" Grid.Row="29" Content="UBI ($2.8 trillion)" Foreground="Red"/>
-                <TextBlock Grid.Row="29" Grid.Column="2" Text="{Binding YangUbiFunding}" HorizontalAlignment="Right"/>
-                <CheckBox IsChecked="{Binding YangRemoveChecked, Mode=TwoWay}" Grid.Row="30" Content="Remove Existing Welfare Programs ($+1.066 trillion)" Foreground="Green"/>
-                <TextBlock Grid.Row="31" Margin="0, 20, 0, 20"/>
-                <TextBlock Grid.Row="32" Text="Custom Government Programs:" FontWeight="Bold"/>
-                <Button Grid.Row="33" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
+                <TextBlock Grid.Row="33"/>
+                <TextBlock Grid.Row="34" Text="Bernie Sander's Plans:" FontWeight="Bold"/>
+                <CheckBox IsChecked="{Binding SandersCollegeSpendingChecked, Mode=TwoWay}" Grid.Row="35" Content="{Binding SandersCollegeText}" Foreground="Red"/>
+                <TextBlock Grid.Row="35" Grid.Column="2" Text="{Binding SandersCollegeFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding SandersMedicaidSpendingChecked, Mode=TwoWay}" Grid.Row="36" Content="{Binding SandersMedicaidText}" Foreground="Red"/>
+                <TextBlock Grid.Row="36" Grid.Column="2" Text="{Binding SandersMedicaidFunding}" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Row="37"/>
+                <TextBlock Grid.Row="38" Text="Andrew Yang's Plans:" FontWeight="Bold"/>
+                <CheckBox IsChecked="{Binding YangUbiSpendingChecked, Mode=TwoWay}" Grid.Row="39" Content="{Binding YangUbiText}" Foreground="Red"/>
+                <TextBlock Grid.Row="39" Grid.Column="2" Text="{Binding YangUbiFunding}" HorizontalAlignment="Right"/>
+                <CheckBox IsChecked="{Binding YangRemoveChecked, Mode=TwoWay}" Grid.Row="40" Content="Remove Existing Welfare Programs ($+1.066 trillion)" Foreground="Green"/>
+                <TextBlock Grid.Row="41" Text="UBI:" FontWeight="Bold" Margin="0, 10, 0, 0"/>
+                <CheckBox IsChecked="{Binding UBIChecked, Mode=TwoWay}" Grid.Row="42" Content="{Binding UBIText}"/>
+                <TextBlock Grid.Row="42" Grid.Column="2" Text="{Binding UBIFunding}" HorizontalAlignment="Right"/>
+
+                <TextBlock Grid.Row="43" Text="Debt Reduction:" FontWeight="Bold" Margin="0, 20, 0, 0"/>
+                <TextBlock Grid.Row="44" Text="Target Percentage: "/>
+                <WrapPanel Grid.Row="44" Grid.Column="2">
+                    <TextBox Text="{Binding TargetDebtPercent, Mode=TwoWay}" Width="30"/>
+                    <TextBlock Text="%" Margin="5, 0, 0, 0"/>
+                </WrapPanel>
+                <TextBlock Grid.Row="45" Text="Number of Years: "/>
+                <WrapPanel Grid.Row="45" Grid.Column="2">
+                    <TextBox Text="{Binding DebtYears, Mode=TwoWay}" Width="30"/>
+                    <TextBlock Text="Years" Margin="5, 0, 0, 0"/>
+                </WrapPanel>
+                <TextBlock Grid.Row="46" Text="Yearly GDP Growth: "/>
+                <WrapPanel Grid.Row="46" Grid.Column="2">
+                    <TextBox Text="{Binding YearlyGDPGrowth, Mode=TwoWay}" Width="30"/>
+                    <TextBlock Text="%" Margin="5, 0, 0, 0"/>
+                </WrapPanel>
+                <CheckBox Grid.Row="47" IsChecked="{Binding DebtReductionChecked, Mode=TwoWay}" Content="{Binding DebtReductionText}"/>
+                <TextBlock Grid.Row="47" Grid.Column="2" Text="{Binding DebtReductionFunding}"/>
+
+                <TextBlock Grid.Row="48" Text="Current GDP: "/>
+                <TextBlock Grid.Row="48" Grid.Column="2" Text="{Binding GDP}"/>
+                <TextBlock Grid.Row="49" Text="Projected GDP: "/>
+                <TextBlock Grid.Row="49" Grid.Column="2" Text="{Binding ProjectedGDP}"/>
+                <TextBlock Grid.Row="50" Text="Current Debt: "/>
+                <TextBlock Grid.Row="50" Grid.Column="2" Text="{Binding FormattedTotalDebt}"/>
+                <TextBlock Grid.Row="51" Text="Target Debt: "/>
+                <TextBlock Grid.Row="51" Grid.Column="2" Text="{Binding TargetDebt}"/>
+                <TextBlock Grid.Row="52" Text="Difference In Debt: "/>
+                <TextBlock Grid.Row="52" Grid.Column="2" Text="{Binding DebtDifference}"/>
+
+
+                <TextBlock Grid.Row="53" Margin="0, 20, 0, 20"/>
+                <TextBlock Grid.Row="54" Text="Custom Government Programs:" FontWeight="Bold"/>
+                <Button Grid.Row="55" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
+
             </Grid>
-            <ListView ItemsSource="{Binding customProgramListView.Items}"/>
+            <ListView ItemsSource="{Binding customProgramListView.Items}" Margin="0, 10, 0, 40"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

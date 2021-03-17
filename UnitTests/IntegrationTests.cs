@@ -19,10 +19,13 @@ namespace UnitTests
         private OutputViewModel outputVM;
         private DataViewModel dataVM;
         private GraphViewModel graphVM;
+        private SettingsViewModel settingsVM;
 
         private YearsModel yearsModel;
         private DataModel dataModel;
         private GraphModel graphModel;
+        private TaxPlansModel taxPlansModel;
+        private OptionsModel optionsModel;
 
         [TestInitialize]
         public void Setup()
@@ -33,34 +36,55 @@ namespace UnitTests
             controlVM = new ControlViewModel();
             outputVM = new OutputViewModel();
             graphVM = new GraphViewModel();
-
+            settingsVM = new SettingsViewModel();
 
             // Link VMs to VMs
+            mainVM.DataVM = dataVM;
+            mainVM.SettingsVM = settingsVM;
+
             dataVM.ControlVM = controlVM;
             dataVM.GraphVM = graphVM;
-            //controlVM.DataVM = dataVM;
+            dataVM.OutputVM = outputVM;
+
+            controlVM.DataVM = dataVM;
             controlVM.MainVM = mainVM;
+            controlVM.OutputVM = outputVM;
+            controlVM.GraphVM = graphVM;
+
+            outputVM.ControlVM = controlVM;
+            outputVM.DataVM = dataVM;
+
+            settingsVM.MainVM = mainVM;
 
             // Create models
             yearsModel = new YearsModel();
             dataModel = new DataModel();
             graphModel = new GraphModel();
+            taxPlansModel = new TaxPlansModel();
+            optionsModel = new OptionsModel();
 
             // Link models to VMs
 
             dataVM.YearsModel = yearsModel;
             dataVM.DataModel = dataModel;
             dataVM.GraphModel = graphModel;
+            dataVM.TaxPlansModel = taxPlansModel;
+            dataVM.OptionsModel = optionsModel;
 
             controlVM.YearsModel = yearsModel;
             controlVM.DataModel = dataModel;
             controlVM.GraphModel = graphModel;
+            controlVM.TaxPlansModel = taxPlansModel;
+            controlVM.OptionsModel = optionsModel;
 
             outputVM.DataModel = dataModel;
+            outputVM.OptionsModel = optionsModel;
 
             graphVM.YearsModel = yearsModel;
             graphVM.GraphModel = graphModel;
             graphVM.DataModel = dataModel;
+            graphVM.TaxPlansModel = taxPlansModel;
+            graphVM.OptionsModel = optionsModel;
 
             string[] filePaths = Directory.GetFiles("res\\TaxCSV", "*.csv");
             for (int i = 0; i < filePaths.Length; i++)

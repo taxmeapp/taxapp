@@ -16,6 +16,54 @@ namespace TaxMeApp.Helpers
 {
     public static class Parser
     {
+        public static BudgetDataModel ParseBudgetData(string path) {
+            BudgetDataModel ans = new BudgetDataModel();
+            StreamReader reader = new StreamReader(path);
+            CsvConfiguration config = new CsvConfiguration(CultureInfo.InvariantCulture);
+
+            using (CsvReader csv = new CsvReader(reader, config)) {
+                Console.WriteLine("BUDGET DATA\n");
+
+                //Skip titles
+                csv.Read();
+
+                //Parse Data from BudgetGDP.csv
+                int i = 1;
+                while (csv.Read()) {
+                    //Create BudgetYearModel and add values
+                    BudgetYearModel bym = new BudgetYearModel();
+
+                    Console.WriteLine("Entry = {0}", i);
+                    Console.WriteLine("Year = {0}", csv[0]);
+                    Console.WriteLine("GDP = {0}", csv[1]);
+                    Console.WriteLine("Total Budget = {0}", csv[16]);
+                    Console.WriteLine("Total Deficit = {0}", csv[17]);
+                    Console.WriteLine("Total Debt = {0}", csv[18]);
+                    Console.WriteLine("Budget % = {0}", csv[19]);
+                    Console.WriteLine("Deficit % = {0}", csv[20]);
+
+
+                    bym.Year = Int32.Parse(csv[0]);
+                    bym.GDP = double.Parse(csv[1]);
+                    bym.TotalBudget = double.Parse(csv[16]);
+                    bym.Deficit = double.Parse(csv[17]);
+                    bym.TotalDebt = double.Parse(csv[18]);
+                    bym.BudgetPercent = double.Parse(csv[19]);
+                    bym.DeficitPercent = double.Parse(csv[20]);
+
+                    //Add Individual budget year model to list of data
+                    ans.YearData.Add(bym);
+
+                    i++;
+                    Console.WriteLine("");
+                }
+
+                Console.WriteLine("END BUDGET DATA\n");
+            }
+
+
+            return ans;
+        }
 
         public static IncomeYearModel ParseCSV(string path)
         {
@@ -90,7 +138,9 @@ namespace TaxMeApp.Helpers
                 while (csv.Read() && !Array.Exists(row, field => field.StartsWith(EndLine)))
                 {
                     row = csv.Parser.Record;
-                    brackets.Add(csv.GetRecord<BracketModel>());
+                    BracketModel bracket = csv.GetRecord<BracketModel>();
+                    bracket.SetBounds();
+                    brackets.Add(bracket);
                 }
 
                 // Create a new Model and return it

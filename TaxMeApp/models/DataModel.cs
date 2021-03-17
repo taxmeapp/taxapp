@@ -30,6 +30,12 @@ namespace TaxMeApp.models
         public long TotalRevenueOld { get; set; }
         public long TotalRevenueNew { get; set; }
         public long TotalUBICost { get; set; }
+        public double PreTaxMean { get; set; }
+        public double PreTaxMedian { get; set; }
+        public double PostTaxMean { get; set; }
+        public double PostTaxMedian { get; set; }
+        public double PostTaxMeanWithUBI { get; set; }
+        public double PostTaxMedianWithUBI { get; set; }
 
         public long RevenueDifference
         {

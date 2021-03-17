@@ -17,6 +17,7 @@ namespace TaxMeApp.viewmodels
         public YearsModel YearsModel { get; set; }
         public TaxPlansModel TaxPlansModel { get; set; }
         public OptionsModel OptionsModel { get; set; }
+        public BudgetDataModel BudgetDataModel { get; set; }
 
         public MainViewModel MainVM { get; set; }
         public ControlViewModel ControlVM { get; set; }
@@ -48,6 +49,10 @@ namespace TaxMeApp.viewmodels
         protected void OnPropertyChange(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public void propChange(string propertyName)
+        {
+            this.OnPropertyChange(propertyName);
         }
 
     }

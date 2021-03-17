@@ -25,6 +25,11 @@ namespace TaxMeApp.viewmodels
         public ICommand DeleteTaxPlanBtnCommand { get; set; }
         public ICommand ResetSettingsBtnCommand { get; set; }
         public ICommand ResetTaxRatesBtnCommand { get; set; }
+        public ICommand AutoFitSlantTaxBtnCommand { get; set; }
+        public ICommand AutoFitFlatTaxBtnCommand { get; set; }
+        public ICommand AutoFitBudgetBtnCommand { get; set; }
+        public ICommand ResetBudgetBtnCommand { get; set; }
+
 
         public ControlViewModel()
         {
@@ -35,6 +40,11 @@ namespace TaxMeApp.viewmodels
             DeleteTaxPlanBtnCommand = new RelayCommand(o => deleteTaxPlanButtonClick());
             ResetSettingsBtnCommand = new RelayCommand(o => resetSettingsButtonClick());
             ResetTaxRatesBtnCommand = new RelayCommand(o => resetTaxRatesButtonClick());
+            AutoFitSlantTaxBtnCommand = new RelayCommand(o => autoFitSlantTaxButtonClick());
+            AutoFitFlatTaxBtnCommand = new RelayCommand(o => autoFitFlatTaxButtonClick());
+            AutoFitBudgetBtnCommand = new RelayCommand(o => autoFitBudgetButtonClick());
+            ResetBudgetBtnCommand = new RelayCommand(o => resetBudgetButtonClick());
+
         }
 
         // ControlPanel Init
@@ -49,6 +59,8 @@ namespace TaxMeApp.viewmodels
             List<double> slantTaxRates = slantTaxData[0];
             TaxPlansModel.TaxPlans.Add("Slant Tax", new IndividualTaxPlanModel("Slant Tax", new ObservableCollection<double>(slantTaxRates)));
             SelectedTaxPlanName = "Slant Tax";
+
+            TaxPlansModel.TaxPlans.Add("Flat Tax", new IndividualTaxPlanModel("Flat Tax", new ObservableCollection<double>(new double[(int)GraphModel.Labels.Length])));
 
             PlanLoader.LoadPlans(this);
 
@@ -87,6 +99,73 @@ namespace TaxMeApp.viewmodels
 
                 totalGraphReset();
 
+            }
+        }
+
+    
+
+        public List<Tuple<int, string>> GovProgramList
+        {
+            get
+            {
+                return OptionsModel.GetGovProgramList();
+            }
+        }
+
+        public Tuple<int, string> SelectedGovProgram
+        {
+            get
+            {
+                return OptionsModel.SelectedGovProgram;
+            }
+            set
+            {
+                OptionsModel.SelectedGovProgram = value;
+                OnPropertyChange("SelectedGovProgram");
+                OnPropertyChange("SelectedTargetFunding");
+                OnPropertyChange("TargetFundingSlider");
+                OnPropertyChange("SelectedTargetBudget");
+            }
+        }
+
+        public double SelectedTargetFunding
+        {
+            get
+            {
+                double ans = OptionsModel.GetSelectedTargetFunding(SelectedGovProgram.Item1);
+                if (OptionsModel.GetGovProgramList().IndexOf(SelectedGovProgram) < 0){
+                    SelectedGovProgram = OptionsModel.GetGovProgramList()[GovProgramList.Count-1];
+                    OnPropertyChange("SelectedGovProgram");
+                    ans = OptionsModel.GetSelectedTargetFunding(GovProgramList.IndexOf(SelectedGovProgram));
+                }
+
+                return ans;
+            }
+        }
+
+        public string SelectedTargetBudget
+        {
+            get
+            {
+                return OptionsModel.GetSelectedTargetBudget(SelectedGovProgram.Item1);
+            }
+        }
+
+        public double TargetFundingSlider {
+            get {
+                return OptionsModel.GetSelectedTargetFunding(SelectedGovProgram.Item1);
+            }
+            set {
+                //int priority, bool ischecked, string name, double cost, double tFunding)
+                int priority = SelectedGovProgram.Item1;
+                bool isChecked = OptionsModel.listOfCosts[priority].ischecked;
+                string name = SelectedGovProgram.Item2;
+                double cost = OptionsModel.listOfCosts[priority].cost;
+
+                OptionsModel.listOfCosts[SelectedGovProgram.Item1] = (priority, isChecked, name, cost, value);
+                OnPropertyChange("SelectedTargetFunding");
+                OnPropertyChange("SelectedTargetBudget");
+                OutputVM.Update();
             }
         }
 
@@ -181,6 +260,7 @@ namespace TaxMeApp.viewmodels
 
                     DataModel.NewRevenueByBracket = DataVM.CalculateNewRevenues(selectedTaxPlan.TaxRates);
                     OnPropertyChange("SelectedTaxRate");
+                    DataVM.calculateMeanMedian();
                     OutputVM.Update();
                     customGraphReset();
                 }
@@ -233,14 +313,32 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if (SelectedTaxPlanName == null || !SelectedTaxPlanName.Equals("Slant Tax"))
+
+                if (SelectedTaxPlanName is null || SelectedTaxPlanName.Equals("Slant Tax") || SelectedTaxPlanName.Equals("Flat Tax"))
                 {
-                    return true;
+                    return false;
                 }
 
-                return false;
+                return true;
             }
         }
+
+        private int selectedTaxPlanIndex;
+        public int SelectedTaxPlanTabIndex
+        {
+            get
+            {
+                return selectedTaxPlanIndex;
+            }
+            set
+            {
+
+                selectedTaxPlanIndex = value;
+                OnPropertyChange("SelectedTaxPlanTabIndex");
+
+            }
+        }
+
 
         public string SelectedTaxPlanName
         {
@@ -250,9 +348,32 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
-                TaxPlansModel.SelectedTaxPlanName = value;
-                if (value != "Slant Tax")
+
+                if (value is null)
                 {
+                    return;
+                }
+
+                TaxPlansModel.SelectedTaxPlanName = value;
+                if (value.Equals("Slant Tax"))
+                {
+
+                    MaxTaxRate = (int)OptionsModel.MaxTaxRate;
+                    MaxBracketCountSlider = OptionsModel.MaxBracketCount;
+                    DataVM.CalculateNewRevenues(TaxPlansModel.SelectedTaxPlan.TaxRates);
+
+                    SelectedTaxPlanTabIndex = (int)TaxPlan.Slant;
+
+                }
+                else if (value.Equals("Flat Tax"))
+                {
+                    SelectedTaxPlanTabIndex = (int)TaxPlan.Flat;
+                }
+                else
+                {
+
+                    SelectedTaxPlanTabIndex = (int)TaxPlan.Custom;
+
                     OptionsModel.MaxTaxRate = MaxTaxRate;
                     OptionsModel.MaxBracketCount = MaxBracketCountSlider;
                     MaxTaxRate = 0;
@@ -270,12 +391,6 @@ namespace TaxMeApp.viewmodels
                         customGraphReset();
                     }
 
-                }
-                else
-                {
-                    MaxTaxRate = (int)OptionsModel.MaxTaxRate;
-                    MaxBracketCountSlider = OptionsModel.MaxBracketCount;
-                    DataVM.CalculateNewRevenues(TaxPlansModel.SelectedTaxPlan.TaxRates);
                 }
 
                 OnPropertyChange("SelectedTaxRate");
@@ -311,8 +426,11 @@ namespace TaxMeApp.viewmodels
 
                 List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
                 List<double> slantTaxRates = slantTaxData[0];
-                TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
-                stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
+                try
+                {
+                    TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
+                    stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
+                } catch { }
                 OnPropertyChange("TaxRateSlider");
                 OnPropertyChange("SelectedTaxRate");
             }
@@ -486,8 +604,47 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("PovertyLineBrackets");
 
                 OnPropertyChange("MaxBracketCountSlider");
+
+
+                //UBI sometimes changes when poverty brackets change
+                //OnPropertyChange("MaxUBIBracketCount");
+                //OnPropertyChange("MaxUBIBracketCountSlider");
+                //OnPropertyChange("MaxUBISlider");
+
             }
         }
+
+        // Rate that all brackets are taxed at for flat tax plan
+        public int FlatTaxRate
+        {
+            get
+            {
+                return (int)DataModel.NewTaxPctByBracket[0];
+            }
+        }
+
+        public int FlatTaxSlider
+        {
+            get
+            {
+                return (int)DataModel.NewTaxPctByBracket[0];
+            }
+            set
+            {
+                TaxPlansModel.TaxPlans.TryGetValue("Flat Tax", out IndividualTaxPlanModel selectedTaxPlan);
+                foreach(var bracket in BracketList)
+                {
+                    selectedTaxPlan.TaxRates[BracketList.IndexOf(bracket)] = value;
+                    DataModel.NewTaxPctByBracket[BracketList.IndexOf(bracket)] = value;
+                }
+                DataModel.NewRevenueByBracket = DataVM.CalculateNewRevenues(selectedTaxPlan.TaxRates);
+                OnPropertyChange("FlatTaxRate");
+                DataVM.calculateMeanMedian();
+                OutputVM.Update();
+                customGraphReset();
+            }
+        }
+
 
         // Checkboxes
         public bool ShowNumberOfReturns
@@ -588,6 +745,90 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public bool ShowPreTaxMedian
+        {
+            get
+            {
+                return GraphModel.ShowPreTaxMedian;
+            }
+            set
+            {
+                GraphVM.showPreTaxMedian = value;
+
+                OnPropertyChange("ShowPreTaxMedian");
+            }
+        }
+
+        public bool ShowPreTaxMean
+        {
+            get
+            {
+                return GraphModel.ShowPreTaxMean;
+            }
+            set
+            {
+                GraphVM.showPreTaxMean = value;
+
+                OnPropertyChange("ShowPreTaxMean");
+            }
+        }
+
+        public bool ShowPostTaxMedian
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMedian;
+            }
+            set
+            {
+                GraphVM.showPostTaxMedian = value;
+
+                OnPropertyChange("ShowPostTaxMedian");
+            }
+        }
+
+        public bool ShowPostTaxMean
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMean;
+            }
+            set
+            {
+                GraphVM.showPostTaxMean = value;
+
+                OnPropertyChange("ShowPostTaxMean");
+            }
+        }
+
+        public bool ShowPostTaxMedianUBI
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMedianUBI;
+            }
+            set
+            {
+                GraphVM.showPostTaxMedianUBI = value;
+
+                OnPropertyChange("ShowPostTaxMedianUBI");
+            }
+        }
+
+        public bool ShowPostTaxMeanUBI
+        {
+            get
+            {
+                return GraphModel.ShowPostTaxMeanUBI;
+            }
+            set
+            {
+                GraphVM.showPostTaxMeanUBI = value;
+
+                OnPropertyChange("ShowPostTaxMeanUBI");
+            }
+        }
+
         /*
          
                 Button Logic
@@ -662,6 +903,7 @@ namespace TaxMeApp.viewmodels
                 CreateTaxPlan(tb.Text, defaultValues);
 
                 SelectedTaxPlanName = TaxPlansList[0];
+                SelectedTaxPlanName = tb.Text;
                 SelectedBracket = BracketList[0];
 
                 tb.Text = "";
@@ -872,6 +1114,7 @@ namespace TaxMeApp.viewmodels
             ShowNewPercentage = false;
             MaxBracketCountSlider = 0;
             MaxTaxRate = 0;
+            FlatTaxSlider = 0;
         }
 
         private void resetTaxRatesButtonClick() {
@@ -897,6 +1140,112 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public void update()
+        {
+            OnPropertyChange("SelectedTaxRate");
+            OnPropertyChange("TaxRateSlider");
+            OnPropertyChange("MaxBracketCountSlider");
+            OnPropertyChange("SelectedTaxPlanName");
+            OnPropertyChange("SelectedBracket");
+            OnPropertyChange("TargetFundingSlider");
+            OnPropertyChange("SelectedTargetBudget");
+            OnPropertyChange("FlatTaxSlider");
+        }
+
+        public void autoFitSlantTaxButtonClick() {
+            double budget = OptionsModel.GetTotalBudget();
+            double revenue = 0;
+
+            this.MaxBracketCountSlider = 0;
+            this.MaxTaxRate = 0;
+            revenue = DataModel.TotalRevenueNew;
+
+            while (revenue < budget) {
+                for (int i = 0; i < 11; i++) {
+                    MaxBracketCountSlider = i;
+                    revenue = DataModel.TotalRevenueNew;
+                    //Console.WriteLine("TaxRate = {0}, Brackets = {1}, Revenue = {2}, Budget = {3}", MaxTaxRate, MaxBracketCountSlider, revenue, budget);
+                    if (revenue >= budget) {
+                        break;
+                    }
+                }
+                if (revenue < budget) {
+                    this.MaxTaxRate += 1;
+                    //revenue = DataModel.TotalRevenueNew;
+                }
+                if (this.MaxTaxRate > 100) {
+                    break;
+                }
+            }
+            if (this.MaxTaxRate > 100) {
+                this.MaxTaxRate = 100;
+            }
+        }
+
+        public void autoFitFlatTaxButtonClick(){
+            double budget = OptionsModel.GetTotalBudget();
+            double revenue = 0;
+
+            this.MaxBracketCountSlider = 0;
+            this.MaxTaxRate = 0;
+            revenue = DataModel.TotalRevenueNew;
+
+            long flatRate = 0;
+            ObservableCollection<double> flatRates = new ObservableCollection<double>();
+
+            while (revenue < budget && flatRate < 100) {
+                flatRate++;
+                flatRates = new ObservableCollection<double>();
+
+                for (int i = 0; i < DataModel.NewTaxPctByBracket.Count; i++) {
+                    flatRates.Add(flatRate);
+                }
+
+                DataVM.CalculateNewRevenues(flatRates);
+                revenue = DataModel.TotalRevenueNew;
+
+            }
+
+            Console.WriteLine("Flat Rate = {0}", flatRate);
+            FlatTaxSlider = (int)flatRate;
+            this.update();
+        }
+
+        public void autoFitBudgetButtonClick(){
+            double revenue = DataModel.TotalRevenueNew;
+            double flatTFunding = 100.0;
+
+            OptionsModel.setFlatTFunding(flatTFunding);
+
+            double budget = OptionsModel.GetTotalBudget();
+
+            while (revenue < budget && flatTFunding >= 0) {
+                OptionsModel.setFlatTFunding(flatTFunding);
+                flatTFunding -= 1;
+                budget = OptionsModel.GetTotalBudget();
+            }
+            OutputVM.Update();
+            OnPropertyChange("SelectedTargetFunding");
+            OnPropertyChange("SelectedTargetBudget");
+            OnPropertyChange("TargetFundingSlider");
+
+        }
+
+        public void resetBudgetButtonClick()
+        {
+            OptionsModel.setAllTFunding(100.0);
+            OutputVM.Update();
+            OnPropertyChange("SelectedTargetFunding");
+            OnPropertyChange("SelectedTargetBudget");
+            OnPropertyChange("TargetFundingSlider");
+        }
+    }
+
+    public enum TaxPlan
+    {
+        Slant,
+        Flat,
+        Custom
     }
 
 }

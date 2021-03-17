@@ -107,6 +107,8 @@
     <Compile Include="Helpers\Formatter.cs" />
     <Compile Include="Helpers\Parser.cs" />
     <Compile Include="Helpers\Loader.cs" />
+    <Compile Include="models\BudgetDataModel.cs" />
+    <Compile Include="models\BudgetYearModel.cs" />
     <Compile Include="Plans\PlanLoader.cs" />
     <Compile Include="Plans\PlanSaver.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
@@ -232,6 +234,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\TaxCSV\2018.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\BudgetData\BudgetGDP.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\BudgetData\BudgetGDP.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Logs\TODO.txt" />

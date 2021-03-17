@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxMeApp.Helpers;
 
 namespace TaxMeApp.models
 {
@@ -13,26 +14,31 @@ namespace TaxMeApp.models
             this.MaxTaxRate = 0;
             this.MaxBracketCount = 0;
 
-            listOfCosts = new List<(int priority, bool ischecked, string name, double cost)>();
-            listOfCosts.Add((0, true, "defense", 678000000000.0));
-            listOfCosts.Add((1, true, "medicaid", 613000000000.0));
-            listOfCosts.Add((2, true, "welfare", 361000000000.0));
-            listOfCosts.Add((3, true, "veterans", 79000000000.0));
-            listOfCosts.Add((4, true, "foodstamps", 68000000000.0));
-            listOfCosts.Add((5, true, "education", 61000000000.0));
-            listOfCosts.Add((6, true, "publichousing", 56000000000.0));
-            listOfCosts.Add((7, true, "health", 53000000000.0));
-            listOfCosts.Add((8, true, "science", 30000000000.0));
-            listOfCosts.Add((9, true, "transportation", 29000000000.0));
-            listOfCosts.Add((10, true, "international", 29000000000.0));
-            listOfCosts.Add((11, true, "energyandenvironment", 28000000000.0));
-            listOfCosts.Add((12, true, "unemployment", 24000000000.0));
-            listOfCosts.Add((13, true, "foodandagriculture", 11000000000.0));
+            listOfCosts = new List<(int priority, bool ischecked, string name, double cost, double tFunding)>();
+            listOfCosts.Add((0, true, "Defense", 678000000000.0, 100.0));
+            listOfCosts.Add((1, true, "Medicaid", 613000000000.0, 100.0));
+            listOfCosts.Add((2, true, "Welfare", 361000000000.0, 100.0));
+            listOfCosts.Add((3, true, "Veterans", 79000000000.0, 100.0));
+            listOfCosts.Add((4, true, "Food Stamps", 68000000000.0, 100.0));
+            listOfCosts.Add((5, true, "Education", 61000000000.0, 100.0));
+            listOfCosts.Add((6, true, "Public Housing", 56000000000.0, 100.0));
+            listOfCosts.Add((7, true, "Health", 53000000000.0, 100.0));
+            listOfCosts.Add((8, true, "Science", 30000000000.0, 100.0));
+            listOfCosts.Add((9, true, "Transportation", 29000000000.0, 100.0));
+            listOfCosts.Add((10, true, "International", 29000000000.0, 100.0));
+            listOfCosts.Add((11, true, "Energy and Environment", 28000000000.0, 100.0));
+            listOfCosts.Add((12, true, "Unemployment", 24000000000.0, 100.0));
+            listOfCosts.Add((13, true, "Food and Agriculture", 11000000000.0, 100.0));
             
-            listOfCosts.Add((14, false, "sanderscollege", 220000000000.0));
-            listOfCosts.Add((15, false, "sandersmedicaid", 350000000000.0));
+            listOfCosts.Add((14, false, "Sanders College", 220000000000.0, 100.0));
+            listOfCosts.Add((15, false, "Sanders Medicaid", 350000000000.0, 100.0));
             
-            listOfCosts.Add((16, false, "yangubi", 2800000000000.0));
+            listOfCosts.Add((16, false, "Yang UBI", 2800000000000.0, 100.0));
+
+            listOfCosts.Add((17, false, "UBI", 0.0, 100.0));
+
+            listOfCosts.Add((18, false, "Debt Reduction Funding", 0.0, 100.0));
+
 
             this.DefenseChecked = true;
             this.MedicaidChecked = true;
@@ -55,6 +61,10 @@ namespace TaxMeApp.models
             this.YangUbiChecked = false;
             this.YangRemoveChecked = false;
 
+            this.UBIChecked = false;
+
+            this.DebtReductionChecked = false;
+
             fundingArray = new double[listOfCosts.Count];
         }
 
@@ -62,7 +72,7 @@ namespace TaxMeApp.models
         public int MaxBracketCount { get; set; }
 
         public long revenue { get; set; } = 0;
-        public List<(int priority, bool ischecked, string name, double cost)> listOfCosts;
+        public List<(int priority, bool ischecked, string name, double cost, double tFunding)> listOfCosts;
         public double[] fundingArray;
 
         public bool dc;
@@ -72,7 +82,7 @@ namespace TaxMeApp.models
             } 
             set {
                 dc = value;
-                listOfCosts[0] = (0, value, "defense", 678000000000.0);
+                listOfCosts[0] = (0, value, "Defense", 678000000000.0, listOfCosts[0].tFunding);
             } 
         }
 
@@ -86,7 +96,7 @@ namespace TaxMeApp.models
             set
             {
                 mc = value;
-                listOfCosts[1] = (1, value, "medicaid", 613000000000.0);
+                listOfCosts[1] = (1, value, "Medicaid", 613000000000.0, listOfCosts[1].tFunding);
             }
         }
 
@@ -100,7 +110,7 @@ namespace TaxMeApp.models
             set
             {
                 wc = value;
-                listOfCosts[2] = (2, value, "welfare", 361000000000.0);
+                listOfCosts[2] = (2, value, "Welfare", 361000000000.0, listOfCosts[2].tFunding);
             }
         }
 
@@ -114,7 +124,7 @@ namespace TaxMeApp.models
             set
             {
                 vc = value;
-                listOfCosts[3] = (3, value, "veterans", 79000000000.0);
+                listOfCosts[3] = (3, value, "Veterans", 79000000000.0, listOfCosts[3].tFunding);
             }
         }
 
@@ -128,7 +138,7 @@ namespace TaxMeApp.models
             set
             {
                 fsc = value;
-                listOfCosts[4] = (4, value, "foodstamps", 68000000000.0);
+                listOfCosts[4] = (4, value, "Food Stamps", 68000000000.0, listOfCosts[4].tFunding);
             }
         }
         public bool edc;
@@ -141,7 +151,7 @@ namespace TaxMeApp.models
             set
             {
                 edc = value;
-                listOfCosts[5] = (5, value, "education", 61000000000.0);
+                listOfCosts[5] = (5, value, "Education", 61000000000.0, listOfCosts[5].tFunding);
             }
         }
         public bool phc;
@@ -154,7 +164,7 @@ namespace TaxMeApp.models
             set
             {
                 phc = value;
-                listOfCosts[6] = (6, value, "publichousing", 56000000000.0);
+                listOfCosts[6] = (6, value, "Public Housing", 56000000000.0, listOfCosts[6].tFunding);
             }
         }
 
@@ -168,7 +178,7 @@ namespace TaxMeApp.models
             set
             {
                 hltc = value;
-                listOfCosts[7] = (7, value, "health", 53000000000.0);
+                listOfCosts[7] = (7, value, "Health", 53000000000.0, listOfCosts[7].tFunding);
             }
         }
 
@@ -182,7 +192,7 @@ namespace TaxMeApp.models
             set
             {
                 scic = value;
-                listOfCosts[8] = (8, value, "science", 30000000000.0);
+                listOfCosts[8] = (8, value, "Science", 30000000000.0, listOfCosts[8].tFunding);
             }
         }
 
@@ -196,7 +206,7 @@ namespace TaxMeApp.models
             set
             {
                 trpc = value;
-                listOfCosts[9] = (9, value, "transportation", 29000000000.0);
+                listOfCosts[9] = (9, value, "Transportation", 29000000000.0, listOfCosts[9].tFunding);
             }
         }
 
@@ -210,7 +220,7 @@ namespace TaxMeApp.models
             set
             {
                 intc = value;
-                listOfCosts[10] = (10, value, "international", 29000000000.0);
+                listOfCosts[10] = (10, value, "International", 29000000000.0, listOfCosts[10].tFunding);
             }
         }
 
@@ -224,7 +234,7 @@ namespace TaxMeApp.models
             set
             {
                 eec = value;
-                listOfCosts[11] = (11, value, "transportation", 28000000000.0);
+                listOfCosts[11] = (11, value, "Energy and Environment", 28000000000.0, listOfCosts[11].tFunding);
             }
         }
         public bool unc;
@@ -237,7 +247,7 @@ namespace TaxMeApp.models
             set
             {
                 unc = value;
-                listOfCosts[12] = (12, value, "unemployment", 24000000000.0);
+                listOfCosts[12] = (12, value, "Unemployment", 24000000000.0, listOfCosts[12].tFunding);
             }
         }
 
@@ -251,7 +261,7 @@ namespace TaxMeApp.models
             set
             {
                 fac = value;
-                listOfCosts[13] = (13, value, "foodandagriculture", 11000000000.0);
+                listOfCosts[13] = (13, value, "Food and Agriculture", 11000000000.0, listOfCosts[13].tFunding);
             }
         }
 
@@ -265,7 +275,7 @@ namespace TaxMeApp.models
             set
             {
                 scc = value;
-                listOfCosts[14] = (14, value, "sanderscollege", 220000000000.0);
+                listOfCosts[14] = (14, value, "Sanders College", 220000000000.0, listOfCosts[14].tFunding);
             }
         }
 
@@ -279,7 +289,7 @@ namespace TaxMeApp.models
             set
             {
                 smc = value;
-                listOfCosts[15] = (15, value, "sandersmedicaid", 350000000000.0);
+                listOfCosts[15] = (15, value, "Sanders Medicaid", 350000000000.0, listOfCosts[15].tFunding);
             }
         }
 
@@ -293,7 +303,7 @@ namespace TaxMeApp.models
             set
             {
                 yubic = value;
-                listOfCosts[16] = (16, value, "yangubi", 2800000000000.0);
+                listOfCosts[16] = (16, value, "Yang UBI", 2800000000000.0, listOfCosts[16].tFunding);
             }
         }
 
@@ -310,6 +320,48 @@ namespace TaxMeApp.models
             }
         }
 
+        public bool ubic;
+        public bool UBIChecked
+        {
+            get
+            {
+                return ubic;
+            }
+            set
+            {
+                ubic = value;
+                listOfCosts[17] = (17, value, "UBI", listOfCosts[17].cost, listOfCosts[17].tFunding);
+            }
+        }
+
+        public bool drc;
+        public bool DebtReductionChecked
+        {
+            get
+            {
+                return drc;
+            }
+            set
+            {
+                drc = value;
+                listOfCosts[18] = (18, value, "Debt Reduction", listOfCosts[18].cost, listOfCosts[18].tFunding);
+            }
+        }
+
+        public string GetUBIText() {
+            string ans = "UBI";
+
+            double cost = listOfCosts[17].cost * (listOfCosts[17].tFunding / 100);
+
+            ans += " ($" + Formatter.Format(cost) + ")";
+
+            return ans;
+        }
+
+        public void UpdateUBI(double c) {
+            listOfCosts[17] = (17, listOfCosts[17].ischecked, listOfCosts[17].name, c, listOfCosts[17].tFunding);
+        }
+
         public void updateFunding() {
             fundingArray = new double[listOfCosts.Count];
             double funding = 0;
@@ -318,11 +370,12 @@ namespace TaxMeApp.models
                 {
                     if (revenue > 0)
                     {
-                        funding = revenue / listOfCosts[i].cost;
+                        funding = revenue / (listOfCosts[i].cost * (listOfCosts[i].tFunding / 100));
                         if (funding >= 1)
                         {
                             funding = 1;
-                            revenue -= long.Parse(listOfCosts[i].cost.ToString());
+                            revenue -= Convert.ToInt64(listOfCosts[i].cost * (listOfCosts[i].tFunding / 100));
+                            //revenue -= long.Parse((listOfCosts[i].cost * (listOfCosts[i].tFunding / 100)).ToString());
                         }
                         else
                         {
@@ -410,5 +463,98 @@ namespace TaxMeApp.models
         {
             return this.fundingArray[16].ToString("0.0") + "% Funded";
         }
+        public string GetUBIFunding()
+        {
+            return this.fundingArray[17].ToString("0.0") + "% Funded";
+        }
+        public string GetDebtReductionFunding()
+        {
+            return this.fundingArray[18].ToString("0.0") + "% Funded";
+        }
+        public double GetTotalBudget() {
+            double ans = 0;
+            for (int i = 0; i < listOfCosts.Count; i++) {
+                if (listOfCosts[i].ischecked) {
+                    ans += listOfCosts[i].cost * (listOfCosts[i].tFunding / 100);
+                }
+            }
+            return ans;
+        }
+
+        public List<Tuple<int, string>> GetGovProgramList() {
+            List<Tuple<int, string>> ans = new List<Tuple<int, string>>();
+            for (int i = 0; i < listOfCosts.Count; i++) {
+                ans.Add(new Tuple<int, string>(listOfCosts[i].priority, listOfCosts[i].name));
+            }
+            return ans;
+        }
+        public Tuple<int, string> SelectedGovProgram { get; set; } = new Tuple<int, string>(0, "Defense");
+
+        public double GetSelectedTargetFunding(int i) {
+            if (i >= 0)
+            {
+                return listOfCosts[i].tFunding;
+            }
+            else {
+                return -1;
+            }
+        }
+
+        public string GetSelectedTargetBudget(int i)
+        {
+            string ans = "$";
+            if (i >= 0)
+            { 
+                double targetBudget = listOfCosts[i].cost * (listOfCosts[i].tFunding / 100);
+                ans += Formatter.Format(targetBudget);
+            }
+
+            return ans;
+        }
+
+        public void setFlatTFunding(double flatTFunding) {
+            for (int i = 0; i < listOfCosts.Count; i++) {
+                if (listOfCosts[i].ischecked){
+                    listOfCosts[i] = (listOfCosts[i].priority, listOfCosts[i].ischecked, listOfCosts[i].name, listOfCosts[i].cost, flatTFunding);
+                }        
+            }
+            updateFunding();
+        }
+        public void setAllTFunding(double flatTFunding)
+        {
+            for (int i = 0; i < listOfCosts.Count; i++)
+            {
+                listOfCosts[i] = (listOfCosts[i].priority, listOfCosts[i].ischecked, listOfCosts[i].name, listOfCosts[i].cost, flatTFunding);
+            }
+            updateFunding();
+        }
+
+        public double TargetDebtPercent { get; set; } = 10;
+        public double DebtYears { get; set; } = 10;
+        public double YearlyGDPGrowth { get; set; } = 2.3;
+        public double PGDP { get; set; }
+        public double TargetDebt { get; set; }
+        public double DebtDifference { get; set; }
+
+        public double CalculateYearlyDebtPayment(double currentDebt, double GDP) {
+            GDP = GDP * Math.Pow(10, 12);
+
+            double ans = 0;
+            double projectedGDP = GDP * Math.Pow((1 + (YearlyGDPGrowth / 100)), DebtYears);
+            PGDP = projectedGDP;
+            Console.WriteLine("Current GDP = {0}, Projected GDP = {1}", GDP, projectedGDP);
+            double targetDebtAmount = projectedGDP * (TargetDebtPercent / 100);
+            TargetDebt = targetDebtAmount;
+            double difference = currentDebt - targetDebtAmount;
+            DebtDifference = difference;
+
+            ans = difference / DebtYears;
+
+
+            listOfCosts[18] = (18, listOfCosts[18].ischecked, listOfCosts[18].name, ans, listOfCosts[18].tFunding);
+
+            return ans;
+        }
+
     }
 }
