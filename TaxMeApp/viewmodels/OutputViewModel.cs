@@ -1260,6 +1260,13 @@ namespace TaxMeApp.viewmodels
                 postTaxRow["Difference"] = $"${Math.Abs(DataModel.PostTaxMedian - DataModel.PostTaxMean):n0}";
                 table.Rows.Add(postTaxRow);
 
+                var postTaxUBIRow = table.NewRow();
+                postTaxUBIRow["System"] = "Post-Tax (with UBI)";
+                postTaxUBIRow["Mean Income"] = $"${DataModel.PostTaxMeanWithUBI:n0}";
+                postTaxUBIRow["Median Income"] = $"${DataModel.PostTaxMedianWithUBI:n0}";
+                postTaxUBIRow["Difference"] = $"${Math.Abs(DataModel.PostTaxMedianWithUBI - DataModel.PostTaxMeanWithUBI):n0}";
+                table.Rows.Add(postTaxUBIRow);
+
                 return table;
             }
         }

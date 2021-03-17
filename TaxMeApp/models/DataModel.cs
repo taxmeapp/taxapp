@@ -34,6 +34,8 @@ namespace TaxMeApp.models
         public double PreTaxMedian { get; set; }
         public double PostTaxMean { get; set; }
         public double PostTaxMedian { get; set; }
+        public double PostTaxMeanWithUBI { get; set; }
+        public double PostTaxMedianWithUBI { get; set; }
 
         public long RevenueDifference
         {

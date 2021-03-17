@@ -298,6 +298,32 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        // Mean income after tax including each bracket's UBI payout
+        private double PostTaxMeanUBI
+        {
+            get
+            {
+                return DataModel.PostTaxMeanWithUBI;
+            }
+            set
+            {
+                DataModel.PostTaxMeanWithUBI = value;
+            }
+        }
+
+        // Median income after tax including each bracket's UBI payout
+        private double PostTaxMedianUBI
+        {
+            get
+            {
+                return DataModel.PostTaxMedianWithUBI;
+            }
+            set
+            {
+                DataModel.PostTaxMedianWithUBI = value;
+            }
+        }
+
         // Bracket containing pre-tax mean
         private int PreTaxMeanBracket
         {
@@ -902,10 +928,15 @@ namespace TaxMeApp.viewmodels
             double newUpperBound = medianBracket.UpperBound * (100 - newTaxPctByBracket[medianBracketIndex]) / 100;
             double width = newUpperBound - newLowerBound;
 
+            double newLowerBoundWithUBI = newLowerBound + uBIPayOutByBracket[medianBracketIndex];
+            double newUpperBoundWithUBI = newUpperBound + uBIPayOutByBracket[medianBracketIndex];
+            double widthUBI = newUpperBoundWithUBI - newLowerBoundWithUBI;
+
             // find the difference between the total number of observations divided by 2 and the cumulative frequency of the bracket preceding the median bracket
             double difference = (totalFreq / 2) - cumulativeBracketFrequency[medianBracketIndex - 1];
 
             // calculate post tax median using grouped data median formula
+            this.PostTaxMedianUBI = newLowerBoundWithUBI + (difference / frequency) * widthUBI;
             this.PostTaxMedian = newLowerBound + (difference / frequency) * width;
             this.PostTaxMedianBracket = DetermineMeanMedianBracket(PostTaxMedian);
             //Console.WriteLine("Post-tax median bracket = {0} | median: ${1}", PostTaxMedianBracket, PostTaxMedian);
@@ -913,29 +944,34 @@ namespace TaxMeApp.viewmodels
 
         private void CalculatePostTaxMean()
         {
-            int frequency, totalFreq = 0, index = 0;
-            double midpoint, totalMidFreq = 0;
+            int totalFreq = 0, index = 0;
+            double totalMidFreq = 0, totalMidFreqWithUBI = 0;
 
             foreach (BracketModel bracket in selectedBrackets)
             {
                 // frequency equals total number of observations per bracket
-                frequency = bracket.NumReturns;
+                int frequency = bracket.NumReturns;
 
                 // calculate new (post-tax) bracket range after applying tax rate to bounds
                 double newLowerBound = bracket.LowerBound * (100 - newTaxPctByBracket[index]) / 100;
                 double newUpperBound = bracket.UpperBound * (100 - newTaxPctByBracket[index]) / 100;
+                double newLowerBoundWithUBI = newLowerBound + uBIPayOutByBracket[index];
+                double newUpperBoundWithUBI = newUpperBound + uBIPayOutByBracket[index];
 
                 // find midpoint of new bracket range
-                midpoint = (newLowerBound + newUpperBound) / 2;
+                double midpoint = (newLowerBound + newUpperBound) / 2;
+                double midpointWithUBI = (newLowerBoundWithUBI + newUpperBoundWithUBI) / 2;
 
                 // increment running total of midpoint frequency and frequency by current bracket's 
                 totalMidFreq += (frequency * midpoint);
+                totalMidFreqWithUBI += (frequency * midpointWithUBI);
                 totalFreq += frequency;
                 ++index;
             }
 
             // calculate post-tax mean by dividing summation of midpoint-frequency by summation of frequency
             this.PostTaxMean = totalMidFreq / totalFreq;
+            this.PostTaxMeanUBI = totalMidFreqWithUBI / totalFreq;
             this.PostTaxMeanBracket = DetermineMeanMedianBracket(PostTaxMean);
             //Console.WriteLine("Post-tax mean: ${0}, Bracket: {1}", PostTaxMean, PostTaxMeanBracket);
         }
