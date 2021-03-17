@@ -661,6 +661,9 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("NewDeficitPercent");
             OnPropertyChange("TotalDebt");
 
+            OnPropertyChange("PaymentPerYear");
+            OnPropertyChange("InterestPerYear");
+
             OnPropertyChange("DebtReductionFunding");
             OnPropertyChange("DebtReductionText");
             OnPropertyChange("DebtYears");
@@ -670,6 +673,8 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("ProjectedGDP");
             OnPropertyChange("TargetDebt");
             OnPropertyChange("DebtDifference");
+
+            OnPropertyChange("TotalInterestPayments");
 
 
             ControlVM.update();
@@ -1310,6 +1315,20 @@ namespace TaxMeApp.viewmodels
                     OptionsModel.TargetDebtPercent = 0;
                 }
                 this.Update();
+                OnPropertyChange("PaymentPerYear");
+                OnPropertyChange("InterestPerYear");
+
+                OnPropertyChange("DebtReductionFunding");
+                OnPropertyChange("DebtReductionText");
+                OnPropertyChange("DebtYears");
+                OnPropertyChange("TargetDebtPercent");
+                OnPropertyChange("YearlyGDPGrowth");
+
+                OnPropertyChange("ProjectedGDP");
+                OnPropertyChange("TargetDebt");
+                OnPropertyChange("DebtDifference");
+
+                OnPropertyChange("TotalInterestPayments");
             }
         }
 
@@ -1350,6 +1369,54 @@ namespace TaxMeApp.viewmodels
                     OptionsModel.YearlyGDPGrowth = 0;
                 }
                 this.Update();
+                OnPropertyChange("PaymentPerYear");
+                OnPropertyChange("InterestPerYear");
+
+                OnPropertyChange("DebtReductionFunding");
+                OnPropertyChange("DebtReductionText");
+                OnPropertyChange("DebtYears");
+                OnPropertyChange("TargetDebtPercent");
+                OnPropertyChange("YearlyGDPGrowth");
+
+                OnPropertyChange("ProjectedGDP");
+                OnPropertyChange("TargetDebt");
+                OnPropertyChange("DebtDifference");
+
+                OnPropertyChange("TotalInterestPayments");
+            }
+        }
+
+        public string AnnualDebtInterest
+        {
+            get
+            {
+                return OptionsModel.AnnualDebtInterest.ToString();
+            }
+            set
+            {
+                try
+                {
+                    OptionsModel.AnnualDebtInterest = double.Parse(value, CultureInfo.InvariantCulture);
+                }
+                catch (Exception e)
+                {
+                    OptionsModel.AnnualDebtInterest = 0;
+                }
+                this.Update();
+                OnPropertyChange("PaymentPerYear");
+                OnPropertyChange("InterestPerYear");
+
+                OnPropertyChange("DebtReductionFunding");
+                OnPropertyChange("DebtReductionText");
+                OnPropertyChange("DebtYears");
+                OnPropertyChange("TargetDebtPercent");
+                OnPropertyChange("YearlyGDPGrowth");
+
+                OnPropertyChange("ProjectedGDP");
+                OnPropertyChange("TargetDebt");
+                OnPropertyChange("DebtDifference");
+
+                OnPropertyChange("TotalInterestPayments");
             }
         }
 
@@ -1388,6 +1455,28 @@ namespace TaxMeApp.viewmodels
             get
             {
                 return "$" + Formatter.Format(OptionsModel.DebtDifference);
+            }
+        }
+
+        public string InterestPerYear
+        {
+            get
+            {
+                return "$" + Formatter.Format(OptionsModel.InterestPerYear);
+            }
+        }
+        public string TotalInterestPayments
+        {
+            get
+            {
+                return "$" + Formatter.Format(OptionsModel.TotalInterestPayments);
+            }
+        }
+        public string PaymentPerYear
+        {
+            get
+            {
+                return "$" + Formatter.Format(OptionsModel.PaymentPerYear);
             }
         }
     }

@@ -71,6 +71,10 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="1" 
                                    Text="GDP:"/>
@@ -239,24 +243,40 @@
                     <TextBox Text="{Binding YearlyGDPGrowth, Mode=TwoWay}" Width="30"/>
                     <TextBlock Text="%" Margin="5, 0, 0, 0"/>
                 </WrapPanel>
-                <CheckBox Grid.Row="47" IsChecked="{Binding DebtReductionChecked, Mode=TwoWay}" Content="{Binding DebtReductionText}"/>
-                <TextBlock Grid.Row="47" Grid.Column="2" Text="{Binding DebtReductionFunding}"/>
+                <TextBlock Grid.Row="47" Text="Annual Interest On Debt: "/>
+                <WrapPanel Grid.Row="47" Grid.Column="2">
+                    <TextBox Text="{Binding AnnualDebtInterest, Mode=TwoWay}" Width="30"/>
+                    <TextBlock Text="%" Margin="5, 0, 0, 0"/>
+                </WrapPanel>
 
-                <TextBlock Grid.Row="48" Text="Current GDP: "/>
-                <TextBlock Grid.Row="48" Grid.Column="2" Text="{Binding GDP}"/>
-                <TextBlock Grid.Row="49" Text="Projected GDP: "/>
-                <TextBlock Grid.Row="49" Grid.Column="2" Text="{Binding ProjectedGDP}"/>
-                <TextBlock Grid.Row="50" Text="Current Debt: "/>
-                <TextBlock Grid.Row="50" Grid.Column="2" Text="{Binding FormattedTotalDebt}"/>
-                <TextBlock Grid.Row="51" Text="Target Debt: "/>
-                <TextBlock Grid.Row="51" Grid.Column="2" Text="{Binding TargetDebt}"/>
-                <TextBlock Grid.Row="52" Text="Difference In Debt: "/>
-                <TextBlock Grid.Row="52" Grid.Column="2" Text="{Binding DebtDifference}"/>
+                
+                <CheckBox Grid.Row="48" IsChecked="{Binding DebtReductionChecked, Mode=TwoWay}" Content="{Binding DebtReductionText}"/>
+                <TextBlock Grid.Row="48" Grid.Column="2" Text="{Binding DebtReductionFunding}"/>
+
+                <TextBlock Grid.Row="49" Text="Current GDP: "/>
+                <TextBlock Grid.Row="49" Grid.Column="2" Text="{Binding GDP}"/>
+                <TextBlock Grid.Row="50" Text="Projected GDP: "/>
+                <TextBlock Grid.Row="50" Grid.Column="2" Text="{Binding ProjectedGDP}"/>
+                <TextBlock Grid.Row="51" Text="Current Debt: "/>
+                <TextBlock Grid.Row="51" Grid.Column="2" Text="{Binding FormattedTotalDebt}"/>
+                <TextBlock Grid.Row="52" Text="Target Debt: "/>
+                <TextBlock Grid.Row="52" Grid.Column="2" Text="{Binding TargetDebt}"/>
+                <TextBlock Grid.Row="53" Text="Difference In Debt: "/>
+                <TextBlock Grid.Row="53" Grid.Column="2" Text="{Binding DebtDifference}"/>
 
 
-                <TextBlock Grid.Row="53" Margin="0, 20, 0, 20"/>
-                <TextBlock Grid.Row="54" Text="Custom Government Programs:" FontWeight="Bold"/>
-                <Button Grid.Row="55" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
+                <TextBlock Grid.Row="54" Text="Debt Payments Per Year: "/>
+                <TextBlock Grid.Row="54" Grid.Column="2" Text="{Binding PaymentPerYear}"/>
+                
+                <TextBlock Grid.Row="55" Text="Interest Payments Per Year: "/>
+                <TextBlock Grid.Row="55" Grid.Column="2" Text="{Binding InterestPerYear}"/>
+                <TextBlock Grid.Row="56" Text="Total Interest On Debt: "/>
+                <TextBlock Grid.Row="56" Grid.Column="2" Text="{Binding TotalInterestPayments}"/>
+
+
+                <TextBlock Grid.Row="57" Margin="0, 20, 0, 20"/>
+                <TextBlock Grid.Row="58" Text="Custom Government Programs:" FontWeight="Bold"/>
+                <Button Grid.Row="59" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
 
             </Grid>
             <ListView ItemsSource="{Binding customProgramListView.Items}" Margin="0, 10, 0, 40"/>

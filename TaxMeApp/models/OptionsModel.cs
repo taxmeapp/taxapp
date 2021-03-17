@@ -535,6 +535,10 @@ namespace TaxMeApp.models
         public double PGDP { get; set; }
         public double TargetDebt { get; set; }
         public double DebtDifference { get; set; }
+        public double AnnualDebtInterest { get; set; } = 3.0;
+        public double TotalInterestPayments { get; set; }
+        public double InterestPerYear { get; set; }
+        public double PaymentPerYear { get; set; }
 
         public double CalculateYearlyDebtPayment(double currentDebt, double GDP) {
             GDP = GDP * Math.Pow(10, 12);
@@ -549,7 +553,22 @@ namespace TaxMeApp.models
             DebtDifference = difference;
 
             ans = difference / DebtYears;
+            PaymentPerYear = ans;
 
+            double SelectedDebt = currentDebt;
+            TotalInterestPayments = 0;
+            for (int i = 0; i < DebtYears; i++) {
+                //Console.WriteLine("Year {0}", i);
+                //Console.WriteLine("Selected Debt = {0}, Interest Per Year = {1}", SelectedDebt, AnnualDebtInterest);
+                TotalInterestPayments += SelectedDebt * (AnnualDebtInterest / 100);
+                //Console.WriteLine("Total Interest = {0}", TotalInterestPayments);
+                SelectedDebt -= ans;
+            }
+            InterestPerYear = TotalInterestPayments / DebtYears;
+
+            //Console.WriteLine("Total Interest = {0}, Yearly Interest = {1}", TotalInterestPayments, InterestPerYear);
+
+            ans += InterestPerYear;
 
             listOfCosts[18] = (18, listOfCosts[18].ischecked, listOfCosts[18].name, ans, listOfCosts[18].tFunding);
 
