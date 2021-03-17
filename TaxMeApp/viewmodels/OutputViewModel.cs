@@ -32,7 +32,7 @@ namespace TaxMeApp.viewmodels
         }
 
 
-        public void addProgramButtonClick() {
+        private void addProgramButtonClick() {
 
             //customProgramListView.Items.Clear();
             
@@ -296,20 +296,7 @@ namespace TaxMeApp.viewmodels
         }
 
 
-        public long totalRevenueNewTesting = 0;
-        public long TotalRevenueNewTesting
-        {
-            get
-            {
-                return totalRevenueNewTesting;
-            }
-            set
-            {
-                totalRevenueNewTesting = value;
 
-            }
-
-        }
 
         public string UBICost
         {

@@ -45,7 +45,7 @@ namespace TaxMeApp.viewmodels
             SelectedYear = YearsModel.YearList[0];
 
             //Add Slant Tax to the list and select it when ControlViewModel is Inited
-            List<List<double>> slantTaxData = DataVM.calculateSlantTaxData();
+            List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
             List<double> slantTaxRates = slantTaxData[0];
             TaxPlansModel.TaxPlans.Add("Slant Tax", new IndividualTaxPlanModel("Slant Tax", new ObservableCollection<double>(slantTaxRates)));
             SelectedTaxPlanName = "Slant Tax";
@@ -179,7 +179,7 @@ namespace TaxMeApp.viewmodels
                         DataModel.NewTaxPctByBracket[BracketList.IndexOf(SelectedBracket)] = value;
                     }
 
-                    DataModel.NewRevenueByBracket = DataVM.calculateNewRevenues(selectedTaxPlan.TaxRates);
+                    DataModel.NewRevenueByBracket = DataVM.CalculateNewRevenues(selectedTaxPlan.TaxRates);
                     OnPropertyChange("SelectedTaxRate");
                     OutputVM.Update();
                     customGraphReset();
@@ -187,7 +187,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        public bool locked = false;
+        private bool locked = false;
         public bool LockTaxRates
         {
             get
@@ -201,7 +201,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        int editingBrackets = 0;
+        private int editingBrackets = 0;
         public int LockNumberSlider
         {
             get
@@ -266,7 +266,7 @@ namespace TaxMeApp.viewmodels
                             DataModel.NewTaxPctByBracket[i] = selectedTaxPlan.TaxRates[i];
 
                         }
-                        DataModel.NewRevenueByBracket = DataVM.calculateNewRevenues(selectedTaxPlan.TaxRates);
+                        DataModel.NewRevenueByBracket = DataVM.CalculateNewRevenues(selectedTaxPlan.TaxRates);
                         customGraphReset();
                     }
 
@@ -275,7 +275,7 @@ namespace TaxMeApp.viewmodels
                 {
                     MaxTaxRate = (int)OptionsModel.MaxTaxRate;
                     MaxBracketCountSlider = OptionsModel.MaxBracketCount;
-                    DataVM.calculateNewRevenues(TaxPlansModel.SelectedTaxPlan.TaxRates);
+                    DataVM.CalculateNewRevenues(TaxPlansModel.SelectedTaxPlan.TaxRates);
                 }
 
                 OnPropertyChange("SelectedTaxRate");
@@ -309,7 +309,7 @@ namespace TaxMeApp.viewmodels
 
                 OnPropertyChange("MaxTaxRate");
 
-                List<List<double>> slantTaxData = DataVM.calculateSlantTaxData();
+                List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
                 List<double> slantTaxRates = slantTaxData[0];
                 TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
                 stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
@@ -632,14 +632,14 @@ namespace TaxMeApp.viewmodels
 
             Button addButton = new Button();
             addButton.Content = "Add";
-            addButton.Click += (sender, EventArgs) => { AddButton_Click(sender, EventArgs, createNewTaxPlan, textInput); };
+            addButton.Click += (sender, EventArgs) => { addButton_Click(sender, EventArgs, createNewTaxPlan, textInput); };
             addButton.Width = 180;
             addButton.Margin = defaultMargin;
             content.Children.Add(addButton);
 
             Button cancelButton = new Button();
             cancelButton.Content = "Cancel";
-            cancelButton.Click += (sender, EventArgs) => { CancelButton_Click(sender, EventArgs, createNewTaxPlan); };
+            cancelButton.Click += (sender, EventArgs) => { cancelButton_Click(sender, EventArgs, createNewTaxPlan); };
             cancelButton.Width = 180;
             cancelButton.Margin = defaultMargin;
             content.Children.Add(cancelButton);
@@ -648,7 +648,7 @@ namespace TaxMeApp.viewmodels
             createNewTaxPlan.IsOpen = true;
         }
 
-        private void AddButton_Click(object sender, EventArgs e, Popup p, TextBox tb)
+        private void addButton_Click(object sender, EventArgs e, Popup p, TextBox tb)
         {
             //Check if the input text is already used
             //If not then add it to the list of tax plans and close the window
@@ -690,7 +690,7 @@ namespace TaxMeApp.viewmodels
         }
 
         //The cancel button just closes the popup window
-        private void CancelButton_Click(object sender, EventArgs e, Popup p)
+        private void cancelButton_Click(object sender, EventArgs e, Popup p)
         {
             p.IsOpen = false;
         }
@@ -897,14 +897,6 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        public void update()
-        {
-            OnPropertyChange("SelectedTaxRate");
-            OnPropertyChange("TaxRateSlider");
-            OnPropertyChange("MaxBracketCountSlider");
-            OnPropertyChange("SelectedTaxPlanName");
-            OnPropertyChange("SelectedBracket");
-        }
     }
 
 }

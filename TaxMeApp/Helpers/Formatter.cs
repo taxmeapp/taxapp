@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaxMeApp.Helpers
 {
-    public static class Formatter
+    public class Formatter
     {
 
         public static string Format(long value)

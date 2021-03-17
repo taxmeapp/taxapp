@@ -75,6 +75,7 @@ namespace TaxMeApp.models
                 listOfCosts[0] = (0, value, "defense", 678000000000.0);
             } 
         }
+
         public bool mc;
         public bool MedicaidChecked
         {

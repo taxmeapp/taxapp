@@ -300,7 +300,7 @@ namespace TaxMeApp.viewmodels
         }
 
         //Use to calculate revenue for custom tax plan
-        public List<long> calculateNewRevenues(ObservableCollection<double> taxRates)
+        public List<long> CalculateNewRevenues(ObservableCollection<double> taxRates)
         {
             totalRevenueNew = 0;
 
@@ -510,7 +510,7 @@ namespace TaxMeApp.viewmodels
             this.totalRevenueNew = totalRevenueNew;
         }
 
-        public List<List<double>> calculateSlantTaxData()
+        public List<List<double>> CalculateSlantTaxData()
         {
             List<List<double>> ans = new List<List<double>>();
             List<double> rates = new List<double>();

@@ -447,19 +447,6 @@ namespace TaxMeApp.viewmodels
 
         }
 
-        // Safe method to add LineSeries to Series
-        private void addLineSeries(LineSeries lineSeries)
-        {
-
-            if (Series != null)
-            {
-
-                Series.Add(lineSeries);
-
-            }
-
-        }
-
         // Line chart for UBI by bracket
         private void graphUBI()
         {
@@ -473,7 +460,7 @@ namespace TaxMeApp.viewmodels
                 ScalesYAt = 3
             };
 
-            addLineSeries(lineSeries);
+            AddLineSeries(lineSeries);
 
         }
 
@@ -489,7 +476,7 @@ namespace TaxMeApp.viewmodels
                 ScalesYAt = 2
             };
 
-            addLineSeries(lineSeries);
+            AddLineSeries(lineSeries);
 
         }
     }
