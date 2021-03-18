@@ -19,7 +19,6 @@ namespace TaxMeApp.viewmodels
     {
 
 
-        public ICommand SettingsBtnCommand { get; set; }
         public ICommand AddTaxPlanBtnCommand { get; set; }
         public ICommand SaveTaxPlanBtnCommand { get; set; }
         public ICommand DeleteTaxPlanBtnCommand { get; set; }
@@ -34,7 +33,6 @@ namespace TaxMeApp.viewmodels
         public ControlViewModel()
         {
 
-            SettingsBtnCommand = new RelayCommand(o => settingsButtonClick(""));
             AddTaxPlanBtnCommand = new RelayCommand(o => addTaxPlanButtonClick());
             SaveTaxPlanBtnCommand = new RelayCommand(o => saveTaxPlanButtonClick());
             DeleteTaxPlanBtnCommand = new RelayCommand(o => deleteTaxPlanButtonClick());
@@ -348,12 +346,14 @@ namespace TaxMeApp.viewmodels
             set
             {
 
+                // Null value, do nothing
                 if (value is null)
                 {
                     return;
                 }
 
                 TaxPlansModel.SelectedTaxPlanName = value;
+                // Hard-coded plan:
                 if (value.Equals("Slant Tax"))
                 {
 
@@ -364,6 +364,7 @@ namespace TaxMeApp.viewmodels
                     SelectedTaxPlanTabIndex = (int)TaxPlan.Slant;
 
                 }
+                // Hard-coded plan:
                 else if (value.Equals("Flat Tax"))
                 {
                     SelectedTaxPlanTabIndex = (int)TaxPlan.Flat;
@@ -374,23 +375,30 @@ namespace TaxMeApp.viewmodels
                 else
                 {
 
-                    SelectedTaxPlanTabIndex = (int)TaxPlan.Custom;
-
-                    OptionsModel.MaxTaxRate = MaxTaxRate;
-                    OptionsModel.MaxBracketCount = MaxBracketCountSlider;
-                    MaxTaxRate = 0;
-                    MaxBracketCountSlider = 0;
-
-                    if (SelectedTaxPlanName != null)
+                    // Else it's a custom plan
+                    // If it exists, we want to handle it
+                    if (TaxPlansModel.TaxPlans.TryGetValue(value, out IndividualTaxPlanModel selectedTaxPlan))
                     {
-                        TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
-                        for (int i = 0; i < selectedTaxPlan.TaxRates.Count; i++)
+
+                        SelectedTaxPlanTabIndex = (int)TaxPlan.Custom;
+
+                        OptionsModel.MaxTaxRate = MaxTaxRate;
+                        OptionsModel.MaxBracketCount = MaxBracketCountSlider;
+                        MaxTaxRate = 0;
+                        MaxBracketCountSlider = 0;
+
+                        for (int i = 0; i < DataModel.NewTaxPctByBracket.Count; i++)
                         {
                             DataModel.NewTaxPctByBracket[i] = selectedTaxPlan.TaxRates[i];
 
                         }
                         DataModel.NewRevenueByBracket = DataVM.CalculateNewRevenues(selectedTaxPlan.TaxRates);
                         customGraphReset();
+                    }
+                    // Otherwise ignore what's going on
+                    else
+                    {
+                        Trace.WriteLine("Name is null or plan doesn't exist");
                     }
 
                 }
@@ -840,14 +848,6 @@ namespace TaxMeApp.viewmodels
                 Button Logic
         */
 
-        // Settings button logic
-
-        private void settingsButtonClick(object sender)
-        {
-
-            MainVM.TabSelected = 1;
-
-        }
 
         //Add Tax Plan opens up a popup box to type in the name of the new plan
         private void addTaxPlanButtonClick()

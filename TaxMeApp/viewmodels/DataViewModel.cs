@@ -500,6 +500,7 @@ namespace TaxMeApp.viewmodels
         //Use to calculate revenue for custom tax plan
         public List<long> CalculateNewRevenues(ObservableCollection<double> taxRates)
         {
+
             totalRevenueNew = 0;
 
             List<long> ans = new List<long>();
