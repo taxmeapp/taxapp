@@ -70,7 +70,7 @@ namespace TaxMeApp.models
 
         public double MaxTaxRate { get; set; }
         public int MaxBracketCount { get; set; }
-
+        public int FlatTaxRate { get; set; }
         public long revenue { get; set; } = 0;
         public List<(int priority, bool ischecked, string name, double cost, double tFunding)> listOfCosts;
         public double[] fundingArray;

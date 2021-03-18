@@ -470,6 +470,18 @@ namespace TaxMeApp.viewmodels
 
         }
 
+        // When variables, such as UBI or tax rates, are manually changed and don't require slant tax recalculation
+        public void CustomDataRecalcuation()
+        {
+
+            // Calculate UBI cost
+            calculateUBIByBracket();
+
+            // Calculate statistics pre/post-tax
+            calculateMeanMedian();
+
+        }
+
         public void calculateMeanMedian()
         {
             // Calculate mean before tax

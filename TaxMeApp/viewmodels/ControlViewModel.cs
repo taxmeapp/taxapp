@@ -260,7 +260,6 @@ namespace TaxMeApp.viewmodels
 
                     DataModel.NewRevenueByBracket = DataVM.CalculateNewRevenues(selectedTaxPlan.TaxRates);
                     OnPropertyChange("SelectedTaxRate");
-                    DataVM.calculateMeanMedian();
                     OutputVM.Update();
                     customGraphReset();
                 }
@@ -368,6 +367,9 @@ namespace TaxMeApp.viewmodels
                 else if (value.Equals("Flat Tax"))
                 {
                     SelectedTaxPlanTabIndex = (int)TaxPlan.Flat;
+                    MaxTaxRate = 0;
+                    MaxBracketCountSlider = 0;
+                    FlatTaxSlider = 0;
                 }
                 else
                 {
@@ -492,7 +494,7 @@ namespace TaxMeApp.viewmodels
             {
                 GraphModel.MaxUBIBracketCount = value;
 
-                newDataGraphReset();
+                customGraphReset();
 
                 OnPropertyChange("MaxUBIBracketCount");
                 OnPropertyChange("MaxBracketUBICountSlider");
@@ -523,7 +525,7 @@ namespace TaxMeApp.viewmodels
             {
                 GraphModel.MinUBIBracketCount = value;
 
-                newDataGraphReset();
+                customGraphReset();
 
                 OnPropertyChange("MinUBIBracketCount");
                 OnPropertyChange("MinBracketUBICountSlider");
@@ -554,7 +556,7 @@ namespace TaxMeApp.viewmodels
             {
                 GraphModel.MaxUBI = value;
 
-                newDataGraphReset();
+                customGraphReset();
 
                 OnPropertyChange("MaxUBI");
                 OnPropertyChange("MaxUBISlider");
@@ -619,7 +621,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return (int)DataModel.NewTaxPctByBracket[0];
+                return OptionsModel.FlatTaxRate;
             }
         }
 
@@ -627,12 +629,13 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return (int)DataModel.NewTaxPctByBracket[0];
+                return OptionsModel.FlatTaxRate;
             }
             set
             {
                 if (SelectedTaxPlanName == "Flat Tax")
                 {
+                    OptionsModel.FlatTaxRate = value;
                     TaxPlansModel.TaxPlans.TryGetValue("Flat Tax", out IndividualTaxPlanModel selectedTaxPlan);
                     foreach (var bracket in BracketList)
                     {
@@ -641,7 +644,6 @@ namespace TaxMeApp.viewmodels
                     }
                     DataModel.NewRevenueByBracket = DataVM.CalculateNewRevenues(selectedTaxPlan.TaxRates);
                     OnPropertyChange("FlatTaxRate");
-                    DataVM.calculateMeanMedian();
                     OutputVM.Update();
                     customGraphReset();
                 }
@@ -1053,6 +1055,12 @@ namespace TaxMeApp.viewmodels
         //Used for manually changing tax rates
         private void customGraphReset()
         {
+            if (DataVM != null)
+            {
+                // Calculate UBI and mean/median only
+                DataVM.CustomDataRecalcuation();
+            }
+
             if (GraphVM != null)
             {
                 GraphVM.ClearSeries();
@@ -1063,6 +1071,12 @@ namespace TaxMeApp.viewmodels
 
         private void customGraphReset(List<double> customRates) 
         {
+            if (DataVM != null)
+            {
+                // Calculate UBI and mean/median only
+                DataVM.CustomDataRecalcuation();
+            }
+
             if (GraphVM != null)
             {
                 GraphVM.ClearSeries();
@@ -1167,6 +1181,7 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("TargetFundingSlider");
             OnPropertyChange("SelectedTargetBudget");
             OnPropertyChange("FlatTaxSlider");
+            OnPropertyChange("FlatTaxRate");
         }
 
         public void autoFitSlantTaxButtonClick() {
