@@ -642,62 +642,77 @@ namespace TaxMeApp.viewmodels
             newRevenueByBracket.Clear();
             newTaxPctByBracket.Clear();
 
-            // The number of brackets that will be taxed incrementally:
-            int middleCount = selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1);
-
             long totalRevenueNew = 0;
             double rate = 0;
 
-            // Initialize our index counter that is shared for all three loops
-            int i = 0;
-
-            // Handle poverty brackets
-            for (; i <= povertyBrackets; i++)
+            if (ControlVM.SelectedTaxPlanName == "Flat Tax")
             {
+                rate = OptionsModel.FlatTaxRate;
 
-                // Revenue is 0
-                newRevenueByBracket.Add(0);
-                // Rate is 0
-                newTaxPctByBracket.Add(0);
-
+                for(int i = 0; i < selectedBrackets.Count; i++)
+                {
+                    long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 10 * rate);
+                    totalRevenueNew += bracketRevenue;
+                    newRevenueByBracket.Add(bracketRevenue);
+                    newTaxPctByBracket.Add(rate);
+                }
             }
-
-            // Determine how many divisons we want to spread our increment over
-            int divisions = middleCount + 1;
-
-            // Determine the rate at how much to increment, and round to 1 decimal place
-            double increment = Math.Round(maxTaxRate / (double)divisions, 1);
-
-            // Incremental brackets
-            for (; i < selectedBrackets.Count - maxBracketCount; i++)
+            else
             {
+                // The number of brackets that will be taxed incrementally:
+                int middleCount = selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1);
 
-                rate = rate + increment;
+                // Initialize our index counter that is shared for all three loops
+                int i = 0;
 
-                // Revenue is Taxable Income * Tax Rate
-                long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 10 * rate);
-                totalRevenueNew += bracketRevenue;
+                // Handle poverty brackets
+                for (; i <= povertyBrackets; i++)
+                {
 
-                newRevenueByBracket.Add(bracketRevenue);
+                    // Revenue is 0
+                    newRevenueByBracket.Add(0);
+                    // Rate is 0
+                    newTaxPctByBracket.Add(0);
 
-                // Rate is incremental
-                newTaxPctByBracket.Add(rate);
+                }
 
-            }
+                // Determine how many divisons we want to spread our increment over
+                int divisions = middleCount + 1;
 
-            // Max rate:
-            for (; i < selectedBrackets.Count; i++)
-            {
+                // Determine the rate at how much to increment, and round to 1 decimal place
+                double increment = Math.Round(maxTaxRate / (double)divisions, 1);
 
-                // Revenue is Taxable Income * Max Rate
-                long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * maxTaxRate / 100;
-                totalRevenueNew += bracketRevenue;
+                // Incremental brackets
+                for (; i < selectedBrackets.Count - maxBracketCount; i++)
+                {
 
-                newRevenueByBracket.Add(bracketRevenue);
+                    rate = rate + increment;
 
-                // Rate is max
-                newTaxPctByBracket.Add(maxTaxRate);
+                    // Revenue is Taxable Income * Tax Rate
+                    long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 10 * rate);
+                    totalRevenueNew += bracketRevenue;
 
+                    newRevenueByBracket.Add(bracketRevenue);
+
+                    // Rate is incremental
+                    newTaxPctByBracket.Add(rate);
+
+                }
+
+                // Max rate:
+                for (; i < selectedBrackets.Count; i++)
+                {
+
+                    // Revenue is Taxable Income * Max Rate
+                    long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * maxTaxRate / 100;
+                    totalRevenueNew += bracketRevenue;
+
+                    newRevenueByBracket.Add(bracketRevenue);
+
+                    // Rate is max
+                    newTaxPctByBracket.Add(maxTaxRate);
+
+                }
             }
 
             if (OptionsModel.YangRemoveChecked)
