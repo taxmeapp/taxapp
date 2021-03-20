@@ -93,5 +93,35 @@ namespace TaxMeApp.Helpers
             return "error";
         }
 
+        public static string FormatLabel(double value)
+        {
+            double newValue;
+
+            // less than a thousand - handle exactly
+            if (Math.Abs(value) <= 999)
+            {
+                return $"{value:c0}";
+            }
+
+            // greater than a thousand and less than a million - add a 'k' to signify thousands
+            if (Math.Abs(value) <= 999999)
+            {
+                newValue = value/1000;
+
+                return $"{newValue:c0}k";
+            }
+
+            // a million or more - add a 'm' to signify millions
+            if (Math.Abs(value) >= 1000000)
+            {
+                newValue = value / 1000000;
+
+                // if newValue has decimal part != 0, include decimal in output result (ex: 1.5m)
+                // otherwise, return as whole number without decimal part (ex: 1m)
+                return (newValue % 1 == 0? $"{newValue:c0}m" : $"{newValue:c1}m");
+            }
+
+            return "error";
+        }
     }
 }

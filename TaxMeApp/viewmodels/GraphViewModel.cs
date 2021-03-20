@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
+using TaxMeApp.Helpers;
 
 namespace TaxMeApp.viewmodels
 {
@@ -92,6 +93,11 @@ namespace TaxMeApp.viewmodels
             get
             {
                 return GraphModel.Labels;
+            }
+            set
+            {
+                GraphModel.Labels = value;
+                OnPropertyChange("Labels");
             }
         }
 
@@ -439,6 +445,33 @@ namespace TaxMeApp.viewmodels
             }
 
         }
+
+        // Updates labels upon graph total reset (e.g., when user changes year)
+        public void AddLabels()
+        {
+            List<string> labels = new List<string>();
+            var brackets = YearsModel.SelectedIncomeYearModel.Brackets;
+            var last = brackets[brackets.Count - 1];
+
+            foreach(var bracket in brackets)
+            {
+                if (bracket.LowerBound == bracket.UpperBound)
+                {
+                    labels.Add($"{Formatter.FormatLabel(bracket.LowerBound)}");
+                }
+                else if (bracket.Equals(last))
+                {
+                    labels.Add($"{Formatter.FormatLabel(bracket.LowerBound)}+");
+                }
+                else
+                {
+                    labels.Add($"{Formatter.FormatLabel(bracket.LowerBound)}-{Formatter.FormatLabel(bracket.UpperBound + 1)}");
+                }
+            }
+
+            Labels = labels.ToArray();
+        }
+
 
         // Safe method to add ColumnSeries to Series
         public void AddColumnSeries(ColumnSeries columnSeries)

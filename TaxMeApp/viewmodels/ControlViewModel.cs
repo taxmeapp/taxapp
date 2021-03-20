@@ -1046,6 +1046,8 @@ namespace TaxMeApp.viewmodels
             {
                 GraphVM.ClearSeries();
 
+                GraphVM.AddLabels();
+
                 GraphVM.GraphAllChecked();
             }            
 
