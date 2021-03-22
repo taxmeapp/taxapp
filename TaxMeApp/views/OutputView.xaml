@@ -75,6 +75,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="1" 
                                    Text="GDP:"/>
@@ -273,10 +274,41 @@
                 <TextBlock Grid.Row="56" Text="Total Interest On Debt: "/>
                 <TextBlock Grid.Row="56" Grid.Column="2" Text="{Binding TotalInterestPayments}"/>
 
+                <Expander Header="Individual Income Tax Calculator" Grid.Row="57" Grid.ColumnSpan="2" Margin="0, 20, 0, 0" BorderBrush="LightGray">
+                    <Grid Margin="10, 10, 10, 10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="57" Margin="0, 20, 0, 20"/>
-                <TextBlock Grid.Row="58" Text="Custom Government Programs:" FontWeight="Bold"/>
-                <Button Grid.Row="59" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
+                        <TextBlock Grid.Row="1" Text="Enter Yearly Income: "/>
+                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding YearlyIncome, Mode=TwoWay}"/>
+                        
+                        <TextBlock Grid.Row="2" Text="Old Tax Rate: "/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding OldTaxRate}"/>
+                        
+                        <TextBlock Grid.Row="3" Text="Old After Tax Income: "/>
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding OldAfterTaxIncome}"/>
+                        
+                        <TextBlock Grid.Row="4" Text="New Tax Rate: "/>
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding NewTaxRate}"/>
+
+                        <TextBlock Grid.Row="5" Text="New After Tax Income:"/>
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding NewAfterTaxIncome}"/>
+                    </Grid>
+                </Expander>
+
+                <TextBlock Grid.Row="58" Margin="0, 20, 0, 20"/>
+                <TextBlock Grid.Row="59" Text="Custom Government Programs:" FontWeight="Bold"/>
+                <Button Grid.Row="60" Content="Add Program" Command="{Binding AddProgramBtnCommand}"/>
 
             </Grid>
             <ListView ItemsSource="{Binding customProgramListView.Items}" Margin="0, 10, 0, 40"/>

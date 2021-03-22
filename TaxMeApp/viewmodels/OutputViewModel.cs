@@ -676,6 +676,10 @@ namespace TaxMeApp.viewmodels
 
             OnPropertyChange("TotalInterestPayments");
 
+            OnPropertyChange("OldTaxRate");
+            OnPropertyChange("OldAfterTaxIncome");
+            OnPropertyChange("NewTaxRate");
+            OnPropertyChange("NewAfterTaxIncome");
 
             ControlVM.update();
 
@@ -1477,6 +1481,221 @@ namespace TaxMeApp.viewmodels
             get
             {
                 return "$" + Formatter.Format(OptionsModel.PaymentPerYear);
+            }
+        }
+
+        public double yi = 0;
+        public string YearlyIncome {
+            get {
+                return yi.ToString("#,##0.##");
+            } 
+            set {
+                double val = 0;
+                try
+                {
+                    val = double.Parse(value.ToString());
+                }
+                catch (Exception e) { 
+                
+                }
+
+                yi = val;
+            
+                
+                OnPropertyChange("OldTaxRate");
+                OnPropertyChange("OldAfterTaxIncome");
+                OnPropertyChange("NewTaxRate");
+                OnPropertyChange("NewAfterTaxIncome");
+            }
+        }
+
+        public double otr;
+        public string OldTaxRate {
+            get {
+                string ans = "0%";
+
+                if (yi == 0)
+                {
+                    otr = DataModel.OldTaxPctByBracket[0];
+                }
+                else if (yi > 0 && yi < 5000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[1];
+                }
+                else if (yi >= 5000 && yi < 10000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[2];
+                }
+                else if (yi >= 10000 && yi < 15000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[3];
+                }
+                else if (yi >= 15000 && yi < 20000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[4];
+                }
+                else if (yi >= 20000 && yi < 25000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[5];
+                }
+                else if (yi >= 25000 && yi < 30000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[6];
+                }
+                else if (yi >= 30000 && yi < 40000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[7];
+                }
+                else if (yi >= 40000 && yi < 50000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[8];
+                }
+                else if (yi >= 50000 && yi < 75000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[9];
+                }
+                else if (yi >= 75000 && yi < 100000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[10];
+                }
+                else if (yi >= 100000 && yi < 200000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[11];
+                }
+                else if (yi >= 200000 && yi < 500000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[12];
+                }
+                else if (yi >= 500000 && yi < 1000000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[13];
+                }
+                else if (yi >= 1000000 && yi < 1500000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[14];
+                }
+                else if (yi >= 1500000 && yi < 2000000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[15];
+                }
+                else if (yi >= 2000000 && yi < 5000000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[16];
+                }
+                else if (yi >= 5000000 && yi < 10000000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[17];
+                }
+                else if (yi >= 10000000)
+                {
+                    otr = DataModel.OldTaxPctByBracket[18];
+                }
+
+                ans = otr + "%";
+                return ans;
+            }
+        }
+
+        public string OldAfterTaxIncome { 
+            get {
+                return "$" + (yi * (1 - (otr / 100))).ToString("#,##0.##");    
+            } 
+        }
+
+        public double ntr;
+        public string NewTaxRate
+        {
+            get
+            {
+                string ans = "0%";
+
+                if (yi == 0)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[0];
+                }
+                else if (yi > 0 && yi < 5000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[1];
+                }
+                else if (yi >= 5000 && yi < 10000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[2];
+                }
+                else if (yi >= 10000 && yi < 15000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[3];
+                }
+                else if (yi >= 15000 && yi < 20000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[4];
+                }
+                else if (yi >= 20000 && yi < 25000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[5];
+                }
+                else if (yi >= 25000 && yi < 30000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[6];
+                }
+                else if (yi >= 30000 && yi < 40000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[7];
+                }
+                else if (yi >= 40000 && yi < 50000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[8];
+                }
+                else if (yi >= 50000 && yi < 75000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[9];
+                }
+                else if (yi >= 75000 && yi < 100000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[10];
+                }
+                else if (yi >= 100000 && yi < 200000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[11];
+                }
+                else if (yi >= 200000 && yi < 500000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[12];
+                }
+                else if (yi >= 500000 && yi < 1000000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[13];
+                }
+                else if (yi >= 1000000 && yi < 1500000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[14];
+                }
+                else if (yi >= 1500000 && yi < 2000000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[15];
+                }
+                else if (yi >= 2000000 && yi < 5000000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[16];
+                }
+                else if (yi >= 5000000 && yi < 10000000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[17];
+                }
+                else if (yi >= 10000000)
+                {
+                    ntr = DataModel.NewTaxPctByBracket[18];
+                }
+
+                ans = ntr + "%";
+                return ans;
+            }
+        }
+
+        public string NewAfterTaxIncome
+        {
+            get
+            {
+                return "$" + (yi * (1 - (ntr / 100))).ToString("#,##0.##");
             }
         }
     }
