@@ -139,6 +139,18 @@ namespace TaxMeApp.viewmodels
 
                 return ans;
             }
+            set
+            {
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                else if (value > 100)
+                {
+                    value = 100;
+                }
+                TargetFundingSlider = value;
+            }
         }
 
         public string SelectedTargetBudget
@@ -199,6 +211,18 @@ namespace TaxMeApp.viewmodels
                     return selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)];
                 }
                 return 0;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                else if (value > 100)
+                {
+                    value = 100;
+                }
+                TaxRateSlider = value;
             }
         }
 
@@ -428,6 +452,16 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
+
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                else if (value > 100)
+                {
+                    value = 100;
+                }
+
                 DataModel.MaxTaxRate = value;
 
                 newDataGraphReset();
@@ -641,6 +675,18 @@ namespace TaxMeApp.viewmodels
             get
             {
                 return OptionsModel.FlatTaxRate;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                else if (value > 100)
+                {
+                    value = 100;
+                }
+                FlatTaxSlider = value;
             }
         }
 

@@ -436,6 +436,7 @@ namespace TaxMeApp.Helpers
             }
 
             sw.WriteLine(line);
+            sw.Flush();
 
         }
 
