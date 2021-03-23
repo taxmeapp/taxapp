@@ -569,6 +569,8 @@ namespace TaxMeApp.viewmodels
                 Values = new ChartValues<long>(oldRevenueByBracket),
                 Stroke = Brushes.DarkGreen,
                 Fill = Brushes.Transparent,
+                PointGeometrySize = 6,
+                PointForeground = Brushes.DarkGreen,
                 ScalesYAt = 1
             };
 
@@ -586,6 +588,8 @@ namespace TaxMeApp.viewmodels
                 Values = new ChartValues<long>(newRevenueByBracket),
                 Stroke = Brushes.LightGreen,
                 Fill = Brushes.Transparent,
+                PointGeometrySize = 6,
+                PointForeground = Brushes.LightGreen,
                 ScalesYAt = 1
             };
 
@@ -603,6 +607,8 @@ namespace TaxMeApp.viewmodels
                 Values = new ChartValues<double>(oldTaxPctByBracket),
                 Stroke = Brushes.DarkGoldenrod,
                 Fill = Brushes.Transparent,
+                PointGeometrySize = 6,
+                PointForeground = Brushes.DarkGoldenrod,
                 ScalesYAt = 2
             };
 
@@ -620,6 +626,8 @@ namespace TaxMeApp.viewmodels
                 Values = new ChartValues<double>(newTaxPctByBracket),
                 Stroke = Brushes.Maroon,
                 Fill = Brushes.Transparent,
+                PointGeometrySize = 6,
+                PointForeground = Brushes.Maroon,
                 ScalesYAt = 2
             };
 
@@ -637,6 +645,8 @@ namespace TaxMeApp.viewmodels
                 Values = new ChartValues<double>(ubiByBracket),
                 Stroke = Brushes.DarkViolet,
                 Fill = Brushes.Transparent,
+                PointGeometrySize = 6,
+                PointForeground = Brushes.DarkViolet,
                 ScalesYAt = 3
             };
 
@@ -653,6 +663,8 @@ namespace TaxMeApp.viewmodels
                 Values = new ChartValues<double>(customVals),
                 Stroke = Brushes.Maroon,
                 Fill = Brushes.Transparent,
+                PointGeometrySize = 6,
+                PointForeground = Brushes.Maroon,
                 ScalesYAt = 2
             };
 
