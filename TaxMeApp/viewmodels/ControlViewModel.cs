@@ -475,6 +475,17 @@ namespace TaxMeApp.viewmodels
 
                 OnPropertyChange("MaxBracketCount");
                 OnPropertyChange("MaxBracketCountSlider");
+
+                List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
+                List<double> slantTaxRates = slantTaxData[0];
+                try
+                {
+                    TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
+                    stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
+                }
+                catch { }
+                OnPropertyChange("TaxRateSlider");
+                OnPropertyChange("SelectedTaxRate");
             }
         }
 
