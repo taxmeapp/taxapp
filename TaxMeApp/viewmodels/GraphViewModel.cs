@@ -439,12 +439,14 @@ namespace TaxMeApp.viewmodels
                 try
                 {
                     Series.Clear();
-                    Axes[2].Separator.IsEnabled = false;
-                    Axes[2].ShowLabels = false;
-                    Axes[2].Title = null;
-                    Axes[3].Separator.IsEnabled = false;
-                    Axes[3].ShowLabels = false;
-                    Axes[3].Title = null;
+
+                    // hide axes
+                    foreach(Axis axis in Axes)
+                    {
+                        axis.ShowLabels = false;
+                        axis.Title = null;
+                    }
+
                 }
                 catch (NullReferenceException e)
                 {
