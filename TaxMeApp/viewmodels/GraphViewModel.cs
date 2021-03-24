@@ -646,6 +646,7 @@ namespace TaxMeApp.viewmodels
                 Fill = Brushes.Transparent,
                 PointGeometrySize = 6,
                 PointForeground = Brushes.Maroon,
+                LineSmoothness = 0,
                 ScalesYAt = 2
             };
 
@@ -667,6 +668,7 @@ namespace TaxMeApp.viewmodels
                 Fill = Brushes.Transparent,
                 PointGeometrySize = 6,
                 PointForeground = Brushes.DarkViolet,
+                LineSmoothness = 0,
                 ScalesYAt = 3
             };
 
