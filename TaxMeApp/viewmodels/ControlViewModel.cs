@@ -1455,7 +1455,7 @@ namespace TaxMeApp.viewmodels
             this.MaxTaxRate = 0;
             revenue = DataModel.TotalRevenueNew;
 
-            while (revenue < budget) {
+            while (revenue < budget && MaxTaxRate < 100) {
                 if (!DontAdjustBracketCount)
                 {
                     for (int i = 0; i < 11; i++)
@@ -1477,7 +1477,7 @@ namespace TaxMeApp.viewmodels
                     this.MaxTaxRate += 1;
                     //revenue = DataModel.TotalRevenueNew;
                 }
-                if (this.MaxTaxRate > 100) {
+                if (this.MaxTaxRate >= 100) {
                     break;
                 }
             }
