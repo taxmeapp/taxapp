@@ -88,6 +88,10 @@
                         <Button Margin="15, 5, 15, 5"
                     Command="{Binding AutoFitSlantTaxBtnCommand}" 
                     Content="Auto-Fit Slant Tax"/>
+                        <CheckBox Content="Only Adjust Max Tax Rate"
+                              IsChecked="{Binding DontAdjustBracketCount, Mode=TwoWay}"
+                              Margin="20,5,5,5"
+                              Visibility="{Binding slantVisible}"/>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Flat Tax" Visibility="Collapsed">

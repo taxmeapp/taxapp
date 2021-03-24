@@ -303,6 +303,8 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public bool DontAdjustBracketCount { get; set; } = false;
+
         private bool locked = false;
         public bool LockTaxRates
         {
@@ -1446,19 +1448,31 @@ namespace TaxMeApp.viewmodels
             double budget = OptionsModel.GetTotalBudget();
             double revenue = 0;
 
-            this.MaxBracketCountSlider = 0;
+            if (!DontAdjustBracketCount)
+            {
+                this.MaxBracketCountSlider = 0;
+            }
             this.MaxTaxRate = 0;
             revenue = DataModel.TotalRevenueNew;
 
             while (revenue < budget) {
-                for (int i = 0; i < 11; i++) {
-                    MaxBracketCountSlider = i;
-                    revenue = DataModel.TotalRevenueNew;
-                    //Console.WriteLine("TaxRate = {0}, Brackets = {1}, Revenue = {2}, Budget = {3}", MaxTaxRate, MaxBracketCountSlider, revenue, budget);
-                    if (revenue >= budget) {
-                        break;
+                if (!DontAdjustBracketCount)
+                {
+                    for (int i = 0; i < 11; i++)
+                    {
+                        MaxBracketCountSlider = i;
+                        revenue = DataModel.TotalRevenueNew;
+                        //Console.WriteLine("TaxRate = {0}, Brackets = {1}, Revenue = {2}, Budget = {3}", MaxTaxRate, MaxBracketCountSlider, revenue, budget);
+                        if (revenue >= budget)
+                        {
+                            break;
+                        }
                     }
                 }
+                else {
+                    revenue = DataModel.TotalRevenueNew;
+                }
+
                 if (revenue < budget) {
                     this.MaxTaxRate += 1;
                     //revenue = DataModel.TotalRevenueNew;
