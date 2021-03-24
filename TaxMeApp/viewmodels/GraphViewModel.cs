@@ -87,6 +87,14 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public AxesCollection Axes
+        {
+            get
+            {
+                return GraphModel.Axes;
+            }
+        }
+
         public string[] Labels
         {
             get
@@ -431,6 +439,14 @@ namespace TaxMeApp.viewmodels
                 try
                 {
                     Series.Clear();
+
+                    // hide axes
+                    foreach(Axis axis in Axes)
+                    {
+                        axis.ShowLabels = false;
+                        axis.Title = null;
+                    }
+
                 }
                 catch (NullReferenceException e)
                 {
@@ -614,6 +630,8 @@ namespace TaxMeApp.viewmodels
 
             AddLineSeries(lineSeries);
 
+            Axes[2].ShowLabels = true;
+            Axes[2].Title = "Tax Rate (%)";
         }
 
         // Line chart for % of income paid in tax under new system
@@ -628,11 +646,14 @@ namespace TaxMeApp.viewmodels
                 Fill = Brushes.Transparent,
                 PointGeometrySize = 6,
                 PointForeground = Brushes.Maroon,
+                LineSmoothness = 0,
                 ScalesYAt = 2
             };
 
             AddLineSeries(lineSeries);
 
+            Axes[2].ShowLabels = true;
+            Axes[2].Title = "Tax Rate (%)";
         }
 
         // Line chart for UBI by bracket
@@ -647,11 +668,14 @@ namespace TaxMeApp.viewmodels
                 Fill = Brushes.Transparent,
                 PointGeometrySize = 6,
                 PointForeground = Brushes.DarkViolet,
+                LineSmoothness = 0,
                 ScalesYAt = 3
             };
 
             AddLineSeries(lineSeries);
 
+            Axes[3].ShowLabels = true;
+            Axes[3].Title = "UBI ($)";
         }
 
         private void graphCustomRates(List<double> customVals)
@@ -670,6 +694,8 @@ namespace TaxMeApp.viewmodels
 
             AddLineSeries(lineSeries);
 
+            Axes[2].ShowLabels = true;
+            Axes[2].Title = "Tax Rate (%)";
         }
     }
 }

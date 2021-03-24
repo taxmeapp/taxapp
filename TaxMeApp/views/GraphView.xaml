@@ -10,7 +10,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <lvc:CartesianChart Series="{Binding Series}" 
+        <lvc:CartesianChart Series="{Binding Series}"
+                            AxisY="{Binding Axes}"
                             Zoom="None" 
                             LegendLocation="Bottom">
             <lvc:CartesianChart.AxisX>
@@ -48,16 +49,6 @@
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Position="RightTop"
-                          ShowLabels="False"/>
-                <lvc:Axis Position="RightTop"
-                          ShowLabels="False"/>
-                <lvc:Axis Position="RightTop" 
-                          ShowLabels="False"/>
-                <lvc:Axis Position="RightTop" 
-                          ShowLabels="False"/>
-            </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
     </Grid>
 </UserControl>
