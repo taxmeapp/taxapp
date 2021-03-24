@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -68,6 +69,20 @@ namespace TaxMeApp.viewmodels
 
             //Set selected bracket to first one
             SelectedBracket = GraphModel.Labels[0];
+        }
+
+        public Visibility slantVisible
+        {
+            get
+            {
+                if (this.SelectedTaxPlanName == "Slant Tax")
+                {
+                    return Visibility.Visible;
+                }
+                else {
+                    return Visibility.Collapsed;
+                }
+        }
         }
 
         /*
@@ -356,7 +371,7 @@ namespace TaxMeApp.viewmodels
 
                 selectedTaxPlanIndex = value;
                 OnPropertyChange("SelectedTaxPlanTabIndex");
-
+                OnPropertyChange("slantVisible");
             }
         }
 
@@ -433,6 +448,7 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("SelectedTaxPlanName");
                 OnPropertyChange("SelectedBracket");
                 OnPropertyChange("DeleteTaxPlanBtnEnabled");
+                OnPropertyChange("slantVisible");
                 OutputVM.Update();
 
                 //if (TaxPlansList.Contains(value))

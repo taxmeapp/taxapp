@@ -265,10 +265,12 @@
                             Width="175"/>
                     <CheckBox Content="Slant Brackets Change UBI"
                               IsChecked="{Binding SlantChangesUBI, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              Visibility="{Binding slantVisible}"/>
                     <CheckBox Content="UBI Brackets Change Slant"
                               IsChecked="{Binding UBIChangesSlant, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              Visibility="{Binding slantVisible}"/>
                 </StackPanel>
             </Expander>
 
