@@ -13,6 +13,10 @@ namespace TaxMeApp.viewmodels
     public class DataViewModel : MainViewModel
     {
 
+        public bool SlantChangesUBI { get; set; } = false;
+        public bool UBIChangesSlant { get; set; } = false;
+
+
         public void DataInit()
         {
 

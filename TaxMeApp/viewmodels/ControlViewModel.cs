@@ -520,6 +520,16 @@ namespace TaxMeApp.viewmodels
                 catch { }
                 OnPropertyChange("TaxRateSlider");
                 OnPropertyChange("SelectedTaxRate");
+
+                if (SlantChangesUBI)
+                {
+                    MaxUBIBracketCountSlider = MaxBracketCountSlider;
+                    MinUBIBracketCountSlider = PovertyLineIndexSlider;
+                    OnPropertyChange("MaxUBIBracketCountSlider");
+                    OnPropertyChange("MaxUBIBracketCount");
+                    OnPropertyChange("MinUBIBracketCountSlider");
+                    OnPropertyChange("MinUBIBracketCount");
+                }
             }
         }
 
@@ -550,7 +560,25 @@ namespace TaxMeApp.viewmodels
                 customGraphReset();
 
                 OnPropertyChange("MaxUBIBracketCount");
-                OnPropertyChange("MaxBracketUBICountSlider");
+                OnPropertyChange("MaxUBIBracketCountSlider");
+
+
+                if (UBIChangesSlant)
+                {
+                    OnPropertyChange("MaxUBIBracketCount");
+                    OnPropertyChange("MaxUBIBracketCountSlider");
+                    OnPropertyChange("MinUBIBracketCount");
+                    OnPropertyChange("MinUBIBracketCountSlider");
+
+                    MaxBracketCountSlider = MaxUBIBracketCountSlider;
+                    PovertyLineIndexSlider = MinUBIBracketCountSlider;
+                    
+                    OnPropertyChange("MaxBracketCountSlider");
+                    OnPropertyChange("MaxBracketCount");
+                    OnPropertyChange("PovertyLineIndexSlider");
+                    OnPropertyChange("PovertyLineIndex");
+                    OnPropertyChange("PovertyLineBrackets");
+                }
             }
         }
 
@@ -581,7 +609,25 @@ namespace TaxMeApp.viewmodels
                 customGraphReset();
 
                 OnPropertyChange("MinUBIBracketCount");
-                OnPropertyChange("MinBracketUBICountSlider");
+                OnPropertyChange("MinUBIBracketCountSlider");
+
+                if (UBIChangesSlant)
+                {
+                    OnPropertyChange("MaxUBIBracketCount");
+                    OnPropertyChange("MaxUBIBracketCountSlider");
+                    OnPropertyChange("MinUBIBracketCount");
+                    OnPropertyChange("MinUBIBracketCountSlider");
+
+                    PovertyLineIndexSlider = MinUBIBracketCountSlider;
+                    MaxBracketCountSlider = MaxUBIBracketCountSlider;
+
+                    OnPropertyChange("MaxBracketCountSlider");
+                    OnPropertyChange("MaxBracketCount");
+                    OnPropertyChange("PovertyLineIndexSlider");
+                    OnPropertyChange("PovertyLineIndex");
+                    OnPropertyChange("PovertyLineBrackets");
+                }
+
             }
         }
 
@@ -666,6 +712,14 @@ namespace TaxMeApp.viewmodels
                 //OnPropertyChange("MaxUBIBracketCountSlider");
                 //OnPropertyChange("MaxUBISlider");
 
+                if (SlantChangesUBI) {
+                    MaxUBIBracketCountSlider = MaxBracketCountSlider;
+                    MinUBIBracketCountSlider = PovertyLineIndexSlider;
+                    OnPropertyChange("MaxUBIBracketCountSlider");
+                    OnPropertyChange("MaxUBIBracketCount");
+                    OnPropertyChange("MinUBIBracketCountSlider");
+                    OnPropertyChange("MinUBIBracketCount");
+                }
             }
         }
 
@@ -897,6 +951,63 @@ namespace TaxMeApp.viewmodels
                 GraphVM.showPostTaxMeanUBI = value;
 
                 OnPropertyChange("ShowPostTaxMeanUBI");
+            }
+        }
+
+        public bool SlantChangesUBI
+        {
+            get
+            {
+                return DataVM.SlantChangesUBI;
+            }
+            set
+            {
+                DataVM.SlantChangesUBI = value;
+
+                OnPropertyChange("SlantChangesUBI");
+
+                if (value) {
+                    if (UBIChangesSlant) {
+                        UBIChangesSlant = false;
+                        OnPropertyChange("UBIChangesSlant");
+                    }
+                    MaxUBIBracketCountSlider = MaxBracketCountSlider;
+                    MinUBIBracketCountSlider = PovertyLineIndexSlider;
+                    OnPropertyChange("MaxUBIBracketCountSlider");
+                    OnPropertyChange("MaxUBIBracketCount");
+                    OnPropertyChange("MinUBIBracketCountSlider");
+                    OnPropertyChange("MinUBIBracketCount");
+                }
+            }
+        }
+
+        public bool UBIChangesSlant
+        {
+            get
+            {
+                return DataVM.UBIChangesSlant;
+            }
+            set
+            {
+                DataVM.UBIChangesSlant = value;
+
+                OnPropertyChange("UBIChangesSlant");
+
+                if (value)
+                {
+                    if (SlantChangesUBI)
+                    {
+                        SlantChangesUBI = false;
+                        OnPropertyChange("SlantChangesUBI");
+                    }
+                    MaxBracketCountSlider = MaxUBIBracketCountSlider;
+                    PovertyLineIndexSlider = MinUBIBracketCountSlider;
+                    OnPropertyChange("MaxBracketCountSlider");
+                    OnPropertyChange("MaxBracketCount");
+                    OnPropertyChange("PovertyLineIndexSlider");
+                    OnPropertyChange("PovertyLineIndex");
+                    OnPropertyChange("PovertyBracketsCount");
+                }
             }
         }
 
