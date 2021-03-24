@@ -9,6 +9,7 @@ namespace TaxMeApp.models
 {
     public class OptionsModel
     {
+
         public OptionsModel()
         {
             this.MaxTaxRate = 0;
@@ -74,6 +75,14 @@ namespace TaxMeApp.models
         public long revenue { get; set; } = 0;
         public List<(int priority, bool ischecked, string name, double cost, double tFunding)> listOfCosts;
         public double[] fundingArray;
+
+        public void UncheckCustomPrograms()
+        {
+            for (int i = 19; i < listOfCosts.Count; i++) {
+                listOfCosts[i] = (i, false, listOfCosts[i].name, listOfCosts[i].cost, listOfCosts[i].tFunding);
+            }
+
+        }
 
         public bool dc;
         public bool DefenseChecked {
@@ -576,4 +585,5 @@ namespace TaxMeApp.models
         }
 
     }
+
 }

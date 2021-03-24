@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TaxMeApp.Helpers;
@@ -298,6 +299,20 @@ namespace TaxMeApp.viewmodels
             //    }
             //}
             //Console.WriteLine("\n");
+        }
+
+        public void UncheckCustomPrograms() {
+            for (int i = 0; i < customProgramListView.Items.Count; i++) {
+                for (int j = 0; j < (customProgramListView.Items[i] as Grid).Children.Count; j++) {
+                    try
+                    {
+                        ((customProgramListView.Items[i] as Grid).Children[j] as CheckBox).IsChecked = false;
+                    }
+                    catch (Exception e) { 
+                    
+                    }
+                }
+            }
         }
 
         int customStart = 19;

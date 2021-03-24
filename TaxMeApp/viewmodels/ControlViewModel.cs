@@ -1195,8 +1195,82 @@ namespace TaxMeApp.viewmodels
             ShowPostTaxMeanUBI = false;
             ShowPostTaxMedianUBI = false;
             MaxBracketCountSlider = 0;
+            PovertyLineIndexSlider = 3;
             MaxTaxRate = 0;
             FlatTaxSlider = 0;
+
+            this.resetBudgetButtonClick();
+
+            OutputVM.DefenseSpendingChecked = true;
+            OutputVM.MedicaidSpendingChecked = true;
+            OutputVM.WelfareSpendingChecked = true;
+            OutputVM.VeteransSpendingChecked = true;
+            OutputVM.FoodStampsSpendingChecked = true;
+            OutputVM.EducationSpendingChecked = true;
+            OutputVM.PublicHousingSpendingChecked = true;
+            OutputVM.HealthSpendingChecked = true;
+            OutputVM.ScienceSpendingChecked = true;
+            OutputVM.TransportationSpendingChecked = true;
+            OutputVM.InternationalSpendingChecked = true;
+            OutputVM.EESpendingChecked = true;
+            OutputVM.UnemploymentSpendingChecked = true;
+            OutputVM.AgricultureSpendingChecked = true;
+
+            OutputVM.SandersCollegeSpendingChecked = false;
+            OutputVM.SandersMedicaidSpendingChecked = false;
+            OutputVM.YangUbiSpendingChecked = false;
+            OutputVM.YangRemoveChecked = false;
+            OutputVM.UBIChecked = false;
+            OutputVM.DebtReductionChecked = false;
+
+            OutputVM.propChange("DefenseSpendingChecked");
+            OutputVM.propChange("MedicaidSpendingChecked");
+            OutputVM.propChange("WelfareSpendingChecked");
+            OutputVM.propChange("VeteransSpendingChecked");
+            OutputVM.propChange("FoodStampsSpendingChecked");
+            OutputVM.propChange("EducationSpendingChecked");
+            OutputVM.propChange("PublicHousingSpendingChecked");
+            OutputVM.propChange("HealthSpendingChecked");
+            OutputVM.propChange("ScienceSpendingChecked");
+            OutputVM.propChange("TransportationSpendingChecked");
+            OutputVM.propChange("InternationalSpendingChecked");
+            OutputVM.propChange("EESpendingChecked");
+            OutputVM.propChange("UnemploymentSpendingChecked");
+            OutputVM.propChange("AgricultureSpendingChecked");
+            OutputVM.propChange("SandersCollegeSpendingChecked");
+            OutputVM.propChange("SandersMedicaidSpendingChecked");
+            OutputVM.propChange("YangUbiSpendingChecked");
+            OutputVM.propChange("YangRemoveChecked");
+            OutputVM.propChange("UBIChecked");
+            OutputVM.propChange("DebtReductionChecked");
+
+            OutputVM.UncheckCustomPrograms();
+
+            OutputVM.OptionsModel.UncheckCustomPrograms();
+            OutputVM.propChange("customProgramListView");
+
+            this.MaxUBI = 1500;
+            this.MaxUBIBracketCountSlider = 3;
+            this.MinUBIBracketCountSlider = 0;
+            OnPropertyChange("MaxUBI");
+            OnPropertyChange("MaxUBISlider");
+            OnPropertyChange("MaxUBIBracketCountSlider");
+            OnPropertyChange("MaxUBIBracketCount");
+            OnPropertyChange("MinUBIBracketCountSlider");
+            OnPropertyChange("MinUBIBracketCount");
+
+
+            OutputVM.OptionsModel.TargetDebtPercent = 10;
+            OutputVM.OptionsModel.DebtYears = 10;
+            OutputVM.OptionsModel.YearlyGDPGrowth = 2.3;
+            OutputVM.OptionsModel.AnnualDebtInterest = 3;
+
+            OutputVM.propChange("TargetDebtPercent");
+            OutputVM.propChange("DebtYears");
+            OutputVM.propChange("YearlyGDPGrowth");
+            OutputVM.propChange("AnnualDebtInterest");
+
+            OutputVM.Update();
         }
 
         private void resetTaxRatesButtonClick() {
