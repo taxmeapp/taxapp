@@ -18,8 +18,13 @@ namespace TaxMeApp.models
 
         public SeriesCollection Series { get; set; } = new SeriesCollection();
 
-
-        public AxisSection MaxBracketLine { get; set; } = new AxisSection();
+        public AxesCollection Axes { get; set; } = new AxesCollection
+        {
+            new Axis { Position = AxisPosition.RightTop, ShowLabels = false }, // number of returns
+            new Axis { Position = AxisPosition.RightTop, ShowLabels = false }, // revenue
+            new Axis { Position = AxisPosition.RightTop, ShowLabels = false, MinValue = 0, MaxValue = 100, Title = "Tax Rate (%)" }, // tax percentage
+            new Axis { ShowLabels = false, MinValue = 0, Title = "UBI ($)" } // UBI
+        };
 
         public string[] Labels { get; } =
         {

@@ -87,6 +87,14 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        public AxesCollection Axes
+        {
+            get
+            {
+                return GraphModel.Axes;
+            }
+        }
+
         public string[] Labels
         {
             get
@@ -431,6 +439,12 @@ namespace TaxMeApp.viewmodels
                 try
                 {
                     Series.Clear();
+                    Axes[2].Separator.IsEnabled = false;
+                    Axes[2].ShowLabels = false;
+                    Axes[2].Title = null;
+                    Axes[3].Separator.IsEnabled = false;
+                    Axes[3].ShowLabels = false;
+                    Axes[3].Title = null;
                 }
                 catch (NullReferenceException e)
                 {
@@ -614,6 +628,8 @@ namespace TaxMeApp.viewmodels
 
             AddLineSeries(lineSeries);
 
+            Axes[2].ShowLabels = true;
+            Axes[2].Title = "Tax Rate (%)";
         }
 
         // Line chart for % of income paid in tax under new system
@@ -633,6 +649,8 @@ namespace TaxMeApp.viewmodels
 
             AddLineSeries(lineSeries);
 
+            Axes[2].ShowLabels = true;
+            Axes[2].Title = "Tax Rate (%)";
         }
 
         // Line chart for UBI by bracket
@@ -652,6 +670,8 @@ namespace TaxMeApp.viewmodels
 
             AddLineSeries(lineSeries);
 
+            Axes[3].ShowLabels = true;
+            Axes[3].Title = "UBI ($)";
         }
 
         private void graphCustomRates(List<double> customVals)
@@ -670,6 +690,8 @@ namespace TaxMeApp.viewmodels
 
             AddLineSeries(lineSeries);
 
+            Axes[2].ShowLabels = true;
+            Axes[2].Title = "Tax Rate (%)";
         }
     }
 }
