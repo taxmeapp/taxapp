@@ -305,6 +305,10 @@ namespace TaxMeApp.viewmodels
 
         public bool DontAdjustBracketCount { get; set; } = false;
 
+        public bool BalancePovertyWithMax { get; set; } = true;
+
+        public bool BalanceMaxWithPoverty { get; set; } = true;
+
         private bool locked = false;
         public bool LockTaxRates
         {
@@ -721,6 +725,8 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("PovertyLineIndex");
 
                 OnPropertyChange("PovertyLineBrackets");
+
+                OnPropertyChange("PovertyLineIndexSlider");
 
                 OnPropertyChange("MaxBracketCountSlider");
 
@@ -1324,7 +1330,7 @@ namespace TaxMeApp.viewmodels
             ShowPostTaxMeanUBI = false;
             ShowPostTaxMedianUBI = false;
             MaxBracketCountSlider = 0;
-            PovertyLineIndexSlider = 3;
+            PovertyLineIndexSlider = -1;
             MaxTaxRate = 0;
             FlatTaxSlider = 0;
 

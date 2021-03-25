@@ -71,7 +71,7 @@ namespace TaxMeApp.models
                 "Over 10m"
         };
 
-        public int PovertyLineIndex { get; set; } = 3;
+        public int PovertyLineIndex { get; set; } = -1;
 
         public int MaxBracketCount { get; set; }
 
