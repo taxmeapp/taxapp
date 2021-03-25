@@ -305,9 +305,44 @@ namespace TaxMeApp.viewmodels
 
         public bool DontAdjustBracketCount { get; set; } = false;
 
-        public bool BalancePovertyWithMax { get; set; } = true;
+        public bool BalancePovertyWithMax
+        {
+            get
+            {
+                return OptionsModel.BalancePovertyWithMax;
+            }
+            set
+            {
+                OptionsModel.BalancePovertyWithMax = value;
+                if (value)
+                {
+                    BalanceMaxWithPoverty = !value;
+                    OnPropertyChange("BalanceMaxWithPoverty");
+                }
 
-        public bool BalanceMaxWithPoverty { get; set; } = true;
+                OnPropertyChange("BalancePovertyWithMax");
+            }
+        }
+
+        public bool BalanceMaxWithPoverty
+        {
+            get
+            {
+                return OptionsModel.BalanceMaxWithPoverty;
+            }
+            set
+            {
+                OptionsModel.BalanceMaxWithPoverty = value;
+
+                if (value)
+                {
+                    BalancePovertyWithMax = !value;
+                    OnPropertyChange("BalancePovertyWithMax");
+                }
+
+                OnPropertyChange("BalanceMaxWithPoverty");
+            }
+        }
 
         private bool locked = false;
         public bool LockTaxRates
