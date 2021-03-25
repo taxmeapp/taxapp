@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -1095,6 +1096,48 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.YangUbiChecked = value;
+
+                // If user has checked this box
+                if (value)
+                {
+
+                    // if regular UBI is also checked
+                    if (UBIChecked)
+                    {
+                        UBIChecked = false;
+                        OnPropertyChange("UBIChecked");
+                    }
+
+                    // if medicaid is also checked
+                    if (MedicaidSpendingChecked)
+                    {
+                        MedicaidSpendingChecked = false;
+                        OnPropertyChange("MedicaidSpendingChecked");
+                    }
+
+                    // if welfare is also checked
+                    if (WelfareSpendingChecked)
+                    {
+                        WelfareSpendingChecked = false;
+                        OnPropertyChange("WelfareSpendingChecked");
+                    }
+
+                    // if foodstamps is also checked
+                    if (FoodStampsSpendingChecked)
+                    {
+                        FoodStampsSpendingChecked = false;
+                        OnPropertyChange("FoodStampsSpendingChecked");
+                    }
+
+                    // if unemployment is also checked
+                    if (UnemploymentSpendingChecked)
+                    {
+                        UnemploymentSpendingChecked = false;
+                        OnPropertyChange("UnemploymentSpendingChecked");
+                    }
+
+                }
+
                 this.Update();
             }
         }
@@ -1129,6 +1172,48 @@ namespace TaxMeApp.viewmodels
             set
             {
                 OptionsModel.UBIChecked = value;
+
+                // If user has checked this box
+                if (value)
+                {
+
+                    // if YangUBI is also checked
+                    if (YangUbiSpendingChecked)
+                    {
+                        YangUbiSpendingChecked = false;
+                        OnPropertyChange("YangUbiSpendingChecked");
+                    }
+
+                    // if medicaid is also checked
+                    if (MedicaidSpendingChecked)
+                    {
+                        MedicaidSpendingChecked = false;
+                        OnPropertyChange("MedicaidSpendingChecked");
+                    }
+
+                    // if welfare is also checked
+                    if (WelfareSpendingChecked)
+                    {
+                        WelfareSpendingChecked = false;
+                        OnPropertyChange("WelfareSpendingChecked");
+                    }
+
+                    // if foodstamps is also checked
+                    if (FoodStampsSpendingChecked)
+                    {
+                        FoodStampsSpendingChecked = false;
+                        OnPropertyChange("FoodStampsSpendingChecked");
+                    }
+
+                    // if unemployment is also checked
+                    if (UnemploymentSpendingChecked)
+                    {
+                        UnemploymentSpendingChecked = false;
+                        OnPropertyChange("UnemploymentSpendingChecked");
+                    }
+
+                }
+
                 this.Update();
             }
         }
