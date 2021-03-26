@@ -567,6 +567,14 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("MaxBracketCount");
                 OnPropertyChange("MaxBracketCountSlider");
 
+                if (BalancePovertyWithMax)
+                {
+                    // calculate the number of poverty brackets to closest match the max tax population
+                    int brackets = DataVM.determineBaselinePovertyBrackets();
+                    // subtract 1 from number of poverty brackets to make index-based
+                    PovertyLineIndexSlider = brackets-1;
+                }
+
                 List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
                 List<double> slantTaxRates = slantTaxData[0];
                 try

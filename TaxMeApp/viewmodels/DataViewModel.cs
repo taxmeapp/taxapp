@@ -129,6 +129,10 @@ namespace TaxMeApp.viewmodels
         // Population at max tax rate
         private int numMaxPop
         {
+            get
+            {
+                return DataModel.NumMaxPop;
+            }
             set
             {
                 DataModel.NumMaxPop = value;
@@ -596,7 +600,7 @@ namespace TaxMeApp.viewmodels
             //Trace.WriteLine("There are " + maxPopCount + " returns at max rate.");
 
             // Save our value
-            numMaxPop = maxPopCount;
+            this.numMaxPop = maxPopCount;
 
         }
 
@@ -1038,6 +1042,25 @@ namespace TaxMeApp.viewmodels
                 }
             }
             return bracketIndex;
+        }
+
+        // find the highest number of brackets where poverty population is less than the max tax rate population
+        public int determineBaselinePovertyBrackets()
+        {
+            int povertyPopCount = 0;
+            int povertyBracketCount = 0;
+
+            for(int i = 0; i < population.Count; i++)
+            {
+                povertyPopCount += population[i];
+                if (povertyPopCount > numMaxPop)
+                {
+                    break;
+                }
+                povertyBracketCount++;
+            }
+
+            return povertyBracketCount;
         }
 
     }
