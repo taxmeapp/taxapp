@@ -72,9 +72,9 @@
                             TickPlacement="BottomRight"
                             Value="{Binding MaxBracketCountSlider, Mode=TwoWay}"
                             Width="175"/>
-                        <CheckBox Content="Balance Poverty Population"
+                        <CheckBox Content="Balance Poverty Brackets"
                               IsChecked="{Binding BalancePovertyWithMax, Mode=TwoWay}"
-                              Margin="10,0,5,10"/>
+                              Margin="20,0,5,10"/>
                         <TextBlock Text="Tax Brackets Living in Poverty"
                            Margin="5, 5, 5, 5"/>
                         <TextBlock FontSize="20"
@@ -88,9 +88,9 @@
                         TickPlacement="BottomRight"
                         Value="{Binding PovertyLineIndexSlider, Mode=TwoWay}"
                         Width="175"/>
-                        <CheckBox Content="Balance Max Rate Population"
+                        <CheckBox Content="Balance Max Rate Brackets"
                               IsChecked="{Binding BalanceMaxWithPoverty, Mode=TwoWay}"
-                              Margin="10,0,5,10"/>
+                              Margin="20,0,5,10"/>
                         <Button Margin="15, 5, 15, 5"
                     Command="{Binding AutoFitSlantTaxBtnCommand}" 
                     Content="Auto-Fit Slant Tax"/>
