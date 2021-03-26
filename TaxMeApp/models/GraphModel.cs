@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace TaxMeApp.models
 {
@@ -44,6 +45,7 @@ namespace TaxMeApp.models
                 ShowLabels = false, 
                 MinValue = 0, 
                 Title = "UBI ($)",
+                Foreground = Brushes.DarkViolet,
                 Separator = { IsEnabled = false }
             } 
         };
