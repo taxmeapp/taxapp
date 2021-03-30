@@ -10,35 +10,49 @@
                     MinHeight="915"
                     MinWidth="200">
             <TextBlock Text="Control Panel"
-                               FontSize="20"
-                               Margin="5, 5, 5, 5"/>
+                        FontSize="20"
+                        Margin="5, 5, 5, 5"/>
             <Separator Margin="10,10,10,10"/>
-            <TextBlock Text="Year"
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center">
+                <TextBlock Text="Year"
+                           VerticalAlignment="Center"
+                           Margin="5, 5, 25, 5"/>
+                <ComboBox x:Name="YearInput"
+                          HorizontalAlignment="Right"
+                            ItemsSource="{Binding YearList}" 
+                            SelectedItem="{Binding SelectedYear}"
+                            Margin="5, 5, 5, 5"
+                            Width="125"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center">
+                <TextBlock Text="Tax Plan"
                                Margin="5, 5, 5, 5"/>
-            <ComboBox x:Name="YearInput"
-                                ItemsSource="{Binding YearList}" 
-                                SelectedItem="{Binding SelectedYear}"
-                                Margin="5, 5, 5, 15"
-                                Width="175"/>
-            <TextBlock Text="Tax Plan"
-                               Margin="5, 5, 5, 5"/>
-            <ComboBox ItemsSource="{Binding TaxPlansList}" 
+                <ComboBox ItemsSource="{Binding TaxPlansList}" 
+                          HorizontalAlignment="Right"
                     SelectedItem="{Binding SelectedTaxPlanName}"
-                    Margin="5, 5, 5, 15"
-                    Width="175"/>
-            <Button Command="{Binding AddTaxPlanBtnCommand}" 
-                    Content="Add Tax Plan"
-                    Margin="0, 5, 0, 5"
-                    Width="175"/>
-            <Button Command="{Binding SaveTaxPlanBtnCommand}"
-                    Content="Save Tax Plan"
-                    Margin="0,5,0,5"
-                    Width="175"/>
-            <Button Command="{Binding DeleteTaxPlanBtnCommand}"
-                    Content="Delete Tax Plan"
-                    Margin="0, 5, 0, 5"
-                    Width="175"
+                    Margin="5, 5, 5, 5"
+                    Width="125"/>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center">
+                <Button Command="{Binding AddTaxPlanBtnCommand}" 
+                    Content="Add"
+                    Margin="5, 5, 5, 5"
+                    Width="50"/>
+                <Button Command="{Binding SaveTaxPlanBtnCommand}"
+                    Content="Save"
+                    Margin="5, 5, 5, 5"
+                    Width="50"/>
+                <Button Command="{Binding DeleteTaxPlanBtnCommand}"
+                    Content="Delete"
+                    Margin="5, 5, 5, 5"
+                    Width="50"
                     IsEnabled="{Binding DeleteTaxPlanBtnEnabled}"/>
+            </StackPanel>
+            
 
             <TabControl BorderThickness="0" Background="LightGray" SelectedIndex="{Binding SelectedTaxPlanTabIndex}">
                 <TabItem Header="Slant Tax" BorderThickness="0" Visibility="Collapsed">

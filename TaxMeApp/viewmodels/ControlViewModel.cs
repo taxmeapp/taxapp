@@ -1181,16 +1181,14 @@ namespace TaxMeApp.viewmodels
         private void saveTaxPlanButtonClick()
         {
 
-            // print EVERYTHING
+            
 
             string taxPlanName = SelectedTaxPlanName;
 
-            if (SelectedTaxPlanName != null && SelectedTaxPlanName.Equals("Slant Tax"))
+            if (SelectedTaxPlanName != null && (SelectedTaxPlanName.Equals("Slant Tax") || SelectedTaxPlanName.Equals("Flat Tax")))
             {
                 taxPlanName += " (modified)";
             }
-
-            //Trace.WriteLine(taxPlanName);
 
             Dictionary<string, object> values = new Dictionary<string, object>();
 
@@ -1250,7 +1248,7 @@ namespace TaxMeApp.viewmodels
         //The Delete Tax Plan button deletes the selected tax plan but it can't delete the default slant tax plan
         private void deleteTaxPlanButtonClick()
         {
-            if (SelectedTaxPlanName != "Slant Tax")
+            if (SelectedTaxPlanName != "Slant Tax" && SelectedTaxPlanName != "Flat Tax")
             {
 
                 PlanSaver.DeletePlan(SelectedTaxPlanName);
