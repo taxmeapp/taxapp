@@ -658,6 +658,300 @@ namespace TaxMeApp.viewmodels
                     newTaxPctByBracket.Add(rate);
                 }
             }
+            else if(ControlVM.SelectedTaxPlanName == "Slant Tax")
+            {
+                // The number of brackets that will be taxed incrementally:
+                int middleCount = selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1);
+
+                // Initialize our index counter that is shared for all three loops
+                int i = 0;
+
+                // Handle poverty brackets
+                for (; i <= povertyBrackets; i++)
+                {
+
+                    // Revenue is 0
+                    newRevenueByBracket.Add(0);
+                    // Rate is 0
+                    newTaxPctByBracket.Add(0);
+
+                }
+
+                // Determine how many divisons we want to spread our increment over
+                int divisions = middleCount + 1;
+
+                // Determine the rate at how much to increment, and round to 1 decimal place
+                double increment = Math.Round(maxTaxRate / (double)divisions, 1);
+
+                // Incremental brackets
+                for (; i < selectedBrackets.Count - maxBracketCount; i++)
+                {
+
+                    rate = rate + increment;
+
+                    // Revenue is Taxable Income * Tax Rate
+                    long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 10 * rate);
+                    totalRevenueNew += bracketRevenue;
+
+                    newRevenueByBracket.Add(bracketRevenue);
+
+                    // Rate is incremental
+                    newTaxPctByBracket.Add(rate);
+
+                }
+
+                // Max rate:
+                for (; i < selectedBrackets.Count; i++)
+                {
+
+                    // Revenue is Taxable Income * Max Rate
+                    long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * maxTaxRate / 100;
+                    totalRevenueNew += bracketRevenue;
+
+                    newRevenueByBracket.Add(bracketRevenue);
+
+                    // Rate is max
+                    newTaxPctByBracket.Add(maxTaxRate);
+
+                }
+            }
+            ///////////////////////////////////////////////////////////////
+            /////CHANGE THIS PART FOR NEW TAX PLANS BASED ON SLANT TAX/////
+            ///////////////////////////////////////////////////////////////
+            else if(ControlVM.SelectedTaxPlanName == "Slant / Mod 1")
+            {
+                // The number of brackets that will be taxed incrementally:
+                int middleCount = selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1);
+
+                // Initialize our index counter that is shared for all three loops
+                int i = 0;
+
+                // Handle poverty brackets
+                for (; i <= povertyBrackets; i++)
+                {
+
+                    // Revenue is 0
+                    newRevenueByBracket.Add(0);
+                    // Rate is 0
+                    newTaxPctByBracket.Add(0);
+
+                }
+
+                // Determine how many divisons we want to spread our increment over
+                int divisions = middleCount + 1;
+
+                // Determine the rate at how much to increment, and round to 1 decimal place
+                double increment = Math.Round(maxTaxRate / (double)divisions, 1);
+
+                //double start = Math.PI;
+                //double end = 3 * Math.PI / 2;
+                //double currentAngle = start;
+                //double sinInc = (end - start) / ((double)divisions);
+                //double sign = -1;
+                //sign = 1;
+
+                double k = 90 / (double)divisions;
+                
+                // Incremental brackets
+                for (; i < selectedBrackets.Count - maxBracketCount; i++)
+                {
+                    rate = Math.Cos((Math.PI / 180) * (Math.Abs(i-18) * k)) * maxTaxRate;
+                    //rate = rate + (increment * Math.Cos(currentAngle) * sign);
+                    //rate = maxTaxRate * Math.Abs(Math.Sin(currentAngle));
+
+                    //rate = maxTaxRate * Math.Sin(currentAngle) * sign;
+                    //rate = rate + (increment * i * i / divisions);
+                    //currentAngle += sinInc;
+
+
+                    if (rate > maxTaxRate)
+                    {
+                        rate = maxTaxRate;
+                    }
+
+
+                    // Revenue is Taxable Income * Tax Rate
+                    long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 10 * rate);
+                    totalRevenueNew += bracketRevenue;
+
+                    newRevenueByBracket.Add(bracketRevenue);
+
+                    // Rate is incremental
+                    newTaxPctByBracket.Add(rate);
+
+                }
+
+                // Max rate:
+                for (; i < selectedBrackets.Count; i++)
+                {
+
+                    // Revenue is Taxable Income * Max Rate
+                    long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * maxTaxRate / 100;
+                    totalRevenueNew += bracketRevenue;
+
+                    newRevenueByBracket.Add(bracketRevenue);
+
+                    // Rate is max
+                    newTaxPctByBracket.Add(maxTaxRate);
+
+                }
+            }
+            else if (ControlVM.SelectedTaxPlanName == "Slant / Mod 2")
+            {
+                // The number of brackets that will be taxed incrementally:
+                int middleCount = selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1);
+
+                // Initialize our index counter that is shared for all three loops
+                int i = 0;
+
+                // Handle poverty brackets
+                for (; i <= povertyBrackets; i++)
+                {
+
+                    // Revenue is 0
+                    newRevenueByBracket.Add(0);
+                    // Rate is 0
+                    newTaxPctByBracket.Add(0);
+
+                }
+
+                // Determine how many divisons we want to spread our increment over
+                int divisions = middleCount + 1;
+
+                // Determine the rate at how much to increment, and round to 1 decimal place
+                double increment = Math.Round(maxTaxRate / (double)divisions, 1);
+
+                //double start = Math.PI;
+                //double end = 3 * Math.PI / 2;
+                //double currentAngle = start;
+                //double sinInc = (end - start) / ((double)divisions);
+                //double sign = -1;
+                //sign = 1;
+
+                double k = 90 / (double)divisions;
+
+                // Incremental brackets
+                for (; i < selectedBrackets.Count - maxBracketCount; i++)
+                {
+                    rate = Math.Cos((Math.PI / 180) * (Math.Abs(i - 18) * k)) * maxTaxRate;
+                    //rate = rate + (increment * Math.Cos(currentAngle) * sign);
+                    //rate = maxTaxRate * Math.Abs(Math.Sin(currentAngle));
+
+                    //rate = maxTaxRate * Math.Sin(currentAngle) * sign;
+                    //rate = rate + (increment * i * i / divisions);
+                    //currentAngle += sinInc;
+
+
+                    if (rate > maxTaxRate)
+                    {
+                        rate = maxTaxRate;
+                    }
+
+
+                    // Revenue is Taxable Income * Tax Rate
+                    long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 10 * rate);
+                    totalRevenueNew += bracketRevenue;
+
+                    newRevenueByBracket.Add(bracketRevenue);
+
+                    // Rate is incremental
+                    newTaxPctByBracket.Add(rate);
+
+                }
+
+                // Max rate:
+                for (; i < selectedBrackets.Count; i++)
+                {
+
+                    // Revenue is Taxable Income * Max Rate
+                    long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * maxTaxRate / 100;
+                    totalRevenueNew += bracketRevenue;
+
+                    newRevenueByBracket.Add(bracketRevenue);
+
+                    // Rate is max
+                    newTaxPctByBracket.Add(maxTaxRate);
+
+                }
+            }
+            else if (ControlVM.SelectedTaxPlanName == "Slant / Mod 3")
+            {
+                // The number of brackets that will be taxed incrementally:
+                int middleCount = selectedBrackets.Count - maxBracketCount - (povertyBrackets + 1);
+
+                // Initialize our index counter that is shared for all three loops
+                int i = 0;
+
+                // Handle poverty brackets
+                for (; i <= povertyBrackets; i++)
+                {
+
+                    // Revenue is 0
+                    newRevenueByBracket.Add(0);
+                    // Rate is 0
+                    newTaxPctByBracket.Add(0);
+
+                }
+
+                // Determine how many divisons we want to spread our increment over
+                int divisions = middleCount + 1;
+
+                // Determine the rate at how much to increment, and round to 1 decimal place
+                double increment = Math.Round(maxTaxRate / (double)divisions, 1);
+
+                //double start = Math.PI;
+                //double end = 3 * Math.PI / 2;
+                //double currentAngle = start;
+                //double sinInc = (end - start) / ((double)divisions);
+                //double sign = -1;
+                //sign = 1;
+
+                double k = 90 / (double)divisions;
+
+                // Incremental brackets
+                for (; i < selectedBrackets.Count - maxBracketCount; i++)
+                {
+                    rate = Math.Cos((Math.PI / 180) * (Math.Abs(i - 18) * k)) * maxTaxRate;
+                    //rate = rate + (increment * Math.Cos(currentAngle) * sign);
+                    //rate = maxTaxRate * Math.Abs(Math.Sin(currentAngle));
+
+                    //rate = maxTaxRate * Math.Sin(currentAngle) * sign;
+                    //rate = rate + (increment * i * i / divisions);
+                    //currentAngle += sinInc;
+
+
+                    if (rate > maxTaxRate)
+                    {
+                        rate = maxTaxRate;
+                    }
+
+
+                    // Revenue is Taxable Income * Tax Rate
+                    long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 10 * rate);
+                    totalRevenueNew += bracketRevenue;
+
+                    newRevenueByBracket.Add(bracketRevenue);
+
+                    // Rate is incremental
+                    newTaxPctByBracket.Add(rate);
+
+                }
+
+                // Max rate:
+                for (; i < selectedBrackets.Count; i++)
+                {
+
+                    // Revenue is Taxable Income * Max Rate
+                    long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * maxTaxRate / 100;
+                    totalRevenueNew += bracketRevenue;
+
+                    newRevenueByBracket.Add(bracketRevenue);
+
+                    // Rate is max
+                    newTaxPctByBracket.Add(maxTaxRate);
+
+                }
+            }
             else
             {
                 // The number of brackets that will be taxed incrementally:
@@ -715,7 +1009,7 @@ namespace TaxMeApp.viewmodels
 
                 }
             }
-
+            
             if (OptionsModel.YangRemoveChecked)
             {
                 totalRevenueNew += 1066000000000;
@@ -761,6 +1055,301 @@ namespace TaxMeApp.viewmodels
             {
 
                 rate = rate + increment;
+
+                // Revenue is Taxable Income * Tax Rate
+                long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 1000 * rate / 100);
+                totalRevenueNew += bracketRevenue;
+
+                revenueByBracket.Add(bracketRevenue);
+
+                // Rate is incremental
+                rates.Add(rate);
+
+            }
+
+            // Max rate:
+            for (; i < selectedBrackets.Count; i++)
+            {
+
+                // Revenue is Taxable Income * Max Rate
+                long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * maxTaxRate / 100;
+                totalRevenueNew += bracketRevenue;
+
+                revenueByBracket.Add(bracketRevenue);
+
+                // Rate is max
+                rates.Add(maxTaxRate);
+
+            }
+
+            if (OptionsModel.YangRemoveChecked)
+            {
+                totalRevenueNew += 1066000000000;
+            }
+
+            // Save our total revenue calculation
+            this.totalRevenueNew = totalRevenueNew;
+
+            ans.Add(rates);
+            ans.Add(revenueByBracket);
+            return ans;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        /////CHANGE THIS PART FOR NEW TAX PLANS BASED ON SLANT TAX/////
+        ///////////////////////////////////////////////////////////////
+        public List<List<double>> CalculateMod1Data()
+        {
+            List<List<double>> ans = new List<List<double>>();
+            List<double> rates = new List<double>();
+            List<double> revenueByBracket = new List<double>();
+
+            // Initialize our variables
+            int middleCount = selectedBrackets.Count - maxBracketCount;
+            long totalRevenueNew = 0;
+            double rate = 0;
+
+            // Initialize our index counter that is shared for all three loops
+            int i = 0;
+
+            // Handle poverty brackets
+            for (; i <= povertyBrackets; i++)
+            {
+
+                // Revenue is 0
+                revenueByBracket.Add(0);
+                // Rate is 0
+                rates.Add(0);
+
+            }
+
+            // Determine how many divisons we want to spread our increment over
+            int divisions = middleCount - i + 1;
+
+            // Determine the rate at how much to increment, and round to 1 decimal place
+            double increment = Math.Round(maxTaxRate / (double)divisions, 1);
+
+            //double start = Math.PI;
+            //double end = 3 * Math.PI / 2;
+            //double currentAngle = start;
+            //double sinInc = (end - start) / ((double)divisions);
+            //double sign = -1;
+            //sign = 1;
+            double k = 90 / (double)divisions;
+
+            // Incremental brackets
+            for (; i < middleCount; i++)
+            {
+                //rate = maxTaxRate * Math.Sin(currentAngle);
+                //rate = maxTaxRate * Math.Abs(Math.Sin(currentAngle));
+
+                rate = Math.Cos((Math.PI / 180) * (Math.Abs(i-18) * k)) * maxTaxRate;
+
+                //rate = rate + (increment * Math.Cos(currentAngle) * sign);
+                //rate = maxTaxRate * Math.Sin(currentAngle) * sign;
+                //rate = rate + (increment * increment);
+                //rate = rate + (increment * i * i / divisions);
+
+                //currentAngle += sinInc;
+
+                if (rate > maxTaxRate)
+                {
+                    rate = maxTaxRate;
+                }
+
+                // Revenue is Taxable Income * Tax Rate
+                long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 1000 * rate / 100);
+                totalRevenueNew += bracketRevenue;
+
+                revenueByBracket.Add(bracketRevenue);
+
+                // Rate is incremental
+                rates.Add(rate);
+
+            }
+
+            // Max rate:
+            for (; i < selectedBrackets.Count; i++)
+            {
+
+                // Revenue is Taxable Income * Max Rate
+                long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * maxTaxRate / 100;
+                totalRevenueNew += bracketRevenue;
+
+                revenueByBracket.Add(bracketRevenue);
+
+                // Rate is max
+                rates.Add(maxTaxRate);
+
+            }
+
+            if (OptionsModel.YangRemoveChecked)
+            {
+                totalRevenueNew += 1066000000000;
+            }
+
+            // Save our total revenue calculation
+            this.totalRevenueNew = totalRevenueNew;
+
+            ans.Add(rates);
+            ans.Add(revenueByBracket);
+            return ans;
+        }
+        public List<List<double>> CalculateMod2Data()
+        {
+            List<List<double>> ans = new List<List<double>>();
+            List<double> rates = new List<double>();
+            List<double> revenueByBracket = new List<double>();
+
+            // Initialize our variables
+            int middleCount = selectedBrackets.Count - maxBracketCount;
+            long totalRevenueNew = 0;
+            double rate = 0;
+
+            // Initialize our index counter that is shared for all three loops
+            int i = 0;
+
+            // Handle poverty brackets
+            for (; i <= povertyBrackets; i++)
+            {
+
+                // Revenue is 0
+                revenueByBracket.Add(0);
+                // Rate is 0
+                rates.Add(0);
+
+            }
+
+            // Determine how many divisons we want to spread our increment over
+            int divisions = middleCount - i + 1;
+
+            // Determine the rate at how much to increment, and round to 1 decimal place
+            double increment = Math.Round(maxTaxRate / (double)divisions, 1);
+
+            //double start = Math.PI;
+            //double end = 3 * Math.PI / 2;
+            //double currentAngle = start;
+            //double sinInc = (end - start) / ((double)divisions);
+            //double sign = -1;
+            //sign = 1;
+            double k = 90 / (double)divisions;
+
+            // Incremental brackets
+            for (; i < middleCount; i++)
+            {
+                //rate = maxTaxRate * Math.Sin(currentAngle);
+                //rate = maxTaxRate * Math.Abs(Math.Sin(currentAngle));
+
+                rate = Math.Cos((Math.PI / 180) * (Math.Abs(i - 18) * k)) * maxTaxRate;
+
+                //rate = rate + (increment * Math.Cos(currentAngle) * sign);
+                //rate = maxTaxRate * Math.Sin(currentAngle) * sign;
+                //rate = rate + (increment * increment);
+                //rate = rate + (increment * i * i / divisions);
+
+                //currentAngle += sinInc;
+
+                if (rate > maxTaxRate)
+                {
+                    rate = maxTaxRate;
+                }
+
+                // Revenue is Taxable Income * Tax Rate
+                long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 1000 * rate / 100);
+                totalRevenueNew += bracketRevenue;
+
+                revenueByBracket.Add(bracketRevenue);
+
+                // Rate is incremental
+                rates.Add(rate);
+
+            }
+
+            // Max rate:
+            for (; i < selectedBrackets.Count; i++)
+            {
+
+                // Revenue is Taxable Income * Max Rate
+                long bracketRevenue = selectedBrackets[i].TaxableIncome * 1000 * maxTaxRate / 100;
+                totalRevenueNew += bracketRevenue;
+
+                revenueByBracket.Add(bracketRevenue);
+
+                // Rate is max
+                rates.Add(maxTaxRate);
+
+            }
+
+            if (OptionsModel.YangRemoveChecked)
+            {
+                totalRevenueNew += 1066000000000;
+            }
+
+            // Save our total revenue calculation
+            this.totalRevenueNew = totalRevenueNew;
+
+            ans.Add(rates);
+            ans.Add(revenueByBracket);
+            return ans;
+        }
+        public List<List<double>> CalculateMod3Data()
+        {
+            List<List<double>> ans = new List<List<double>>();
+            List<double> rates = new List<double>();
+            List<double> revenueByBracket = new List<double>();
+
+            // Initialize our variables
+            int middleCount = selectedBrackets.Count - maxBracketCount;
+            long totalRevenueNew = 0;
+            double rate = 0;
+
+            // Initialize our index counter that is shared for all three loops
+            int i = 0;
+
+            // Handle poverty brackets
+            for (; i <= povertyBrackets; i++)
+            {
+
+                // Revenue is 0
+                revenueByBracket.Add(0);
+                // Rate is 0
+                rates.Add(0);
+
+            }
+
+            // Determine how many divisons we want to spread our increment over
+            int divisions = middleCount - i + 1;
+
+            // Determine the rate at how much to increment, and round to 1 decimal place
+            double increment = Math.Round(maxTaxRate / (double)divisions, 1);
+
+            //double start = Math.PI;
+            //double end = 3 * Math.PI / 2;
+            //double currentAngle = start;
+            //double sinInc = (end - start) / ((double)divisions);
+            //double sign = -1;
+            //sign = 1;
+            double k = 90 / (double)divisions;
+
+            // Incremental brackets
+            for (; i < middleCount; i++)
+            {
+                //rate = maxTaxRate * Math.Sin(currentAngle);
+                //rate = maxTaxRate * Math.Abs(Math.Sin(currentAngle));
+
+                rate = Math.Cos((Math.PI / 180) * (Math.Abs(i - 18) * k)) * maxTaxRate;
+
+                //rate = rate + (increment * Math.Cos(currentAngle) * sign);
+                //rate = maxTaxRate * Math.Sin(currentAngle) * sign;
+                //rate = rate + (increment * increment);
+                //rate = rate + (increment * i * i / divisions);
+
+                //currentAngle += sinInc;
+
+                if (rate > maxTaxRate)
+                {
+                    rate = maxTaxRate;
+                }
 
                 // Revenue is Taxable Income * Tax Rate
                 long bracketRevenue = (long)(selectedBrackets[i].TaxableIncome * 1000 * rate / 100);

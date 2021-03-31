@@ -41,7 +41,7 @@
                     IsEnabled="{Binding DeleteTaxPlanBtnEnabled}"/>
 
             <TabControl BorderThickness="0" Background="LightGray" SelectedIndex="{Binding SelectedTaxPlanTabIndex}">
-                <TabItem Header="Slant Tax" BorderThickness="0" Visibility="Collapsed">
+                <TabItem Header="Slant Tax" BorderThickness="0" Visibility="{Binding slantVisible}">
                     <StackPanel>
                         <TextBlock x:Name="SlantTaxMaxRateLabel" Text="Slant Tax Maximum %"
                                Margin="5, 5, 5, 5"/>
@@ -123,7 +123,7 @@
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Custom" Visibility="Collapsed">
-                    
+
                 </TabItem>
             </TabControl>
 

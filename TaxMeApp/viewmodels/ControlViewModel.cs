@@ -61,6 +61,27 @@ namespace TaxMeApp.viewmodels
 
             TaxPlansModel.TaxPlans.Add("Flat Tax", new IndividualTaxPlanModel("Flat Tax", new ObservableCollection<double>(new double[(int)GraphModel.Labels.Length])));
 
+            //Mod 0 is already graphed?
+            //List<List<double>> mod0Data = DataVM.CalculateMod0Data();
+            //List<double> mod0TaxRates = mod0Data[0];
+            //TaxPlansModel.TaxPlans.Add("Slant / Mod 0", new IndividualTaxPlanModel("Slant / Mod 0", new ObservableCollection<double>(mod0TaxRates)));
+
+            //Slope is 1/4 of sin
+            List<List<double>> mod1Data = DataVM.CalculateMod1Data();
+            List<double> mod1TaxRates = mod1Data[0];
+            TaxPlansModel.TaxPlans.Add("Slant / Mod 1", new IndividualTaxPlanModel("Slant / Mod 1", new ObservableCollection<double>(mod1TaxRates)));
+
+            //Slope is 1/4 of ellipse
+            //List<List<double>> mod2Data = DataVM.CalculateMod2Data();
+            //List<double> mod2TaxRates = mod2Data[0];
+            //TaxPlansModel.TaxPlans.Add("Slant / Mod 2", new IndividualTaxPlanModel("Slant / Mod 2", new ObservableCollection<double>(mod2TaxRates)));
+
+            //Slope based on 1/x
+            //List<List<double>> mod3Data = DataVM.CalculateMod3Data();
+            //List<double> mod3TaxRates = mod3Data[0];
+            //TaxPlansModel.TaxPlans.Add("Slant / Mod 3", new IndividualTaxPlanModel("Slant / Mod 3", new ObservableCollection<double>(mod3TaxRates)));
+
+
             PlanLoader.LoadPlans(this);
 
             //for (int i = 0; i < DataModel.NewTaxPctByBracket.Count; i++) {
@@ -75,7 +96,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if (this.SelectedTaxPlanName == "Slant Tax")
+                if (this.SelectedTaxPlanName == "Slant Tax" || this.SelectedTaxPlanName == "Slant / Mod 1") 
                 {
                     return Visibility.Visible;
                 }
@@ -525,13 +546,27 @@ namespace TaxMeApp.viewmodels
 
                 OnPropertyChange("MaxTaxRate");
 
-                List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
-                List<double> slantTaxRates = slantTaxData[0];
-                try
+                if (this.SelectedTaxPlanName == "Slant Tax")
                 {
-                    TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
-                    stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
-                } catch { }
+                    List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
+                    List<double> slantTaxRates = slantTaxData[0];
+                    try
+                    {
+                        TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
+                        stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
+                    }
+                    catch { }
+                }
+                else if (this.SelectedTaxPlanName == "Slant / Mod 1"){
+                    List<List<double>> mod1Data = DataVM.CalculateMod1Data();
+                    List<double> mod1Rates = mod1Data[0];
+                    try
+                    {
+                        TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 1", out IndividualTaxPlanModel stax);
+                        stax.TaxRates = new ObservableCollection<double>(mod1Rates);
+                    }
+                    catch { }
+                }
                 OnPropertyChange("TaxRateSlider");
                 OnPropertyChange("SelectedTaxRate");
             }
@@ -572,19 +607,32 @@ namespace TaxMeApp.viewmodels
                     // calculate the number of poverty brackets to closest match the max tax population
                     int brackets = DataVM.determineBaselinePovertyBrackets();
                     // subtract 1 from number of poverty brackets to make index-based
-                    PovertyLineIndexSlider = brackets-1;
+                    PovertyLineIndexSlider = brackets - 1;
                 }
 
-                List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
-                List<double> slantTaxRates = slantTaxData[0];
-                try
-                {
-                    TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
-                    stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
+                if(SelectedTaxPlanName == "Slant Tax"){ 
+                    List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
+                    List<double> slantTaxRates = slantTaxData[0];
+                    try
+                    {
+                        TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
+                        stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
+                    }
+                    catch { }
+                    OnPropertyChange("TaxRateSlider");
+                    OnPropertyChange("SelectedTaxRate");
                 }
-                catch { }
-                OnPropertyChange("TaxRateSlider");
-                OnPropertyChange("SelectedTaxRate");
+                else if (this.SelectedTaxPlanName == "Slant / Mod 1")
+                {
+                    List<List<double>> mod1Data = DataVM.CalculateMod1Data();
+                    List<double> mod1Rates = mod1Data[0];
+                    try
+                    {
+                        TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 1", out IndividualTaxPlanModel stax);
+                        stax.TaxRates = new ObservableCollection<double>(mod1Rates);
+                    }
+                    catch { }
+                }
 
                 if (SlantChangesUBI)
                 {
