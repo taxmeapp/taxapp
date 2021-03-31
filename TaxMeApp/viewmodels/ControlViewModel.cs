@@ -72,14 +72,14 @@ namespace TaxMeApp.viewmodels
             TaxPlansModel.TaxPlans.Add("Slant / Mod 1", new IndividualTaxPlanModel("Slant / Mod 1", new ObservableCollection<double>(mod1TaxRates)));
 
             //Slope is 1/4 of ellipse
-            //List<List<double>> mod2Data = DataVM.CalculateMod2Data();
-            //List<double> mod2TaxRates = mod2Data[0];
-            //TaxPlansModel.TaxPlans.Add("Slant / Mod 2", new IndividualTaxPlanModel("Slant / Mod 2", new ObservableCollection<double>(mod2TaxRates)));
+            List<List<double>> mod2Data = DataVM.CalculateMod2Data();
+            List<double> mod2TaxRates = mod2Data[0];
+            TaxPlansModel.TaxPlans.Add("Slant / Mod 2", new IndividualTaxPlanModel("Slant / Mod 2", new ObservableCollection<double>(mod2TaxRates)));
 
             //Slope based on 1/x
-            //List<List<double>> mod3Data = DataVM.CalculateMod3Data();
-            //List<double> mod3TaxRates = mod3Data[0];
-            //TaxPlansModel.TaxPlans.Add("Slant / Mod 3", new IndividualTaxPlanModel("Slant / Mod 3", new ObservableCollection<double>(mod3TaxRates)));
+            List<List<double>> mod3Data = DataVM.CalculateMod3Data();
+            List<double> mod3TaxRates = mod3Data[0];
+            TaxPlansModel.TaxPlans.Add("Slant / Mod 3", new IndividualTaxPlanModel("Slant / Mod 3", new ObservableCollection<double>(mod3TaxRates)));
 
 
             PlanLoader.LoadPlans(this);
@@ -96,7 +96,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if (this.SelectedTaxPlanName == "Slant Tax" || this.SelectedTaxPlanName == "Slant / Mod 1") 
+                if (this.SelectedTaxPlanName == "Slant Tax" || this.SelectedTaxPlanName == "Slant / Mod 1" || this.SelectedTaxPlanName == "Slant / Mod 2" || this.SelectedTaxPlanName == "Slant / Mod 3") 
                 {
                     return Visibility.Visible;
                 }

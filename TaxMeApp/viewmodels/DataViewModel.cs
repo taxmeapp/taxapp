@@ -821,25 +821,11 @@ namespace TaxMeApp.viewmodels
                 // Determine the rate at how much to increment, and round to 1 decimal place
                 double increment = Math.Round(maxTaxRate / (double)divisions, 1);
 
-                //double start = Math.PI;
-                //double end = 3 * Math.PI / 2;
-                //double currentAngle = start;
-                //double sinInc = (end - start) / ((double)divisions);
-                //double sign = -1;
-                //sign = 1;
-
-                double k = 90 / (double)divisions;
-
                 // Incremental brackets
                 for (; i < selectedBrackets.Count - maxBracketCount; i++)
                 {
-                    rate = Math.Cos((Math.PI / 180) * (Math.Abs(i - 18) * k)) * maxTaxRate;
-                    //rate = rate + (increment * Math.Cos(currentAngle) * sign);
-                    //rate = maxTaxRate * Math.Abs(Math.Sin(currentAngle));
 
-                    //rate = maxTaxRate * Math.Sin(currentAngle) * sign;
-                    //rate = rate + (increment * i * i / divisions);
-                    //currentAngle += sinInc;
+                    rate = (maxTaxRate / divisions) * Math.Sqrt((divisions * divisions) - (i * i));
 
 
                     if (rate > maxTaxRate)
@@ -1226,28 +1212,13 @@ namespace TaxMeApp.viewmodels
             // Determine the rate at how much to increment, and round to 1 decimal place
             double increment = Math.Round(maxTaxRate / (double)divisions, 1);
 
-            //double start = Math.PI;
-            //double end = 3 * Math.PI / 2;
-            //double currentAngle = start;
-            //double sinInc = (end - start) / ((double)divisions);
-            //double sign = -1;
-            //sign = 1;
-            double k = 90 / (double)divisions;
+            //double b = (Math.PI / 180) * 270;
 
             // Incremental brackets
             for (; i < middleCount; i++)
             {
-                //rate = maxTaxRate * Math.Sin(currentAngle);
-                //rate = maxTaxRate * Math.Abs(Math.Sin(currentAngle));
-
-                rate = Math.Cos((Math.PI / 180) * (Math.Abs(i - 18) * k)) * maxTaxRate;
-
-                //rate = rate + (increment * Math.Cos(currentAngle) * sign);
-                //rate = maxTaxRate * Math.Sin(currentAngle) * sign;
-                //rate = rate + (increment * increment);
-                //rate = rate + (increment * i * i / divisions);
-
-                //currentAngle += sinInc;
+                
+                rate = (maxTaxRate / divisions) * Math.Sqrt((divisions * divisions) - (i*i));
 
                 if (rate > maxTaxRate)
                 {
