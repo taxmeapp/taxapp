@@ -23,11 +23,11 @@ namespace TaxMeApp.Plans
 
             Directory.CreateDirectory(userPlanPath);
 
-            if (File.Exists(userPlanPath + name + ".xml"))
+            if (File.Exists(userPlanPath + name + ".tax"))
             {
                 try
                 {
-                    File.Delete(userPlanPath + name + ".xml");
+                    File.Delete(userPlanPath + name + ".tax");
                 }
                 catch (Exception e)
                 {
@@ -67,7 +67,7 @@ namespace TaxMeApp.Plans
 
             }
 
-            planXML.Save(userPlanPath + name + ".xml");
+            planXML.Save(userPlanPath + name + ".tax");
 
             return true;
 
@@ -77,11 +77,11 @@ namespace TaxMeApp.Plans
         {
             string userPlanPath = @".\userPlans\";
 
-            if (File.Exists(userPlanPath + name + ".xml"))
+            if (File.Exists(userPlanPath + name + ".tax"))
             {
                 try
                 {
-                    File.Delete(userPlanPath + name + ".xml");
+                    File.Delete(userPlanPath + name + ".tax");
                     Trace.WriteLine("Deleted");
                 }
                 catch (Exception e)

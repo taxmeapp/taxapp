@@ -1,6 +1,7 @@
 ﻿using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using TaxMeApp.dialog;
 using TaxMeApp.Helpers;
 using TaxMeApp.models;
 using TaxMeApp.Plans;
@@ -20,7 +22,6 @@ namespace TaxMeApp.viewmodels
     {
 
 
-        public ICommand AddTaxPlanBtnCommand { get; set; }
         public ICommand SaveTaxPlanBtnCommand { get; set; }
         public ICommand DeleteTaxPlanBtnCommand { get; set; }
         public ICommand ResetSettingsBtnCommand { get; set; }
@@ -34,7 +35,6 @@ namespace TaxMeApp.viewmodels
         public ControlViewModel()
         {
 
-            AddTaxPlanBtnCommand = new RelayCommand(o => addTaxPlanButtonClick());
             SaveTaxPlanBtnCommand = new RelayCommand(o => saveTaxPlanButtonClick());
             DeleteTaxPlanBtnCommand = new RelayCommand(o => deleteTaxPlanButtonClick());
             ResetSettingsBtnCommand = new RelayCommand(o => resetSettingsButtonClick());
@@ -1083,82 +1083,6 @@ namespace TaxMeApp.viewmodels
                 Button Logic
         */
 
-
-        //Add Tax Plan opens up a popup box to type in the name of the new plan
-        private void addTaxPlanButtonClick()
-        {
-            //Create a popup box that is 200px x 200px and 100px x 100px from the top left corner of the screen
-            Popup createNewTaxPlan = new Popup();
-            createNewTaxPlan.Height = 200.0;
-            createNewTaxPlan.Width = 200.0;
-            createNewTaxPlan.HorizontalOffset = 100;
-            createNewTaxPlan.VerticalOffset = 100;
-
-            //Create a stack panel to hold all of the components
-            StackPanel content = new StackPanel();
-            content.Background = new SolidColorBrush(Colors.White);
-
-            //Create label with instructions
-            TextBlock textBlock = new TextBlock();
-            textBlock.Text = "Enter Name of New Tax Plan:";
-            textBlock.Width = 180;
-            content.Children.Add(textBlock);
-
-            System.Windows.Thickness defaultMargin = new System.Windows.Thickness(0, 10, 0, 10);
-
-            //Add Textbox and buttons
-            TextBox textInput = new TextBox();
-            textInput.Width = 180;
-            textInput.Margin = defaultMargin;
-            content.Children.Add(textInput);
-
-            Button addButton = new Button();
-            addButton.Content = "Add";
-            addButton.Click += (sender, EventArgs) => { addButton_Click(sender, EventArgs, createNewTaxPlan, textInput); };
-            addButton.Width = 180;
-            addButton.Margin = defaultMargin;
-            content.Children.Add(addButton);
-
-            Button cancelButton = new Button();
-            cancelButton.Content = "Cancel";
-            cancelButton.Click += (sender, EventArgs) => { cancelButton_Click(sender, EventArgs, createNewTaxPlan); };
-            cancelButton.Width = 180;
-            cancelButton.Margin = defaultMargin;
-            content.Children.Add(cancelButton);
-
-            createNewTaxPlan.Child = content;
-            createNewTaxPlan.IsOpen = true;
-        }
-
-        private void addButton_Click(object sender, EventArgs e, Popup p, TextBox tb)
-        {
-            //Check if the input text is already used
-            //If not then add it to the list of tax plans and close the window
-            if (!(TaxPlansModel.TaxPlans.ContainsKey(tb.Text)))
-            {
-                Console.WriteLine("Adding Tax Plan, Name = {0}", tb.Text);
-
-                //Set all of the default values to 0% tax
-                ObservableCollection<double> defaultValues = new ObservableCollection<double>(new double[(int)(GraphModel.Labels.Length)]);
-
-                CreateTaxPlan(tb.Text, defaultValues);
-
-                SelectedTaxPlanName = TaxPlansList[0];
-                SelectedTaxPlanName = tb.Text;
-                SelectedBracket = BracketList[0];
-
-                tb.Text = "";
-                p.IsOpen = false;
-
-            }
-            //If the name is already being used then clear the text entry and print something out
-            else
-            {
-                Console.WriteLine("\nERROR: The Name: {0} Is Already Taken\n", tb.Text);
-                tb.Text = "";
-            }
-        }
-
         public void CreateTaxPlan(string name, ObservableCollection<double> taxValues)
         {
 
@@ -1181,30 +1105,74 @@ namespace TaxMeApp.viewmodels
         private void saveTaxPlanButtonClick()
         {
 
-            
+            DialogBox dialog = new DialogBox();
+            dialog.ShowDialog();
 
-            string taxPlanName = SelectedTaxPlanName;
-
-            if (SelectedTaxPlanName != null && (SelectedTaxPlanName.Equals("Slant Tax") || SelectedTaxPlanName.Equals("Flat Tax")))
+            if (dialog.Saved)
             {
-                taxPlanName += " (modified)";
+
+                string taxPlanName = dialog.Filename;
+
+                if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax"))
+                {
+                    taxPlanName += " (modified)";
+                }
+
+                Dictionary<string, object> values = new Dictionary<string, object>();
+
+                values.Add("MaxTaxRate", MaxTaxRate);
+                values.Add("MaxBracketCount", MaxBracketCount);
+                values.Add("PovertyLineBrackets", PovertyLineBrackets);
+
+                ObservableCollection<double> newTaxPlanRates;
+
+                if (TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan))
+                {
+                    newTaxPlanRates = selectedTaxPlan.TaxRates;
+                }
+                else
+                {
+                    //Set all of the default values to 0% tax
+                    newTaxPlanRates = new ObservableCollection<double>(new double[(int)(GraphModel.Labels.Length)]);
+                }
+
+                values.Add("TaxRates", newTaxPlanRates);
+
+
+                if (TaxPlansModel.TaxPlans.ContainsKey(taxPlanName))
+                {
+
+                    int increment = 2;
+
+                    string nameIncrement = taxPlanName + " (" + increment + ")";
+
+                    while (TaxPlansModel.TaxPlans.ContainsKey(nameIncrement))
+                    {
+
+                        increment++;
+                        nameIncrement = taxPlanName + " (" + increment + ")";
+
+                    }
+
+                    taxPlanName = nameIncrement;
+
+                }
+                else
+                {
+                    
+                }
+
+                TaxPlansModel.TaxPlans.Add(taxPlanName, new IndividualTaxPlanModel(taxPlanName, newTaxPlanRates));
+
+                PlanSaver.SavePlan(taxPlanName, values);
+
+                OnPropertyChange("TaxPlansList");
+
+                SelectedTaxPlanName = taxPlanName;
+
             }
 
-            Dictionary<string, object> values = new Dictionary<string, object>();
-
-            values.Add("MaxTaxRate", MaxTaxRate);
-            values.Add("MaxBracketCount", MaxBracketCount);
-            values.Add("PovertyLineBrackets", PovertyLineBrackets);
-
-            if (TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan))
-            { 
-                values.Add("TaxRates", selectedTaxPlan.TaxRates);
-            }
-            else
-            {
-                //Set all of the default values to 0% tax
-                values.Add("TaxRates", new ObservableCollection<double>(new double[(int)(GraphModel.Labels.Length)]));
-            }
+            return;
 
             /*
 
@@ -1240,7 +1208,7 @@ namespace TaxMeApp.viewmodels
             */
 
 
-            PlanSaver.SavePlan(taxPlanName, values);
+            
 
         }
 
