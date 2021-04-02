@@ -816,15 +816,20 @@ namespace TaxMeApp.viewmodels
                 // Determine how many divisons we want to spread our increment over
                 int divisions = middleCount + 1;
 
-                // Determine the rate at how much to increment, and round to 1 decimal place
-                double increment = Math.Round(maxTaxRate / (double)divisions, 1);
+                //Equation is -1 * sqrt(1-x^2) from 0 to 1 (translated up 1)
+                double currentIndex = 0;
+                double circlePosition;
 
                 // Incremental brackets
                 for (; i < selectedBrackets.Count - maxBracketCount; i++)
                 {
-
-                    rate = (maxTaxRate / divisions) * Math.Sqrt((divisions * divisions) - (i * i));
-
+                    if (currentIndex > 1)
+                    {
+                        currentIndex = 1;
+                    }
+                    circlePosition = -1 * Math.Sqrt(1 - (currentIndex * currentIndex));
+                    rate = (circlePosition + 1) * maxTaxRate;
+                    currentIndex += 1.0 / (middleCount - 1) ;
 
                     if (rate > maxTaxRate)
                     {
@@ -1192,27 +1197,30 @@ namespace TaxMeApp.viewmodels
             // Handle poverty brackets
             for (; i <= povertyBrackets; i++)
             {
-
                 // Revenue is 0
                 revenueByBracket.Add(0);
                 // Rate is 0
                 rates.Add(0);
-
             }
 
             // Determine how many divisons we want to spread our increment over
             int divisions = middleCount - i + 1;
 
-            // Determine the rate at how much to increment, and round to 1 decimal place
-            double increment = Math.Round(maxTaxRate / (double)divisions, 1);
 
-            //double b = (Math.PI / 180) * 270;
+            //Equation is -1 * sqrt(1-x^2) from 0 to 1 (translated up 1)
+            double currentIndex = 0;
+            double circlePosition;
 
             // Incremental brackets
             for (; i < middleCount; i++)
             {
-                
-                rate = (maxTaxRate / divisions) * Math.Sqrt((divisions * divisions) - (i*i));
+                if(currentIndex > 1)
+                {
+                    currentIndex = 1;
+                }
+                circlePosition = -1 * Math.Sqrt(1 - (currentIndex * currentIndex));
+                rate = (circlePosition + 1);
+                currentIndex += 1.0 / (middleCount - 1);
 
                 if (rate > maxTaxRate)
                 {
