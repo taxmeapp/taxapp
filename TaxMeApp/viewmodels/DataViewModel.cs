@@ -740,29 +740,27 @@ namespace TaxMeApp.viewmodels
                 // Determine how many divisons we want to spread our increment over
                 int divisions = middleCount + 1;
 
-                // Determine the rate at how much to increment, and round to 1 decimal place
-                double increment = Math.Round(maxTaxRate / (double)divisions, 1);
+                double curveIndex = 0;
+                //Curve start and end are end points of a sine wave that we want to mimic
+                double curveStart = 3 * Math.PI / 2;
+                double curveEnd = 2 * Math.PI;
+                //Current angle is used to find slope of sine wave
+                double currentAngle = curveStart;
+                //curveIncrement is how much to add to the current angle
+                double curveIncrement = (curveEnd - curveStart) / (middleCount);
+                double currentPosition;
 
-                //double start = Math.PI;
-                //double end = 3 * Math.PI / 2;
-                //double currentAngle = start;
-                //double sinInc = (end - start) / ((double)divisions);
-                //double sign = -1;
-                //sign = 1;
-
-                double k = 90 / (double)divisions;
-                
                 // Incremental brackets
                 for (; i < selectedBrackets.Count - maxBracketCount; i++)
                 {
-                    rate = Math.Cos((Math.PI / 180) * (Math.Abs(i-18) * k)) * maxTaxRate;
-                    //rate = rate + (increment * Math.Cos(currentAngle) * sign);
-                    //rate = maxTaxRate * Math.Abs(Math.Sin(currentAngle));
+                    currentPosition = Math.Sin(currentAngle);
+                    //When current Y position is 0, actual Y should be the max rate
+                    //When current Y position is -1, actual Y should be 0
+                    //So add 1 and multiply by max rate
+                    rate = (currentPosition + 1) * maxTaxRate;
 
-                    //rate = maxTaxRate * Math.Sin(currentAngle) * sign;
-                    //rate = rate + (increment * i * i / divisions);
-                    //currentAngle += sinInc;
-
+                    currentAngle += curveIncrement;
+                    curveIndex++;
 
                     if (rate > maxTaxRate)
                     {
@@ -1112,31 +1110,27 @@ namespace TaxMeApp.viewmodels
             // Determine how many divisons we want to spread our increment over
             int divisions = middleCount - i + 1;
 
-            // Determine the rate at how much to increment, and round to 1 decimal place
-            double increment = Math.Round(maxTaxRate / (double)divisions, 1);
-
-            //double start = Math.PI;
-            //double end = 3 * Math.PI / 2;
-            //double currentAngle = start;
-            //double sinInc = (end - start) / ((double)divisions);
-            //double sign = -1;
-            //sign = 1;
-            double k = 90 / (double)divisions;
+            double curveIndex = 0;
+            //Curve start and end are end points of a sine wave that we want to mimic
+            double curveStart = 3 * Math.PI / 2;
+            double curveEnd = 2 * Math.PI;
+            //Current angle is used to find slope of sine wave
+            double currentAngle = curveStart;
+            //curveIncrement is how much to add to the current angle
+            double curveIncrement = (curveEnd - curveStart) / (middleCount);
+            double currentPosition;
 
             // Incremental brackets
             for (; i < middleCount; i++)
             {
-                //rate = maxTaxRate * Math.Sin(currentAngle);
-                //rate = maxTaxRate * Math.Abs(Math.Sin(currentAngle));
+                currentPosition = Math.Sin(currentAngle);
+                //When current Y position is 0, actual Y should be the max rate
+                //When current Y position is -1, actual Y should be 0
+                //So add 1 and multiply by max rate
+                rate = (currentPosition + 1) * maxTaxRate;
 
-                rate = Math.Cos((Math.PI / 180) * (Math.Abs(i-18) * k)) * maxTaxRate;
-
-                //rate = rate + (increment * Math.Cos(currentAngle) * sign);
-                //rate = maxTaxRate * Math.Sin(currentAngle) * sign;
-                //rate = rate + (increment * increment);
-                //rate = rate + (increment * i * i / divisions);
-
-                //currentAngle += sinInc;
+                currentAngle += curveIncrement;
+                curveIndex++;
 
                 if (rate > maxTaxRate)
                 {
