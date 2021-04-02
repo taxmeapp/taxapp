@@ -22,6 +22,7 @@ namespace TaxMeApp.viewmodels
     {
 
 
+        public ICommand NewTaxPlanBtnCommand { get; set; }
         public ICommand SaveTaxPlanBtnCommand { get; set; }
         public ICommand DeleteTaxPlanBtnCommand { get; set; }
         public ICommand ResetSettingsBtnCommand { get; set; }
@@ -35,7 +36,8 @@ namespace TaxMeApp.viewmodels
         public ControlViewModel()
         {
 
-            SaveTaxPlanBtnCommand = new RelayCommand(o => saveTaxPlanButtonClick());
+            NewTaxPlanBtnCommand = new RelayCommand(o => newTaxPlanButtonClick());
+            SaveTaxPlanBtnCommand = new RelayCommand(o => saveTaxPlan());
             DeleteTaxPlanBtnCommand = new RelayCommand(o => deleteTaxPlanButtonClick());
             ResetSettingsBtnCommand = new RelayCommand(o => resetSettingsButtonClick());
             ResetTaxRatesBtnCommand = new RelayCommand(o => resetTaxRatesButtonClick());
@@ -1102,7 +1104,7 @@ namespace TaxMeApp.viewmodels
             p.IsOpen = false;
         }
 
-        private void saveTaxPlanButtonClick()
+        private void newTaxPlanButtonClick()
         {
 
             DialogBox dialog = new DialogBox();
@@ -1209,6 +1211,77 @@ namespace TaxMeApp.viewmodels
 
 
             
+
+        }
+
+        private void saveTaxPlan()
+        {
+
+            string taxPlanName = SelectedTaxPlanName;
+
+            bool baseModified = false;
+
+            if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax"))
+            {
+                taxPlanName += " (modified)";
+                baseModified = true;
+            }
+
+            Dictionary<string, object> values = new Dictionary<string, object>();
+
+            values.Add("MaxTaxRate", MaxTaxRate);
+            values.Add("MaxBracketCount", MaxBracketCount);
+            values.Add("PovertyLineBrackets", PovertyLineBrackets);
+
+            ObservableCollection<double> newTaxPlanRates;
+
+            if (TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan))
+            {
+                newTaxPlanRates = selectedTaxPlan.TaxRates;
+            }
+            else
+            {
+                //Set all of the default values to 0% tax
+                newTaxPlanRates = new ObservableCollection<double>(new double[(int)(GraphModel.Labels.Length)]);
+            }
+
+            values.Add("TaxRates", newTaxPlanRates);
+
+
+            if (baseModified && TaxPlansModel.TaxPlans.ContainsKey(taxPlanName))
+            {
+
+                int increment = 2;
+
+                string nameIncrement = taxPlanName + " (" + increment + ")";
+
+                while (TaxPlansModel.TaxPlans.ContainsKey(nameIncrement))
+                {
+
+                    increment++;
+                    nameIncrement = taxPlanName + " (" + increment + ")";
+
+                }
+
+                taxPlanName = nameIncrement;
+
+            }
+            else
+            {
+
+            }
+
+
+            if (baseModified)
+            {
+                TaxPlansModel.TaxPlans.Add(taxPlanName, new IndividualTaxPlanModel(taxPlanName, newTaxPlanRates));
+
+                OnPropertyChange("TaxPlansList");
+
+                SelectedTaxPlanName = taxPlanName;
+            }
+
+            PlanSaver.SavePlan(taxPlanName, values);
 
         }
 
