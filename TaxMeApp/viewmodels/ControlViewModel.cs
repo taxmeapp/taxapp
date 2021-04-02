@@ -1567,4 +1567,10 @@ namespace TaxMeApp.viewmodels
         Custom
     }
 
+    public enum EditingMode
+    {
+        Tax,
+        UBI
+    }
+
 }
