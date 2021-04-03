@@ -72,7 +72,7 @@
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock x:Name="SlantTaxMaxRateLabel" 
-                                       Text="Max Rate:"
+                                       Text="Max Tax Rate:"
                                        VerticalAlignment="Bottom"
                                Margin="0, 5, 5, 5"/>
                                     <TextBox FontSize="20"
@@ -93,31 +93,7 @@
                             Width="175"/>
 
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock x:Name="TaxBracketsLabel" 
-                                   Text="Brackets at Max:"
-                                       VerticalAlignment="Bottom"
-                                   Margin="0, 5, 15, 5"/>
-                                    <TextBlock FontSize="20"
-                                       HorizontalAlignment="Center" 
-                                       Text="{Binding MaxBracketCount}"/>
-                                </StackPanel>
-
-
-                                <Slider x:Name="TaxBracketsSlider" IsSnapToTickEnabled="True" 
-                            Margin="0, 5, 5, 15"
-                            Minimum="0"
-                            Maximum="10"
-                            TickFrequency="1"
-                            TickPlacement="BottomRight"
-                            Value="{Binding MaxBracketCountSlider, Mode=TwoWay}"
-                            Width="175"/>
-                                <CheckBox Content="Balance Poverty Brackets"
-                              IsChecked="{Binding BalancePovertyWithMax, Mode=TwoWay}"
-                              Margin="5,0,5,10"/>
-
-
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="Brackets in Poverty:"
+                                    <TextBlock Text="Poverty Exempt:"
                                        Margin="0, 5, 5, 5"
                                        VerticalAlignment="Bottom"/>
                                     <TextBlock FontSize="20"
@@ -126,17 +102,43 @@
                                 </StackPanel>
 
                                 <Slider IsSnapToTickEnabled="True" 
-                        Margin="0, 5, 5, 15"
+                        Margin="0, 5, 5, 10"
                         Minimum="-1"
                         Maximum="9"
                         TickFrequency="1"
                         TickPlacement="BottomRight"
                         Value="{Binding PovertyLineIndexSlider, Mode=TwoWay}"
                         Width="175"/>
-                                <CheckBox Content="Balance Max Rate Brackets"
+                                <CheckBox Content="Balance Max Rate Cutoff"
                               IsChecked="{Binding BalanceMaxWithPoverty, Mode=TwoWay}"
                               Margin="5,0,5,10"/>
-                                <Button Margin="10, 5, 15, 5"
+
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Center">
+                                            <TextBlock x:Name="TaxBracketsLabel"
+                                                       Text="Max Rate Cutoff:"
+                                                       VerticalAlignment="Bottom"
+                                                       Margin="0, 5, 5, 5" />
+                                            <TextBlock FontSize="20"
+                                                       HorizontalAlignment="Center"
+                                                       Text="{Binding MaxBracketCount}" />
+                                        </StackPanel>
+
+
+                                        <Slider x:Name="TaxBracketsSlider"
+                                                IsSnapToTickEnabled="True"
+                                                Margin="0, 5, 5, 10"
+                                                Minimum="0"
+                                                Maximum="10"
+                                                TickFrequency="1"
+                                                TickPlacement="BottomRight"
+                                                Value="{Binding MaxBracketCountSlider, Mode=TwoWay}"
+                                                Width="175" />
+                                        <CheckBox Content="Balance Poverty Exempt"
+                                                  IsChecked="{Binding BalancePovertyWithMax, Mode=TwoWay}"
+                                                  Margin="5,0,5,10" />
+
+                                        <Button Margin="10, 5, 15, 5"
                     Command="{Binding AutoFitSlantTaxBtnCommand}" 
                     Content="Auto-Fit Slant Tax"/>
                                 <CheckBox Content="Only Adjust Max Tax Rate"
@@ -182,8 +184,52 @@
                         <TabItem Header="Edit UBI" BorderThickness="0" Visibility="Collapsed">
                         <StackPanel>
 
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock x:Name="UBIBracketsLabel" Text="Brackets with no UBI: "
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock x:Name="UBIMax"
+                                               Text="Max UBI:"
+                                               VerticalAlignment="Bottom"
+                                               Margin="0,5,5,5" />
+                                    <TextBlock FontSize="20"
+                                               HorizontalAlignment="Center"
+                                               Text="{Binding MaxUBI}" />
+                                </StackPanel>
+
+
+                                <Slider x:Name="MaxUBISlider"
+                                        IsSnapToTickEnabled="True"
+                                        Margin="0,0,5,15"
+                                        Minimum="0"
+                                        Maximum="5000"
+                                        TickFrequency="100"
+                                        TickPlacement="BottomRight"
+                                        Value="{Binding MaxUBISlider, Mode=TwoWay}"
+                                        Width="175" />
+
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock x:Name="MinUBIBracketsLabel"
+                                               Text="Full Benefits:"
+                                               VerticalAlignment="Bottom"
+                                               Margin="0,5,5,5" />
+                                    <TextBlock FontSize="20"
+                                               HorizontalAlignment="Center"
+                                               Text="{Binding MinUBIBracketCount}" />
+                                </StackPanel>
+
+
+                                <Slider x:Name="MinUBIBracketsSlider"
+                                        IsSnapToTickEnabled="True"
+                                        Margin="0,0,5,15"
+                                        Minimum="0"
+                                        Maximum="18"
+                                        TickFrequency="1"
+                                        TickPlacement="BottomRight"
+                                        Value="{Binding MinUBIBracketCountSlider, Mode=TwoWay}"
+                                        Width="175" />
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock x:Name="UBIBracketsLabel" Text="UBI Cutoff: "
                                    VerticalAlignment="Bottom"
                                Margin="0,5,5,5"/>
                                 <TextBlock FontSize="20"
@@ -201,43 +247,6 @@
                             Value="{Binding MaxUBIBracketCountSlider, Mode=TwoWay}"
                             Width="175"/>
 
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock x:Name="MinUBIBracketsLabel" Text="Brackets at max UBI:"
-                                   VerticalAlignment="Bottom"
-                               Margin="0,5,5,5"/>
-                                <TextBlock FontSize="20"
-                               HorizontalAlignment="Center" 
-                               Text="{Binding MinUBIBracketCount}"/>
-                            </StackPanel>
-
-
-                            <Slider x:Name="MinUBIBracketsSlider" IsSnapToTickEnabled="True" 
-                            Margin="0,0,5,15"
-                            Minimum="0"
-                            Maximum="18"
-                            TickFrequency="1"
-                            TickPlacement="BottomRight"
-                            Value="{Binding MinUBIBracketCountSlider, Mode=TwoWay}"
-                            Width="175"/>
-
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock x:Name="UBIMax" Text="Max UBI:"
-                                   VerticalAlignment="Bottom"
-                               Margin="0,5,5,5"/>
-                                <TextBlock FontSize="20"
-                               HorizontalAlignment="Center" 
-                               Text="{Binding MaxUBI}"/>
-                            </StackPanel>
-
-
-                            <Slider x:Name="MaxUBISlider" IsSnapToTickEnabled="True" 
-                            Margin="0,0,5,15"
-                            Minimum="0"
-                            Maximum="5000"
-                            TickFrequency="250"
-                            TickPlacement="BottomRight"
-                            Value="{Binding MaxUBISlider, Mode=TwoWay}"
-                            Width="175"/>
                             <CheckBox Content="Slant Brackets Change UBI"
                               IsChecked="{Binding SlantChangesUBI, Mode=TwoWay}"
                               Margin="10,5,5,5"
