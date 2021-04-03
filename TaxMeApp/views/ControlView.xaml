@@ -60,6 +60,7 @@
                                 Width="50"
                                 Margin="0,5,5,5" />
                         <Button Content="AutoFit"
+                                Command="{Binding AutoFitTaxBtnCommand}"
                                 Width="50"
                                 Margin="5,5,5,5" />
                         <Button Content="Smooth"
@@ -149,12 +150,9 @@
                                                   IsChecked="{Binding BalancePovertyWithMax, Mode=TwoWay}"
                                                   Margin="5,0,5,10" />
 
-                                        <Button Margin="10, 5, 15, 5"
-                                                Command="{Binding AutoFitSlantTaxBtnCommand}"
-                                                Content="Auto-Fit Slant Tax" />
-                                        <CheckBox Content="Only Adjust Max Tax Rate"
+                                        <CheckBox Content="Autofit: Adjust Max Rate Only"
                                                   IsChecked="{Binding DontAdjustBracketCount, Mode=TwoWay}"
-                                                  Margin="5,5,5,5"
+                                                  Margin="-3,5,0,5"
                                                   Visibility="{Binding slantVisible}" />
                                     </StackPanel>
                                 </TabItem>
@@ -177,16 +175,13 @@
 
 
                                         <Slider x:Name="FlatTaxSlider"
-                                                Margin="0, 5, 5, 15"
+                                                Margin="0, 5, 5, 10"
                                                 Minimum="0"
                                                 Maximum="100"
                                                 TickFrequency="10"
                                                 TickPlacement="BottomRight"
                                                 Value="{Binding FlatTaxSlider, Mode=TwoWay}"
                                                 Width="175" />
-                                        <Button Margin="10, 5, 15, 5"
-                                                Command="{Binding AutoFitFlatTaxBtnCommand}"
-                                                Content="Auto-Fit Flat Tax" />
                                     </StackPanel>
                                 </TabItem>
                                 <TabItem Header="Custom"

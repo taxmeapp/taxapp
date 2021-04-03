@@ -26,8 +26,7 @@ namespace TaxMeApp.viewmodels
         public ICommand DeleteTaxPlanBtnCommand { get; set; }
         public ICommand ResetSettingsBtnCommand { get; set; }
         public ICommand ResetTaxRatesBtnCommand { get; set; }
-        public ICommand AutoFitSlantTaxBtnCommand { get; set; }
-        public ICommand AutoFitFlatTaxBtnCommand { get; set; }
+        public ICommand AutoFitTaxBtnCommand { get; set; }
         public ICommand AutoFitBudgetBtnCommand { get; set; }
         public ICommand ResetBudgetBtnCommand { get; set; }
         public ICommand ToggleEditModeBtnCommand { get; set; }
@@ -40,8 +39,7 @@ namespace TaxMeApp.viewmodels
             DeleteTaxPlanBtnCommand = new RelayCommand(o => deleteTaxPlanButtonClick());
             ResetSettingsBtnCommand = new RelayCommand(o => resetSettingsButtonClick());
             ResetTaxRatesBtnCommand = new RelayCommand(o => resetTaxRatesButtonClick());
-            AutoFitSlantTaxBtnCommand = new RelayCommand(o => autoFitSlantTaxButtonClick());
-            AutoFitFlatTaxBtnCommand = new RelayCommand(o => autoFitFlatTaxButtonClick());
+            AutoFitTaxBtnCommand = new RelayCommand(o => autoFitTaxButtonClick());
             AutoFitBudgetBtnCommand = new RelayCommand(o => autoFitBudgetButtonClick());
             ResetBudgetBtnCommand = new RelayCommand(o => resetBudgetButtonClick());
             ToggleEditModeBtnCommand = new RelayCommand(o => toggleEditModeButtonClick());
@@ -1506,6 +1504,18 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("SelectedTargetBudget");
             OnPropertyChange("FlatTaxSlider");
             OnPropertyChange("FlatTaxRate");
+        }
+
+        public void autoFitTaxButtonClick()
+        {
+            if(SelectedTaxPlanName == "Flat Tax")
+            {
+                autoFitFlatTaxButtonClick();
+            }
+            else if (SelectedTaxPlanName == "Slant Tax")
+            {
+                autoFitSlantTaxButtonClick();
+            }
         }
 
         public void autoFitSlantTaxButtonClick() {
