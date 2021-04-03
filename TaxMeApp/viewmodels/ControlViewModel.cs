@@ -30,6 +30,7 @@ namespace TaxMeApp.viewmodels
         public ICommand AutoFitFlatTaxBtnCommand { get; set; }
         public ICommand AutoFitBudgetBtnCommand { get; set; }
         public ICommand ResetBudgetBtnCommand { get; set; }
+        public ICommand ToggleEditModeBtnCommand { get; set; }
 
 
         public ControlViewModel()
@@ -43,6 +44,7 @@ namespace TaxMeApp.viewmodels
             AutoFitFlatTaxBtnCommand = new RelayCommand(o => autoFitFlatTaxButtonClick());
             AutoFitBudgetBtnCommand = new RelayCommand(o => autoFitBudgetButtonClick());
             ResetBudgetBtnCommand = new RelayCommand(o => resetBudgetButtonClick());
+            ToggleEditModeBtnCommand = new RelayCommand(o => toggleEditModeButtonClick());
 
         }
 
@@ -499,6 +501,29 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        private int selectedEditingModeIndex = 0;
+        public int SelectedEditingModeIndex
+        {
+            get
+            {
+                return selectedEditingModeIndex;
+            }
+            set
+            {
+                selectedEditingModeIndex = value;
+                OnPropertyChange("SelectedEditingModeIndex");
+                OnPropertyChange("SelectedEditingMode");
+            }
+        }
+
+        public string SelectedEditingMode
+        {
+            get
+            {
+                EditingMode mode = (EditingMode)SelectedEditingModeIndex;
+                return "Edit " + mode.ToString();
+            }
+        }
 
         // Slant tax maximum rate, adjustable via slider
         public int MaxTaxRate
@@ -1225,6 +1250,11 @@ namespace TaxMeApp.viewmodels
                 SelectedTaxPlanName = TaxPlansList[0];
 
             }
+        }
+
+        private void toggleEditModeButtonClick()
+        {
+            SelectedEditingModeIndex = 1 - SelectedEditingModeIndex;
         }
 
         /*
