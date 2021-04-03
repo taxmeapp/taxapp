@@ -520,8 +520,25 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                EditingMode mode = (EditingMode)SelectedEditingModeIndex;
+                // set toggle button text to edit the opposite of the current mode
+                EditingMode mode = (EditingMode)1-SelectedEditingModeIndex;
                 return "Edit " + mode.ToString();
+            }
+        }
+
+        public bool ToggleEditingModeBtnEnabled
+        {
+            get
+            {
+                if (ShowUBI)
+                {
+                    return true;
+                }
+
+                // go back to tax editing mode if ubi is not selected
+                SelectedEditingModeIndex = 0;
+                return false;
+
             }
         }
 
@@ -959,6 +976,8 @@ namespace TaxMeApp.viewmodels
                 displayOnlyGraphReset();
 
                 OnPropertyChange("ShowUBI");
+
+                OnPropertyChange("ToggleEditingModeBtnEnabled");
             }
         }
 
