@@ -557,6 +557,40 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        private bool curveEditorExpanded = true;
+        public bool CurveEditorExpanded
+        {
+            get
+            {
+                return curveEditorExpanded;
+            }
+            set
+            {
+                curveEditorExpanded = value;
+
+                // collapse bracket adjustments when closing the curve editor
+                if (!value)
+                {
+                    BracketAdjustmentsExpanded = false;
+                }
+
+                OnPropertyChange("CurveEditorExpanded");
+            }
+        }
+
+        private bool bracketAdjustmentsExpanded = false;
+        public bool BracketAdjustmentsExpanded
+        {
+            get
+            {
+                return bracketAdjustmentsExpanded;
+            }
+            set
+            {
+                bracketAdjustmentsExpanded = value;
+                OnPropertyChange("BracketAdjustmentsExpanded");
+            }
+        }
         // Slant tax maximum rate, adjustable via slider
         public int MaxTaxRate
         {

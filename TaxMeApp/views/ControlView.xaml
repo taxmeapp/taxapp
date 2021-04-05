@@ -59,7 +59,8 @@
             </StackPanel>
 
             <Expander Header="Curve Editor"
-                      Margin="10,10,0,10">
+                      Margin="10,10,0,10"
+                      IsExpanded="{Binding CurveEditorExpanded}">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center">
@@ -283,7 +284,8 @@
                         </TabItem>
                     </TabControl>
                     <Expander Header="Bracket Adjustments"
-                              Margin="5,10,0,0">
+                              Margin="5,10,0,0"
+                              IsExpanded="{Binding BracketAdjustmentsExpanded}">
                         <StackPanel>
                             <TextBlock Text="Bracket"
                                        Margin="0, 5, 5, 5" />
