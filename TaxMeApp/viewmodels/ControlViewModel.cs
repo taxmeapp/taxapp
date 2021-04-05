@@ -27,10 +27,10 @@ namespace TaxMeApp.viewmodels
         public ICommand DeleteTaxPlanBtnCommand { get; set; }
         public ICommand ResetSettingsBtnCommand { get; set; }
         public ICommand ResetTaxRatesBtnCommand { get; set; }
-        public ICommand AutoFitSlantTaxBtnCommand { get; set; }
-        public ICommand AutoFitFlatTaxBtnCommand { get; set; }
+        public ICommand AutoFitTaxBtnCommand { get; set; }
         public ICommand AutoFitBudgetBtnCommand { get; set; }
         public ICommand ResetBudgetBtnCommand { get; set; }
+        public ICommand ToggleEditModeBtnCommand { get; set; }
 
 
         public ControlViewModel()
@@ -41,10 +41,10 @@ namespace TaxMeApp.viewmodels
             DeleteTaxPlanBtnCommand = new RelayCommand(o => deleteTaxPlanButtonClick());
             ResetSettingsBtnCommand = new RelayCommand(o => resetSettingsButtonClick());
             ResetTaxRatesBtnCommand = new RelayCommand(o => resetTaxRatesButtonClick());
-            AutoFitSlantTaxBtnCommand = new RelayCommand(o => autoFitSlantTaxButtonClick());
-            AutoFitFlatTaxBtnCommand = new RelayCommand(o => autoFitFlatTaxButtonClick());
+            AutoFitTaxBtnCommand = new RelayCommand(o => autoFitTaxButtonClick());
             AutoFitBudgetBtnCommand = new RelayCommand(o => autoFitBudgetButtonClick());
             ResetBudgetBtnCommand = new RelayCommand(o => resetBudgetButtonClick());
+            ToggleEditModeBtnCommand = new RelayCommand(o => toggleEditModeButtonClick());
 
         }
 
@@ -491,6 +491,7 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("SelectedTaxPlanName");
                 OnPropertyChange("SelectedBracket");
                 OnPropertyChange("DeleteTaxPlanBtnEnabled");
+                OnPropertyChange("AutoFitBtnEnabled");
                 OnPropertyChange("slantVisible");
                 OutputVM.Update();
 
@@ -501,6 +502,60 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        private int selectedEditingModeIndex = 0;
+        public int SelectedEditingModeIndex
+        {
+            get
+            {
+                return selectedEditingModeIndex;
+            }
+            set
+            {
+                selectedEditingModeIndex = value;
+                OnPropertyChange("SelectedEditingModeIndex");
+                OnPropertyChange("SelectedEditingMode");
+                OnPropertyChange("AutoFitBtnEnabled");
+            }
+        }
+
+        public string SelectedEditingMode
+        {
+            get
+            {
+                // set toggle button text to edit the opposite of the current mode
+                EditingMode mode = (EditingMode)1-SelectedEditingModeIndex;
+                return "Edit " + mode.ToString();
+            }
+        }
+
+        public bool ToggleEditingModeBtnEnabled
+        {
+            get
+            {
+                if (ShowUBI)
+                {
+                    return true;
+                }
+
+                // go back to tax editing mode if ubi is not selected
+                SelectedEditingModeIndex = 0;
+                return false;
+
+            }
+        }
+
+        public bool AutoFitBtnEnabled
+        {
+            get
+            {
+                if((SelectedTaxPlanName == "Slant Tax" || SelectedTaxPlanName == "Flat Tax") && SelectedEditingModeIndex == 0 )
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
 
         // Slant tax maximum rate, adjustable via slider
         public int MaxTaxRate
@@ -936,6 +991,8 @@ namespace TaxMeApp.viewmodels
                 displayOnlyGraphReset();
 
                 OnPropertyChange("ShowUBI");
+
+                OnPropertyChange("ToggleEditingModeBtnEnabled");
             }
         }
 
@@ -1300,6 +1357,11 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        private void toggleEditModeButtonClick()
+        {
+            SelectedEditingModeIndex = 1 - SelectedEditingModeIndex;
+        }
+
         /*
             Calls to recalculate and regraph based on user input
         */
@@ -1532,6 +1594,18 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("FlatTaxRate");
         }
 
+        public void autoFitTaxButtonClick()
+        {
+            if(SelectedTaxPlanName == "Flat Tax")
+            {
+                autoFitFlatTaxButtonClick();
+            }
+            else if (SelectedTaxPlanName == "Slant Tax")
+            {
+                autoFitSlantTaxButtonClick();
+            }
+        }
+
         public void autoFitSlantTaxButtonClick() {
             double budget = OptionsModel.GetTotalBudget();
             double revenue = 0;
@@ -1638,6 +1712,12 @@ namespace TaxMeApp.viewmodels
         Slant,
         Flat,
         Custom
+    }
+
+    public enum EditingMode
+    {
+        Tax,
+        UBI
     }
 
 }
