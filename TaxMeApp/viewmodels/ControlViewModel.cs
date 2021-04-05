@@ -489,6 +489,7 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("SelectedTaxPlanName");
                 OnPropertyChange("SelectedBracket");
                 OnPropertyChange("DeleteTaxPlanBtnEnabled");
+                OnPropertyChange("AutoFitBtnEnabled");
                 OnPropertyChange("slantVisible");
                 OutputVM.Update();
 
@@ -511,6 +512,7 @@ namespace TaxMeApp.viewmodels
                 selectedEditingModeIndex = value;
                 OnPropertyChange("SelectedEditingModeIndex");
                 OnPropertyChange("SelectedEditingMode");
+                OnPropertyChange("AutoFitBtnEnabled");
             }
         }
 
@@ -537,6 +539,19 @@ namespace TaxMeApp.viewmodels
                 SelectedEditingModeIndex = 0;
                 return false;
 
+            }
+        }
+
+        public bool AutoFitBtnEnabled
+        {
+            get
+            {
+                if((SelectedTaxPlanName == "Slant Tax" || SelectedTaxPlanName == "Flat Tax") && SelectedEditingModeIndex == 0 )
+                {
+                    return true;
+                }
+
+                return false;
             }
         }
 

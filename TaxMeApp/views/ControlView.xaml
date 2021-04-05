@@ -61,6 +61,7 @@
                                 Margin="0,5,5,5" />
                         <Button Content="AutoFit"
                                 Command="{Binding AutoFitTaxBtnCommand}"
+                                IsEnabled="{Binding AutoFitBtnEnabled}"
                                 Width="50"
                                 Margin="5,5,5,5" />
                         <Button Content="Smooth"
