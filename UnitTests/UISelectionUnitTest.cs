@@ -67,5 +67,135 @@ namespace UnitTests
 
         }
 
+        [TestMethod]
+        public void YangUBIChecked()
+        {
+
+            OutputViewModel outputVM = new OutputViewModel();
+            OptionsModel optionsModel = new OptionsModel();
+
+            outputVM.OptionsModel = optionsModel;
+
+            /*
+                Test unchecking ability
+            */
+
+            // things which should uncheck
+            outputVM.UBIChecked = true;
+            outputVM.MedicaidSpendingChecked = true;
+            outputVM.WelfareSpendingChecked = true;
+            outputVM.FoodStampsSpendingChecked = true;
+            outputVM.UnemploymentSpendingChecked = true;
+
+            // our interested check
+            outputVM.YangUbiSpendingChecked = true;
+
+            // The one we want to be checked
+            Assert.IsTrue(outputVM.YangUbiSpendingChecked);
+
+            // The ones that should not be checked
+            Assert.IsFalse(outputVM.UBIChecked);
+            Assert.IsFalse(outputVM.MedicaidSpendingChecked);
+            Assert.IsFalse(outputVM.WelfareSpendingChecked);
+            Assert.IsFalse(outputVM.FoodStampsSpendingChecked);
+            Assert.IsFalse(outputVM.UnemploymentSpendingChecked);
+
+            /*
+                Ensure that if they're unchecked, they are left alone
+            */
+
+            // reset interestd
+            outputVM.YangUbiSpendingChecked = false;
+
+            // things that would be unchecked if they were checked
+            outputVM.UBIChecked = false;
+            outputVM.MedicaidSpendingChecked = false;
+            outputVM.WelfareSpendingChecked = false;
+            outputVM.FoodStampsSpendingChecked = false;
+            outputVM.UnemploymentSpendingChecked = false;
+
+
+            // check our interested
+            outputVM.YangUbiSpendingChecked = true;
+
+            // The one we want to be checked
+            Assert.IsTrue(outputVM.YangUbiSpendingChecked);
+
+            // The ones that should not be checked
+            Assert.IsFalse(outputVM.UBIChecked);
+            Assert.IsFalse(outputVM.MedicaidSpendingChecked);
+            Assert.IsFalse(outputVM.WelfareSpendingChecked);
+            Assert.IsFalse(outputVM.FoodStampsSpendingChecked);
+            Assert.IsFalse(outputVM.UnemploymentSpendingChecked);
+
+
+        }
+
+        [TestMethod]
+        public void UBIChecked()
+        {
+
+
+            // Initialize objects
+            OutputViewModel outputVM = new OutputViewModel();
+            OptionsModel optionsModel = new OptionsModel();
+            outputVM.OptionsModel = optionsModel;
+
+            /*
+                Test unchecking ability
+            */
+
+            // things which should uncheck
+            outputVM.YangUbiSpendingChecked = true;
+            outputVM.MedicaidSpendingChecked = true;
+            outputVM.WelfareSpendingChecked = true;
+            outputVM.FoodStampsSpendingChecked = true;
+            outputVM.UnemploymentSpendingChecked = true;
+
+            // our interested check
+            outputVM.UBIChecked = true;
+            
+
+            // The one we want to be checked
+            Assert.IsTrue(outputVM.UBIChecked);
+
+            // The ones that should not be checked
+            Assert.IsFalse(outputVM.YangUbiSpendingChecked);
+            Assert.IsFalse(outputVM.MedicaidSpendingChecked);
+            Assert.IsFalse(outputVM.WelfareSpendingChecked);
+            Assert.IsFalse(outputVM.FoodStampsSpendingChecked);
+            Assert.IsFalse(outputVM.UnemploymentSpendingChecked);
+
+            /*
+                Ensure that if they're unchecked, they are left alone
+            */
+
+            // reset interestd
+            outputVM.UBIChecked = false;
+
+            // things that would be unchecked if they were checked
+            outputVM.YangUbiSpendingChecked = false;
+            outputVM.MedicaidSpendingChecked = false;
+            outputVM.WelfareSpendingChecked = false;
+            outputVM.FoodStampsSpendingChecked = false;
+            outputVM.UnemploymentSpendingChecked = false;
+
+
+            // check our interested
+            outputVM.UBIChecked = true;
+
+            // The one we want to be checked
+            Assert.IsTrue(outputVM.UBIChecked);
+
+            // The ones that should not be checked
+            Assert.IsFalse(outputVM.YangUbiSpendingChecked);
+            Assert.IsFalse(outputVM.MedicaidSpendingChecked);
+            Assert.IsFalse(outputVM.WelfareSpendingChecked);
+            Assert.IsFalse(outputVM.FoodStampsSpendingChecked);
+            Assert.IsFalse(outputVM.UnemploymentSpendingChecked);
+
+
+        }
+
     }
 }
