@@ -79,9 +79,9 @@ namespace TaxMeApp.viewmodels
             TaxPlansModel.TaxPlans.Add("Slant / Mod 2", new IndividualTaxPlanModel("Slant / Mod 2", new ObservableCollection<double>(mod2TaxRates)));
 
             //Slope based on 1/x
-            List<List<double>> mod3Data = DataVM.CalculateMod3Data();
-            List<double> mod3TaxRates = mod3Data[0];
-            TaxPlansModel.TaxPlans.Add("Slant / Mod 3", new IndividualTaxPlanModel("Slant / Mod 3", new ObservableCollection<double>(mod3TaxRates)));
+            //List<List<double>> mod3Data = DataVM.CalculateMod3Data();
+            //List<double> mod3TaxRates = mod3Data[0];
+            //TaxPlansModel.TaxPlans.Add("Slant / Mod 3", new IndividualTaxPlanModel("Slant / Mod 3", new ObservableCollection<double>(mod3TaxRates)));
 
 
             PlanLoader.LoadPlans(this);
@@ -414,7 +414,7 @@ namespace TaxMeApp.viewmodels
             get
             {
 
-                if (SelectedTaxPlanName is null || SelectedTaxPlanName.Equals("Slant Tax") || SelectedTaxPlanName.Equals("Flat Tax"))
+                if (SelectedTaxPlanName is null || SelectedTaxPlanName.Equals("Slant Tax") || SelectedTaxPlanName.Equals("Flat Tax") || SelectedTaxPlanName.Equals("Slant / Mod 1") || SelectedTaxPlanName.Equals("Slant / Mod 2"))
                 {
                     return false;
                 }
@@ -456,8 +456,8 @@ namespace TaxMeApp.viewmodels
                 }
 
                 TaxPlansModel.SelectedTaxPlanName = value;
-                // Hard-coded plan:
-                if (value.Equals("Slant Tax"))
+                // Hard-coded plan
+                if (value.Equals("Slant Tax") || value.Equals("Slant / Mod 1") || value.Equals("Slant / Mod 2"))
                 {
 
                     MaxTaxRate = (int)OptionsModel.MaxTaxRate;
@@ -569,7 +569,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if((SelectedTaxPlanName == "Slant Tax" || SelectedTaxPlanName == "Flat Tax") && SelectedEditingModeIndex == 0 )
+                if((SelectedTaxPlanName == "Slant Tax" || SelectedTaxPlanName == "Flat Tax" || SelectedTaxPlanName.Equals("Slant / Mod 1") || SelectedTaxPlanName.Equals("Slant / Mod 2")) && SelectedEditingModeIndex == 0 )
                 {
                     return true;
                 }
@@ -1254,7 +1254,7 @@ namespace TaxMeApp.viewmodels
 
                 string taxPlanName = dialog.Filename;
 
-                if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax"))
+                if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax") || taxPlanName.Equals("Slant / Mod 1") || taxPlanName.Equals("Slant / Mod 2"))
                 {
                     taxPlanName += " (modified)";
                 }
@@ -1360,7 +1360,7 @@ namespace TaxMeApp.viewmodels
 
             bool baseModified = false;
 
-            if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax"))
+            if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax") || taxPlanName.Equals("Slant / Mod 1") || taxPlanName.Equals("Slant / Mod 2"))
             {
                 taxPlanName += " (modified)";
                 baseModified = true;
@@ -1428,7 +1428,7 @@ namespace TaxMeApp.viewmodels
         //The Delete Tax Plan button deletes the selected tax plan but it can't delete the default slant tax plan
         private void deleteTaxPlanButtonClick()
         {
-            if (SelectedTaxPlanName != "Slant Tax" && SelectedTaxPlanName != "Flat Tax")
+            if (SelectedTaxPlanName != "Slant Tax" && SelectedTaxPlanName != "Flat Tax" && SelectedTaxPlanName != "Slant / Mod 1" && SelectedTaxPlanName != "Slant / Mod 2")
             {
 
                 PlanSaver.DeletePlan(SelectedTaxPlanName);
