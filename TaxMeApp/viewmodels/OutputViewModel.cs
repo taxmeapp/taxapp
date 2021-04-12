@@ -39,6 +39,12 @@ namespace TaxMeApp.viewmodels
         public BudgetYearModel bym = new BudgetYearModel();
         public void updateBYM()
         {
+
+            if (BudgetDataModel is null || BudgetDataModel.YearData is null || ControlVM is null)
+            {
+                return;
+            }
+
             for (int i = 0; i < BudgetDataModel.YearData.Count; i++)
             {
                 if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
@@ -607,6 +613,12 @@ namespace TaxMeApp.viewmodels
 
         public void Update()
         {
+
+            if (OptionsModel is null || DataModel is null || ControlVM is null)
+            {
+                return;
+            }
+
             updateBYM();
             OptionsModel.UpdateUBI(DataModel.TotalUBICost);
             ControlVM.propChange("SelectedTargetBudget");

@@ -23,7 +23,7 @@ namespace TaxMeApp.Plans
                 return false;
             }
 
-            string[] plans = Directory.GetFiles(userPlanPath, "*.xml");
+            string[] plans = Directory.GetFiles(userPlanPath, "*.tax");
 
             foreach (string plan in plans)
             {
