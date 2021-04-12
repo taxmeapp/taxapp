@@ -17,24 +17,28 @@
                         HorizontalAlignment="Center">
                 <TextBlock Text="Year"
                            VerticalAlignment="Center"
-                           Margin="5, 5, 25, 5"/>
+                           Margin="5, 5, 25, 5"
+                           ToolTip="Select which year of tax data to display"/>
                 <ComboBox x:Name="YearInput"
                           HorizontalAlignment="Right"
                             ItemsSource="{Binding YearList}" 
                             SelectedItem="{Binding SelectedYear}"
                             Margin="5, 5, 5, 5"
-                            Width="125"/>
+                            Width="125"
+                            ToolTip="Select which year of tax data to display"/>
             </StackPanel>
 
             <TextBlock Text="Tax Plan"
                        HorizontalAlignment="Center"
-                       Margin="5, 5, 5, 5"/>
+                       Margin="5, 5, 5, 5"
+                       ToolTip="Select which tax plan to display"/>
 
             <ComboBox ItemsSource="{Binding TaxPlansList}" 
                           HorizontalAlignment="Center"
                     SelectedItem="{Binding SelectedTaxPlanName}"
                     Margin="0,0,0,0"
-                    Width="175"/>
+                    Width="175"
+                    ToolTip="Select which tax plan to display"/>
 
             <StackPanel Orientation="Horizontal" 
                         HorizontalAlignment="Center">
@@ -46,21 +50,25 @@
                 <Button Command="{Binding NewTaxPlanBtnCommand}"
                     Content="New"
                     Margin="0, 5, 5, 5"
-                    Width="50"/>
+                    Width="50"
+                    ToolTip="Create a new tax plan to work with. The new plan's tax rates will be set to 0%"/>
                 <Button Command="{Binding SaveTaxPlanBtnCommand}"
                     Content="Save"
                     Margin="5, 5, 5, 5"
-                    Width="50"/>
+                    Width="50"
+                    ToolTip="Save selected tax plan to a file so you can use it next time you start the program"/>
                 <Button Command="{Binding DeleteTaxPlanBtnCommand}"
                     Content="Delete"
                     Margin="5, 5, 0, 5"
                     Width="50"
-                    IsEnabled="{Binding DeleteTaxPlanBtnEnabled}"/>
+                    IsEnabled="{Binding DeleteTaxPlanBtnEnabled}"
+                    ToolTip="Delete selected tax plan (doesn't work on default plans)"/>
             </StackPanel>
 
             <Expander Header="Curve Editor"
                       Margin="10,10,0,10"
-                      IsExpanded="{Binding CurveEditorExpanded}">
+                      IsExpanded="{Binding CurveEditorExpanded}"
+                      ToolTip="Edit the current tax plan or UBI plan">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center">
@@ -68,12 +76,14 @@
                                 Command="{Binding ToggleEditModeBtnCommand}"
                                 IsEnabled="{Binding ToggleEditingModeBtnEnabled}"
                                 Width="60"
-                                Margin="0,5,5,5" />
+                                Margin="0,5,5,5" 
+                                ToolTip="Edit the UBI plan that is being graphed"/>
                         <Button Content="AutoFit"
                                 Command="{Binding AutoFitTaxBtnCommand}"
                                 IsEnabled="{Binding AutoFitBtnEnabled}"
                                 Width="60"
-                                Margin="5,5,5,5" />
+                                Margin="5,5,5,5" 
+                                ToolTip="Adjust the tax plan to meet the selected government budget"/>
                     </StackPanel>
                     <TabControl BorderThickness="0"
                                 Background="LightGray"
@@ -94,13 +104,15 @@
                                                 <TextBlock x:Name="SlantTaxMaxRateLabel"
                                                        Text="Max Tax Rate:"
                                                        VerticalAlignment="Bottom"
-                                                       Margin="0, 5, 5, 5" />
+                                                       Margin="0, 5, 5, 5" 
+                                                       ToolTip="Set the max tax rate of the slant tax"/>
                                                 <TextBox FontSize="20"
                                                      HorizontalAlignment="Center"
                                                      HorizontalContentAlignment="Center"
                                                      Text="{Binding MaxTaxRate}"
                                                      Width="40"
-                                                     VerticalAlignment="Center" />
+                                                     VerticalAlignment="Center"
+                                                     ToolTip="Set the max tax rate of the slant tax"/>
                                             </StackPanel>
 
                                             <Slider x:Name="SlantTaxMaxRateSlider"
@@ -110,16 +122,19 @@
                                                 TickFrequency="10"
                                                 TickPlacement="BottomRight"
                                                 Value="{Binding MaxTaxRate}"
-                                                Width="175" />
+                                                Width="175" 
+                                                ToolTip="Set the max tax rate of the slant tax"/>
 
                                             <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Center">
                                                 <TextBlock Text="Poverty Exempt:"
                                                        Margin="0, 5, 5, 5"
-                                                       VerticalAlignment="Bottom" />
+                                                       VerticalAlignment="Bottom" 
+                                                       ToolTip="Set the number of brackets under the poverty line. Those brackets will have a 0% income tax"/>
                                                 <TextBlock FontSize="20"
                                                        HorizontalAlignment="Center"
-                                                       Text="{Binding PovertyLineBrackets}" />
+                                                       Text="{Binding PovertyLineBrackets}"
+                                                       ToolTip="Set the number of brackets under the poverty line. Those brackets will have a 0% income tax"/>
                                             </StackPanel>
 
                                             <Slider IsSnapToTickEnabled="True"
@@ -129,20 +144,24 @@
                                                 TickFrequency="1"
                                                 TickPlacement="BottomRight"
                                                 Value="{Binding PovertyLineIndexSlider, Mode=TwoWay}"
-                                                Width="175" />
+                                                Width="175" 
+                                                ToolTip="Set the number of brackets under the poverty line. Those brackets will have a 0% income tax"/>
                                             <CheckBox Content="Balance Max Rate Cutoff"
                                                   IsChecked="{Binding BalanceMaxWithPoverty, Mode=TwoWay}"
-                                                  Margin="5,0,5,10" />
+                                                  Margin="5,0,5,10"
+                                                  ToolTip="If this is checked the number of brackets paying the max rate will be adjusted when you adjust the number of poverty line brackets. The program will try to balance the number of people on both sides."/>
 
                                             <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Center">
                                                 <TextBlock x:Name="TaxBracketsLabel"
                                                        Text="Max Rate Cutoff:"
                                                        VerticalAlignment="Bottom"
-                                                       Margin="0, 5, 5, 5" />
+                                                       Margin="0, 5, 5, 5" 
+                                                       ToolTip="Select the number of brackets that will pay the maximum tax rate"/>
                                                 <TextBlock FontSize="20"
                                                        HorizontalAlignment="Center"
-                                                       Text="{Binding MaxBracketCount}" />
+                                                       Text="{Binding MaxBracketCount}"
+                                                       ToolTip="Select the number of brackets that will pay the maximum tax rate"/>
                                             </StackPanel>
 
 
@@ -154,15 +173,18 @@
                                                 TickFrequency="1"
                                                 TickPlacement="BottomRight"
                                                 Value="{Binding MaxBracketCountSlider, Mode=TwoWay}"
-                                                Width="175" />
+                                                Width="175"
+                                                ToolTip="Select the number of brackets that will pay the maximum tax rate"/>
                                             <CheckBox Content="Balance Poverty Exempt"
                                                   IsChecked="{Binding BalancePovertyWithMax, Mode=TwoWay}"
-                                                  Margin="5,0,5,10" />
+                                                  Margin="5,0,5,10" 
+                                                  ToolTip="If this is checked the number of brackets under the poverty line will be adjusted when you adjust the number of max rate brackets. The program will try to balance the number of people on both sides."/>
 
                                             <CheckBox Content="Autofit: Adjust Max Rate Only"
                                                   IsChecked="{Binding DontAdjustBracketCount, Mode=TwoWay}"
                                                   Margin="-3,5,0,5"
-                                                  Visibility="{Binding slantVisible}" />
+                                                  Visibility="{Binding slantVisible}"
+                                                  ToolTip="If this is checked: when the auto-fit button is used, the number of brackets paying the max rate won't change only the max rate will. Otherwise the program will try to generate a tax plan with the lowest max rate"/>
                                         </StackPanel>
                                     </TabItem>
                                     <TabItem Header="Flat Tax"
@@ -174,12 +196,14 @@
                                                 <TextBlock x:Name="FlatTaxLabel"
                                                        Text="Tax Rate:"
                                                        VerticalAlignment="Bottom"
-                                                       Margin="0, 5, 5, 5" />
+                                                       Margin="0, 5, 5, 5"
+                                                       ToolTip="Adjust the tax rate that all brackets will pay"/>
                                                 <TextBox FontSize="20"
                                                      HorizontalAlignment="Center"
                                                      HorizontalContentAlignment="Center"
                                                      Text="{Binding FlatTaxRate}"
-                                                     Width="40" />
+                                                     Width="40"
+                                                     ToolTip="Adjust the tax rate that all brackets will pay"/>
                                             </StackPanel>
 
 
@@ -190,7 +214,8 @@
                                                 TickFrequency="10"
                                                 TickPlacement="BottomRight"
                                                 Value="{Binding FlatTaxSlider, Mode=TwoWay}"
-                                                Width="175" />
+                                                Width="175"
+                                                ToolTip="Adjust the tax rate that all brackets will pay"/>
                                         </StackPanel>
                                     </TabItem>
                                     <TabItem Header="Custom"
@@ -200,27 +225,32 @@
                                 </TabControl>
                                 <Expander Header="Bracket Adjustments"
                               Margin="5,10,0,0"
-                              IsExpanded="{Binding BracketAdjustmentsExpanded}">
+                              IsExpanded="{Binding BracketAdjustmentsExpanded}"
+                              ToolTip="Adjust individual brackets of a tax plan">
                                     <StackPanel>
                                         <TextBlock Text="Bracket"
-                                       Margin="-5, 5, 5, 5" />
+                                       Margin="-5, 5, 5, 5" 
+                                       ToolTip="Select which income bracket to edit"/>
                                         <ComboBox x:Name="BracketInput"
                                       ItemsSource="{Binding BracketList}"
                                       SelectedItem="{Binding SelectedBracket, Mode=TwoWay}"
                                       Margin="-5, 5, 5, 15"
-                                      Width="175" />
+                                      Width="175"
+                                      ToolTip="Select which income bracket to edit"/>
 
                                         <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Center">
                                             <TextBlock x:Name="TaxRateLabel"
                                            Text="Tax Rate"
                                            VerticalAlignment="Bottom"
-                                           Margin="-5, 5, 5, 5" />
+                                           Margin="-5, 5, 5, 5" 
+                                           ToolTip="Set the new tax rate of the selected bracket"/>
                                             <TextBox FontSize="20"
                                          HorizontalAlignment="Center"
                                          HorizontalContentAlignment="Center"
                                          Text="{Binding SelectedTaxRate}"
-                                         Width="40" />
+                                         Width="40"
+                                         ToolTip="Set the new tax rate of the selected bracket"/>
                                         </StackPanel>
 
 
@@ -231,17 +261,20 @@
                                     TickFrequency="10"
                                     TickPlacement="BottomRight"
                                     Value="{Binding Path=TaxRateSlider, Mode=TwoWay}"
-                                    Width="175" />
+                                    Width="175"
+                                    ToolTip="Set the new tax rate of the selected bracket"/>
 
                                         <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Center">
                                             <CheckBox Content="Lock Rates for Brackets:"
                                           IsChecked="{Binding LockTaxRates, Mode=TwoWay}"
                                           VerticalContentAlignment="Bottom"
-                                          Margin="-5,5,5,5" />
+                                          Margin="-5,5,5,5"
+                                          ToolTip="If this option is checked you can edit multiple brackets at a time. The brackets near the selected bracket will be adjusted proportionally"/>
                                             <TextBlock FontSize="20"
                                            HorizontalAlignment="Center"
-                                           Text="{Binding LockNumberSlider}" />
+                                           Text="{Binding LockNumberSlider}"
+                                           ToolTip="Select the number of nearby brackets to proportionally edit"/>
                                         </StackPanel>
 
                                         <Slider x:Name="LockNumberSlider"
@@ -252,14 +285,16 @@
                                     TickFrequency="1"
                                     TickPlacement="BottomRight"
                                     Value="{Binding Path=LockNumberSlider, Mode=TwoWay}"
-                                    Width="175" />
+                                    Width="175"
+                                    ToolTip="Select the number of nearby brackets to proportionally edit"/>
                                     </StackPanel>
                                 </Expander>
                             </StackPanel>
                         </TabItem>
                         <TabItem Header="Edit UBI"
                                  BorderThickness="0"
-                                 Visibility="Collapsed">
+                                 Visibility="Collapsed"
+                                 ToolTip="Edit the Universal Basic Income plan that is graphed">
                             <StackPanel>
 
                                 <StackPanel Orientation="Horizontal"
@@ -267,10 +302,12 @@
                                     <TextBlock x:Name="UBIMax"
                                                Text="Max UBI:"
                                                VerticalAlignment="Bottom"
-                                               Margin="0,5,5,5" />
+                                               Margin="0,5,5,5"
+                                               ToolTip="Set the maximum amount of UBI that is given per month"/>
                                     <TextBlock FontSize="20"
                                                HorizontalAlignment="Center"
-                                               Text="{Binding MaxUBI}" />
+                                               Text="{Binding MaxUBI}"
+                                               ToolTip="Set the maximum amount of UBI that is given per month"/>
                                 </StackPanel>
 
 
@@ -282,17 +319,20 @@
                                         TickFrequency="100"
                                         TickPlacement="BottomRight"
                                         Value="{Binding MaxUBISlider, Mode=TwoWay}"
-                                        Width="175" />
+                                        Width="175"
+                                        ToolTip="Set the maximum amount of UBI that is given per month"/>
 
                                 <StackPanel Orientation="Horizontal"
                                             HorizontalAlignment="Center">
                                     <TextBlock x:Name="MinUBIBracketsLabel"
                                                Text="Full Benefits:"
                                                VerticalAlignment="Bottom"
-                                               Margin="0,5,5,5" />
+                                               Margin="0,5,5,5"
+                                               ToolTip="Set the number of brackets receiving the maximum amount of UBI"/>
                                     <TextBlock FontSize="20"
                                                HorizontalAlignment="Center"
-                                               Text="{Binding MinUBIBracketCount}" />
+                                               Text="{Binding MinUBIBracketCount}"
+                                               ToolTip="Set the number of brackets receiving the maximum amount of UBI"/>
                                 </StackPanel>
 
 
@@ -304,17 +344,20 @@
                                         TickFrequency="1"
                                         TickPlacement="BottomRight"
                                         Value="{Binding MinUBIBracketCountSlider, Mode=TwoWay}"
-                                        Width="175" />
+                                        Width="175"
+                                        ToolTip="Set the number of brackets that won't receive any UBI payments"/>
 
                                 <StackPanel Orientation="Horizontal"
                                             HorizontalAlignment="Center">
                                     <TextBlock x:Name="UBIBracketsLabel"
                                                Text="UBI Cutoff: "
                                                VerticalAlignment="Bottom"
-                                               Margin="0,5,5,5" />
+                                               Margin="0,5,5,5"
+                                               ToolTip="Set the number of brackets that won't receive any UBI payments"/>
                                     <TextBlock FontSize="20"
                                                HorizontalAlignment="Center"
-                                               Text="{Binding MaxUBIBracketCount}" />
+                                               Text="{Binding MaxUBIBracketCount}"
+                                               ToolTip="Set the number of brackets that won't receive any UBI payments"/>
                                 </StackPanel>
 
 
@@ -326,16 +369,19 @@
                                         TickFrequency="1"
                                         TickPlacement="BottomRight"
                                         Value="{Binding MaxUBIBracketCountSlider, Mode=TwoWay}"
-                                        Width="175" />
+                                        Width="175"
+                                        ToolTip="Set the number of brackets that won't receive any UBI payments"/>
 
                                 <CheckBox Content="Slant Brackets Change UBI"
                                           IsChecked="{Binding SlantChangesUBI, Mode=TwoWay}"
                                           Margin="10,5,5,5"
-                                          Visibility="{Binding slantVisible}" />
+                                          Visibility="{Binding slantVisible}"
+                                          ToolTip="UBI will be changed to be the opposite of the slant tax brackets. The brackets under the poverty line will receive the maximum UBI payment, and brackets paying the highest tax rate will not recieve any UBI payment."/>
                                 <CheckBox Content="UBI Brackets Change Slant"
                                           IsChecked="{Binding UBIChangesSlant, Mode=TwoWay}"
                                           Margin="10,5,5,5"
-                                          Visibility="{Binding slantVisible}" />
+                                          Visibility="{Binding slantVisible}"
+                                          ToolTip="The slant tax will be changed to be the opposite of the UBI brackets. The number of brackets receiving the maximum amount of UBI will adjust the poverty brackets and the number of brackets receiving no UBI will adjust the brackets paying the max rate."/>
                             </StackPanel>
                         </TabItem>
                     </TabControl>
@@ -345,52 +391,66 @@
                 <StackPanel>
                     <CheckBox Content="Number of Returns"
                               IsChecked="{Binding ShowNumberOfReturns, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Display a bar graph that shows the number of people in each income bracket"/>
                     <CheckBox Content="Tax Revenue (Old System)"
                               IsChecked="{Binding ShowOldRevenue, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Display a line graph that shows tax revenue by bracket based on existing tax rates for the selected year (from the IRS.Gov website)"/>
                     <CheckBox Content="Tax Revenue (New System)"
                               IsChecked="{Binding ShowNewRevenue, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Display a line graph that shows tax revenue by bracket based on the selected custom tax plan"/>
                     <CheckBox Content="Percent of Income (Old)"
                               IsChecked="{Binding ShowOldPercentage, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Display a line graph showing the existing tax rates for the selected year (from the IRS.Gov website)"/>
                     <CheckBox Content="Percent of Income (New)"
                               IsChecked="{Binding ShowNewPercentage, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Display a line graph showing the tax rates for each bracket based on the selected custom tax plan"/>
                     <CheckBox Content="Universal Basic Income"
                               IsChecked="{Binding ShowUBI, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Display a line graph showing the selected Universal Basic Income plan. This must be checked to edit the UBI in the control panel"/>
                 </StackPanel>
             </Expander>
 
-            <Expander Header="Budget Options" Margin="10,10,0,10">
+            <Expander Header="Budget Options" Margin="10,10,0,10"
+                      ToolTip="Change the amount of funding government programs will receive, or auto-fit the budget">
                 <StackPanel>
                     <TextBlock Text="Government Program"
-                               Margin="5, 5, 5, 5"/>
+                               Margin="5, 5, 5, 5"
+                               ToolTip="Select a government program to adjust"/>
                     <ComboBox x:Name="GovProgramInput"
                                 ItemsSource="{Binding Path=GovProgramList}"
                                 SelectedItem="{Binding Path=SelectedGovProgram, Mode=TwoWay}"
                                 DisplayMemberPath="Item2"
                                 Margin="5, 5, 5, 15"
-                                Width="175">
+                                Width="175"
+                                ToolTip="Select a government program to adjust">
                     </ComboBox>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock x:Name="TargetFundingLabel" Text="Target Funding"
                                    VerticalAlignment="Bottom"
-                               Margin="5, 5, 5, 5"/>
+                               Margin="5, 5, 5, 5"
+                               ToolTip="Edit target funding of the selected government program. Ex. If a program's current budget is $600 Billion setting target funding to 50% will set it to $300 Billion for budget calculations"/>
                         <TextBox FontSize="20"
                                HorizontalAlignment="Center"
                                HorizontalContentAlignment="Center"
                                Text="{Binding SelectedTargetFunding}"
-                               Width="40"/>
+                               Width="40"
+                               ToolTip="Edit target funding of the selected government program. Ex. If a program's current budget is $600 Billion setting target funding to 50% will set it to $300 Billion for budget calculations"/>
+                        <TextBlock Margin="5, 6, 0, 0"
+                                   ToolTip="Edit target funding of the selected government program. Ex. If a program's current budget is $600 Billion setting target funding to 50% will set it to $300 Billion for budget calculations">%</TextBlock>
                     </StackPanel>
 
 
                     <TextBlock FontSize="20"
                                HorizontalAlignment="Center" 
-                               Text="{Binding SelectedTargetBudget}"/>
+                               Text="{Binding SelectedTargetBudget}"
+                               ToolTip="Edit target funding of the selected government program. Ex. If a program's current budget is $600 Billion setting target funding to 50% will set it to $300 Billion for budget calculations"/>
                     <Slider x:Name="TargetFundingSlider" IsSnapToTickEnabled="True"
                             Margin="5, 5, 5, 15"
                             Minimum="0"
@@ -398,49 +458,59 @@
                             TickFrequency="1"
                             TickPlacement="None"
                             Value="{Binding Path=TargetFundingSlider, Mode=TwoWay}"
-                            Width="175"/>
+                            Width="175"
+                            ToolTip="Edit target funding of the selected government program. Ex. If a program's current budget is $600 Billion setting target funding to 50% will set it to $300 Billion for budget calculations"/>
                     <Button Margin="15, 5, 15, 5"
                     Command="{Binding AutoFitBudgetBtnCommand}" 
-                    Content="Auto-Fit Budget"/>
+                    Content="Auto-Fit Budget"
+                    ToolTip="Adjust the target funding of each program to meet the current revenue. Each budget item is given equal priority, and the revenue comes from the selected custom tax plan."/>
                     <Button Margin="15, 5, 15, 5"
                     Command="{Binding ResetBudgetBtnCommand}" 
-                    Content="Reset Budget"/>
+                    Content="Reset Budget"
+                    ToolTip="Reset all budget items to have 100% target funding"/>
                 </StackPanel>
             </Expander>
 
-            <Expander Header="Income Statistics" Margin="10,10,0,10">
+            <Expander Header="Income Statistics" Margin="10,10,0,10"
+                      ToolTip="Display Mean and Median Incomes on the graph (before and/or after the custom tax plan is applied)">
                 <StackPanel>
                     <CheckBox Content="Median (Pre-tax)"
                               IsChecked="{Binding ShowPreTaxMedian, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Graph the median income based on the income distribution before they are taxed (based on IRS.Gov data)"/>
                     <CheckBox Content="Mean (Pre-tax)"
                               IsChecked="{Binding ShowPreTaxMean, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Graph the mean income based on the income distribution before they are taxed (based on IRS.Gov data)"/>
                     <CheckBox Content="Median (Post-tax)"
                               IsChecked="{Binding ShowPostTaxMedian, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Graph the median income based on the income distribution after the custom tax plan is applied"/>
                     <CheckBox Content="Mean (Post-tax)"
                               IsChecked="{Binding ShowPostTaxMean, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Graph the mean income based on the income distribution after the custom tax plan is applied"/>
                     <CheckBox Content="Median (Post-tax, with UBI)"
                               IsChecked="{Binding ShowPostTaxMedianUBI, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Graph the median income based on the income distribution after the custom tax plan and UBI plan is applied"/>
                     <CheckBox Content="Mean (Post-tax, with UBI)"
                               IsChecked="{Binding ShowPostTaxMeanUBI, Mode=TwoWay}"
-                              Margin="20,5,5,5"/>
+                              Margin="20,5,5,5"
+                              ToolTip="Graph the mean income based on the income distribution after the custom tax plan and UBI plan is applied"/>
                 </StackPanel>
             </Expander>
 
             <Button Command="{Binding ResetSettingsBtnCommand}"
                     Content="Reset To Default Settings"
                     Margin="0, 30, 0, 0"
-                    Width="150"/>
+                    Width="150"
+                    ToolTip="Reset all selected options to the defaults. This includes which graphs to display, which budget items are selected, number of poverty and max rate brackets, etc."/>
             <Button Command="{Binding ResetTaxRatesBtnCommand}" 
                     Content="Reset Tax Rates"
                     Margin="0, 20, 0, 50"
-                    Width="150"/>
-
-
+                    Width="150"
+                    ToolTip="If the slant tax is selected then any brackets that were manually adjusted will be reset. If another tax plan is selected it will set all of the rates to 0%"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
