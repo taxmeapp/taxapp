@@ -58,94 +58,6 @@
                     IsEnabled="{Binding DeleteTaxPlanBtnEnabled}"/>
             </StackPanel>
 
-<<<<<<< HEAD
-            <TabControl BorderThickness="0" Background="LightGray" SelectedIndex="{Binding SelectedTaxPlanTabIndex}">
-                <TabItem Header="Slant Tax" BorderThickness="0" Visibility="{Binding slantVisible}">
-                    <StackPanel>
-                        <TextBlock x:Name="SlantTaxMaxRateLabel" Text="Slant Tax Maximum %"
-                               Margin="5, 5, 5, 5"/>
-                        <TextBox FontSize="20"
-                                 HorizontalAlignment="Center"
-                                 HorizontalContentAlignment="Center"
-                                 Text="{Binding MaxTaxRate}"
-                                 Width="40"/>
-                        <Slider x:Name="SlantTaxMaxRateSlider"
-                            Margin="5, 5, 5, 15"
-                            Minimum="0"
-                            Maximum="100"
-                            TickFrequency="10"
-                            TickPlacement="BottomRight"
-                            Value="{Binding MaxTaxRate}"
-                            Width="175"/>
-                        <TextBlock x:Name="TaxBracketsLabel" 
-                                   Text="Tax Brackets at Max Rate"
-                                   Margin="5, 5, 5, 5"/>
-                        <TextBlock FontSize="20"
-                               HorizontalAlignment="Center" 
-                               Text="{Binding MaxBracketCount}"/>
-                        <Slider x:Name="TaxBracketsSlider" IsSnapToTickEnabled="True" 
-                            Margin="5, 5, 5, 15"
-                            Minimum="0"
-                            Maximum="10"
-                            TickFrequency="1"
-                            TickPlacement="BottomRight"
-                            Value="{Binding MaxBracketCountSlider, Mode=TwoWay}"
-                            Width="175"/>
-                        <CheckBox Content="Balance Poverty Population"
-                              IsChecked="{Binding BalancePovertyWithMax, Mode=TwoWay}"
-                              Margin="10,0,5,10"/>
-                        <TextBlock Text="Tax Brackets Living in Poverty"
-                           Margin="5, 5, 5, 5"/>
-                        <TextBlock FontSize="20"
-                           HorizontalAlignment="Center" 
-                           Text="{Binding PovertyLineBrackets}"/>
-                        <Slider IsSnapToTickEnabled="True" 
-                        Margin="5, 5, 5, 15"
-                        Minimum="-1"
-                        Maximum="9"
-                        TickFrequency="1"
-                        TickPlacement="BottomRight"
-                        Value="{Binding PovertyLineIndexSlider, Mode=TwoWay}"
-                        Width="175"/>
-                        <CheckBox Content="Balance Max Rate Population"
-                              IsChecked="{Binding BalanceMaxWithPoverty, Mode=TwoWay}"
-                              Margin="10,0,5,10"/>
-                        <Button Margin="15, 5, 15, 5"
-                    Command="{Binding AutoFitSlantTaxBtnCommand}" 
-                    Content="Auto-Fit Slant Tax"/>
-                        <CheckBox Content="Only Adjust Max Tax Rate"
-                              IsChecked="{Binding DontAdjustBracketCount, Mode=TwoWay}"
-                              Margin="20,5,5,5"
-                              Visibility="{Binding slantVisible}"/>
-                    </StackPanel>
-                </TabItem>
-                <TabItem Header="Flat Tax" Visibility="Collapsed">
-                    <StackPanel>
-                        <TextBlock x:Name="FlatTaxLabel" Text="Flat Tax %"
-                               Margin="5, 5, 5, 5"/>
-                        <TextBox FontSize="20"
-                                 HorizontalAlignment="Center"
-                                 HorizontalContentAlignment="Center"
-                                 Text="{Binding FlatTaxRate}"
-                                 Width="40"/>
-                        <Slider x:Name="FlatTaxSlider"
-                            Margin="5, 5, 5, 15"
-                            Minimum="0"
-                            Maximum="100"
-                            TickFrequency="10"
-                            TickPlacement="BottomRight"
-                            Value="{Binding FlatTaxSlider, Mode=TwoWay}"
-                            Width="175"/>
-                        <Button Margin="15, 5, 15, 5"
-                    Command="{Binding AutoFitFlatTaxBtnCommand}" 
-                    Content="Auto-Fit Flat Tax"/>
-                    </StackPanel>
-                </TabItem>
-                <TabItem Header="Custom" Visibility="Collapsed">
-
-                </TabItem>
-            </TabControl>
-=======
             <Expander Header="Curve Editor"
                       Margin="10,10,0,10"
                       IsExpanded="{Binding CurveEditorExpanded}">
@@ -173,25 +85,25 @@
                                 <TabControl BorderThickness="0"
                                         Background="LightGray"
                                         SelectedIndex="{Binding SelectedTaxPlanTabIndex}">
-                                <TabItem Header="Slant Tax"
+                                    <TabItem Header="Slant Tax"
                                          BorderThickness="0"
                                          Visibility="Collapsed">
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal"
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Center">
-                                            <TextBlock x:Name="SlantTaxMaxRateLabel"
+                                                <TextBlock x:Name="SlantTaxMaxRateLabel"
                                                        Text="Max Tax Rate:"
                                                        VerticalAlignment="Bottom"
                                                        Margin="0, 5, 5, 5" />
-                                            <TextBox FontSize="20"
+                                                <TextBox FontSize="20"
                                                      HorizontalAlignment="Center"
                                                      HorizontalContentAlignment="Center"
                                                      Text="{Binding MaxTaxRate}"
                                                      Width="40"
                                                      VerticalAlignment="Center" />
-                                        </StackPanel>
+                                            </StackPanel>
 
-                                        <Slider x:Name="SlantTaxMaxRateSlider"
+                                            <Slider x:Name="SlantTaxMaxRateSlider"
                                                 Margin="0, 5, 5, 15"
                                                 Minimum="0"
                                                 Maximum="100"
@@ -200,17 +112,17 @@
                                                 Value="{Binding MaxTaxRate}"
                                                 Width="175" />
 
-                                        <StackPanel Orientation="Horizontal"
+                                            <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Center">
-                                            <TextBlock Text="Poverty Exempt:"
+                                                <TextBlock Text="Poverty Exempt:"
                                                        Margin="0, 5, 5, 5"
                                                        VerticalAlignment="Bottom" />
-                                            <TextBlock FontSize="20"
+                                                <TextBlock FontSize="20"
                                                        HorizontalAlignment="Center"
                                                        Text="{Binding PovertyLineBrackets}" />
-                                        </StackPanel>
+                                            </StackPanel>
 
-                                        <Slider IsSnapToTickEnabled="True"
+                                            <Slider IsSnapToTickEnabled="True"
                                                 Margin="0, 5, 5, 10"
                                                 Minimum="-1"
                                                 Maximum="9"
@@ -218,23 +130,23 @@
                                                 TickPlacement="BottomRight"
                                                 Value="{Binding PovertyLineIndexSlider, Mode=TwoWay}"
                                                 Width="175" />
-                                        <CheckBox Content="Balance Max Rate Cutoff"
+                                            <CheckBox Content="Balance Max Rate Cutoff"
                                                   IsChecked="{Binding BalanceMaxWithPoverty, Mode=TwoWay}"
                                                   Margin="5,0,5,10" />
 
-                                        <StackPanel Orientation="Horizontal"
+                                            <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Center">
-                                            <TextBlock x:Name="TaxBracketsLabel"
+                                                <TextBlock x:Name="TaxBracketsLabel"
                                                        Text="Max Rate Cutoff:"
                                                        VerticalAlignment="Bottom"
                                                        Margin="0, 5, 5, 5" />
-                                            <TextBlock FontSize="20"
+                                                <TextBlock FontSize="20"
                                                        HorizontalAlignment="Center"
                                                        Text="{Binding MaxBracketCount}" />
-                                        </StackPanel>
+                                            </StackPanel>
 
 
-                                        <Slider x:Name="TaxBracketsSlider"
+                                            <Slider x:Name="TaxBracketsSlider"
                                                 IsSnapToTickEnabled="True"
                                                 Margin="0, 5, 5, 10"
                                                 Minimum="0"
@@ -243,35 +155,35 @@
                                                 TickPlacement="BottomRight"
                                                 Value="{Binding MaxBracketCountSlider, Mode=TwoWay}"
                                                 Width="175" />
-                                        <CheckBox Content="Balance Poverty Exempt"
+                                            <CheckBox Content="Balance Poverty Exempt"
                                                   IsChecked="{Binding BalancePovertyWithMax, Mode=TwoWay}"
                                                   Margin="5,0,5,10" />
 
-                                        <CheckBox Content="Autofit: Adjust Max Rate Only"
+                                            <CheckBox Content="Autofit: Adjust Max Rate Only"
                                                   IsChecked="{Binding DontAdjustBracketCount, Mode=TwoWay}"
                                                   Margin="-3,5,0,5"
                                                   Visibility="{Binding slantVisible}" />
-                                    </StackPanel>
-                                </TabItem>
-                                <TabItem Header="Flat Tax"
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Flat Tax"
                                          Visibility="Collapsed">
-                                    <StackPanel>
+                                        <StackPanel>
 
-                                        <StackPanel Orientation="Horizontal"
+                                            <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Center">
-                                            <TextBlock x:Name="FlatTaxLabel"
+                                                <TextBlock x:Name="FlatTaxLabel"
                                                        Text="Tax Rate:"
                                                        VerticalAlignment="Bottom"
                                                        Margin="0, 5, 5, 5" />
-                                            <TextBox FontSize="20"
+                                                <TextBox FontSize="20"
                                                      HorizontalAlignment="Center"
                                                      HorizontalContentAlignment="Center"
                                                      Text="{Binding FlatTaxRate}"
                                                      Width="40" />
-                                        </StackPanel>
+                                            </StackPanel>
 
 
-                                        <Slider x:Name="FlatTaxSlider"
+                                            <Slider x:Name="FlatTaxSlider"
                                                 Margin="0, 5, 5, 10"
                                                 Minimum="0"
                                                 Maximum="100"
@@ -279,40 +191,40 @@
                                                 TickPlacement="BottomRight"
                                                 Value="{Binding FlatTaxSlider, Mode=TwoWay}"
                                                 Width="175" />
-                                    </StackPanel>
-                                </TabItem>
-                                <TabItem Header="Custom"
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Custom"
                                          Visibility="Collapsed">
 
-                                </TabItem>
-                            </TabControl>
-                            <Expander Header="Bracket Adjustments"
+                                    </TabItem>
+                                </TabControl>
+                                <Expander Header="Bracket Adjustments"
                               Margin="5,10,0,0"
                               IsExpanded="{Binding BracketAdjustmentsExpanded}">
-                                <StackPanel>
-                                    <TextBlock Text="Bracket"
+                                    <StackPanel>
+                                        <TextBlock Text="Bracket"
                                        Margin="-5, 5, 5, 5" />
-                                    <ComboBox x:Name="BracketInput"
+                                        <ComboBox x:Name="BracketInput"
                                       ItemsSource="{Binding BracketList}"
                                       SelectedItem="{Binding SelectedBracket, Mode=TwoWay}"
                                       Margin="-5, 5, 5, 15"
                                       Width="175" />
 
-                                    <StackPanel Orientation="Horizontal"
+                                        <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Center">
-                                        <TextBlock x:Name="TaxRateLabel"
+                                            <TextBlock x:Name="TaxRateLabel"
                                            Text="Tax Rate"
                                            VerticalAlignment="Bottom"
                                            Margin="-5, 5, 5, 5" />
-                                        <TextBox FontSize="20"
+                                            <TextBox FontSize="20"
                                          HorizontalAlignment="Center"
                                          HorizontalContentAlignment="Center"
                                          Text="{Binding SelectedTaxRate}"
                                          Width="40" />
-                                    </StackPanel>
+                                        </StackPanel>
 
 
-                                    <Slider x:Name="TaxRateSlider"
+                                        <Slider x:Name="TaxRateSlider"
                                     Margin="-5, 5, 5, 15"
                                     Minimum="0"
                                     Maximum="100"
@@ -321,18 +233,18 @@
                                     Value="{Binding Path=TaxRateSlider, Mode=TwoWay}"
                                     Width="175" />
 
-                                    <StackPanel Orientation="Horizontal"
+                                        <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Center">
-                                        <CheckBox Content="Lock Rates for Brackets:"
+                                            <CheckBox Content="Lock Rates for Brackets:"
                                           IsChecked="{Binding LockTaxRates, Mode=TwoWay}"
                                           VerticalContentAlignment="Bottom"
                                           Margin="-5,5,5,5" />
-                                        <TextBlock FontSize="20"
+                                            <TextBlock FontSize="20"
                                            HorizontalAlignment="Center"
                                            Text="{Binding LockNumberSlider}" />
-                                    </StackPanel>
+                                        </StackPanel>
 
-                                    <Slider x:Name="LockNumberSlider"
+                                        <Slider x:Name="LockNumberSlider"
                                     IsSnapToTickEnabled="True"
                                     Margin="-5, 5, 5, 0"
                                     Minimum="0"
@@ -341,9 +253,9 @@
                                     TickPlacement="BottomRight"
                                     Value="{Binding Path=LockNumberSlider, Mode=TwoWay}"
                                     Width="175" />
-                                </StackPanel>
-                            </Expander>
-                          </StackPanel>
+                                    </StackPanel>
+                                </Expander>
+                            </StackPanel>
                         </TabItem>
                         <TabItem Header="Edit UBI"
                                  BorderThickness="0"
@@ -382,7 +294,6 @@
                                                HorizontalAlignment="Center"
                                                Text="{Binding MinUBIBracketCount}" />
                                 </StackPanel>
->>>>>>> beta
 
 
                                 <Slider x:Name="MinUBIBracketsSlider"
@@ -519,7 +430,7 @@
                               Margin="20,5,5,5"/>
                 </StackPanel>
             </Expander>
-            
+
             <Button Command="{Binding ResetSettingsBtnCommand}"
                     Content="Reset To Default Settings"
                     Margin="0, 30, 0, 0"
@@ -528,8 +439,8 @@
                     Content="Reset Tax Rates"
                     Margin="0, 20, 0, 50"
                     Width="150"/>
-            
-            
+
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>
