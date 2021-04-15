@@ -102,7 +102,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if (this.SelectedTaxPlanName == "Slant Tax" || this.SelectedTaxPlanName == "Slant / Mod 1" || this.SelectedTaxPlanName == "Slant / Mod 2" || this.SelectedTaxPlanName == "Slant / Mod 3") 
+                if (this.SelectedTaxPlanName == "Slant Tax") 
                 {
                     return Visibility.Visible;
                 }
