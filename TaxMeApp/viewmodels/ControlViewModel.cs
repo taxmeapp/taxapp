@@ -102,7 +102,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if (this.SelectedTaxPlanName == "Slant Tax") 
+                if (this.SelectedTaxPlanName == "Slant Tax" || this.SelectedTaxPlanName == "Slant / Mod 1" || this.SelectedTaxPlanName == "Slant / Mod 2") 
                 {
                     return Visibility.Visible;
                 }
@@ -580,7 +580,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if((SelectedTaxPlanName == "Slant Tax" || SelectedTaxPlanName == "Flat Tax") && SelectedEditingModeIndex == 0 )
+                if((SelectedTaxPlanName == "Slant Tax" || SelectedTaxPlanName == "Flat Tax" || this.SelectedTaxPlanName == "Slant / Mod 1" || this.SelectedTaxPlanName == "Slant / Mod 2") && SelectedEditingModeIndex == 0 )
                 {
                     return true;
                 }
@@ -1693,7 +1693,7 @@ namespace TaxMeApp.viewmodels
             {
                 autoFitFlatTaxButtonClick();
             }
-            else if (SelectedTaxPlanName == "Slant Tax")
+            else if (SelectedTaxPlanName == "Slant Tax" || this.SelectedTaxPlanName == "Slant / Mod 1" || this.SelectedTaxPlanName == "Slant / Mod 2")
             {
                 autoFitSlantTaxButtonClick();
             }
