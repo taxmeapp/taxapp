@@ -61,6 +61,11 @@ namespace TaxMeApp.viewmodels
             TaxPlansModel.TaxPlans.Add("Slant Tax", new IndividualTaxPlanModel("Slant Tax", new ObservableCollection<double>(slantTaxRates)));
             SelectedTaxPlanName = "Slant Tax";
 
+            // Set initial tax line
+            MaxTaxRate = 35;
+            MaxBracketCountSlider = 5;
+            PovertyLineIndexSlider = 4;
+
             //Mod 0 is already graphed?
             //List<List<double>> mod0Data = DataVM.CalculateMod0Data();
             //List<double> mod0TaxRates = mod0Data[0];

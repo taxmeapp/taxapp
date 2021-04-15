@@ -73,7 +73,7 @@ namespace TaxMeApp.models
         public int MaxBracketCount { get; set; }
         public int FlatTaxRate { get; set; }
         public bool BalancePovertyWithMax { get; set; } = false;
-        public bool BalanceMaxWithPoverty { get; set; } = true;
+        public bool BalanceMaxWithPoverty { get; set; } = false;
         public long revenue { get; set; } = 0;
 
         public List<(int priority, bool ischecked, string name, double cost, double tFunding)> listOfCosts;
