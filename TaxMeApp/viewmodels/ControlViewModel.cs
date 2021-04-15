@@ -466,6 +466,7 @@ namespace TaxMeApp.viewmodels
 
                     MaxTaxRate = (int)OptionsModel.MaxTaxRate;
                     MaxBracketCountSlider = OptionsModel.MaxBracketCount;
+                    PovertyLineIndexSlider = -1;
                     DataVM.CalculateNewRevenues(TaxPlansModel.SelectedTaxPlan.TaxRates);
 
                     SelectedTaxPlanTabIndex = (int)TaxPlan.Slant;
@@ -478,6 +479,7 @@ namespace TaxMeApp.viewmodels
                     SelectedTaxPlanTabIndex = (int)TaxPlan.Flat;
                     MaxTaxRate = 0;
                     MaxBracketCountSlider = 0;
+                    PovertyLineIndexSlider = -1;
                     FlatTaxSlider = 0;
                     BracketAdjustmentsExpanded = false;
                 }
@@ -497,6 +499,7 @@ namespace TaxMeApp.viewmodels
                         OptionsModel.MaxBracketCount = MaxBracketCountSlider;
                         MaxTaxRate = 0;
                         MaxBracketCountSlider = 0;
+                        PovertyLineIndexSlider = -1;
 
                         for (int i = 0; i < DataModel.NewTaxPctByBracket.Count; i++)
                         {
