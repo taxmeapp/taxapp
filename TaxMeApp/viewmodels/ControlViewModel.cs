@@ -464,6 +464,7 @@ namespace TaxMeApp.viewmodels
                     DataVM.CalculateNewRevenues(TaxPlansModel.SelectedTaxPlan.TaxRates);
 
                     SelectedTaxPlanTabIndex = (int)TaxPlan.Slant;
+                    BracketAdjustmentsExpanded = false;
 
                 }
                 // Hard-coded plan:
@@ -473,6 +474,7 @@ namespace TaxMeApp.viewmodels
                     MaxTaxRate = 0;
                     MaxBracketCountSlider = 0;
                     FlatTaxSlider = 0;
+                    BracketAdjustmentsExpanded = false;
                 }
                 else
                 {
@@ -483,6 +485,8 @@ namespace TaxMeApp.viewmodels
                     {
 
                         SelectedTaxPlanTabIndex = (int)TaxPlan.Custom;
+
+                        BracketAdjustmentsExpanded = true;
 
                         OptionsModel.MaxTaxRate = MaxTaxRate;
                         OptionsModel.MaxBracketCount = MaxBracketCountSlider;
