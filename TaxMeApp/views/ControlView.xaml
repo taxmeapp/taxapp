@@ -413,6 +413,35 @@
                               IsChecked="{Binding ShowUBI, Mode=TwoWay}"
                               Margin="20,5,5,5"
                               ToolTip="Display a line graph showing the selected Universal Basic Income plan. This must be checked to edit the UBI in the control panel"/>
+                    <Expander Header="Income Statistics" Margin="5,5,0,5"
+                      ToolTip="Display Mean and Median Incomes on the graph (before and/or after the custom tax plan is applied)">
+                        <StackPanel>
+                            <CheckBox Content="Median (Pre-tax)"
+                              IsChecked="{Binding ShowPreTaxMedian, Mode=TwoWay}"
+                              Margin="15,5,0,5"
+                              ToolTip="Graph the median income based on the income distribution before they are taxed (based on IRS.Gov data)"/>
+                            <CheckBox Content="Mean (Pre-tax)"
+                              IsChecked="{Binding ShowPreTaxMean, Mode=TwoWay}"
+                              Margin="15,5,0,5"
+                              ToolTip="Graph the mean income based on the income distribution before they are taxed (based on IRS.Gov data)"/>
+                            <CheckBox Content="Median (Post-tax)"
+                              IsChecked="{Binding ShowPostTaxMedian, Mode=TwoWay}"
+                              Margin="15,5,0,5"
+                              ToolTip="Graph the median income based on the income distribution after the custom tax plan is applied"/>
+                            <CheckBox Content="Mean (Post-tax)"
+                              IsChecked="{Binding ShowPostTaxMean, Mode=TwoWay}"
+                              Margin="15,5,0,5"
+                              ToolTip="Graph the mean income based on the income distribution after the custom tax plan is applied"/>
+                            <CheckBox Content="Median (Post-tax, with UBI)"
+                              IsChecked="{Binding ShowPostTaxMedianUBI, Mode=TwoWay}"
+                              Margin="15,5,0,5"
+                              ToolTip="Graph the median income based on the income distribution after the custom tax plan and UBI plan is applied"/>
+                            <CheckBox Content="Mean (Post-tax, with UBI)"
+                              IsChecked="{Binding ShowPostTaxMeanUBI, Mode=TwoWay}"
+                              Margin="15,5,0,5"
+                              ToolTip="Graph the mean income based on the income distribution after the custom tax plan and UBI plan is applied"/>
+                        </StackPanel>
+                    </Expander>
                 </StackPanel>
             </Expander>
 
@@ -471,35 +500,6 @@
                 </StackPanel>
             </Expander>
 
-            <Expander Header="Income Statistics" Margin="10,10,0,10"
-                      ToolTip="Display Mean and Median Incomes on the graph (before and/or after the custom tax plan is applied)">
-                <StackPanel>
-                    <CheckBox Content="Median (Pre-tax)"
-                              IsChecked="{Binding ShowPreTaxMedian, Mode=TwoWay}"
-                              Margin="20,5,5,5"
-                              ToolTip="Graph the median income based on the income distribution before they are taxed (based on IRS.Gov data)"/>
-                    <CheckBox Content="Mean (Pre-tax)"
-                              IsChecked="{Binding ShowPreTaxMean, Mode=TwoWay}"
-                              Margin="20,5,5,5"
-                              ToolTip="Graph the mean income based on the income distribution before they are taxed (based on IRS.Gov data)"/>
-                    <CheckBox Content="Median (Post-tax)"
-                              IsChecked="{Binding ShowPostTaxMedian, Mode=TwoWay}"
-                              Margin="20,5,5,5"
-                              ToolTip="Graph the median income based on the income distribution after the custom tax plan is applied"/>
-                    <CheckBox Content="Mean (Post-tax)"
-                              IsChecked="{Binding ShowPostTaxMean, Mode=TwoWay}"
-                              Margin="20,5,5,5"
-                              ToolTip="Graph the mean income based on the income distribution after the custom tax plan is applied"/>
-                    <CheckBox Content="Median (Post-tax, with UBI)"
-                              IsChecked="{Binding ShowPostTaxMedianUBI, Mode=TwoWay}"
-                              Margin="20,5,5,5"
-                              ToolTip="Graph the median income based on the income distribution after the custom tax plan and UBI plan is applied"/>
-                    <CheckBox Content="Mean (Post-tax, with UBI)"
-                              IsChecked="{Binding ShowPostTaxMeanUBI, Mode=TwoWay}"
-                              Margin="20,5,5,5"
-                              ToolTip="Graph the mean income based on the income distribution after the custom tax plan and UBI plan is applied"/>
-                </StackPanel>
-            </Expander>
 
             <Button Command="{Binding ResetSettingsBtnCommand}"
                     Content="Reset To Default Settings"
