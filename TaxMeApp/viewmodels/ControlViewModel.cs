@@ -61,8 +61,6 @@ namespace TaxMeApp.viewmodels
             TaxPlansModel.TaxPlans.Add("Slant Tax", new IndividualTaxPlanModel("Slant Tax", new ObservableCollection<double>(slantTaxRates)));
             SelectedTaxPlanName = "Slant Tax";
 
-            TaxPlansModel.TaxPlans.Add("Flat Tax", new IndividualTaxPlanModel("Flat Tax", new ObservableCollection<double>(new double[(int)GraphModel.Labels.Length])));
-
             //Mod 0 is already graphed?
             //List<List<double>> mod0Data = DataVM.CalculateMod0Data();
             //List<double> mod0TaxRates = mod0Data[0];
@@ -83,6 +81,7 @@ namespace TaxMeApp.viewmodels
             //List<double> mod3TaxRates = mod3Data[0];
             //TaxPlansModel.TaxPlans.Add("Slant / Mod 3", new IndividualTaxPlanModel("Slant / Mod 3", new ObservableCollection<double>(mod3TaxRates)));
 
+            TaxPlansModel.TaxPlans.Add("Flat Tax", new IndividualTaxPlanModel("Flat Tax", new ObservableCollection<double>(new double[(int)GraphModel.Labels.Length])));
 
             PlanLoader.LoadPlans(this);
 
@@ -569,7 +568,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if((SelectedTaxPlanName == "Slant Tax" || SelectedTaxPlanName == "Flat Tax" || SelectedTaxPlanName.Equals("Slant / Mod 1") || SelectedTaxPlanName.Equals("Slant / Mod 2")) && SelectedEditingModeIndex == 0 )
+                if((SelectedTaxPlanName == "Slant Tax" || SelectedTaxPlanName == "Flat Tax") && SelectedEditingModeIndex == 0 )
                 {
                     return true;
                 }
