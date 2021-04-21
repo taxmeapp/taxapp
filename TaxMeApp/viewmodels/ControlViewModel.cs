@@ -739,7 +739,7 @@ namespace TaxMeApp.viewmodels
                 if (SlantChangesUBI)
                 {
                     MaxUBIBracketCountSlider = MaxBracketCountSlider;
-                    MinUBIBracketCountSlider = PovertyLineIndexSlider;
+                    MinUBIBracketCountSlider = PovertyLineBrackets;
                     OnPropertyChange("MaxUBIBracketCountSlider");
                     OnPropertyChange("MaxUBIBracketCount");
                     OnPropertyChange("MinUBIBracketCountSlider");
@@ -897,7 +897,7 @@ namespace TaxMeApp.viewmodels
 
                 if (SlantChangesUBI) {
                     MaxUBIBracketCountSlider = MaxBracketCountSlider;
-                    MinUBIBracketCountSlider = PovertyLineIndexSlider;
+                    MinUBIBracketCountSlider = PovertyLineBrackets;
                     OnPropertyChange("MaxUBIBracketCountSlider");
                     OnPropertyChange("MaxUBIBracketCount");
                     OnPropertyChange("MinUBIBracketCountSlider");
@@ -1153,7 +1153,7 @@ namespace TaxMeApp.viewmodels
 
                 if (value) {
                     MaxUBIBracketCountSlider = MaxBracketCountSlider;
-                    MinUBIBracketCountSlider = PovertyLineIndexSlider;
+                    MinUBIBracketCountSlider = PovertyLineBrackets;
                     OnPropertyChange("MaxUBIBracketCountSlider");
                     OnPropertyChange("MaxUBIBracketCount");
                     OnPropertyChange("MinUBIBracketCountSlider");

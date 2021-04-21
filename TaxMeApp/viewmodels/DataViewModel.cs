@@ -1379,7 +1379,7 @@ namespace TaxMeApp.viewmodels
             int i = 0;
 
             // Handle poverty brackets
-            for (; i <= minUBIBracketCount; i++)
+            for (; i < minUBIBracketCount; i++)
             {
 
                 // Revenue is 0
