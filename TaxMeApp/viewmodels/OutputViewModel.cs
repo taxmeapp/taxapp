@@ -1624,7 +1624,7 @@ namespace TaxMeApp.viewmodels
         public double otr;
         public string OldTaxRate {
             get {
-                string ans = "0%";
+                string ans = "0 %";
 
                 if (yi == 0)
                 {
@@ -1703,14 +1703,14 @@ namespace TaxMeApp.viewmodels
                     otr = DataModel.OldTaxPctByBracket[18];
                 }
 
-                ans = otr + "%";
+                ans = otr + " %";
                 return ans;
             }
         }
 
         public string OldAfterTaxIncome { 
             get {
-                return "$" + (yi * (1 - (otr / 100))).ToString("#,##0.##");    
+                return "$ " + (yi * (1 - (otr / 100))).ToString("#,##0");    
             } 
         }
 
@@ -1719,7 +1719,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                string ans = "0%";
+                string ans = "0 %";
 
                 if (yi == 0)
                 {
@@ -1798,7 +1798,7 @@ namespace TaxMeApp.viewmodels
                     ntr = DataModel.NewTaxPctByBracket[18];
                 }
 
-                ans = ntr + "%";
+                ans = ntr + " %";
                 return ans;
             }
         }
@@ -1807,7 +1807,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                return "$" + (yi * (1 - (ntr / 100))).ToString("#,##0.##");
+                return "$ " + (yi * (1 - (ntr / 100))).ToString("#,##0");
             }
         }
     }
