@@ -74,12 +74,12 @@ namespace TaxMeApp.viewmodels
             //Slope is 1/4 of sin
             List<List<double>> mod1Data = DataVM.CalculateMod1Data();
             List<double> mod1TaxRates = mod1Data[0];
-            TaxPlansModel.TaxPlans.Add("Slant / Mod 1", new IndividualTaxPlanModel("Slant / Mod 1", new ObservableCollection<double>(mod1TaxRates)));
+            TaxPlansModel.TaxPlans.Add("Slant Mod 1", new IndividualTaxPlanModel("Slant Mod 1", new ObservableCollection<double>(mod1TaxRates)));
 
             //Slope is 1/4 of ellipse
             List<List<double>> mod2Data = DataVM.CalculateMod2Data();
             List<double> mod2TaxRates = mod2Data[0];
-            TaxPlansModel.TaxPlans.Add("Slant / Mod 2", new IndividualTaxPlanModel("Slant / Mod 2", new ObservableCollection<double>(mod2TaxRates)));
+            TaxPlansModel.TaxPlans.Add("Slant Mod 2", new IndividualTaxPlanModel("Slant Mod 2", new ObservableCollection<double>(mod2TaxRates)));
 
             //Slope based on 1/x
             //List<List<double>> mod3Data = DataVM.CalculateMod3Data();
@@ -102,7 +102,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if (this.SelectedTaxPlanName == "Slant Tax" || this.SelectedTaxPlanName == "Slant / Mod 1" || this.SelectedTaxPlanName == "Slant / Mod 2") 
+                if (this.SelectedTaxPlanName.Contains("Slant Tax") || this.SelectedTaxPlanName.Contains("Slant Mod 1") || this.SelectedTaxPlanName.Contains("Slant Mod 2")) 
                 {
                     return Visibility.Visible;
                 }
@@ -418,7 +418,7 @@ namespace TaxMeApp.viewmodels
             get
             {
 
-                if (SelectedTaxPlanName is null || SelectedTaxPlanName.Equals("Slant Tax") || SelectedTaxPlanName.Equals("Flat Tax") || SelectedTaxPlanName.Equals("Slant / Mod 1") || SelectedTaxPlanName.Equals("Slant / Mod 2"))
+                if (SelectedTaxPlanName is null || SelectedTaxPlanName.Equals("Slant Tax") || SelectedTaxPlanName.Equals("Flat Tax") || SelectedTaxPlanName.Equals("Slant Mod 1") || SelectedTaxPlanName.Equals("Slant Mod 2"))
                 {
                     return false;
                 }
@@ -461,7 +461,7 @@ namespace TaxMeApp.viewmodels
 
                 TaxPlansModel.SelectedTaxPlanName = value;
                 // Hard-coded plan
-                if (value.Equals("Slant Tax") || value.Equals("Slant / Mod 1") || value.Equals("Slant / Mod 2"))
+                if (value.Contains("Slant Tax") || value.Contains("Slant Mod 1") || value.Contains("Slant Mod 2"))
                 {
 
                     MaxTaxRate = (int)OptionsModel.MaxTaxRate;
@@ -474,7 +474,7 @@ namespace TaxMeApp.viewmodels
 
                 }
                 // Hard-coded plan:
-                else if (value.Equals("Flat Tax"))
+                else if (value.Contains("Flat Tax"))
                 {
                     SelectedTaxPlanTabIndex = (int)TaxPlan.Flat;
                     MaxTaxRate = 0;
@@ -580,7 +580,7 @@ namespace TaxMeApp.viewmodels
         {
             get
             {
-                if((SelectedTaxPlanName == "Slant Tax" || SelectedTaxPlanName == "Flat Tax" || this.SelectedTaxPlanName == "Slant / Mod 1" || this.SelectedTaxPlanName == "Slant / Mod 2") && SelectedEditingModeIndex == 0 )
+                if((SelectedTaxPlanName.Contains("Slant Tax") || SelectedTaxPlanName.Contains("Flat Tax") || this.SelectedTaxPlanName.Contains("Slant Mod 1") || this.SelectedTaxPlanName.Contains("Slant Mod 2")) && SelectedEditingModeIndex == 0 )
                 {
                     return true;
                 }
@@ -648,23 +648,23 @@ namespace TaxMeApp.viewmodels
 
                 OnPropertyChange("MaxTaxRate");
 
-                if (this.SelectedTaxPlanName == "Slant Tax")
+                if (this.SelectedTaxPlanName.Contains("Slant Tax"))
                 {
                     List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
                     List<double> slantTaxRates = slantTaxData[0];
                     try
                     {
-                        TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
+                        TaxPlansModel.TaxPlans.TryGetValue(this.SelectedTaxPlanName, out IndividualTaxPlanModel stax);
                         stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
                     }
                     catch { }
                 }
-                else if (this.SelectedTaxPlanName == "Slant / Mod 1"){
+                else if (this.SelectedTaxPlanName.Contains("Slant Mod 1")){
                     List<List<double>> mod1Data = DataVM.CalculateMod1Data();
                     List<double> mod1Rates = mod1Data[0];
                     try
                     {
-                        TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 1", out IndividualTaxPlanModel stax);
+                        TaxPlansModel.TaxPlans.TryGetValue(this.SelectedTaxPlanName, out IndividualTaxPlanModel stax);
                         //stax.TaxRates = new ObservableCollection<double>(mod1Rates);
                         foreach (var bracket in BracketList)
                         {
@@ -675,13 +675,13 @@ namespace TaxMeApp.viewmodels
                     }
                     catch { }
                 }
-                else if (this.SelectedTaxPlanName == "Slant / Mod 2")
+                else if (this.SelectedTaxPlanName.Contains("Slant Mod 2"))
                 {
                     List<List<double>> mod2Data = DataVM.CalculateMod2Data();
                     List<double> mod2Rates = mod2Data[0];
                     try
                     {
-                        TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 2", out IndividualTaxPlanModel stax);
+                        TaxPlansModel.TaxPlans.TryGetValue(this.SelectedTaxPlanName, out IndividualTaxPlanModel stax);
                         // stax.TaxRates = new ObservableCollection<double>(mod2Rates);
                         foreach (var bracket in BracketList)
                         {
@@ -735,23 +735,23 @@ namespace TaxMeApp.viewmodels
                     PovertyLineIndexSlider = brackets - 1;
                 }
 
-                if(SelectedTaxPlanName == "Slant Tax"){ 
+                if(SelectedTaxPlanName.Contains("Slant Tax")){ 
                     List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
                     List<double> slantTaxRates = slantTaxData[0];
                     try
                     {
-                        TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
+                        TaxPlansModel.TaxPlans.TryGetValue(this.SelectedTaxPlanName, out IndividualTaxPlanModel stax);
                         stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
                     }
                     catch { }
                 }
-                else if (this.SelectedTaxPlanName == "Slant / Mod 1")
+                else if (this.SelectedTaxPlanName.Contains("Slant Mod 1"))
                 {
                     List<List<double>> mod1Data = DataVM.CalculateMod1Data();
                     List<double> mod1Rates = mod1Data[0];
                     try
                     {
-                        TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 1", out IndividualTaxPlanModel stax);
+                        TaxPlansModel.TaxPlans.TryGetValue(this.SelectedTaxPlanName, out IndividualTaxPlanModel stax);
                         //stax.TaxRates = new ObservableCollection<double>(mod1Rates);
                         foreach (var bracket in BracketList)
                         {
@@ -762,13 +762,13 @@ namespace TaxMeApp.viewmodels
                     }
                     catch { }
                 }
-                else if (this.SelectedTaxPlanName == "Slant / Mod 2")
+                else if (this.SelectedTaxPlanName.Contains("Slant Mod 2"))
                 {
                     List<List<double>> mod2Data = DataVM.CalculateMod2Data();
                     List<double> mod2Rates = mod2Data[0];
                     try
                     {
-                        TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 2", out IndividualTaxPlanModel stax);
+                        TaxPlansModel.TaxPlans.TryGetValue(this.SelectedTaxPlanName, out IndividualTaxPlanModel stax);
                         //stax.TaxRates = new ObservableCollection<double>(mod2Rates);
                         foreach (var bracket in BracketList)
                         {
@@ -936,24 +936,24 @@ namespace TaxMeApp.viewmodels
 
                 OnPropertyChange("MaxBracketCountSlider");
 
-                if (this.SelectedTaxPlanName == "Slant Tax")
+                if (this.SelectedTaxPlanName.Contains("Slant Tax"))
                 {
                     List<List<double>> slantTaxData = DataVM.CalculateSlantTaxData();
                     List<double> slantTaxRates = slantTaxData[0];
                     try
                     {
-                        TaxPlansModel.TaxPlans.TryGetValue("Slant Tax", out IndividualTaxPlanModel stax);
+                        TaxPlansModel.TaxPlans.TryGetValue(this.SelectedTaxPlanName, out IndividualTaxPlanModel stax);
                         stax.TaxRates = new ObservableCollection<double>(slantTaxRates);
                     }
                     catch { }
                 }
-                else if (this.SelectedTaxPlanName == "Slant / Mod 1")
+                else if (this.SelectedTaxPlanName.Contains("Slant Mod 1"))
                 {
                     List<List<double>> mod1Data = DataVM.CalculateMod1Data();
                     List<double> mod1Rates = mod1Data[0];
                     try
                     {
-                        TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 1", out IndividualTaxPlanModel stax);
+                        TaxPlansModel.TaxPlans.TryGetValue(this.SelectedTaxPlanName, out IndividualTaxPlanModel stax);
                         //stax.TaxRates = new ObservableCollection<double>(mod1Rates);
                         foreach (var bracket in BracketList)
                         {
@@ -964,13 +964,13 @@ namespace TaxMeApp.viewmodels
                     }
                     catch { }
                 }
-                else if (this.SelectedTaxPlanName == "Slant / Mod 2")
+                else if (this.SelectedTaxPlanName.Contains("Slant Mod 2"))
                 {
                     List<List<double>> mod2Data = DataVM.CalculateMod2Data();
                     List<double> mod2Rates = mod2Data[0];
                     try
                     {
-                        TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 2", out IndividualTaxPlanModel stax);
+                        TaxPlansModel.TaxPlans.TryGetValue(this.SelectedTaxPlanName, out IndividualTaxPlanModel stax);
                         //stax.TaxRates = new ObservableCollection<double>(mod2Rates);
                         foreach (var bracket in BracketList)
                         {
@@ -1024,10 +1024,10 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
-                if (SelectedTaxPlanName == "Flat Tax")
+                if (SelectedTaxPlanName.Contains("Flat Tax"))
                 {
                     OptionsModel.FlatTaxRate = value;
-                    TaxPlansModel.TaxPlans.TryGetValue("Flat Tax", out IndividualTaxPlanModel selectedTaxPlan);
+                    TaxPlansModel.TaxPlans.TryGetValue(this.SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
                     foreach (var bracket in BracketList)
                     {
                         selectedTaxPlan.TaxRates[BracketList.IndexOf(bracket)] = value;
@@ -1287,7 +1287,7 @@ namespace TaxMeApp.viewmodels
 
                 string taxPlanName = dialog.Filename;
 
-                if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax") || taxPlanName.Equals("Slant / Mod 1") || taxPlanName.Equals("Slant / Mod 2"))
+                if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax") || taxPlanName.Equals("Slant Mod 1") || taxPlanName.Equals("Slant Mod 2"))
                 {
                     taxPlanName += " (modified)";
                 }
@@ -1393,7 +1393,7 @@ namespace TaxMeApp.viewmodels
 
             bool baseModified = false;
 
-            if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax") || taxPlanName.Equals("Slant / Mod 1") || taxPlanName.Equals("Slant / Mod 2"))
+            if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax") || taxPlanName.Equals("Slant Mod 1") || taxPlanName.Equals("Slant Mod 2"))
             {
                 taxPlanName += " (modified)";
                 baseModified = true;
@@ -1461,7 +1461,7 @@ namespace TaxMeApp.viewmodels
         //The Delete Tax Plan button deletes the selected tax plan but it can't delete the default slant tax plan
         private void deleteTaxPlanButtonClick()
         {
-            if (SelectedTaxPlanName != "Slant Tax" && SelectedTaxPlanName != "Flat Tax" && SelectedTaxPlanName != "Slant / Mod 1" && SelectedTaxPlanName != "Slant / Mod 2")
+            if (SelectedTaxPlanName != "Slant Tax" && SelectedTaxPlanName != "Flat Tax" && SelectedTaxPlanName != "Slant Mod 1" && SelectedTaxPlanName != "Slant Mod 2")
             {
 
                 PlanSaver.DeletePlan(SelectedTaxPlanName);
@@ -1723,7 +1723,7 @@ namespace TaxMeApp.viewmodels
             {
                 autoFitFlatTaxButtonClick();
             }
-            else if (SelectedTaxPlanName == "Slant Tax" || this.SelectedTaxPlanName == "Slant / Mod 1" || this.SelectedTaxPlanName == "Slant / Mod 2")
+            else if (SelectedTaxPlanName == "Slant Tax" || this.SelectedTaxPlanName == "Slant Mod 1" || this.SelectedTaxPlanName == "Slant Mod 2")
             {
                 autoFitSlantTaxButtonClick();
             }
