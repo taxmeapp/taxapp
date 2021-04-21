@@ -601,9 +601,9 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("SelectedTaxRate");
                 OnPropertyChange("TaxRateSlider");
                 OnPropertyChange("MaxBracketCountSlider");
-                OnPropertyChange("PovertLineIndex");
-                OnPropertyChange("PovertLineBrackets");
-                OnPropertyChange("PovertLineIndexSlider");
+                OnPropertyChange("PovertyLineIndex");
+                OnPropertyChange("PovertyLineBrackets");
+                OnPropertyChange("PovertyLineIndexSlider");
                 OnPropertyChange("SelectedTaxPlanName");
                 OnPropertyChange("SelectedBracket");
                 OnPropertyChange("DeleteTaxPlanBtnEnabled");
@@ -1869,6 +1869,8 @@ namespace TaxMeApp.viewmodels
             OnPropertyChange("SelectedTargetBudget");
             OnPropertyChange("FlatTaxSlider");
             OnPropertyChange("FlatTaxRate");
+            OnPropertyChange("BalanceMaxWithPoverty");
+            OnPropertyChange("BalancePovertyWithMax");
         }
 
         public void autoFitTaxButtonClick()

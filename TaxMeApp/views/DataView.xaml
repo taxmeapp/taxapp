@@ -7,7 +7,7 @@
              mc:Ignorable="d" >
     <DockPanel>
         <local:ControlView DockPanel.Dock="Left" DataContext="{Binding ControlVM}"/>
-        <local:OutputView DockPanel.Dock="Bottom" DataContext="{Binding OutputVM}" MaxHeight="400"/>
+        <local:OutputView DockPanel.Dock="Bottom" DataContext="{Binding OutputVM}" Height="500"/>
         <local:GraphView DockPanel.Dock="Top" DataContext="{Binding GraphVM}"/>
     </DockPanel>
 </UserControl>
