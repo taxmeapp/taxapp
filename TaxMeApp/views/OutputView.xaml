@@ -506,50 +506,52 @@
 
                 <Expander Header="Individual Income Tax Calculator" Grid.Row="5"
                           ToolTip="Enter annual income for an individual and see what your after-tax income would be based on existing taxes vs. custom tax plan">
-                    <Grid Margin="10, 10, 10, 10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                    <Border BorderBrush="Black" BorderThickness="1">
+                        <Grid Margin="10, 10, 10, 10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                        <!-- Rectangle fills -->
+                            <!-- Rectangle fills -->
 
-                        <Rectangle Fill="#ebebeb" Grid.Row="2" Grid.ColumnSpan="2"/>
-                        <Rectangle Fill="#ebebeb" Grid.Row="4" Grid.ColumnSpan="2"/>
+                            <Rectangle Fill="#ebebeb" Grid.Row="2" Grid.ColumnSpan="2"/>
+                            <Rectangle Fill="#ebebeb" Grid.Row="4" Grid.ColumnSpan="2"/>
 
-                        <!-- Content section -->
+                            <!-- Content section -->
 
-                        <TextBlock Grid.Row="1" Text="Enter Yearly Income: "/>
-                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding YearlyIncome, Mode=TwoWay}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="200"/>
+                            <TextBlock Grid.Row="1" Text="Enter Yearly Income: "/>
+                            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding YearlyIncome, Mode=TwoWay}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="200"/>
 
-                        <TextBlock Grid.Row="2" Text="Old Tax Rate: "
+                            <TextBlock Grid.Row="2" Text="Old Tax Rate: "
                                    ToolTip="Your bracket's tax rate based on IRS.Gov data"/>
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding OldTaxRate}" HorizontalAlignment="Right"
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding OldTaxRate}" HorizontalAlignment="Right"
                                    ToolTip="Your bracket's tax rate based on IRS.Gov data"/>
 
-                        <TextBlock Grid.Row="3" Text="Old After Tax Income: "
+                            <TextBlock Grid.Row="3" Text="Old After Tax Income: "
                                    ToolTip="After tax income based on old tax rates (based on your tax bracket and IRS.Gov data)"/>
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding OldAfterTaxIncome}" HorizontalAlignment="Right"
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding OldAfterTaxIncome}" HorizontalAlignment="Right"
                                    ToolTip="After tax income based on old tax rates (based on your tax bracket and IRS.Gov data)"/>
 
-                        <TextBlock Grid.Row="4" Text="New Tax Rate: "
+                            <TextBlock Grid.Row="4" Text="New Tax Rate: "
                                    ToolTip="Your bracket's new tax rate using the selected custom tax plan"/>
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding NewTaxRate}" HorizontalAlignment="Right"
+                            <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding NewTaxRate}" HorizontalAlignment="Right"
                                    ToolTip="Your bracket's new tax rate using the selected custom tax plan"/>
 
-                        <TextBlock Grid.Row="5" Text="New After Tax Income:"
+                            <TextBlock Grid.Row="5" Text="New After Tax Income:"
                                    ToolTip="Your new after-tax income based on your bracket and the selected custom tax plan"/>
-                        <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding NewAfterTaxIncome}" HorizontalAlignment="Right"
+                            <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding NewAfterTaxIncome}" HorizontalAlignment="Right"
                                    ToolTip="Your new after-tax income based on your bracket and the selected custom tax plan"/>
-                    </Grid>
+                        </Grid>
+                    </Border>
                 </Expander>
 
             </Grid>
