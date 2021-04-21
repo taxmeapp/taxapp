@@ -377,11 +377,7 @@
                                           Margin="10,5,5,5"
                                           Visibility="{Binding slantVisible}"
                                           ToolTip="UBI will be changed to be the opposite of the slant tax brackets. The brackets under the poverty line will receive the maximum UBI payment, and brackets paying the highest tax rate will not recieve any UBI payment."/>
-                                <CheckBox Content="UBI Brackets Change Slant"
-                                          IsChecked="{Binding UBIChangesSlant, Mode=TwoWay}"
-                                          Margin="10,5,5,5"
-                                          Visibility="{Binding slantVisible}"
-                                          ToolTip="The slant tax will be changed to be the opposite of the UBI brackets. The number of brackets receiving the maximum amount of UBI will adjust the poverty brackets and the number of brackets receiving no UBI will adjust the brackets paying the max rate."/>
+                                
                             </StackPanel>
                         </TabItem>
                     </TabControl>

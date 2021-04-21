@@ -14,7 +14,6 @@ namespace TaxMeApp.viewmodels
     {
 
         public bool SlantChangesUBI { get; set; } = false;
-        public bool UBIChangesSlant { get; set; } = false;
 
 
         public void DataInit()
