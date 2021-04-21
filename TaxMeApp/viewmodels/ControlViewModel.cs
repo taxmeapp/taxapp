@@ -452,6 +452,17 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
+                //Save current tax plan when switching
+                if (TaxPlansModel.TaxPlans.ContainsKey(this.SelectedTaxPlanName))
+                {
+                    TaxPlansModel.TaxPlans[SelectedTaxPlanName].TaxRates = new ObservableCollection<double>(DataModel.NewTaxPctByBracket);
+                    TaxPlansModel.TaxPlans[SelectedTaxPlanName].MaxTaxRate = this.MaxTaxRate;
+                    TaxPlansModel.TaxPlans[SelectedTaxPlanName].MaxBracketCount = this.MaxBracketCount;
+                    TaxPlansModel.TaxPlans[SelectedTaxPlanName].PovertyLineIndex = this.PovertyLineIndex;
+                    TaxPlansModel.TaxPlans[SelectedTaxPlanName].FlatTaxRate = this.FlatTaxRate;
+                    TaxPlansModel.TaxPlans[SelectedTaxPlanName].BalanceMaxWithPoverty = this.BalanceMaxWithPoverty;
+                    TaxPlansModel.TaxPlans[SelectedTaxPlanName].BalancePovertyWithMax = this.BalancePovertyWithMax;
+                }
 
                 // Null value, do nothing
                 if (value is null)
@@ -463,25 +474,57 @@ namespace TaxMeApp.viewmodels
                 // Hard-coded plan
                 if (value.Contains("Slant Tax") || value.Contains("Slant Mod 1") || value.Contains("Slant Mod 2"))
                 {
+                    if (TaxPlansModel.TaxPlans.ContainsKey(this.SelectedTaxPlanName))
+                    {
+                        DataModel.NewTaxPctByBracket = new List<double>(TaxPlansModel.TaxPlans[SelectedTaxPlanName].TaxRates);
+                        
+                        this.MaxTaxRate = (int) TaxPlansModel.TaxPlans[SelectedTaxPlanName].MaxTaxRate;
 
-                    MaxTaxRate = (int)OptionsModel.MaxTaxRate;
-                    MaxBracketCountSlider = OptionsModel.MaxBracketCount;
-                    PovertyLineIndexSlider = -1;
-                    DataVM.CalculateNewRevenues(TaxPlansModel.SelectedTaxPlan.TaxRates);
+                        this.MaxBracketCount = TaxPlansModel.TaxPlans[SelectedTaxPlanName].MaxBracketCount;
+                        MaxBracketCountSlider = TaxPlansModel.TaxPlans[SelectedTaxPlanName].MaxBracketCount;
 
-                    SelectedTaxPlanTabIndex = (int)TaxPlan.Slant;
-                    BracketAdjustmentsExpanded = false;
+                        //this.PovertyLineIndex = TaxPlansModel.TaxPlans[SelectedTaxPlanName].PovertyLineIndex;
+                        this.PovertyLineIndexSlider = TaxPlansModel.TaxPlans[SelectedTaxPlanName].PovertyLineIndex;
 
+                        this.BalanceMaxWithPoverty = TaxPlansModel.TaxPlans[SelectedTaxPlanName].BalanceMaxWithPoverty;
+                        this.BalancePovertyWithMax = TaxPlansModel.TaxPlans[SelectedTaxPlanName].BalancePovertyWithMax;
+
+                        DataVM.CalculateNewRevenues(TaxPlansModel.SelectedTaxPlan.TaxRates);
+
+                        SelectedTaxPlanTabIndex = (int)TaxPlan.Slant;
+                        BracketAdjustmentsExpanded = false;
+                    }
+                    else
+                    {
+                        MaxTaxRate = (int)OptionsModel.MaxTaxRate;
+                        MaxBracketCountSlider = OptionsModel.MaxBracketCount;
+                        PovertyLineIndexSlider = -1;
+                        DataVM.CalculateNewRevenues(TaxPlansModel.SelectedTaxPlan.TaxRates);
+
+                        SelectedTaxPlanTabIndex = (int)TaxPlan.Slant;
+                        BracketAdjustmentsExpanded = false;
+                    }
                 }
                 // Hard-coded plan:
                 else if (value.Contains("Flat Tax"))
                 {
+
+                    if (TaxPlansModel.TaxPlans.ContainsKey(this.SelectedTaxPlanName))
+                    {
+                        FlatTaxSlider = TaxPlansModel.TaxPlans[SelectedTaxPlanName].FlatTaxRate;
+                        DataModel.NewTaxPctByBracket = new List<double>(TaxPlansModel.TaxPlans[SelectedTaxPlanName].TaxRates);
+                    }
+                    else
+                    {
+                        FlatTaxSlider = 0;
+                    }
+
                     SelectedTaxPlanTabIndex = (int)TaxPlan.Flat;
                     MaxTaxRate = 0;
                     MaxBracketCountSlider = 0;
                     PovertyLineIndexSlider = -1;
-                    FlatTaxSlider = 0;
                     BracketAdjustmentsExpanded = false;
+
                 }
                 else
                 {
@@ -515,11 +558,17 @@ namespace TaxMeApp.viewmodels
                         Trace.WriteLine("Name is null or plan doesn't exist");
                     }
 
+
                 }
+
+                this.update();
 
                 OnPropertyChange("SelectedTaxRate");
                 OnPropertyChange("TaxRateSlider");
                 OnPropertyChange("MaxBracketCountSlider");
+                OnPropertyChange("PovertLineIndex");
+                OnPropertyChange("PovertLineBrackets");
+                OnPropertyChange("PovertLineIndexSlider");
                 OnPropertyChange("SelectedTaxPlanName");
                 OnPropertyChange("SelectedBracket");
                 OnPropertyChange("DeleteTaxPlanBtnEnabled");
@@ -1675,7 +1724,7 @@ namespace TaxMeApp.viewmodels
         }
 
         private void resetTaxRatesButtonClick() {
-            if (SelectedTaxPlanName == "Slant Tax")
+            if (SelectedTaxPlanName.Contains("Slant "))
             {
                 newDataGraphReset();
                 TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
@@ -1686,7 +1735,7 @@ namespace TaxMeApp.viewmodels
                 OnPropertyChange("TaxRateSlider");
                 OnPropertyChange("SelectedTaxRate");
             }
-            else if (SelectedTaxPlanName == "Flat Tax")
+            else if (SelectedTaxPlanName.Contains("Flat Tax"))
             {
                 FlatTaxSlider = 0;
                 OnPropertyChange("TaxRateSlider");
