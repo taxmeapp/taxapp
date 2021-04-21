@@ -1696,6 +1696,7 @@ namespace TaxMeApp.viewmodels
                 TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
                 for (int i = 0; i < selectedTaxPlan.TaxRates.Count; i++){
                     selectedTaxPlan.TaxRates[i] = 0;
+                    DataModel.NewTaxPctByBracket[i] = 0;
                 }
                 OnPropertyChange("TaxRateSlider");
                 OnPropertyChange("SelectedTaxRate");
