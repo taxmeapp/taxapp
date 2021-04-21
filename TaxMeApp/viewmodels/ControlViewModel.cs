@@ -665,7 +665,13 @@ namespace TaxMeApp.viewmodels
                     try
                     {
                         TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 1", out IndividualTaxPlanModel stax);
-                        stax.TaxRates = new ObservableCollection<double>(mod1Rates);
+                        //stax.TaxRates = new ObservableCollection<double>(mod1Rates);
+                        foreach (var bracket in BracketList)
+                        {
+                            // updates bracket adjustment selected tax rate to equal tax rate shown in graph
+                            int index = BracketList.IndexOf(bracket);
+                            stax.TaxRates[index] = DataModel.NewTaxPctByBracket[index];
+                        }
                     }
                     catch { }
                 }
@@ -676,7 +682,13 @@ namespace TaxMeApp.viewmodels
                     try
                     {
                         TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 2", out IndividualTaxPlanModel stax);
-                        stax.TaxRates = new ObservableCollection<double>(mod2Rates);
+                        // stax.TaxRates = new ObservableCollection<double>(mod2Rates);
+                        foreach (var bracket in BracketList)
+                        {
+                            // updates bracket adjustment selected tax rate to equal tax rate shown in graph
+                            int index = BracketList.IndexOf(bracket);
+                            stax.TaxRates[index] = DataModel.NewTaxPctByBracket[index];
+                        }
                     }
                     catch { }
                 }
@@ -740,7 +752,13 @@ namespace TaxMeApp.viewmodels
                     try
                     {
                         TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 1", out IndividualTaxPlanModel stax);
-                        stax.TaxRates = new ObservableCollection<double>(mod1Rates);
+                        //stax.TaxRates = new ObservableCollection<double>(mod1Rates);
+                        foreach (var bracket in BracketList)
+                        {
+                            // updates bracket adjustment selected tax rate to equal tax rate shown in graph
+                            int index = BracketList.IndexOf(bracket);
+                            stax.TaxRates[index] = DataModel.NewTaxPctByBracket[index];
+                        }
                     }
                     catch { }
                 }
@@ -751,7 +769,13 @@ namespace TaxMeApp.viewmodels
                     try
                     {
                         TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 2", out IndividualTaxPlanModel stax);
-                        stax.TaxRates = new ObservableCollection<double>(mod2Rates);
+                        //stax.TaxRates = new ObservableCollection<double>(mod2Rates);
+                        foreach (var bracket in BracketList)
+                        {
+                            // updates bracket adjustment selected tax rate to equal tax rate shown in graph
+                            int index = BracketList.IndexOf(bracket);
+                            stax.TaxRates[index] = DataModel.NewTaxPctByBracket[index];
+                        }
                     }
                     catch { }
                 }
@@ -930,7 +954,13 @@ namespace TaxMeApp.viewmodels
                     try
                     {
                         TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 1", out IndividualTaxPlanModel stax);
-                        stax.TaxRates = new ObservableCollection<double>(mod1Rates);
+                        //stax.TaxRates = new ObservableCollection<double>(mod1Rates);
+                        foreach (var bracket in BracketList)
+                        {
+                            // updates bracket adjustment selected tax rate to equal tax rate shown in graph
+                            int index = BracketList.IndexOf(bracket);
+                            stax.TaxRates[index] = DataModel.NewTaxPctByBracket[index];
+                        }
                     }
                     catch { }
                 }
@@ -941,7 +971,13 @@ namespace TaxMeApp.viewmodels
                     try
                     {
                         TaxPlansModel.TaxPlans.TryGetValue("Slant / Mod 2", out IndividualTaxPlanModel stax);
-                        stax.TaxRates = new ObservableCollection<double>(mod2Rates);
+                        //stax.TaxRates = new ObservableCollection<double>(mod2Rates);
+                        foreach (var bracket in BracketList)
+                        {
+                            // updates bracket adjustment selected tax rate to equal tax rate shown in graph
+                            int index = BracketList.IndexOf(bracket);
+                            stax.TaxRates[index] = DataModel.NewTaxPctByBracket[index];
+                        }
                     }
                     catch { }
                 }
