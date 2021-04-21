@@ -1499,6 +1499,13 @@ namespace TaxMeApp.viewmodels
             ShowPostTaxMedian = false;
             ShowPostTaxMeanUBI = false;
             ShowPostTaxMedianUBI = false;
+            SlantChangesUBI = false;
+            BalanceMaxWithPoverty = false;
+            BalancePovertyWithMax = false;
+            DontAdjustBracketCount = false;
+            OnPropertyChange("DontAdjustBracketCount");
+            LockTaxRates = false;
+            LockNumberSlider = 0;
             MaxBracketCountSlider = 0;
             PovertyLineIndexSlider = -1;
             MaxTaxRate = 0;
@@ -1555,8 +1562,8 @@ namespace TaxMeApp.viewmodels
             OutputVM.propChange("customProgramListView");
 
             this.MaxUBI = 1500;
-            this.MaxUBIBracketCountSlider = 3;
-            this.MinUBIBracketCountSlider = 0;
+            this.MaxUBIBracketCountSlider = 0;
+            this.MinUBIBracketCountSlider = 3;
             OnPropertyChange("MaxUBI");
             OnPropertyChange("MaxUBISlider");
             OnPropertyChange("MaxUBIBracketCountSlider");
