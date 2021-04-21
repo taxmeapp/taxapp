@@ -83,8 +83,8 @@ namespace TaxMeApp.models
 
         // Set the defaults for what are displayed on the graph
         public bool ShowNumberOfReturns { get; set; } = true;
-        public bool ShowOldRevenue { get; set; } = true;
-        public bool ShowNewRevenue { get; set; } = true;
+        public bool ShowOldRevenue { get; set; } = false;
+        public bool ShowNewRevenue { get; set; } = false;
         public bool ShowOldPercentage { get; set; } = false;
         public bool ShowNewPercentage { get; set; } = false;
         public bool ShowNewUBI { get; set; } = false;
