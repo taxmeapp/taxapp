@@ -97,7 +97,7 @@ namespace TaxMeApp.viewmodels
                     if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
                     {
                         double deficit = BudgetDataModel.YearData[i].Deficit * 1000;
-                        ans += deficit + " Billion";
+                        ans += Formatter.Format(deficit * Math.Pow(10, 9));
                         break;
                     }
                 }
@@ -113,7 +113,7 @@ namespace TaxMeApp.viewmodels
                 {
                     if (BudgetDataModel.YearData[i].Year == ControlVM.SelectedYear)
                     {
-                        ans += BudgetDataModel.YearData[i].BudgetPercent.ToString("#,##0.##") + " %";
+                        ans += BudgetDataModel.YearData[i].DeficitPercent.ToString("#,##0.##") + " %";
                         break;
                     }
                 }

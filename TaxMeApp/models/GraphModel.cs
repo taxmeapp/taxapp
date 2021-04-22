@@ -58,7 +58,7 @@ namespace TaxMeApp.models
                 "10k - 15k",
                 "15k - 20k",
                 "20k - 25k",
-                "25k - 35k",
+                "25k - 30k",
                 "30k - 40k",
                 "40k - 50k",
                 "50k - 75k",
