@@ -618,8 +618,192 @@ namespace UnitTests
             //Check that the program was added
             Assert.AreEqual("", ld.OptionsModel.listOfCosts[19].name);
 
-            ld.OptionsModel.listOfCosts[19].cost = 99;
+            var enteredVal = "adsakjda";
+            try
+            {
+                ld.OptionsModel.listOfCosts[19] = (19, false, "my prog", Double.Parse(enteredVal), 100);
+            }
+            catch (Exception e) {
+                ld.OptionsModel.listOfCosts[19] = (19, false, "my prog", 0, 100);
+            }
 
+            Assert.AreEqual(ld.OptionsModel.listOfCosts[19], (19, false, "my prog", 0, 100));
+        }
+
+        [TestMethod]
+        public void TC057_TestFunding() {
+            //Test that funding is calculated properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Setup the slant tax
+            ld.ControlVM.MaxBracketCountSlider = 4;
+            ld.ControlVM.PovertyLineIndexSlider = 4;
+            ld.ControlVM.MaxTaxRate = 26;
+
+            //Use default government programs and check their funding against manually calculated values
+            Assert.AreEqual("100", ld.OptionsModel.fundingArray[0].ToString());
+            Assert.AreEqual("100", ld.OptionsModel.fundingArray[1].ToString());
+            Assert.AreEqual("70.4067890030471", ld.OptionsModel.fundingArray[2].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[3].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[4].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[5].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[6].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[7].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[8].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[9].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[10].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[11].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[12].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[13].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[14].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[15].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[16].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[17].ToString());
+            Assert.AreEqual("0", ld.OptionsModel.fundingArray[18].ToString());
+
+        }
+
+        [TestMethod]
+        public void TC058_TestBracketLock() {
+            //Test that bracket lock option works
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Select Middle bracket
+            int center = ld.ControlVM.BracketList.Count / 2;
+            ld.ControlVM.SelectedBracket = ld.ControlVM.BracketList[center];
+
+            //Lock brakcets
+            ld.ControlVM.LockTaxRates = true;
+
+            //Select 5 brackets
+            ld.ControlVM.LockNumberSlider = 5;
+
+            //Increase tax rate
+            ld.ControlVM.TaxRateSlider = 50;
+
+            //Check that the tax rates were adjusted correctly
+            for (int i = 0; i < ld.ControlVM.BracketList.Count; i++) { 
+                if(i >= (center - 5) && i <= (center + 4))
+                {
+                    Assert.AreEqual(50, ld.ControlVM.TaxPlansModel.TaxPlans[ld.ControlVM.SelectedTaxPlanName].TaxRates[i]);
+                }
+                else{
+                    Assert.AreEqual(0, ld.ControlVM.TaxPlansModel.TaxPlans[ld.ControlVM.SelectedTaxPlanName].TaxRates[i]);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void TC059_TestUBILock() {
+            //Test that slant brackets change UBI lock works
+            
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set UBI brackets to 0
+            ld.ControlVM.MaxUBIBracketCountSlider = 0;
+            ld.ControlVM.MinUBIBracketCountSlider = 0;
+
+            //Check the lock option
+            ld.ControlVM.SlantChangesUBI = true;
+
+            //Adjust the slant tax
+            ld.ControlVM.MaxBracketCountSlider = 5;
+            ld.ControlVM.PovertyLineIndexSlider = 5;
+
+            //Check that UBI brackets were changed
+            Assert.AreEqual(5, ld.ControlVM.MaxUBIBracketCountSlider);
+            Assert.AreEqual(6, ld.ControlVM.MinUBIBracketCountSlider);
+        }
+
+        [TestMethod]
+        public void TC060_TestRestSettingsButton() {
+            //Test that the reset settings button works
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Change the default options
+            ld.ControlVM.ShowUBI = true;
+            ld.ControlVM.ShowOldPercentage = true;
+            ld.ControlVM.ShowOldRevenue = true;
+            ld.ControlVM.ShowNewRevenue = true;
+            ld.ControlVM.ShowNewPercentage = true;
+
+            ld.OutputVM.DefenseSpendingChecked = false;
+            ld.OutputVM.MedicaidSpendingChecked = false;
+
+            //Press the reset button
+            ld.ControlVM.resetSettingsButtonClick();
+
+            //Check that the options were reset
+            Assert.AreEqual(false, ld.ControlVM.ShowUBI);
+            Assert.AreEqual(false, ld.ControlVM.ShowOldPercentage);
+            Assert.AreEqual(false, ld.ControlVM.ShowOldRevenue);
+            Assert.AreEqual(false, ld.ControlVM.ShowNewRevenue);
+            Assert.AreEqual(false, ld.ControlVM.ShowNewPercentage);
+
+            Assert.AreEqual(true, ld.OutputVM.DefenseSpendingChecked);
+            Assert.AreEqual(true, ld.OutputVM.MedicaidSpendingChecked);
+        }
+
+        [TestMethod]
+        public void TC061_TestResetTaxRatesButton() {
+            //Test that the reset tax rates button works properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set up the slant tax
+            ld.ControlVM.MaxBracketCountSlider = 4;
+            ld.ControlVM.PovertyLineIndexSlider = 4;
+            ld.ControlVM.MaxTaxRate = 30;
+
+            //Save the value of a middle bracket
+            int bracket = 5;
+            double oldRate = ld.ControlVM.TaxPlansModel.TaxPlans[ld.ControlVM.SelectedTaxPlanName].TaxRates[bracket];
+
+            //Change the value manually
+            ld.ControlVM.SelectedBracket = ld.ControlVM.BracketList[bracket];
+            ld.ControlVM.TaxRateSlider = 80;
+
+            //Check that the rate was changed
+            Assert.AreEqual(80, ld.ControlVM.TaxPlansModel.TaxPlans[ld.ControlVM.SelectedTaxPlanName].TaxRates[bracket]);
+
+            //Press the reset button
+            ld.ControlVM.resetTaxRatesButtonClick();
+
+            //Check that the rate was changed back;
+            Assert.AreEqual(oldRate, ld.ControlVM.TaxPlansModel.TaxPlans[ld.ControlVM.SelectedTaxPlanName].TaxRates[bracket]);
+        }
+
+        [TestMethod]
+        public void TC062_TestAutoFitTaxes() {
+            //Test that the auto-fit tax rates button works properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Check that the revenue is less than the budget
+            Assert.IsTrue(ld.DataModel.TotalRevenueNew < ld.OptionsModel.GetTotalBudget());
+
+            //Press the autofit button
+            ld.ControlVM.autoFitTaxButtonClick();
+
+            //Check that the max rate changed
+            Assert.AreNotEqual(0, ld.ControlVM.MaxTaxRate);
+
+            //Check that the revenue is greater than or equal to the budget
+            Assert.IsTrue(ld.DataModel.TotalRevenueNew >= ld.OptionsModel.GetTotalBudget());
+        }
+
+        [TestMethod]
+        public void TC063_TestTargetFunding() { 
+        
         }
     }
 }

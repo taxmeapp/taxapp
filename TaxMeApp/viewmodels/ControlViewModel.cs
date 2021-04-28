@@ -1728,7 +1728,7 @@ namespace TaxMeApp.viewmodels
 
         //Currently Hardcoded
         //Resets to default options
-        private void resetSettingsButtonClick(){
+        public void resetSettingsButtonClick(){
             //Console.WriteLine("Reset Settings Button Clicked");
             ShowNumberOfReturns = true;
             ShowOldRevenue = false;
@@ -1828,7 +1828,7 @@ namespace TaxMeApp.viewmodels
             OutputVM.Update();
         }
 
-        private void resetTaxRatesButtonClick() {
+        public void resetTaxRatesButtonClick() {
             if (SelectedTaxPlanName.Contains("Slant "))
             {
                 newDataGraphReset();
