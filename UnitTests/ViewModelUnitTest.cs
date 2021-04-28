@@ -210,7 +210,7 @@ namespace UnitTests
             testData2003 = new IncomeYearModel();
             testData2003.Year = 2003;
             testData2003.Brackets = new ObservableCollection<BracketModel>();
-            for(int i = 0; i < upBounds.Count; i++)
+            for (int i = 0; i < upBounds.Count; i++)
             {
                 BracketModel br = new BracketModel();
                 br.AverageTotalIncomeTax = avgTax[i];
@@ -232,7 +232,7 @@ namespace UnitTests
 
             //Create a new loader and load years
             Loader ld = new Loader();
-            
+
             //Check that each year was loaded
             Assert.AreEqual(2018, ld.YearsModel.YearList[0]);
             Assert.AreEqual(2017, ld.YearsModel.YearList[1]);
@@ -256,14 +256,14 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TC041_ParserCreatesFiles() 
+        public void TC041_ParserCreatesFiles()
         {
             //Test that the parser creates file from data with correct values
 
             string[] fileNames = Loader.LoadYearsTest();
             List<IncomeYearModel> iyms = new List<IncomeYearModel>();
 
-            foreach(string file in fileNames)
+            foreach (string file in fileNames)
             {
                 iyms.Add(Parser.ParseCSV(file));
             }
@@ -290,10 +290,10 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TC042_GraphUpdate() 
+        public void TC042_GraphUpdate()
         {
             //Test that the graph updates when a new year is selected
-            
+
             //Start the program and load data
             Loader ld = new Loader();
 
@@ -309,7 +309,7 @@ namespace UnitTests
             //Use manually entered data to check this
             setUpData();
 
-            for(int i = 0; i < testData2003.Brackets.Count; i++)
+            for (int i = 0; i < testData2003.Brackets.Count; i++)
             {
                 Assert.AreEqual(testData2003.Brackets[i].GrossIncome, ld.ControlVM.YearsModel.Years[2003].Brackets[i].GrossIncome);
                 Assert.AreEqual(testData2003.Brackets[i].TaxableIncome, ld.ControlVM.YearsModel.Years[2003].Brackets[i].TaxableIncome);
@@ -323,7 +323,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TC043_PovertyPop() 
+        public void TC043_PovertyPop()
         {
             //Test that poverty population is calculated correctly
 
@@ -498,7 +498,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TC053_CustomTaxRates() 
+        public void TC053_CustomTaxRates()
         {
             //Check that custom tax rates works correctly
 
@@ -580,10 +580,10 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TC055_AddGovProgram() 
+        public void TC055_AddGovProgram()
         {
             //Test that you can add custom government programs
-            
+
             //Start the program
             Loader ld = new Loader();
 
@@ -686,12 +686,12 @@ namespace UnitTests
             ld.ControlVM.TaxRateSlider = 50;
 
             //Check that the tax rates were adjusted correctly
-            for (int i = 0; i < ld.ControlVM.BracketList.Count; i++) { 
-                if(i >= (center - 5) && i <= (center + 4))
+            for (int i = 0; i < ld.ControlVM.BracketList.Count; i++) {
+                if (i >= (center - 5) && i <= (center + 4))
                 {
                     Assert.AreEqual(50, ld.ControlVM.TaxPlansModel.TaxPlans[ld.ControlVM.SelectedTaxPlanName].TaxRates[i]);
                 }
-                else{
+                else {
                     Assert.AreEqual(0, ld.ControlVM.TaxPlansModel.TaxPlans[ld.ControlVM.SelectedTaxPlanName].TaxRates[i]);
                 }
             }
@@ -700,7 +700,7 @@ namespace UnitTests
         [TestMethod]
         public void TC059_TestUBILock() {
             //Test that slant brackets change UBI lock works
-            
+
             //Start the program
             Loader ld = new Loader();
 
@@ -991,7 +991,7 @@ namespace UnitTests
 
             double newTFunding = ld.OptionsModel.listOfCosts[0].tFunding;
 
-            for(int i = 0; i < ld.OptionsModel.listOfCosts.Count; i++)
+            for (int i = 0; i < ld.OptionsModel.listOfCosts.Count; i++)
             {
                 if (ld.OptionsModel.listOfCosts[i].ischecked)
                 {
@@ -1009,7 +1009,7 @@ namespace UnitTests
             Loader ld = new Loader();
 
             //Check that the deficit starts at (0 - budget)
-            Assert.AreEqual("$" + Formatter.Format(ld.DataModel.TotalRevenueNew - ld.OptionsModel.GetTotalBudget()) + " deficit" , ld.OutputVM.LeftOverBudget.ToLower());
+            Assert.AreEqual("$" + Formatter.Format(ld.DataModel.TotalRevenueNew - ld.OptionsModel.GetTotalBudget()) + " deficit", ld.OutputVM.LeftOverBudget.ToLower());
 
             //Use the auto-fit button
             ld.ControlVM.autoFitTaxButtonClick();
@@ -1040,7 +1040,7 @@ namespace UnitTests
 
             //Check that the directory exists
             Assert.IsTrue(Directory.Exists(userPlanPath));
-           
+
             string[] plans = Directory.GetFiles(userPlanPath, "*.tax");
 
             //Look for the plan
@@ -1079,6 +1079,9 @@ namespace UnitTests
 
             //Start the program
             Loader ld = new Loader();
+
+            //Check that the slant mod 1 exists
+            Assert.IsTrue(ld.ControlVM.TaxPlansList.Contains("Slant Mod 1"));
         }
         [TestMethod]
         public void TC075_EllipseGraph()
@@ -1087,6 +1090,9 @@ namespace UnitTests
 
             //Start the program
             Loader ld = new Loader();
+
+            //Check that the slant mod 2 exists
+            Assert.IsTrue(ld.ControlVM.TaxPlansList.Contains("Slant Mod 2"));
         }
 
         [TestMethod]
@@ -1384,8 +1390,195 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TC087_LoadGDPData() { 
-        
+        public void TC087_LoadGDPData() {
+            //Test that GDP, Debt and old budget data can be loaded
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Check that data for each year is loaded
+            List<BudgetYearModel> bym = new List<BudgetYearModel>(ld.BudgetDataModel.YearData);
+            bym.Reverse();
+
+            for (int i = 0; i < ld.ControlVM.YearList.Count; i++) {
+                Assert.AreEqual(ld.ControlVM.YearList[i], bym[i].Year);
+                Assert.IsTrue(bym[i].GDP != 0);
+                Assert.IsTrue(bym[i].TotalBudget != 0);
+                Assert.IsTrue(bym[i].TotalDebt != 0);
+                Assert.IsTrue(bym[i].DeficitPercent != 0);
+                Assert.IsTrue(bym[i].BudgetPercent != 0);
+            }
         }
+
+        [TestMethod]
+        public void TC088_DisplayGDP() {
+            //Test that GDP, Debt, and old budget data is displayed
+
+            //Start the program
+            Loader ld = new Loader();
+
+            List<BudgetYearModel> bym = new List<BudgetYearModel>(ld.BudgetDataModel.YearData);
+            bym.Reverse();
+
+            //Check that the displayed data matches the loaded data
+            Assert.AreEqual(bym[0].Year, ld.ControlVM.SelectedYear);
+            Assert.AreEqual("$" + bym[0].GDP + " trillion", ld.OutputVM.GDP.ToLower());
+            Assert.AreEqual("$" + bym[0].TotalDebt.ToString("#,##0.##"), ld.OutputVM.TotalDebt.ToLower());
+            Assert.AreEqual("$" + bym[0].TotalBudget + " trillion", ld.OutputVM.OldBudget.ToLower());
+            Assert.AreEqual(((bym[0].TotalDebt / (bym[0].GDP * Math.Pow(10, 12))) * 100).ToString("#,##0.##") + " %", ld.OutputVM.OldDebtPercent.ToLower());
+        }
+
+        [TestMethod]
+        public void TC089_ResetBudget() {
+            //Test that the reset budget button works properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set all of the target funding values to a random value between 1 and 99
+            Random r = new Random();
+            for (int i = 0; i < ld.OptionsModel.listOfCosts.Count; i++) {
+                ld.OptionsModel.listOfCosts[i] = (ld.OptionsModel.listOfCosts[i].priority, ld.OptionsModel.listOfCosts[i].ischecked, ld.OptionsModel.listOfCosts[i].name, ld.OptionsModel.listOfCosts[i].cost, (double)r.Next(1, 100));
+            }
+
+            //Check that the target funding values != 100
+            for (int i = 0; i < ld.OptionsModel.listOfCosts.Count; i++)
+            {
+                Assert.AreNotEqual(100, ld.OptionsModel.listOfCosts[i].tFunding);
+            }
+
+            //Press the reset button
+            ld.ControlVM.resetBudgetButtonClick();
+
+            //Check that all of the target funding values == 100
+            for (int i = 0; i < ld.OptionsModel.listOfCosts.Count; i++)
+            {
+                Assert.AreEqual(100, ld.OptionsModel.listOfCosts[i].tFunding);
+            }
+        }
+
+        [TestMethod]
+        public void TC090_ProjectedGDP() {
+            //Test that projected GDP is calculated correctly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set values for the debt calculator
+            double years = 100;
+            double rate = 5; //5%
+
+            ld.OptionsModel.DebtYears = years;
+            ld.OptionsModel.YearlyGDPGrowth = rate;
+            ld.OptionsModel.CalculateYearlyDebtPayment(ld.BudgetDataModel.YearData[ld.BudgetDataModel.YearData.Count - 1].TotalDebt, ld.BudgetDataModel.YearData[ld.BudgetDataModel.YearData.Count - 1].GDP);
+
+            //Compare projected GDP to manually calculated value
+            double currentGDP = ld.BudgetDataModel.YearData[ld.BudgetDataModel.YearData.Count - 1].GDP * Math.Pow(10, 12);
+            double calcedProjGDP = (currentGDP) * Math.Pow((1 + (rate / 100)), years);
+
+            Assert.AreEqual(calcedProjGDP, ld.OptionsModel.PGDP);
+        }
+
+        [TestMethod]
+        public void TC091_TargetDebt() {
+            //Test that target debt is calculated correctly
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set values for the debt calculator
+            double years = 10;
+            double rate = 5; //5%
+            double targetPercent = 15; //15%
+
+            ld.OptionsModel.DebtYears = years;
+            ld.OptionsModel.YearlyGDPGrowth = rate;
+            ld.OptionsModel.TargetDebtPercent = targetPercent;
+            ld.OptionsModel.CalculateYearlyDebtPayment(ld.BudgetDataModel.YearData[ld.BudgetDataModel.YearData.Count - 1].TotalDebt, ld.BudgetDataModel.YearData[ld.BudgetDataModel.YearData.Count - 1].GDP);
+
+            double currentGDP = ld.BudgetDataModel.YearData[ld.BudgetDataModel.YearData.Count - 1].GDP * Math.Pow(10, 12);
+            double calcedProjGDP = (currentGDP) * Math.Pow((1 + (rate / 100)), years);
+            double calcedTargDebt = calcedProjGDP * (targetPercent / 100);
+
+            Assert.AreEqual(calcedTargDebt, ld.OptionsModel.TargetDebt);
+        }
+
+        [TestMethod]
+        public void TC092_DebtReductionBudgetItem() {
+            //Test that debt reduction appears as a budget item
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set values for the debt calculator
+            double years = 10;
+            double rate = 5; //5%
+            double targetPercent = 15; //15%
+
+            ld.OptionsModel.DebtYears = years;
+            ld.OptionsModel.YearlyGDPGrowth = rate;
+            ld.OptionsModel.TargetDebtPercent = targetPercent;
+            ld.OptionsModel.CalculateYearlyDebtPayment(ld.BudgetDataModel.YearData[ld.BudgetDataModel.YearData.Count - 1].TotalDebt, ld.BudgetDataModel.YearData[ld.BudgetDataModel.YearData.Count - 1].GDP);
+
+            ld.OutputVM.Update();
+
+            //Select debt reduction
+            ld.OutputVM.DebtReductionChecked = true;
+
+            //Check that it displays correctly
+            Assert.AreEqual("Debt Redution ($2.09 trillion)", ld.OutputVM.DebtReductionText);
+            Assert.AreEqual("0.0% Funded", ld.OutputVM.DebtReductionFunding);
+
+            //Use auto-fit
+            ld.ControlVM.autoFitTaxButtonClick();
+
+            //Check that the program is now funded
+            Assert.AreEqual("100.0% Funded", ld.OutputVM.DebtReductionFunding);
+        }
+
+        [TestMethod]
+        public void TC093_DebtReductionInterest() {
+            //Test that interest on debt is calculated properly
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set values for the debt calculator
+            //Set values for the debt calculator
+            double years = 10;
+            double rate = 5; //5%
+            double targetPercent = 15; //15%
+            double interestRate = 3;
+
+            ld.OptionsModel.DebtYears = years;
+            ld.OptionsModel.YearlyGDPGrowth = rate;
+            ld.OptionsModel.TargetDebtPercent = targetPercent;
+            ld.OptionsModel.InterestPerYear = interestRate;
+            ld.OptionsModel.CalculateYearlyDebtPayment(ld.BudgetDataModel.YearData[ld.BudgetDataModel.YearData.Count - 1].TotalDebt, ld.BudgetDataModel.YearData[ld.BudgetDataModel.YearData.Count - 1].GDP);
+
+            ld.OutputVM.Update();
+
+            //Check that the interest payments are correct
+            Assert.AreEqual("$423.26 billion", ld.OutputVM.InterestPerYear);
+            Assert.AreEqual("$4.23 trillion", ld.OutputVM.TotalInterestPayments);
+        }
+
+        [TestMethod]
+        public void TC094_UBIVisible() { }
+
+        [TestMethod]
+        public void TC095_TaxRatesOnYAxis() { }
+
+        [TestMethod]
+        public void TC096_UBIOnYAxis() { }
+
+        [TestMethod]
+        public void TC097_TaxSliders() { }
+
+        [TestMethod]
+        public void TC098_GraphStyle() { }
+
+        [TestMethod]
+        public void TC099_Units() { }
+
+        [TestMethod]
+        public void TC100_RevenueInBillions() { }
     }
 }
