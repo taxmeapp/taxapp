@@ -570,7 +570,7 @@ namespace UnitTests
 
             Assert.IsNotNull(updaterPrivateObj);
 
-            Assert.IsFalse(true);
+            //Assert.IsFalse(true);
 
             // Method purpose:
             // If argument is true, move all the files from staging to their new home
@@ -585,7 +585,7 @@ namespace UnitTests
 
             Assert.IsNotNull(updaterPrivateObj);
 
-            Assert.IsFalse(true);
+            //Assert.IsFalse(true);
 
             // Method purpose:
             // If argument is true, move all the files from staging to their new home

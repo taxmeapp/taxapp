@@ -116,7 +116,6 @@ namespace TaxMeApp
 
                 // Add that IncomeYearModel into the YearsModel
                 YearsModel.Years.Add(year.Year, year);
-
             }
         }
 

@@ -1470,7 +1470,80 @@ namespace TaxMeApp.viewmodels
 
         }
 
-        private void saveTaxPlan()
+        public void newTaxPlanTest(string fName)
+        {
+
+            //DialogBox dialog = new DialogBox();
+            //dialog.ShowDialog();
+
+            if (true)
+            {
+
+                string taxPlanName = fName;
+
+                if (taxPlanName.Equals("Slant Tax") || taxPlanName.Equals("Flat Tax") || taxPlanName.Equals("Slant Mod 1") || taxPlanName.Equals("Slant Mod 2"))
+                {
+                    taxPlanName += " (modified)";
+                }
+
+                Dictionary<string, object> values = new Dictionary<string, object>();
+
+                values.Add("MaxTaxRate", MaxTaxRate);
+                values.Add("MaxBracketCount", MaxBracketCount);
+                values.Add("PovertyLineBrackets", PovertyLineBrackets);
+
+                ObservableCollection<double> newTaxPlanRates;
+
+                if (TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan))
+                {
+                    newTaxPlanRates = selectedTaxPlan.TaxRates;
+                }
+                else
+                {
+                    //Set all of the default values to 0% tax
+                    newTaxPlanRates = new ObservableCollection<double>(new double[(int)(GraphModel.Labels.Length)]);
+                }
+
+                values.Add("TaxRates", newTaxPlanRates);
+
+
+                if (TaxPlansModel.TaxPlans.ContainsKey(taxPlanName))
+                {
+
+                    int increment = 2;
+
+                    string nameIncrement = taxPlanName + " (" + increment + ")";
+
+                    while (TaxPlansModel.TaxPlans.ContainsKey(nameIncrement))
+                    {
+
+                        increment++;
+                        nameIncrement = taxPlanName + " (" + increment + ")";
+
+                    }
+
+                    taxPlanName = nameIncrement;
+
+                }
+                else
+                {
+
+                }
+
+                TaxPlansModel.TaxPlans.Add(taxPlanName, new IndividualTaxPlanModel(taxPlanName, newTaxPlanRates));
+
+                PlanSaver.SavePlan(taxPlanName, values);
+
+                OnPropertyChange("TaxPlansList");
+
+                SelectedTaxPlanName = taxPlanName;
+
+            }
+
+            return;
+        }
+
+        public void saveTaxPlan()
         {
 
             string taxPlanName = this.SelectedTaxPlanName;
@@ -1613,7 +1686,7 @@ namespace TaxMeApp.viewmodels
 
 
         //The Delete Tax Plan button deletes the selected tax plan but it can't delete the default slant tax plan
-        private void deleteTaxPlanButtonClick()
+        public void deleteTaxPlanButtonClick()
         {
             if (SelectedTaxPlanName != "Slant Tax" && SelectedTaxPlanName != "Flat Tax" && SelectedTaxPlanName != "Slant Mod 1" && SelectedTaxPlanName != "Slant Mod 2")
             {
@@ -1626,7 +1699,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        private void toggleEditModeButtonClick()
+        public void toggleEditModeButtonClick()
         {
             SelectedEditingModeIndex = 1 - SelectedEditingModeIndex;
         }
@@ -1728,7 +1801,7 @@ namespace TaxMeApp.viewmodels
 
         //Currently Hardcoded
         //Resets to default options
-        private void resetSettingsButtonClick(){
+        public void resetSettingsButtonClick(){
             //Console.WriteLine("Reset Settings Button Clicked");
             ShowNumberOfReturns = true;
             ShowOldRevenue = false;
@@ -1828,7 +1901,7 @@ namespace TaxMeApp.viewmodels
             OutputVM.Update();
         }
 
-        private void resetTaxRatesButtonClick() {
+        public void resetTaxRatesButtonClick() {
             if (SelectedTaxPlanName.Contains("Slant "))
             {
                 newDataGraphReset();
