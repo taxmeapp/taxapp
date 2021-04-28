@@ -802,7 +802,589 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TC063_TestTargetFunding() { 
+        public void TC063_TestTargetFunding() {
+            //Test that the target funding of budget items works properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set up the slant tax
+            ld.ControlVM.MaxBracketCountSlider = 4;
+            ld.ControlVM.PovertyLineIndexSlider = 4;
+            ld.ControlVM.MaxTaxRate = 30;
+
+            //Check that the initial cost of Medicaid is correct
+            Assert.AreEqual("Medicaid Spending ($613.00 billion)", ld.OutputVM.MedicaidText);
+            Assert.AreEqual(613000000000, ld.OptionsModel.listOfCosts[1].cost * (ld.OptionsModel.listOfCosts[1].tFunding / 100));
+
+            //Change the target funding
+            ld.ControlVM.SelectedGovProgram = ld.ControlVM.GovProgramList[1];
+            ld.ControlVM.TargetFundingSlider = 50;
+
+            //Check that the new cost of Medicaid is correct
+            Assert.AreEqual("Medicaid Spending ($306.50 billion)", ld.OutputVM.MedicaidText);
+            Assert.AreEqual(306500000000, ld.OptionsModel.listOfCosts[1].cost * (ld.OptionsModel.listOfCosts[1].tFunding / 100));
+
+        }
+
+        [TestMethod]
+        public void TC064_TestIncomeCalc() {
+            //Test that the income tax calculator works properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set up the slant tax
+            ld.ControlVM.MaxBracketCountSlider = 4;
+            ld.ControlVM.PovertyLineIndexSlider = 4;
+            ld.ControlVM.MaxTaxRate = 30;
+
+            //Enter data into income tax calc
+            ld.OutputVM.YearlyIncome = "50,000";
+
+            Assert.AreEqual("7.6 %", ld.OutputVM.OldTaxRate);
+            Assert.AreEqual("$ 46,200", ld.OutputVM.OldAfterTaxIncome);
+            Assert.AreEqual("13.5 %", ld.OutputVM.NewTaxRate);
+            Assert.AreEqual("$ 43,250", ld.OutputVM.NewAfterTaxIncome);
+
+            //Try another annual income
+            ld.OutputVM.YearlyIncome = "30,000";
+
+            Assert.AreEqual("5.9 %", ld.OutputVM.OldTaxRate);
+            Assert.AreEqual("$ 28,230", ld.OutputVM.OldAfterTaxIncome);
+            Assert.AreEqual("8.1 %", ld.OutputVM.NewTaxRate);
+            Assert.AreEqual("$ 27,570", ld.OutputVM.NewAfterTaxIncome);
+        }
+
+        [TestMethod]
+        public void TC065_TestMedianandMean() {
+            //Test that median and mean are calculated properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set up the slant tax
+            ld.ControlVM.MaxBracketCountSlider = 4;
+            ld.ControlVM.PovertyLineIndexSlider = 4;
+            ld.ControlVM.MaxTaxRate = 30;
+
+            //Check the median and mean incomes
+
+            //Pretax
+            //Mean
+            Assert.AreEqual("$113,855", ld.OutputVM.MeanMedian.Rows[0].ItemArray[1]);
+            //Median
+            Assert.AreEqual("$65,139", ld.OutputVM.MeanMedian.Rows[0].ItemArray[2]);
+            //Difference
+            Assert.AreEqual("$48,716", ld.OutputVM.MeanMedian.Rows[0].ItemArray[3]);
+
+            //Postax
+            //Mean
+            Assert.AreEqual("$91,980", ld.OutputVM.MeanMedian.Rows[1].ItemArray[1]);
+            //Median
+            Assert.AreEqual("$56,345", ld.OutputVM.MeanMedian.Rows[1].ItemArray[2]);
+            //Difference
+            Assert.AreEqual("$35,634", ld.OutputVM.MeanMedian.Rows[1].ItemArray[3]);
+
+            //Postax w/ UBI
+            //Mean
+            Assert.AreEqual("$92,874", ld.OutputVM.MeanMedian.Rows[2].ItemArray[1]);
+            //Median
+            Assert.AreEqual("$57,215", ld.OutputVM.MeanMedian.Rows[2].ItemArray[2]);
+            //Difference
+            Assert.AreEqual("$35,658", ld.OutputVM.MeanMedian.Rows[2].ItemArray[3]);
+        }
+
+        [TestMethod]
+        public void TC066_EditingModes() {
+            //Test that the different editing modes work properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Check that the UBI options are not visible
+            Assert.IsFalse(ld.ControlVM.ShowUBI);
+            Assert.IsFalse(ld.ControlVM.ToggleEditingModeBtnEnabled);
+            //Check that the current editing mode is tax editing
+            Assert.AreEqual(0, ld.ControlVM.SelectedEditingModeIndex);
+
+            //Select the UBI in display options
+            ld.ControlVM.ShowUBI = true;
+
+            //Check that the mode can be toggled
+            Assert.IsTrue(ld.ControlVM.ShowUBI);
+            Assert.IsTrue(ld.ControlVM.ToggleEditingModeBtnEnabled);
+
+            //Toggle the mode
+            ld.ControlVM.toggleEditModeButtonClick();
+            //Check that the current editing mode is UBI editing
+            Assert.AreEqual(1, ld.ControlVM.SelectedEditingModeIndex);
+        }
+
+        [TestMethod]
+        public void TC067_TypeVals() {
+            //Test that typing values into sliders works properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set up the slant tax
+            ld.ControlVM.MaxBracketCountSlider = 4;
+            ld.ControlVM.PovertyLineIndexSlider = 4;
+            ld.ControlVM.MaxTaxRate = 30;
+
+            //Type a value into the max tax rate
+            ld.ControlVM.MaxTaxRate = Int32.Parse("50");
+
+            //Check that it changed the max tax rate
+            Assert.AreEqual(50, ld.ControlVM.MaxTaxRate);
+        }
+
+        [TestMethod]
+        public void TC068_UBICustomProgs() {
+            //Test that the UBI that is graphed is included in the budget (and can be turned on or off)
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Display the UBI
+            ld.ControlVM.ShowUBI = true;
+
+            //Check that the UBI budget item has the correct cost
+            Assert.AreEqual("UBI ($89.75 billion)", ld.OptionsModel.GetUBIText());
+            //Select it and use auto-fit
+            ld.OutputVM.UBIChecked = true;
+            ld.ControlVM.autoFitTaxButtonClick();
+
+            //Check that the max rate is correct
+            int maxRate1 = ld.ControlVM.MaxTaxRate;
+            Assert.AreEqual(14, maxRate1);
+
+            //Edit its values
+            ld.ControlVM.toggleEditModeButtonClick();
+            ld.ControlVM.MaxUBI = 5000;
+
+            //Use auto-fit again and check that the rate changed
+            ld.ControlVM.autoFitTaxButtonClick();
+            int maxRate2 = ld.ControlVM.MaxTaxRate;
+            Assert.AreNotEqual(16, maxRate2);
+        }
+
+        [TestMethod]
+        public void TC070_AutoFitBudget() {
+            //Test that auto-fit budget works properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Set up the slant tax
+            ld.ControlVM.MaxBracketCountSlider = 4;
+            ld.ControlVM.PovertyLineIndexSlider = 4;
+            ld.ControlVM.MaxTaxRate = 10;
+
+            //Press Auto-fit budget
+            ld.ControlVM.autoFitBudgetButtonClick();
+
+            //Check that the target funding has changed and that all items were given equal priority
+            Assert.AreEqual(27, ld.OptionsModel.listOfCosts[0].tFunding);
+            Assert.IsTrue(ld.OptionsModel.listOfCosts[0].tFunding != 100);
+
+            double newTFunding = ld.OptionsModel.listOfCosts[0].tFunding;
+
+            for(int i = 0; i < ld.OptionsModel.listOfCosts.Count; i++)
+            {
+                if (ld.OptionsModel.listOfCosts[i].ischecked)
+                {
+                    Assert.AreEqual(newTFunding, ld.OptionsModel.listOfCosts[i].tFunding);
+                }
+            }
+
+        }
+
+        [TestMethod]
+        public void TC071_DeficitCalc() {
+            //Test that the deficit or surplus is calculated properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Check that the deficit starts at (0 - budget)
+            Assert.AreEqual("$" + Formatter.Format(ld.DataModel.TotalRevenueNew - ld.OptionsModel.GetTotalBudget()) + " deficit" , ld.OutputVM.LeftOverBudget.ToLower());
+
+            //Use the auto-fit button
+            ld.ControlVM.autoFitTaxButtonClick();
+
+            //Then recheck deficit
+            Assert.AreEqual("$8.039 billion surplus", ld.OutputVM.LeftOverBudget.ToLower());
+
+        }
+
+        [TestMethod]
+        public void TC072_SaveFile() {
+            //Test that files are saved properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Adjust the slant tax
+            ld.ControlVM.MaxBracketCountSlider = 4;
+            ld.ControlVM.PovertyLineIndexSlider = 4;
+            ld.ControlVM.MaxTaxRate = 30;
+
+            //Save the tax plan
+            ld.ControlVM.saveTaxPlan();
+
+            //Check that the file exists
+
+            string userPlanPath = @".\userPlans\";
+
+            //Check that the directory exists
+            Assert.IsTrue(Directory.Exists(userPlanPath));
+           
+            string[] plans = Directory.GetFiles(userPlanPath, "*.tax");
+
+            //Look for the plan
+            bool found = false;
+            foreach (string plan in plans) {
+                if (plan.Contains("Slant Tax (modified)")) {
+                    found = true;
+                }
+            }
+
+            //Check if the plan is found
+            Assert.IsTrue(found);
+        }
+
+        [TestMethod]
+        public void TC073_CheckBudget() {
+            //Test that the budget is calculated correctly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Check the starting budget against a manually calculated value
+            Assert.AreEqual(2120000000000, ld.OptionsModel.GetTotalBudget());
+
+            //Add items to the budget
+            ld.OutputVM.SandersCollegeSpendingChecked = true;
+            ld.OutputVM.SandersMedicaidSpendingChecked = true;
+
+            //Recheck the budget
+            Assert.AreEqual(2690000000000, ld.OptionsModel.GetTotalBudget());
+        }
+
+        [TestMethod]
+        public void TC074_SineGraph() {
+            //Check that the 1st slant tax variation is displayed properly
+
+            //Start the program
+            Loader ld = new Loader();
+        }
+        [TestMethod]
+        public void TC075_EllipseGraph()
+        {
+            //Check that the 2nd slant tax variation is displayed properly
+
+            //Start the program
+            Loader ld = new Loader();
+        }
+
+        [TestMethod]
+        public void TC076_FlatPlan()
+        {
+            //Check that the flat tax plan is displayed properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+
+            //Select the flat tax
+            ld.ControlVM.SelectedTaxPlanName = "Flat Tax";
+
+            //Adjust the flat tax slider
+            ld.ControlVM.FlatTaxSlider = 50;
+
+            //Check that the tax rates were set properly
+            for (int i = 0; i < ld.DataModel.NewTaxPctByBracket.Count; i++) {
+                Assert.AreEqual(50, ld.DataModel.NewTaxPctByBracket[i]);
+            }
+        }
+
+        [TestMethod]
+        public void TC077_FlatOptions()
+        {
+            //Check that the flat tax plan options change properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Check that the flat tax plan options don't work on the slant tax
+            //Adjust the flat tax slider
+            ld.ControlVM.FlatTaxSlider = 50;
+
+            //Check that the tax rates were set properly
+            for (int i = 0; i < ld.DataModel.NewTaxPctByBracket.Count; i++)
+            {
+                Assert.AreNotEqual(50, ld.DataModel.NewTaxPctByBracket[i]);
+            }
+
+
+            //Try using the flat tax options on the flat tax plan and check that they work
+            //Select the flat tax
+            ld.ControlVM.SelectedTaxPlanName = "Flat Tax";
+
+            //Adjust the flat tax slider
+            ld.ControlVM.FlatTaxSlider = 50;
+
+            //Check that the tax rates were set properly
+            for (int i = 0; i < ld.DataModel.NewTaxPctByBracket.Count; i++)
+            {
+                Assert.AreEqual(50, ld.DataModel.NewTaxPctByBracket[i]);
+            }
+
+            //Try using the slant options on the flat tax and make sure they don't work
+            ld.ControlVM.MaxTaxRate = 40;
+            ld.ControlVM.MaxBracketCountSlider = 7;
+            ld.ControlVM.PovertyLineIndexSlider = 3;
+
+            for (int i = 0; i < ld.DataModel.NewTaxPctByBracket.Count; i++)
+            {
+                Assert.AreEqual(50, ld.DataModel.NewTaxPctByBracket[i]);
+            }
+        }
+
+        [TestMethod]
+        public void TC078_PovertyLineChangesMax() {
+            //Test that the poverty changes max option works
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Select the poverty changes max option
+            ld.ControlVM.BalanceMaxWithPoverty = true;
+
+            //Adjust the poverty line
+            ld.ControlVM.PovertyLineIndexSlider = 5;
+
+            //Check that the max brackets adjusted
+            Assert.IsTrue(ld.DataModel.NumMaxPop >= ld.DataModel.NumPovertyPop);
+
+            //Adjust the poverty line again
+            ld.ControlVM.PovertyLineIndexSlider = 2;
+
+            //ReCheck the max brackets
+            Assert.IsTrue(ld.DataModel.NumMaxPop >= ld.DataModel.NumPovertyPop);
+        }
+        [TestMethod]
+        public void TC079_MaxChangesPoverty() {
+            //Test that the max changes poverty option works
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Select the max changes poverty option
+            ld.ControlVM.BalancePovertyWithMax = true;
+
+            int povb1 = ld.ControlVM.PovertyLineIndex;
+
+            //Adjust the max brackets
+            ld.ControlVM.MaxBracketCountSlider = 5;
+
+            //Check that the poverty brackets adjusted
+            int povb2 = ld.ControlVM.PovertyLineIndex;
+            Assert.IsTrue(povb1 != povb2);
+
+            //Adjust the max brackets again
+            ld.ControlVM.MaxBracketCountSlider = 2;
+
+            //ReCheck the poverty brackets
+            int povb3 = ld.ControlVM.PovertyLineIndex;
+            Assert.IsTrue(povb2 != povb3);
+        }
+
+        [TestMethod]
+        public void TC080_AutoFitOption() {
+            //Test that auto-fit doesn't change max brackets if an option is selected
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Select the option
+            ld.ControlVM.DontAdjustBracketCount = true;
+
+            //Set the max brackets
+            ld.ControlVM.MaxBracketCountSlider = 1;
+
+            //Press the auto-fit button
+            ld.ControlVM.autoFitTaxButtonClick();
+
+            //Check that the max brackets weren't changed
+            Assert.AreEqual(1, ld.ControlVM.MaxBracketCountSlider);
+        }
+
+        [TestMethod]
+        public void TC081_AutoFitFlat() {
+            //Test that the auto-fit button works on the flat tax plan
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Select the flat tax plan
+            ld.ControlVM.SelectedTaxPlanName = "Flat Tax";
+
+            //Press the auto-fit button
+            ld.ControlVM.autoFitTaxButtonClick();
+
+            //Check that the button worked
+            Assert.IsTrue(ld.DataModel.TotalRevenueNew >= ld.OptionsModel.GetTotalBudget());
+        }
+
+        [TestMethod]
+        public void TC082_AutoFitCustomPlan() {
+            //Test that the auto-fit button doesn't work on custom tax plans
+            //Start the program
+            Loader ld = new Loader();
+
+            //Select a custom tax plan
+            ld.ControlVM.newTaxPlanTest("aaa");
+            ld.ControlVM.SelectedTaxPlanName = "aaa";
+
+            //Press the auto-fit button
+            ld.ControlVM.autoFitTaxButtonClick();
+
+            //Check that the button did not work
+            Assert.IsFalse(ld.DataModel.TotalRevenueNew >= ld.OptionsModel.GetTotalBudget());
+        }
+
+        [TestMethod]
+        public void TC083_AddCustomPlan() {
+            //Test that users can add custom tax plans
+            //Start the program
+            Loader ld = new Loader();
+
+            //Add a custom plan (newTaxPlanTest() is just like the method used to add tax plans
+            //except you pass it a string rather than getting a string from a dialog box)
+            ld.ControlVM.newTaxPlanTest("My Custom Tax Plan");
+
+            //Check that the plan is now in the list of tax plans
+            Assert.IsTrue(ld.ControlVM.TaxPlansList.Contains("My Custom Tax Plan"));
+
+            //Select the new plan
+            ld.ControlVM.SelectedTaxPlanName = "My Custom Tax Plan";
+
+            //Check that it was selected
+            Assert.IsTrue(ld.ControlVM.SelectedTaxPlanName == "My Custom Tax Plan");
+        }
+
+        [TestMethod]
+        public void TC084_DeletePlans() {
+            //Test that custom plans can be deleted but not default plans
+            //Start the program
+            Loader ld = new Loader();
+
+            //Add a custom plan
+            ld.ControlVM.newTaxPlanTest("My Custom Tax Plan");
+
+            //Check that the plan is now in the list of tax plans
+            Assert.IsTrue(ld.ControlVM.TaxPlansList.Contains("My Custom Tax Plan"));
+
+            //Select the new plan
+            ld.ControlVM.SelectedTaxPlanName = "My Custom Tax Plan";
+
+            //Delete the tax plan
+            ld.ControlVM.deleteTaxPlanButtonClick();
+
+            //Check that the plan was deleted
+            Assert.IsFalse(ld.ControlVM.TaxPlansList.Contains("My Custom Tax Plan"));
+            Assert.IsFalse(ld.ControlVM.SelectedTaxPlanName == "My Custom Tax Plan");
+
+            //Select the flat tax
+            ld.ControlVM.SelectedTaxPlanName = "Flat Tax";
+
+            //Try to delete it and check that it can't be deleted
+            ld.ControlVM.deleteTaxPlanButtonClick();
+            Assert.IsTrue(ld.ControlVM.TaxPlansList.Contains("Flat Tax"));
+            Assert.IsTrue(ld.ControlVM.SelectedTaxPlanName == "Flat Tax");
+        }
+
+        [TestMethod]
+        public void TC085_SaveDefaultPlan() {
+            //Test that users can save default plans properly
+
+            //Start the program
+            Loader ld = new Loader();
+
+            //Select a default plan
+            ld.ControlVM.SelectedTaxPlanName = "Flat Tax";
+
+            //Save the plan
+            ld.ControlVM.saveTaxPlan();
+
+            //Check that the modifed version was created
+            Assert.IsTrue(ld.ControlVM.TaxPlansList.Contains("Flat Tax (modified)"));
+        }
+
+        [TestMethod]
+        public void TC086_UseDefaultOptionsOnModified() {
+            //Test that users can use default options on saved copies of the default plans
+
+            //Start the program
+            Loader ld = new Loader();
+
+
+            //Flat tax
+            ld.ControlVM.SelectedTaxPlanName = "Flat Tax";
+
+            //Save the plan
+            ld.ControlVM.saveTaxPlan();
+
+            //Check that the modifed version was created
+            Assert.IsTrue(ld.ControlVM.TaxPlansList.Contains("Flat Tax (modified)"));
+
+            //Select the new plan
+            ld.ControlVM.SelectedTaxPlanName = "Flat Tax (modified)";
+
+            //Set all rates to 0
+            ld.ControlVM.resetTaxRatesButtonClick();
+
+            //Try using the flat tax options
+            ld.ControlVM.FlatTaxRate = 50;
+
+            //Check all of the rates
+            for (int i = 0; i < ld.DataModel.NewTaxPctByBracket.Count; i++) {
+                Assert.AreEqual(50, ld.DataModel.NewTaxPctByBracket[i]);
+            }
+
+
+
+            //Slant tax
+            ld.ControlVM.SelectedTaxPlanName = "Slant Tax";
+
+            //Save the plan
+            ld.ControlVM.saveTaxPlan();
+
+            //Check that the modifed version was created
+            Assert.IsTrue(ld.ControlVM.TaxPlansList.Contains("Slant Tax (modified)"));
+
+            //Select the new plan
+            ld.ControlVM.SelectedTaxPlanName = "Slant Tax (modified)";
+
+            //Set all rates to 0
+            ld.ControlVM.resetSettingsButtonClick();
+
+            //Try using the slant tax options
+            ld.ControlVM.MaxBracketCountSlider = 5;
+            ld.ControlVM.PovertyLineIndexSlider = 5;
+            ld.ControlVM.MaxTaxRate = 50;
+
+            //Check that the options were changed
+            Assert.AreEqual(5, ld.ControlVM.MaxBracketCountSlider);
+            Assert.AreEqual(5, ld.ControlVM.PovertyLineIndexSlider);
+            Assert.AreEqual(50, ld.ControlVM.MaxTaxRate);
+        }
+
+        [TestMethod]
+        public void TC087_LoadGDPData() { 
         
         }
     }
