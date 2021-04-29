@@ -39,7 +39,7 @@ namespace UnitTests
 
             // Set to non-existent custom plan - also no change
 
-            controlVM.SelectedTaxPlanName = "Anything else";
+            //controlVM.SelectedTaxPlanName = "Anything else";
 
             Assert.AreEqual((int)TaxPlan.Flat, controlVM.SelectedTaxPlanTabIndex);
 

@@ -186,7 +186,7 @@ namespace UnitTests
 
 
         [TestMethod]
-        public void InitUpdateLog()
+        public void TC027_InitUpdateLog()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -220,7 +220,7 @@ namespace UnitTests
 
 
         [TestMethod]
-        public void ReadLocalManifest()
+        public void TC028_ReadLocalManifest()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -273,7 +273,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void GetRemoteManifest()
+        public void TC029_GetRemoteManifest()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -340,7 +340,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void DownloadUpdates()
+        public void TC030_DownloadUpdates()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -441,7 +441,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void ValidateStaging()
+        public void TC031_ValidateStaging()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -517,7 +517,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void BackupEXE()
+        public void TC032_BackupEXE()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -565,7 +565,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void ClearStagingWithMove()
+        public void TC033_ClearStagingWithMove()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -580,7 +580,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void ClearStagingWithoutMove()
+        public void TC034_ClearStagingWithoutMove()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -595,7 +595,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void GenerateFileHashDict()
+        public void TC035_GenerateFileHashDict()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -664,7 +664,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void MoveFile()
+        public void TC036_MoveFile()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -733,7 +733,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void DeleteFile()
+        public void TC037_DeleteFile()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -775,7 +775,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void DownloadFileWeb()
+        public void TC038_DownloadFileWeb()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
@@ -827,7 +827,7 @@ namespace UnitTests
 
 
         [TestMethod]
-        public void CreateDirectory()
+        public void TC039_CreateDirectory()
         {
 
             Assert.IsNotNull(updaterPrivateObj);
