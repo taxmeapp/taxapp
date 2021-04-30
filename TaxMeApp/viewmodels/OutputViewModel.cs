@@ -15,26 +15,18 @@ using TaxMeApp.models;
 
 namespace TaxMeApp.viewmodels
 {
-    //Spacer column is just a column definition with a set width
-    public class spacerColumn : ColumnDefinition
-    {
-
-        public spacerColumn()
-        {
-            this.Width = new System.Windows.GridLength(30);
-        }
-    }
 
     public class OutputViewModel : MainViewModel
     {
-        //Custom gov programs are held in a listview and the items are connected to the ouputview
-        public ListView customProgramListView { get; set; } = new ListView();
-        public ICommand AddProgramBtnCommand { get; set; }
 
         public OutputViewModel()
         {
             AddProgramBtnCommand = new RelayCommand(o => addProgramButtonClick());
         }
+
+        // Custom gov programs are held in a listview and the items are connected to the OutputView
+        public ListView customProgramListView { get; set; } = new ListView();
+        public ICommand AddProgramBtnCommand { get; set; }
 
         public BudgetYearModel bym = new BudgetYearModel();
         public void updateBYM()
@@ -71,6 +63,7 @@ namespace TaxMeApp.viewmodels
                 return ans;
             }
         }
+
         public string OldBudgetPercent
         {
             get
@@ -216,12 +209,10 @@ namespace TaxMeApp.viewmodels
 
         public void addProgramButtonClick()
         {
-
-            //customProgramListView.Items.Clear();
-
-            //Create a grid to store checkbox and textboxes
+            // Create a grid to store checkbox and textboxes
             Grid g = new Grid();
-            //Column definitions are used to define the width and spacing of the elements
+
+            // Column definitions are used to define the width and spacing of the elements
             ColumnDefinition colTemplate1 = new ColumnDefinition();
             colTemplate1.Width = new System.Windows.GridLength(30);
             ColumnDefinition colTemplate2 = new ColumnDefinition();
@@ -231,7 +222,7 @@ namespace TaxMeApp.viewmodels
             ColumnDefinition colTemplate4 = new ColumnDefinition();
             colTemplate4.Width = new System.Windows.GridLength(100);
 
-            //Add definitons
+            // Add definitons
             g.ColumnDefinitions.Add(colTemplate1);
             g.ColumnDefinitions.Add(new spacerColumn());
             g.ColumnDefinitions.Add(colTemplate2);
@@ -243,13 +234,13 @@ namespace TaxMeApp.viewmodels
             g.RowDefinitions.Add(new RowDefinition());
             g.RowDefinitions.Add(new RowDefinition());
 
-            //Row 1
+            // Row 1
             TextBlock nameLabel = new TextBlock();
             nameLabel.Text = "Program Name:";
             TextBlock costLabel = new TextBlock();
             costLabel.Text = "Cost:";
 
-            //Row 2
+            // Row 2
             CheckBox programChecked = new CheckBox();
             TextBox programName = new TextBox();
             TextBox programCost = new TextBox();
@@ -277,10 +268,10 @@ namespace TaxMeApp.viewmodels
             Grid.SetRow(programFunding, 1);
             Grid.SetColumn(programFunding, 6);
 
-            //Add program to list of costs (Used to calculate funding)
+            // Add program to list of costs (used to calculate funding)
             OptionsModel.listOfCosts.Add((OptionsModel.listOfCosts.Count, false, "", 0.0, 100.0));
 
-            //Set event listeners
+            // Set event listeners
             programChecked.Click += ProgramChecked_Click;
             programName.TextChanged += ProgramName_TextChanged;
             programCost.TextChanged += ProgramCost_TextChanged;
@@ -295,17 +286,6 @@ namespace TaxMeApp.viewmodels
             ControlVM.propChange("SelectedTargetFunding");
             ControlVM.propChange("SelectedTargetBudget");
             ControlVM.propChange("TargetFundingSlider");
-
-            //Testing:
-
-            //Console.WriteLine("\nPrinting out listview contents:");
-            //for (int i = 0; i < customProgramListView.Items.Count; i++) {
-            //    for(int j = 0; j < (customProgramListView.Items[i] as Grid).Children.Count; j++)
-            //    {
-            //        Console.WriteLine("Grid {0} child {1}: {2}", i, j, (customProgramListView.Items[i] as Grid).Children[j].ToString());
-            //    }
-            //}
-            //Console.WriteLine("\n");
         }
 
         public void UncheckCustomPrograms() {
@@ -326,7 +306,7 @@ namespace TaxMeApp.viewmodels
 
         private void ProgramChecked_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            //Find the gov program that was edited
+            // Find the gov program that was edited
             int gridNum = -1;
             for (int i = 0; i < customProgramListView.Items.Count; i++)
             {
@@ -337,39 +317,36 @@ namespace TaxMeApp.viewmodels
                 }
             }
 
-            //Update List of costs with new text value
+            // Update list of costs with new text value
             if (gridNum != -1)
             {
                 bool data = (bool)(sender as CheckBox).IsChecked;
                 OptionsModel.listOfCosts[gridNum + customStart] = (gridNum + customStart, data, OptionsModel.listOfCosts[gridNum + customStart].name, OptionsModel.listOfCosts[gridNum + customStart].cost, OptionsModel.listOfCosts[gridNum + customStart].tFunding);
 
                 Update();
-                //OptionsModel.updateFunding();
-                //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + customStart].ToString("0.0") + "% Funded");
             }
         }
 
         private void ProgramName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //Find the gov program that was edited
+            // Find the gov program that was edited
             int gridNum = -1;
             for (int i = 0; i < customProgramListView.Items.Count; i++)
             {
-                //Console.WriteLine("Checking {0} for textbox", i);
                 if ((customProgramListView.Items[i] as Grid).Children.Contains(sender as TextBox))
                 {
-                    //Console.WriteLine("Textbox Found", i);
                     gridNum = i;
                     break;
                 }
             }
 
-            //Update List of costs with new text value
+            // Update list of costs with new text value
             if (gridNum != -1)
             {
                 string data = (sender as TextBox).Text;
                 OptionsModel.listOfCosts[gridNum + customStart] = (gridNum + customStart, OptionsModel.listOfCosts[gridNum + customStart].ischecked, data, OptionsModel.listOfCosts[gridNum + customStart].cost, OptionsModel.listOfCosts[gridNum + customStart].tFunding);
             }
+
             ControlVM.propChange("SelectedTargetFunding");
             ControlVM.propChange("GovProgramList");
             ControlVM.propChange("SelectedGovProgram");
@@ -377,24 +354,22 @@ namespace TaxMeApp.viewmodels
 
         private void ProgramCost_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //Find the program that was edited
+            // Find the program that was edited
             int gridNum = -1;
             for (int i = 0; i < customProgramListView.Items.Count; i++)
             {
-                //Console.WriteLine("Checking {0} for textbox", i);
                 if ((customProgramListView.Items[i] as Grid).Children.Contains(sender as TextBox))
                 {
-                    //Console.WriteLine("Textbox Found", i);
                     gridNum = i;
                     break;
                 }
             }
 
-            //Update List of costs with new text value
+            // Update List of costs with new text value
             if (gridNum != -1)
             {
 
-                //Try parsing the text value, and if it's invalid just set it to 0
+                // Try parsing the text value (if invalid: set to 0)
                 string sdata = (sender as TextBox).Text;
                 double data = 0;
                 try
@@ -410,16 +385,7 @@ namespace TaxMeApp.viewmodels
                 OptionsModel.listOfCosts[gridNum + customStart] = (gridNum + customStart, OptionsModel.listOfCosts[gridNum + customStart].ischecked, OptionsModel.listOfCosts[gridNum + customStart].name, data, OptionsModel.listOfCosts[gridNum + customStart].tFunding);
 
                 Update();
-                //OptionsModel.updateFunding();
-                //((customProgramListView.Items[gridNum] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[gridNum + customStart].ToString("0.0") + "% Funded");
             }
-
-
-            //Print out list of costs for testing:
-
-            //for (int i = 0; i < OptionsModel.listOfCosts.Count; i++) {
-            //    Console.WriteLine("i={0}, name={1}, cost={2}", i, OptionsModel.listOfCosts[i].name, OptionsModel.listOfCosts[i].cost);
-            //}
 
             ControlVM.propChange("SelectedTargetBudget");
             ControlVM.propChange("SelectedGovProgram");
@@ -435,6 +401,7 @@ namespace TaxMeApp.viewmodels
                 return ans;
             }
         }
+
         public string MedicaidText
         {
             get
@@ -713,11 +680,9 @@ namespace TaxMeApp.viewmodels
 
             for (int i = 0; i < customProgramListView.Items.Count; i++)
             {
-                //OptionsModel.updateFunding();
                 ((customProgramListView.Items[i] as Grid).Children[5] as TextBlock).Text = (OptionsModel.fundingArray[i + customStart].ToString("0.0") + "% Funded");
             }
         }
-
 
         /*
                 Output Area 
@@ -764,9 +729,6 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-
-
-
         public string UBICost
         {
             get
@@ -774,8 +736,6 @@ namespace TaxMeApp.viewmodels
                 return Formatter.Format(DataModel.TotalUBICost * (OptionsModel.listOfCosts[customStart].tFunding / 100));
             }
         }
-
-
 
         public bool DefenseSpendingChecked
         {
@@ -791,6 +751,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string DefenseFunding
         {
             get
@@ -871,6 +832,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string FoodStampsFunding
         {
             get
@@ -891,6 +853,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string EducationFunding
         {
             get
@@ -911,6 +874,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string PublicHousingFunding
         {
             get
@@ -931,6 +895,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string HealthFunding
         {
             get
@@ -951,6 +916,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string ScienceFunding
         {
             get
@@ -971,6 +937,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string TransportationFunding
         {
             get
@@ -991,6 +958,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string InternationalFunding
         {
             get
@@ -1011,6 +979,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string EEFunding
         {
             get
@@ -1031,6 +1000,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string UnemploymentFunding
         {
             get
@@ -1051,6 +1021,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string AgricultureFunding
         {
             get
@@ -1071,6 +1042,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string SandersCollegeFunding
         {
             get
@@ -1091,6 +1063,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string SandersMedicaidFunding
         {
             get
@@ -1153,6 +1126,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string YangUbiFunding
         {
             get
@@ -1229,6 +1203,7 @@ namespace TaxMeApp.viewmodels
                 this.Update();
             }
         }
+
         public string UBIFunding
         {
             get
@@ -1328,8 +1303,6 @@ namespace TaxMeApp.viewmodels
                 {
                     ans = "$" + difference.ToString("0.###");
                 }
-
-
 
                 if (difference > 0)
                 {
@@ -1543,6 +1516,7 @@ namespace TaxMeApp.viewmodels
                 return "$" + Formatter.Format(OptionsModel.PGDP);
             }
         }
+
         public string FormattedTotalDebt
         {
             get
@@ -1559,6 +1533,7 @@ namespace TaxMeApp.viewmodels
                 return ans;
             }
         }
+
         public string TargetDebt
         {
             get
@@ -1566,6 +1541,7 @@ namespace TaxMeApp.viewmodels
                 return "$" + Formatter.Format(OptionsModel.TargetDebt);
             }
         }
+
         public string DebtDifference
         {
             get
@@ -1581,6 +1557,7 @@ namespace TaxMeApp.viewmodels
                 return "$" + Formatter.Format(OptionsModel.InterestPerYear);
             }
         }
+
         public string TotalInterestPayments
         {
             get
@@ -1588,6 +1565,7 @@ namespace TaxMeApp.viewmodels
                 return "$" + Formatter.Format(OptionsModel.TotalInterestPayments);
             }
         }
+
         public string PaymentPerYear
         {
             get
@@ -1809,6 +1787,15 @@ namespace TaxMeApp.viewmodels
             {
                 return "$ " + (yi * (1 - (ntr / 100))).ToString("#,##0");
             }
+        }
+    }
+
+    // Column definition with a set width
+    public class spacerColumn : ColumnDefinition
+    {
+        public spacerColumn()
+        {
+            this.Width = new System.Windows.GridLength(30);
         }
     }
 }

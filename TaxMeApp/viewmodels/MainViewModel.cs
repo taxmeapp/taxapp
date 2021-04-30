@@ -36,7 +36,6 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
-                //Trace.WriteLine(value);
                 tabSelected = value;
                 OnPropertyChange("TabSelected");
             }
