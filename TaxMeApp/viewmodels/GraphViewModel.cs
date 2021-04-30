@@ -18,8 +18,9 @@ namespace TaxMeApp.viewmodels
         // Graph initialization
         public void GraphInit()
         {
-            //Brackets including and under poverty line will be one color, normal brackets will be another, 
-            //and max will be another color
+            // Brackets including and under poverty line will be red
+            // Normal brackets will be blue
+            // Max brackets will be lime green
             Brush povertyColor = Brushes.Red;
             Brush normalColor = Brushes.Blue;
             Brush maxColor = Brushes.Lime;
@@ -68,6 +69,7 @@ namespace TaxMeApp.viewmodels
 
                 });
             }
+
             Charting.For<int>(povertyMapper, SeriesOrientation.Horizontal);
 
         }
@@ -116,6 +118,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        // For all statistic lines, if corresponding checkbox is not checked, line's position is -1 (moves line off graph)
         public int PreTaxMeanLine
         {
             get
@@ -375,7 +378,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // Population array
+        // Population (number of returns) in each bracket
         private ObservableCollection<int> population
         {
             get
@@ -559,7 +562,7 @@ namespace TaxMeApp.viewmodels
         }
         // Private methods to actually draw each
 
-        // Bar graph for Total number of tax returns by bracket
+        // Bar graph for total number of tax returns by bracket
         private void graphTaxReturns()
         {
 
@@ -575,7 +578,7 @@ namespace TaxMeApp.viewmodels
 
         }
 
-        // Line chart for Revenue by Bracket under old system
+        // Line chart for revenue by bracket under old system
         private void graphOldTaxRevenue()
         {
 
@@ -594,7 +597,7 @@ namespace TaxMeApp.viewmodels
 
         }
 
-        // Line chart for Revenue by Bracket under new system
+        // Line chart for revenue by bracket under new system
         private void graphNewTaxRevenue()
         {
 
@@ -613,7 +616,7 @@ namespace TaxMeApp.viewmodels
 
         }
 
-        // Line chart for % of income paid in tax under old system
+        // Line chart for % of income paid in tax (tax rate) for each bracket under old system
         private void graphOldTaxPercentage()
         {
 
@@ -634,7 +637,7 @@ namespace TaxMeApp.viewmodels
             Axes[2].Title = "Tax Rate (%)";
         }
 
-        // Line chart for % of income paid in tax under new system
+        // Line chart for % of income paid in tax (tax rate) for each bracket under new system
         private void graphNewTaxPercentage()
         {
 
@@ -656,7 +659,7 @@ namespace TaxMeApp.viewmodels
             Axes[2].Title = "Tax Rate (%)";
         }
 
-        // Line chart for UBI by bracket
+        // Line chart for UBI payout by bracket
         private void graphUBI()
         {
 
