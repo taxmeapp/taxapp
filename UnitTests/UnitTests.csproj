@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SystemTests.cs" />
     <Compile Include="ViewUnitTest.cs" />
     <Compile Include="ViewModelUnitTest.cs" />
     <Compile Include="HelpersUnitTest.cs" />

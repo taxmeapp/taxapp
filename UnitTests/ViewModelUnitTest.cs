@@ -971,6 +971,11 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TC069_GraphLegendButton() {
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
         public void TC070_AutoFitBudget() {
             //Test that auto-fit budget works properly
 
@@ -1576,9 +1581,13 @@ namespace UnitTests
         public void TC098_GraphStyle() { }
 
         [TestMethod]
-        public void TC099_Units() { }
+        public void TC099_GraphUnits() {
+            Assert.IsTrue(false);
+        }
 
         [TestMethod]
-        public void TC100_RevenueInBillions() { }
+        public void TC100_RevenueInBillions() {
+            Assert.IsTrue(false);
+        }
     }
 }
