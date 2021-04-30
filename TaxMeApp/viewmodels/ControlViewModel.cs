@@ -61,7 +61,7 @@ namespace TaxMeApp.viewmodels
             TaxPlansModel.TaxPlans.Add("Slant Tax", new IndividualTaxPlanModel("Slant Tax", new ObservableCollection<double>(slantTaxRates)));
             SelectedTaxPlanName = "Slant Tax";
 
-            // Add Slant Tax Mode plan where slope is 1/4 of sin
+            // Add Slant Tax Mod plan where slope is 1/4 of sin
             List<List<double>> mod1Data = DataVM.CalculateMod1Data();
             List<double> mod1TaxRates = mod1Data[0];
             TaxPlansModel.TaxPlans.Add("Slant Mod 1", new IndividualTaxPlanModel("Slant Mod 1", new ObservableCollection<double>(mod1TaxRates)));

@@ -13,9 +13,6 @@ namespace TaxMeApp.viewmodels
     public class DataViewModel : MainViewModel
     {
 
-        public bool SlantChangesUBI { get; set; } = false;
-
-
         public void DataInit()
         {
 
@@ -23,7 +20,6 @@ namespace TaxMeApp.viewmodels
             GraphVM.GraphInit();
 
         }
-
 
         /*
          
@@ -40,7 +36,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // Population array
+        // Population (number of returns) of each bracket
         private ObservableCollection<int> population
         {
             get
@@ -111,7 +107,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // max UBI rate 
+        // Max UBI rate 
         private int maxUBI
         {
             get
@@ -144,7 +140,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // Original revenue data
+        // Original revenue by bracket
         private List<long> oldRevenueByBracket
         {
             get
@@ -153,7 +149,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // Original % of income data
+        // Original % of income (tax rate) by bracket
         private List<double> oldTaxPctByBracket
         {
             get
@@ -162,7 +158,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // Original Total Revenue
+        // Original total revenue
         private long totalRevenueOld
         {
             set
@@ -177,7 +173,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // New revenue data
+        // New revenue by bracket
         private List<long> newRevenueByBracket
         {
             get
@@ -186,7 +182,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // New % of total income
+        // New % of income (tax rate) by bracket
         private List<double> newTaxPctByBracket
         {
             get
@@ -195,7 +191,7 @@ namespace TaxMeApp.viewmodels
             }
         }
         
-        // How much money each person would recieve based on the bracket that they are in
+        // Amount of $ each bracket would recieve
         private List<double> uBIPayOutByBracket
         {
             get
@@ -213,7 +209,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // Slant tax maximum rate that the user can adjust via slider on control panel
+        // Slant tax maximum rate
         private int maxTaxRate
         {
             get
@@ -241,7 +237,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
-        // Total cost of implemting UBI
+        // Total cost of implementing UBI
         private long totalUBICost
         {
             set
@@ -408,18 +404,20 @@ namespace TaxMeApp.viewmodels
                 GraphVM.PostTaxMedianUBILine = value;
             }
         }
+
+        public bool SlantChangesUBI { get; set; } = false;
+
         /*
          
                 Calculation Logic
         */
 
 
-        // Public Collection of calls to update all data (i.e. user selects new year):
+        // Public collection of calls to update all data (i.e. user selects new year)
         public void TotalRecalculation()
         {
 
             // Update our population counts
-            // CalculatePopulation();
             calculatePopulation();
 
             // Count how many people are under poverty line
@@ -442,11 +440,14 @@ namespace TaxMeApp.viewmodels
             // Calculate UBI cost
             calculateUBIByBracket();
 
-            //Set default UBI max
+            // Set default UBI max
             maxUBI = 1500;
 
-            //Set default min UBIBrackets
+            // Set default min UBIBrackets
             minUBIBracketCount = 3;
+
+            // Set default max UBIBrackets
+            maxUBIBracketCount = 0;
 
             // Calculate statistics pre/post-tax
             calculateMeanMedian();
@@ -470,7 +471,7 @@ namespace TaxMeApp.viewmodels
 
         }
 
-        // When variables, such as UBI or tax rates, are manually changed and don't require slant tax recalculation
+        // When variables, such as UBI or tax rates, are manually changed and don't require (slant) tax recalculation
         public void CustomDataRecalcuation()
         {
 
@@ -1362,7 +1363,7 @@ namespace TaxMeApp.viewmodels
             return ans;
         }
 
-        //builds list of UBI by bracket
+        // Build list of each bracket's UBI payout
         private void calculateUBIByBracket()
         {
 
@@ -1372,7 +1373,6 @@ namespace TaxMeApp.viewmodels
             // Initialize our variables
             int middleCount = selectedBrackets.Count - maxUBIBracketCount;
             long totalUBICost = 0;
-            //double maxUBI = 1500;
             double rate = 0;
 
             // Initialize our index counter that is shared for all three loops
@@ -1425,15 +1425,15 @@ namespace TaxMeApp.viewmodels
             int frequency, totalFreq = 0, medianBracketIndex = 0;
             int[] cumulativeBracketFrequency = new int[selectedBrackets.Count];
 
-            // get the total number of observations in the income year
+            // Get the total number of observations in the income year
             foreach (BracketModel bracket in selectedBrackets)
             {
                 totalFreq += bracket.NumReturns;
             }
 
-            // find the index of the bracket that contains the median
-            // median bracket is first bracket that has a cumulative frequency that is greater than total num of observations (totalFreq) divided by 2
-            // cumulative frequency is total number (sum) of observations (numReturns) up to (and including) the current bracket
+            // Find the index of the bracket that contains the median
+            // Median bracket is first bracket that has a cumulative frequency that is greater than total num of observations (totalFreq) divided by 2
+            // Cumulative frequency is total number (sum) of observations (numReturns) up to (and including) the current bracket
             for (int i = 0; i < cumulativeBracketFrequency.Length; i++)
             {
                 frequency = selectedBrackets[i].NumReturns;
@@ -1457,20 +1457,19 @@ namespace TaxMeApp.viewmodels
                 }
             }
 
-            // create an instance of the median bracket to retrieve relevant information
+            // Create an instance of the median bracket to retrieve relevant information
             BracketModel medianBracket = selectedBrackets[medianBracketIndex];
             frequency = medianBracket.NumReturns;
 
-            // calculate width of median bracket's range
+            // Calculate width of median bracket's range
             int width = medianBracket.UpperBound - medianBracket.LowerBound;
 
-            // find the difference between the total number of observations divided by 2 and the cumulative frequency of the bracket preceding the median bracket
+            // Find the difference between the total number of observations divided by 2 and the cumulative frequency of the bracket preceding the median bracket
             double difference = (totalFreq / 2) - cumulativeBracketFrequency[medianBracketIndex - 1];
 
-            // calculate post tax median using grouped data median formula
+            // Calculate post tax median using grouped data median formula
             this.PreTaxMedian = medianBracket.LowerBound + (difference / frequency) * width;
             this.PreTaxMedianBracket = DetermineMeanMedianBracket(PreTaxMedian);
-            //Console.WriteLine("Pre-tax median bracket = {0} | median: ${1}", PreTaxMedianBracket, PreTaxMedian);
         }
 
         private void CalculatePreTaxMean()
@@ -1480,21 +1479,20 @@ namespace TaxMeApp.viewmodels
 
             foreach (BracketModel bracket in selectedBrackets)
             {
-                // frequency equals total number of observations per bracket
+                // Frequency equals total number of observations per bracket
                 frequency = bracket.NumReturns;
 
-                // calculate midpoint of bracket's range
+                // Calculate midpoint of bracket's range
                 midpoint = (bracket.LowerBound + bracket.UpperBound) / 2;
 
-                // increment running total of midpoint frequency and frequency by current bracket's
+                // Increment running total of midpoint frequency and frequency by current bracket's
                 totalMidFreq += (frequency * midpoint);
                 totalFreq += frequency;
             }
 
-            // calculate post-tax mean by dividing summation of midpoint-frequency by summation of frequency
+            // Calculate post-tax mean by dividing summation of midpoint-frequency by summation of frequency
             this.PreTaxMean = totalMidFreq / totalFreq;
             this.PreTaxMeanBracket = DetermineMeanMedianBracket(PreTaxMean);
-            //Console.WriteLine("Pre-tax mean: ${0}, Bracket: {1}", PreTaxMean, PreTaxMeanBracket);
         }
 
         private void CalculatePostTaxMedian()
@@ -1502,15 +1500,15 @@ namespace TaxMeApp.viewmodels
             int frequency, totalFreq = 0, medianBracketIndex = 0;
             int[] cumulativeBracketFrequency = new int[selectedBrackets.Count];
 
-            // get the total number of observations in the income year
+            // Get the total number of observations in the income year
             foreach (BracketModel bracket in selectedBrackets)
             {
                 totalFreq += bracket.NumReturns;
             }
 
-            // find the index of the bracket that contains the median
-            // median bracket is first bracket that has a cumulative frequency that is greater than total num of observations (totalFreq) divided by 2
-            // cumulative frequency is total number (sum) of observations (numReturns) up to (and including) the current bracket
+            // Find the index of the bracket that contains the median
+            // Median bracket is first bracket that has a cumulative frequency that is greater than total num of observations (totalFreq) divided by 2
+            // Cumulative frequency is total number (sum) of observations (numReturns) up to (and including) the current bracket
             for (int i = 0; i < cumulativeBracketFrequency.Length; i++)
             {
                 frequency = selectedBrackets[i].NumReturns;
@@ -1534,11 +1532,11 @@ namespace TaxMeApp.viewmodels
                 }
             }
 
-            // create an instance of the median bracket to retrieve relevant information
+            // Create an instance of the median bracket to retrieve relevant information
             BracketModel medianBracket = selectedBrackets[medianBracketIndex];
             frequency = medianBracket.NumReturns;
 
-            // calculate width of new (post-tax) bracket bounds after applying tax rates to pre-tax bounds
+            // Calculate width of new (post-tax) bracket bounds after applying tax rates to pre-tax bounds
             double newLowerBound = medianBracket.LowerBound * (100 - newTaxPctByBracket[medianBracketIndex]) / 100;
             double newUpperBound = medianBracket.UpperBound * (100 - newTaxPctByBracket[medianBracketIndex]) / 100;
             double width = newUpperBound - newLowerBound;
@@ -1547,15 +1545,14 @@ namespace TaxMeApp.viewmodels
             double newUpperBoundWithUBI = newUpperBound + uBIPayOutByBracket[medianBracketIndex];
             double widthUBI = newUpperBoundWithUBI - newLowerBoundWithUBI;
 
-            // find the difference between the total number of observations divided by 2 and the cumulative frequency of the bracket preceding the median bracket
+            // Find the difference between the total number of observations divided by 2 and the cumulative frequency of the bracket preceding the median bracket
             double difference = (totalFreq / 2) - cumulativeBracketFrequency[medianBracketIndex - 1];
 
-            // calculate post tax median using grouped data median formula
+            // Calculate post tax median using grouped data median formula
             this.PostTaxMedianUBI = newLowerBoundWithUBI + (difference / frequency) * widthUBI;
             this.PostTaxMedian = newLowerBound + (difference / frequency) * width;
             this.PostTaxMedianBracket = DetermineMeanMedianBracket(PostTaxMedian);
             this.PostTaxMedianUBIBracket = DetermineMeanMedianBracket(PostTaxMedianUBI);
-            //Console.WriteLine("Post-tax median bracket = {0} | median: ${1}", PostTaxMedianBracket, PostTaxMedian);
         }
 
         private void CalculatePostTaxMean()
@@ -1565,32 +1562,31 @@ namespace TaxMeApp.viewmodels
 
             foreach (BracketModel bracket in selectedBrackets)
             {
-                // frequency equals total number of observations per bracket
+                // Frequency equals total number of observations per bracket
                 int frequency = bracket.NumReturns;
 
-                // calculate new (post-tax) bracket range after applying tax rate to bounds
+                // Calculate new (post-tax) bracket range after applying tax rate to bounds
                 double newLowerBound = bracket.LowerBound * (100 - newTaxPctByBracket[index]) / 100;
                 double newUpperBound = bracket.UpperBound * (100 - newTaxPctByBracket[index]) / 100;
                 double newLowerBoundWithUBI = newLowerBound + uBIPayOutByBracket[index];
                 double newUpperBoundWithUBI = newUpperBound + uBIPayOutByBracket[index];
 
-                // find midpoint of new bracket range
+                // Find midpoint of new bracket range
                 double midpoint = (newLowerBound + newUpperBound) / 2;
                 double midpointWithUBI = (newLowerBoundWithUBI + newUpperBoundWithUBI) / 2;
 
-                // increment running total of midpoint frequency and frequency by current bracket's 
+                // Increment running total of midpoint frequency and frequency by current bracket's 
                 totalMidFreq += (frequency * midpoint);
                 totalMidFreqWithUBI += (frequency * midpointWithUBI);
                 totalFreq += frequency;
                 ++index;
             }
 
-            // calculate post-tax mean by dividing summation of midpoint-frequency by summation of frequency
+            // Calculate post-tax mean by dividing summation of midpoint-frequency by summation of frequency
             this.PostTaxMean = totalMidFreq / totalFreq;
             this.PostTaxMeanUBI = totalMidFreqWithUBI / totalFreq;
             this.PostTaxMeanBracket = DetermineMeanMedianBracket(PostTaxMean);
             this.PostTaxMeanUBIBracket = DetermineMeanMedianBracket(PostTaxMeanUBI);
-            //Console.WriteLine("Post-tax mean: ${0}, Bracket: {1}", PostTaxMean, PostTaxMeanBracket);
         }
 
         private int DetermineMeanMedianBracket(double income) {
@@ -1605,7 +1601,7 @@ namespace TaxMeApp.viewmodels
             return bracketIndex;
         }
 
-        // find the highest number of brackets where poverty population is less than the max tax rate population
+        // Find the highest number of brackets where poverty population is less than the max tax rate population
         public int determineBaselinePovertyBrackets()
         {
             int povertyPopCount = 0;
