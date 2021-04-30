@@ -106,7 +106,6 @@ namespace TaxMeApp.viewmodels
             get { return YearsModel.SelectedYear; }
             set
             {
-                //Trace.WriteLine("Changing selected year to: " + value);
 
                 // Save it in our data model
                 YearsModel.SelectedYear = value;

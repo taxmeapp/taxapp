@@ -546,8 +546,6 @@ namespace TaxMeApp.viewmodels
 
             numPovertyPop = povertyPop;
 
-            //Trace.WriteLine("There are " + NumPovertyPop + " returns under poverty line.");
-
         }
 
         private void determineBaselineMaxBracketCount()
@@ -569,8 +567,6 @@ namespace TaxMeApp.viewmodels
                 maxBracketCount++;
 
             }
-
-            //Trace.WriteLine("There are " + maxBracketCount + " brackets at max rate.");
 
             // Save our value 
             this.maxBracketCount = maxBracketCount;
@@ -596,8 +592,6 @@ namespace TaxMeApp.viewmodels
                 maxPopCount += population[i];
 
             }
-
-            //Trace.WriteLine("There are " + maxPopCount + " returns at max rate.");
 
             // Save our value
             this.numMaxPop = maxPopCount;

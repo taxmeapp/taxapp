@@ -451,6 +451,7 @@ namespace TaxMeApp.viewmodels
                     }
 
                 }
+                // Allow system to keep executing past raised exception
                 catch (NullReferenceException e)
                 {
                     Console.WriteLine(e.StackTrace);
