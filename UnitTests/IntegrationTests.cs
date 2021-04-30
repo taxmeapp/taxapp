@@ -105,6 +105,12 @@ namespace UnitTests
                 ControlViewModel
         */
 
+        [TestMethod]
+        public void TC048_TestMainWindow() {
+            MainWindow mw = new MainWindow();
+            Assert.IsNotNull(mw);
+        }
+
 
         // ControlVM: Testing the getter logic for initial year in the dropdown box
         [TestMethod]

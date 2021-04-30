@@ -7,7 +7,7 @@ using TaxMeApp.viewmodels;
 
 namespace UnitTests
 {
-    [TestClass]
+    //[TestClass]
     public class UISelectionUnitTest
     {
         [TestMethod]

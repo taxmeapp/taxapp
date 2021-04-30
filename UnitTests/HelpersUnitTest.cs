@@ -13,7 +13,7 @@ using TaxMeApp.viewmodels;
 
 namespace UnitTests
 {
-    [TestClass]
+    //[TestClass]
     public class HelpersUnitTest
     {
         private ControlViewModel controlVM;
@@ -43,7 +43,7 @@ namespace UnitTests
 
         //Testing that a file is parsed correctly, using 2003.csv as an example
         [TestMethod]
-        public void TC117_TestParser()
+        public void TestParser()
         {
             //Make a list of income year models to test
             ObservableCollection<IncomeYearModel> testModels = new ObservableCollection<IncomeYearModel>();
