@@ -248,7 +248,6 @@ namespace TaxMeApp.viewmodels
                 if (SelectedTaxPlanName != null)
                 {
                     TaxPlansModel.TaxPlans.TryGetValue(SelectedTaxPlanName, out IndividualTaxPlanModel selectedTaxPlan);
-                    //Console.WriteLine("Selected Bracket = {0}, Tax Rate = {1}", SelectedBracket, selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)]);
                     return selectedTaxPlan.TaxRates[BracketList.IndexOf(SelectedBracket)];
                 }
                 return 0;
@@ -431,18 +430,14 @@ namespace TaxMeApp.viewmodels
             }
             set
             {
-                //Save current tax plan when switching
+                // Save current tax plan when switching
                 if (TaxPlansModel.TaxPlans.ContainsKey(this.SelectedTaxPlanName))
                 {
-                    //TaxPlansModel.TaxPlans[SelectedTaxPlanName].TaxRates = new ObservableCollection<double>(DataModel.NewTaxPctByBracket);
-
                    
-                    Console.WriteLine("\n\n\nSaving custom vals for {0}", SelectedTaxPlanName);
                     TaxPlansModel.TaxPlans[SelectedTaxPlanName].CustomTaxRates.Clear();
                     for (int i = 0; i < DataModel.NewTaxPctByBracket.Count; i++)
                     {
                         TaxPlansModel.TaxPlans[SelectedTaxPlanName].CustomTaxRates.Add(DataModel.NewTaxPctByBracket[i]);
-                        Console.WriteLine("i = {0}, old rate = {1}, custom rate = {2}", i, DataModel.NewTaxPctByBracket[i], TaxPlansModel.TaxPlans[SelectedTaxPlanName].CustomTaxRates[i]);
                     }
 
 
@@ -558,10 +553,8 @@ namespace TaxMeApp.viewmodels
 
                 if (TaxPlansModel.TaxPlans[SelectedTaxPlanName].CustomTaxRates.Count > 1)
                 {
-                    Console.WriteLine("\n\n\nLoading custom vals for {0}", this.SelectedTaxPlanName);
                     for (int i = 0; i < TaxPlansModel.TaxPlans[SelectedTaxPlanName].CustomTaxRates.Count; i++)
                     {
-                        Console.WriteLine("i = {0}, old rate = {1}, custom rate = {2}", i, DataModel.NewTaxPctByBracket[i], TaxPlansModel.TaxPlans[SelectedTaxPlanName].CustomTaxRates[i]);
                         TaxPlansModel.TaxPlans[SelectedTaxPlanName].TaxRates[i] = TaxPlansModel.TaxPlans[SelectedTaxPlanName].CustomTaxRates[i];
                         DataModel.NewTaxPctByBracket[i] = TaxPlansModel.TaxPlans[SelectedTaxPlanName].CustomTaxRates[i];
                     }
@@ -1542,8 +1535,6 @@ namespace TaxMeApp.viewmodels
             {
                 TaxPlansModel.TaxPlans.Add(taxPlanName, new IndividualTaxPlanModel(taxPlanName, newTaxPlanRates));
                 
-                Console.WriteLine("\n\n\nSaving custom plan {0}\n", taxPlanName);
-
                 TaxPlansModel.TaxPlans[taxPlanName].CustomTaxRates = TaxPlansModel.TaxPlans[oldName].CustomTaxRates;
                 TaxPlansModel.TaxPlans[taxPlanName].MaxTaxRate = TaxPlansModel.TaxPlans[oldName].MaxTaxRate;
                 TaxPlansModel.TaxPlans[taxPlanName].MaxBracketCount = TaxPlansModel.TaxPlans[oldName].MaxBracketCount;
@@ -1558,15 +1549,12 @@ namespace TaxMeApp.viewmodels
                 {
                     TaxPlansModel.TaxPlans[taxPlanName].TaxRates[i] = TaxPlansModel.TaxPlans[oldName].TaxRates[i];
                     TaxPlansModel.TaxPlans[taxPlanName].CustomTaxRates.Add(TaxPlansModel.TaxPlans[oldName].TaxRates[i]);
-
-                    Console.WriteLine("i = {0}, Old Rate = {1}, New Rate = {2}, Custom Rate = {3}", i, TaxPlansModel.TaxPlans[oldName].TaxRates[i], TaxPlansModel.TaxPlans[taxPlanName].TaxRates[i], TaxPlansModel.TaxPlans[taxPlanName].CustomTaxRates[i]);
                 }
                 for (int i = 0; i < TaxPlansModel.TaxPlans[oldName].TaxRates.Count; i++)
                 {
                     TaxPlansModel.TaxPlans[oldName].TaxRates[i] = 0;
                     TaxPlansModel.TaxPlans[oldName].CustomTaxRates.Add(0);
                     TaxPlansModel.TaxPlans[taxPlanName].TaxRates[i] = TaxPlansModel.TaxPlans[taxPlanName].CustomTaxRates[i];
-                    Console.WriteLine("i = {0}, {4} Rate = {1}, {5} Rate = {2}, Custom Rate = {3}", i, TaxPlansModel.TaxPlans[oldName].TaxRates[i], TaxPlansModel.TaxPlans[taxPlanName].TaxRates[i], TaxPlansModel.TaxPlans[taxPlanName].CustomTaxRates[i], oldName, taxPlanName);
                 }
 
                 TaxPlansModel.TaxPlans[oldName].MaxTaxRate = 0;
@@ -1575,12 +1563,6 @@ namespace TaxMeApp.viewmodels
                 TaxPlansModel.TaxPlans[oldName].FlatTaxRate = 0;
                 TaxPlansModel.TaxPlans[oldName].BalanceMaxWithPoverty = false;
                 TaxPlansModel.TaxPlans[oldName].BalancePovertyWithMax = false;
-
-                Console.WriteLine("Checking old rates against new rates:");
-                for (int i = 0; i < TaxPlansModel.TaxPlans[oldName].TaxRates.Count; i++)
-                {
-                    Console.WriteLine("i = {0}, Old Rate = {1}, New Rate = {2}", i, TaxPlansModel.TaxPlans[oldName].TaxRates[i], TaxPlansModel.TaxPlans[taxPlanName].TaxRates[i]);
-                }
 
                 OnPropertyChange("TaxPlansList");
 
@@ -1593,17 +1575,12 @@ namespace TaxMeApp.viewmodels
                 this.FlatTaxSlider = TaxPlansModel.TaxPlans[taxPlanName].FlatTaxRate;
                 this.BalanceMaxWithPoverty = TaxPlansModel.TaxPlans[taxPlanName].BalanceMaxWithPoverty;
                 this.BalancePovertyWithMax = TaxPlansModel.TaxPlans[taxPlanName].BalancePovertyWithMax;
-                Console.WriteLine("Rewriting custom tax values");
                 for (int i = 0; i < TaxPlansModel.TaxPlans[taxPlanName].CustomTaxRates.Count; i++)
                 {
-                    Console.WriteLine("Setting New rate {0} to custom rate {1}", TaxPlansModel.TaxPlans[SelectedTaxPlanName].TaxRates[i], TaxPlansModel.TaxPlans[taxPlanName].CustomTaxRates[i]);
                     TaxPlansModel.TaxPlans[SelectedTaxPlanName].TaxRates[i] = TaxPlansModel.TaxPlans[taxPlanName].CustomTaxRates[i];
                     DataModel.NewTaxPctByBracket[i] = TaxPlansModel.TaxPlans[taxPlanName].CustomTaxRates[i];
                 }
-                for (int i = 0; i < TaxPlansModel.TaxPlans[taxPlanName].TaxRates.Count; i++)
-                {
-                    Console.WriteLine("Checking New rate {0} = {1}", i, TaxPlansModel.TaxPlans[SelectedTaxPlanName].TaxRates[i]);
-                }
+
                 DataVM.CalculateNewRevenues(TaxPlansModel.SelectedTaxPlan.TaxRates);
 
                 customGraphReset();
@@ -1908,7 +1885,6 @@ namespace TaxMeApp.viewmodels
                     {
                         MaxBracketCountSlider = i;
                         revenue = DataModel.TotalRevenueNew;
-                        //Console.WriteLine("TaxRate = {0}, Brackets = {1}, Revenue = {2}, Budget = {3}", MaxTaxRate, MaxBracketCountSlider, revenue, budget);
                         if (revenue >= budget)
                         {
                             break;
@@ -1956,7 +1932,6 @@ namespace TaxMeApp.viewmodels
 
             }
 
-            Console.WriteLine("Flat Rate = {0}", flatRate);
             FlatTaxSlider = (int)flatRate;
             this.update();
         }

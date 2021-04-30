@@ -22,26 +22,15 @@ namespace TaxMeApp.Helpers
             CsvConfiguration config = new CsvConfiguration(CultureInfo.InvariantCulture);
 
             using (CsvReader csv = new CsvReader(reader, config)) {
-                Console.WriteLine("BUDGET DATA\n");
 
-                //Skip titles
+                // Skip titles
                 csv.Read();
 
-                //Parse Data from BudgetGDP.csv
+                // Parse data from BudgetGDP.csv
                 int i = 1;
                 while (csv.Read()) {
-                    //Create BudgetYearModel and add values
+                    // Create BudgetYearModel and add values
                     BudgetYearModel bym = new BudgetYearModel();
-
-                    Console.WriteLine("Entry = {0}", i);
-                    Console.WriteLine("Year = {0}", csv[0]);
-                    Console.WriteLine("GDP = {0}", csv[1]);
-                    Console.WriteLine("Total Budget = {0}", csv[16]);
-                    Console.WriteLine("Total Deficit = {0}", csv[17]);
-                    Console.WriteLine("Total Debt = {0}", csv[18]);
-                    Console.WriteLine("Budget % = {0}", csv[19]);
-                    Console.WriteLine("Deficit % = {0}", csv[20]);
-
 
                     bym.Year = Int32.Parse(csv[0]);
                     bym.GDP = double.Parse(csv[1]);
@@ -51,14 +40,12 @@ namespace TaxMeApp.Helpers
                     bym.BudgetPercent = double.Parse(csv[19]);
                     bym.DeficitPercent = double.Parse(csv[20]);
 
-                    //Add Individual budget year model to list of data
+                    // Add Individual budget year model to list of data
                     ans.YearData.Add(bym);
 
                     i++;
-                    Console.WriteLine("");
                 }
 
-                Console.WriteLine("END BUDGET DATA\n");
             }
 
 
@@ -82,7 +69,7 @@ namespace TaxMeApp.Helpers
 
             var reader = new StreamReader(path);
 
-            // Skip initial information | todo: optimize this
+            // Skip initial information
             reader.ReadLine();
             reader.ReadLine();
             reader.ReadLine();

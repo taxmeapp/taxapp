@@ -34,7 +34,6 @@ namespace TaxMeApp
         {
 
             // Make models
-
             YearsModel = new YearsModel();
             BudgetDataModel = new BudgetDataModel();
             GraphModel = new GraphModel();
@@ -43,10 +42,11 @@ namespace TaxMeApp
             OptionsModel = new OptionsModel();
 
             // Load CSVs
+            // To load new CSVs, place CSV in res folder, under corresponding subfolder
             LoadYears();
             LoadBudget();
 
-            // make viewmodels
+            // Make viewmodels
             MainVM = new MainViewModel();
             DataVM = new DataViewModel();
             ControlVM = new ControlViewModel();
@@ -73,7 +73,6 @@ namespace TaxMeApp
             SettingsVM.MainVM = MainVM;
 
             // Connect models to VMs
-
             DataVM.DataModel = DataModel;
             DataVM.YearsModel = YearsModel;
             DataVM.GraphModel = GraphModel;

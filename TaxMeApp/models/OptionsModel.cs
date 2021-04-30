@@ -577,7 +577,6 @@ namespace TaxMeApp.models
             double ans = 0;
             double projectedGDP = GDP * Math.Pow((1 + (YearlyGDPGrowth / 100)), DebtYears);
             PGDP = projectedGDP;
-            Console.WriteLine("Current GDP = {0}, Projected GDP = {1}", GDP, projectedGDP);
             double targetDebtAmount = projectedGDP * (TargetDebtPercent / 100);
             TargetDebt = targetDebtAmount;
             double difference = currentDebt - targetDebtAmount;
