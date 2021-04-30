@@ -40,7 +40,6 @@ namespace TaxMeApp.models
 
             listOfCosts.Add((18, false, "Debt Reduction Funding", 0.0, 100.0));
 
-
             this.DefenseChecked = true;
             this.MedicaidChecked = true;
             this.WelfareChecked = true;
@@ -75,6 +74,16 @@ namespace TaxMeApp.models
         public bool BalancePovertyWithMax { get; set; } = false;
         public bool BalanceMaxWithPoverty { get; set; } = false;
         public long revenue { get; set; } = 0;
+        public double TargetDebtPercent { get; set; } = 10;
+        public double DebtYears { get; set; } = 10;
+        public double YearlyGDPGrowth { get; set; } = 2.3;
+        public double PGDP { get; set; }
+        public double TargetDebt { get; set; }
+        public double DebtDifference { get; set; }
+        public double AnnualDebtInterest { get; set; } = 3.0;
+        public double TotalInterestPayments { get; set; }
+        public double InterestPerYear { get; set; }
+        public double PaymentPerYear { get; set; }
 
         public List<(int priority, bool ischecked, string name, double cost, double tFunding)> listOfCosts;
 
@@ -388,7 +397,6 @@ namespace TaxMeApp.models
                         {
                             funding = 1;
                             revenue -= Convert.ToInt64(listOfCosts[i].cost * (listOfCosts[i].tFunding / 100));
-                            //revenue -= long.Parse((listOfCosts[i].cost * (listOfCosts[i].tFunding / 100)).ToString());
                         }
                         else
                         {
@@ -412,78 +420,97 @@ namespace TaxMeApp.models
         {
             return this.fundingArray[0].ToString("0.0") + "% Funded";
         }
+
         public string GetMedicaidFunding()
         {
             return this.fundingArray[1].ToString("0.0") + "% Funded";
         }
+
         public string GetWelfareFunding()
         {
             return this.fundingArray[2].ToString("0.0") + "% Funded";
         }
+
         public string GetVeteransFunding()
         {
             return this.fundingArray[3].ToString("0.0") + "% Funded";
         }
+
         public string GetFoodStampsFunding()
         {
             return this.fundingArray[4].ToString("0.0") + "% Funded";
         }
+
         public string GetEducationFunding()
         {
             return this.fundingArray[5].ToString("0.0") + "% Funded";
         }
+
         public string GetPublicHousingFunding()
         {
             return this.fundingArray[6].ToString("0.0") + "% Funded";
         }
+
         public string GetHealthFunding()
         {
             return this.fundingArray[7].ToString("0.0") + "% Funded";
         }
+
         public string GetScienceFunding()
         {
             return this.fundingArray[8].ToString("0.0") + "% Funded";
         }
+
         public string GetTransportationFunding()
         {
             return this.fundingArray[9].ToString("0.0") + "% Funded";
         }
+
         public string GetInternationalFunding()
         {
             return this.fundingArray[10].ToString("0.0") + "% Funded";
         }
+
         public string GetEnergyAndEnvironmentFunding()
         {
             return this.fundingArray[11].ToString("0.0") + "% Funded";
         }
+
         public string GetUnemploymentFunding()
         {
             return this.fundingArray[12].ToString("0.0") + "% Funded";
         }
+
         public string GetFoodAndAgricultureFunding()
         {
             return this.fundingArray[13].ToString("0.0") + "% Funded";
         }
+
         public string GetSandersCollegeFunding()
         {
             return this.fundingArray[14].ToString("0.0") + "% Funded";
         }
+
         public string GetSandersMedicaidFunding()
         {
             return this.fundingArray[15].ToString("0.0") + "% Funded";
         }
+
         public string GetYangUbiFunding()
         {
             return this.fundingArray[16].ToString("0.0") + "% Funded";
         }
+
         public string GetUBIFunding()
         {
             return this.fundingArray[17].ToString("0.0") + "% Funded";
         }
+
         public string GetDebtReductionFunding()
         {
             return this.fundingArray[18].ToString("0.0") + "% Funded";
         }
+
         public double GetTotalBudget() {
             double ans = 0;
             for (int i = 0; i < listOfCosts.Count; i++) {
@@ -501,6 +528,7 @@ namespace TaxMeApp.models
             }
             return ans;
         }
+
         public Tuple<int, string> SelectedGovProgram { get; set; } = new Tuple<int, string>(0, "Defense");
 
         public double GetSelectedTargetFunding(int i) {
@@ -533,6 +561,7 @@ namespace TaxMeApp.models
             }
             updateFunding();
         }
+
         public void setAllTFunding(double flatTFunding)
         {
             for (int i = 0; i < listOfCosts.Count; i++)
@@ -541,17 +570,6 @@ namespace TaxMeApp.models
             }
             updateFunding();
         }
-
-        public double TargetDebtPercent { get; set; } = 10;
-        public double DebtYears { get; set; } = 10;
-        public double YearlyGDPGrowth { get; set; } = 2.3;
-        public double PGDP { get; set; }
-        public double TargetDebt { get; set; }
-        public double DebtDifference { get; set; }
-        public double AnnualDebtInterest { get; set; } = 3.0;
-        public double TotalInterestPayments { get; set; }
-        public double InterestPerYear { get; set; }
-        public double PaymentPerYear { get; set; }
 
         public double CalculateYearlyDebtPayment(double currentDebt, double GDP) {
             GDP = GDP * Math.Pow(10, 12);
@@ -571,15 +589,11 @@ namespace TaxMeApp.models
             double SelectedDebt = currentDebt;
             TotalInterestPayments = 0;
             for (int i = 0; i < DebtYears; i++) {
-                //Console.WriteLine("Year {0}", i);
-                //Console.WriteLine("Selected Debt = {0}, Interest Per Year = {1}", SelectedDebt, AnnualDebtInterest);
                 TotalInterestPayments += SelectedDebt * (AnnualDebtInterest / 100);
-                //Console.WriteLine("Total Interest = {0}", TotalInterestPayments);
                 SelectedDebt -= ans;
             }
-            InterestPerYear = TotalInterestPayments / DebtYears;
 
-            //Console.WriteLine("Total Interest = {0}, Yearly Interest = {1}", TotalInterestPayments, InterestPerYear);
+            InterestPerYear = TotalInterestPayments / DebtYears;
 
             ans += InterestPerYear;
 

@@ -20,8 +20,6 @@ namespace TaxMeApp.viewmodels
 
         }
 
-
-
         private void dataViewButtonClick(object sender)
         {
 

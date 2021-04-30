@@ -9,7 +9,6 @@ namespace TaxMeApp.models
 {
     public class TaxPlansModel
     {
-        public ObservableCollection<string> tpl = new ObservableCollection<string>();
 
         public TaxPlansModel()
         {
@@ -18,6 +17,10 @@ namespace TaxMeApp.models
         }
 
         public Dictionary<string, IndividualTaxPlanModel> TaxPlans { get; set; }
+
+        public string SelectedTaxPlanName { get; set; }
+
+        public ObservableCollection<string> tpl = new ObservableCollection<string>();
 
         public ObservableCollection<string> TaxPlanList
         {
@@ -38,7 +41,6 @@ namespace TaxMeApp.models
             }
         }
 
-        public string SelectedTaxPlanName { get; set; }
         public IndividualTaxPlanModel SelectedTaxPlan
         {
             get
@@ -47,5 +49,6 @@ namespace TaxMeApp.models
                 return selected;
             }
         }
+
     }
 }

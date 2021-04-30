@@ -9,9 +9,7 @@ namespace TaxMeApp.models
 {
     public class YearsModel
     {
-        public YearsModel() { 
-        
-        }
+
         // Store dictionary references of all years
         public Dictionary<int, IncomeYearModel> Years { get; set; } = new Dictionary<int, IncomeYearModel>();
 

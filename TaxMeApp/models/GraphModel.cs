@@ -12,26 +12,21 @@ namespace TaxMeApp.models
     public class GraphModel
     {
 
-        public GraphModel()
-        {
-
-        }
-
         public SeriesCollection Series { get; set; } = new SeriesCollection();
 
         public AxesCollection Axes { get; set; } = new AxesCollection
         {
-            // number of returns
+            // Number of returns
             new Axis { 
                 Position = AxisPosition.RightTop, 
                 ShowLabels = false 
             }, 
-            // revenue
+            // Revenue
             new Axis { 
                 Position = AxisPosition.RightTop, 
                 ShowLabels = false 
             }, 
-            // tax percentage
+            // Tax rates
             new Axis { 
                 Position = AxisPosition.RightTop, 
                 ShowLabels = false, 
@@ -74,12 +69,17 @@ namespace TaxMeApp.models
         };
 
         public int PovertyLineIndex { get; set; } = -1;
-
         public int MaxBracketCount { get; set; }
-
-        //Added for Bracket combo box
         public string SelectedBracket { get; set; }
-
+        public int MaxUBIBracketCount { get; set; }
+        public int MinUBIBracketCount { get; set; }
+        public int MaxUBI { get; set; }
+        public int PreTaxMeanLine { get; set; }
+        public int PreTaxMedianLine { get; set; }
+        public int PostTaxMeanLine { get; set; }
+        public int PostTaxMedianLine { get; set; }
+        public int PostTaxMeanUBILine { get; set; }
+        public int PostTaxMedianUBILine { get; set; }
 
         // Set the defaults for what are displayed on the graph
         public bool ShowNumberOfReturns { get; set; } = true;
@@ -94,14 +94,6 @@ namespace TaxMeApp.models
         public bool ShowPostTaxMean { get; set; } = false;
         public bool ShowPostTaxMedianUBI { get; set; } = false;
         public bool ShowPostTaxMeanUBI { get; set; } = false;
-        public int MaxUBIBracketCount { get; set; }
-        public int MinUBIBracketCount { get; set; }
-        public int MaxUBI { get; set; }
-        public int PreTaxMeanLine { get; set; }
-        public int PreTaxMedianLine { get; set; }
-        public int PostTaxMeanLine { get; set; }
-        public int PostTaxMedianLine { get; set; }
-        public int PostTaxMeanUBILine { get; set; }
-        public int PostTaxMedianUBILine { get; set; }
+    
     }
 }

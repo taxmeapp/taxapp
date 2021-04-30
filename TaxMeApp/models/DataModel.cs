@@ -45,7 +45,7 @@ namespace TaxMeApp.models
             }
         }
 
-        public int MaxTaxRate { get; set; } = 20;
+        public int MaxTaxRate { get; set; }
 
         public List<long> OldRevenueByBracket { get; set; } = new List<long>();
 
