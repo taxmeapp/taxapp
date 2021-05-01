@@ -10,6 +10,8 @@ namespace TaxMeApp.models
 {
     public class DataModel
     {
+        //Used to store data that is graphed
+        
         public DataModel() {
             Population = new ObservableCollection<int>();
             NumPovertyPop = 0;

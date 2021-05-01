@@ -8,6 +8,8 @@ namespace TaxMeApp.models
 {
     public class BracketModel
     {
+        //Used to store data on each tax bracket in a year of data
+
         public string Range { get; set; }
         public int NumReturns { get; set; }
         public long GrossIncome { get; set; }

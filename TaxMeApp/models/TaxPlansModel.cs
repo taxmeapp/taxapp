@@ -9,6 +9,7 @@ namespace TaxMeApp.models
 {
     public class TaxPlansModel
     {
+        //Used to store a list of tax plans and let the user select one
 
         public TaxPlansModel()
         {

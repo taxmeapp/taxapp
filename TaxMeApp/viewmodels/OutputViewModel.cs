@@ -25,6 +25,7 @@ namespace TaxMeApp.viewmodels
         }
 
         // Custom gov programs are held in a listview and the items are connected to the OutputView
+        // This lets users add programs to a list
         public ListView customProgramListView { get; set; } = new ListView();
         public ICommand AddProgramBtnCommand { get; set; }
 
@@ -302,6 +303,7 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        
         int customStart = 19;
 
         private void ProgramChecked_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -1599,6 +1601,8 @@ namespace TaxMeApp.viewmodels
             }
         }
 
+        //Individual Income calculator
+        //Check which bracket the income is in and return the rate
         public double otr;
         public string OldTaxRate {
             get {
@@ -1692,6 +1696,8 @@ namespace TaxMeApp.viewmodels
             } 
         }
 
+        //Individual Income calculator
+        //Check which bracket the income is in and return the rate
         public double ntr;
         public string NewTaxRate
         {

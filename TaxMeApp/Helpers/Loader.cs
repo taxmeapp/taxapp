@@ -15,6 +15,8 @@ namespace TaxMeApp
 {
     public class Loader
     {
+        //Loads data and sets up the program
+        //Use Loader for automatic tests
 
         public MainViewModel MainVM { get; set; }
         public DataViewModel DataVM { get; set; }
@@ -100,6 +102,7 @@ namespace TaxMeApp
 
         }
 
+        //Load years from res\TaxCSV
         public void LoadYears()
         {
 
@@ -118,11 +121,14 @@ namespace TaxMeApp
             }
         }
 
+        //Load budget from res\BudgetData
+        //In the future it could be used to load years of data from multiple files
         public void LoadBudget() {
             string[] files = Directory.GetFiles("res\\BudgetData", "*.csv");
             BudgetDataModel = Parser.ParseBudgetData(files[0]);
         }
 
+        //Used for testing purposes
         public static string[] LoadYearsTest()
         {
 

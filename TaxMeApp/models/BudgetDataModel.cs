@@ -9,6 +9,7 @@ namespace TaxMeApp.models
 {
     public class BudgetDataModel
     {
+        //Used to store a list of budget years (which have GDP and other data)
 
         public ObservableCollection<BudgetYearModel> YearData { get; set; }
 

@@ -21,7 +21,7 @@ namespace TaxMeApp.viewmodels
     public class ControlViewModel : MainViewModel
     {
 
-
+        //Buttons are connected to ICommands which call a method
         public ICommand NewTaxPlanBtnCommand { get; set; }
         public ICommand SaveTaxPlanBtnCommand { get; set; }
         public ICommand DeleteTaxPlanBtnCommand { get; set; }
@@ -35,7 +35,7 @@ namespace TaxMeApp.viewmodels
 
         public ControlViewModel()
         {
-
+            //Connect ICommands to methods
             NewTaxPlanBtnCommand = new RelayCommand(o => newTaxPlanButtonClick());
             SaveTaxPlanBtnCommand = new RelayCommand(o => saveTaxPlan());
             DeleteTaxPlanBtnCommand = new RelayCommand(o => deleteTaxPlanButtonClick());

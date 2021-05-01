@@ -9,13 +9,19 @@ namespace TaxMeApp.models
 {
     public class OptionsModel
     {
+        //OptionsModel was created to store options like max tax rate and bracket counts. 
+        //It is also used to work with government budget, debt reduction, and do funding calculations
 
         public OptionsModel()
         {
             this.MaxTaxRate = 0;
             this.MaxBracketCount = 0;
 
+            //List of costs is used to store budget items
+            //Budget items are stored as tuples (which are immutable and need to be recreated to edit them)
             listOfCosts = new List<(int priority, bool ischecked, string name, double cost, double tFunding)>();
+            
+            //Existing federal budget
             listOfCosts.Add((0, true, "Defense", 678000000000.0, 100.0));
             listOfCosts.Add((1, true, "Medicaid", 613000000000.0, 100.0));
             listOfCosts.Add((2, true, "Welfare", 361000000000.0, 100.0));
@@ -31,15 +37,20 @@ namespace TaxMeApp.models
             listOfCosts.Add((12, true, "Unemployment", 24000000000.0, 100.0));
             listOfCosts.Add((13, true, "Food and Agriculture", 11000000000.0, 100.0));
             
+            //Sanders' plans
             listOfCosts.Add((14, false, "Sanders College", 220000000000.0, 100.0));
             listOfCosts.Add((15, false, "Sanders Medicaid", 350000000000.0, 100.0));
             
+            //Yang's plans
             listOfCosts.Add((16, false, "Yang UBI", 2800000000000.0, 100.0));
 
+            //UBI that is graphed
             listOfCosts.Add((17, false, "UBI", 0.0, 100.0));
 
+            //Debt reduction from the calculator
             listOfCosts.Add((18, false, "Debt Reduction Funding", 0.0, 100.0));
 
+            //Set default options
             this.DefenseChecked = true;
             this.MedicaidChecked = true;
             this.WelfareChecked = true;
@@ -65,14 +76,18 @@ namespace TaxMeApp.models
 
             this.DebtReductionChecked = false;
 
+            //Funding array is used to store the funding percentage of each program
             fundingArray = new double[listOfCosts.Count];
         }
 
+        //Options
         public double MaxTaxRate { get; set; }
         public int MaxBracketCount { get; set; }
         public int FlatTaxRate { get; set; }
         public bool BalancePovertyWithMax { get; set; } = false;
         public bool BalanceMaxWithPoverty { get; set; } = false;
+
+        //Budget
         public long revenue { get; set; } = 0;
         public double TargetDebtPercent { get; set; } = 10;
         public double DebtYears { get; set; } = 10;
@@ -89,6 +104,8 @@ namespace TaxMeApp.models
 
         public double[] fundingArray;
 
+        //Uncheck custom budget items that were added using the add button
+        //Used to reset the default options
         public void UncheckCustomPrograms()
         {
             for (int i = 19; i < listOfCosts.Count; i++) {
@@ -97,6 +114,8 @@ namespace TaxMeApp.models
 
         }
 
+        //Methods that are used when budget items are checked or unchecked on the output panel:
+        
         public bool dc;
         public bool DefenseChecked {
             get {
@@ -370,6 +389,8 @@ namespace TaxMeApp.models
             }
         }
 
+        //Gets text for the graphed UBI. 
+        //"Cost" is the initial cost * target funding/100 (ex. 300 * (50 / 100) = 150) 
         public string GetUBIText() {
             string ans = "UBI";
 
@@ -380,10 +401,12 @@ namespace TaxMeApp.models
             return ans;
         }
 
+        //Update UBI called by control view model to update UBI with new cost
         public void UpdateUBI(double c) {
             listOfCosts[17] = (17, listOfCosts[17].ischecked, listOfCosts[17].name, c, listOfCosts[17].tFunding);
         }
 
+        //Update funding calculates the funding % for each budget item
         public void updateFunding() {
             fundingArray = new double[listOfCosts.Count];
             double funding = 0;
@@ -415,6 +438,8 @@ namespace TaxMeApp.models
                 fundingArray[i] = funding;
             }
         }
+
+        //Methods to display the funding of each budget item
 
         public string GetDefenseFunding()
         {
@@ -511,6 +536,7 @@ namespace TaxMeApp.models
             return this.fundingArray[18].ToString("0.0") + "% Funded";
         }
 
+        //Calculate total budget by adding up all of the costs * target funding/100
         public double GetTotalBudget() {
             double ans = 0;
             for (int i = 0; i < listOfCosts.Count; i++) {
@@ -521,6 +547,7 @@ namespace TaxMeApp.models
             return ans;
         }
 
+        //Get list of all budget items
         public List<Tuple<int, string>> GetGovProgramList() {
             List<Tuple<int, string>> ans = new List<Tuple<int, string>>();
             for (int i = 0; i < listOfCosts.Count; i++) {
@@ -529,8 +556,10 @@ namespace TaxMeApp.models
             return ans;
         }
 
+        //Used by ControlViewModel for target funding
         public Tuple<int, string> SelectedGovProgram { get; set; } = new Tuple<int, string>(0, "Defense");
 
+        //Get target funding of item in listofcosts
         public double GetSelectedTargetFunding(int i) {
             if (i >= 0)
             {
@@ -541,6 +570,7 @@ namespace TaxMeApp.models
             }
         }
 
+        //Get adjusted budget (after target funding is set)
         public string GetSelectedTargetBudget(int i)
         {
             string ans = "$";
@@ -553,6 +583,8 @@ namespace TaxMeApp.models
             return ans;
         }
 
+        //Set the target funding of all checked programs to be the same value
+        //Used by auto-fit budget to set everything that is checked to the same target funding %
         public void setFlatTFunding(double flatTFunding) {
             for (int i = 0; i < listOfCosts.Count; i++) {
                 if (listOfCosts[i].ischecked){
@@ -562,6 +594,8 @@ namespace TaxMeApp.models
             updateFunding();
         }
 
+        //Set target funding of all items (checked or not)
+        //Used by reset budget/target funding to set everything to 100% even if it's not checked
         public void setAllTFunding(double flatTFunding)
         {
             for (int i = 0; i < listOfCosts.Count; i++)
@@ -571,29 +605,45 @@ namespace TaxMeApp.models
             updateFunding();
         }
 
+        //Debt reduction calculator    
         public double CalculateYearlyDebtPayment(double currentDebt, double GDP) {
             GDP = GDP * Math.Pow(10, 12);
 
             double ans = 0;
+
+            //Start by finding projected GDP (GDP in x years if it grows y percent per year)
+            //This is done with an annual interest formula
             double projectedGDP = GDP * Math.Pow((1 + (YearlyGDPGrowth / 100)), DebtYears);
             PGDP = projectedGDP;
+
+            //Then find target debt amount (it's just a percentage of the projected GDP)
+            //Ex. projected GDP is $100 trillion, target % is 10%, so target debt is $10 trillion
             double targetDebtAmount = projectedGDP * (TargetDebtPercent / 100);
             TargetDebt = targetDebtAmount;
+
+            //Find difference between current debt and target debt
             double difference = currentDebt - targetDebtAmount;
             DebtDifference = difference;
 
+            //Take average of the difference / years
             ans = difference / DebtYears;
             PaymentPerYear = ans;
 
+            //Find interest on debt
+            //If debt is $20 trillion, and there is a 3% interest rate, 
+            //then the payments are $600 billion / year (though they would decrease as the debt is paid off)
             double SelectedDebt = currentDebt;
             TotalInterestPayments = 0;
+            //Calculate by adding up interest payments over time, assuming debt is paid off over time
             for (int i = 0; i < DebtYears; i++) {
                 TotalInterestPayments += SelectedDebt * (AnnualDebtInterest / 100);
                 SelectedDebt -= ans;
             }
 
+            //Interest per year is an average, it would actually start higher and go lower over time
             InterestPerYear = TotalInterestPayments / DebtYears;
 
+            //Add interest per year to the total cost of debt reduction
             ans += InterestPerYear;
 
             listOfCosts[18] = (18, listOfCosts[18].ischecked, listOfCosts[18].name, ans, listOfCosts[18].tFunding);
@@ -603,4 +653,4 @@ namespace TaxMeApp.models
 
     }
 
-}
+}   

@@ -8,6 +8,8 @@ namespace TaxMeApp.models
 {
     public class BudgetYearModel
     {
+        //Used to store GDP, budget, and debt data
+
         public int Year { get; set; }
         public double GDP { get; set; }
         public double TotalBudget { get; set; }
